@@ -1,0 +1,30 @@
+{
+  "author": "dhogland",
+  "source": "UNKNOWN",
+  "project_page": "UNKNOWN",
+  "license": "Apache License, Version 2.0",
+  "checksums": {
+    "README.markdown": "569ca1e7d508f5489bfd50170496e509",
+    "manifests/linux_server.pp": "c3c8e7fcc855504b76c41d0bf1b40bdd",
+    "Modulefile": "b11908e337677d335e172197cfb54a87",
+    "manifests/linux_forwarder.pp": "6caa47f9743c38159acebb7b7b169a4a",
+    "manifests/params.pp": "81e1fa323ffea36c9e4c6d74adebaba8",
+    "manifests/windows_forwarder.pp": "f922503b0b997194cb1a7e9658c21e8c",
+    "manifests/init.pp": "98c8811d59892abfc425e4c5e0e917d2",
+    "manifests/windows_server.pp": "e0d809b0c85891b340b55701277ee9ac",
+    "manifests/linux_syslog.pp": "f38857c86c81ec75388b6cc8d7c41c93"
+  },
+  "dependencies": [
+    {
+      "version_requirement": ">= 0.0.4",
+      "name": "puppetlabs/firewall"
+    }
+  ],
+  "types": [
+
+  ],
+  "description": "Module to assit in deploying splunk or configuring rsyslog to send messages to your splunk server",
+  "name": "dhogland-splunk",
+  "version": "0.1.1",
+  "summary": "UNKNOWN"
+}
