@@ -4,7 +4,7 @@ class splunk::windows_forwarder {
   }
   file {"splunk_installer":
     path   => "${splunk::params::windows_stage_drive}\\installers\\${installer}", 
-    source => "puppet:///modules/${module_name}/${splunk::params::installer}",
+    source => "puppet:///files/${module_name}/${splunk::params::installer}",
   }
   package {"Universal Forwarder":
     source          => "${splunk::params::windows_stage_drive}\\installers\\${installer}",
