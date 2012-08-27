@@ -4,7 +4,7 @@ class splunk::windows_server {
   }
   file {"splunk_installer":
     path   => "${splunk::params::windows_stage_drive}\\installers\\${installer}", 
-    source => "puppet:///modules/${module_name}/${splunk::params::installer}",
+    source => $splunk::params::installer_source,
   }
   package {"Splunk":
     source          => "${splunk::params::windows_stage_drive}\\installers\\${installer}",

@@ -6,7 +6,7 @@ class splunk::linux_forwarder {
   }
   file {"splunk_installer":
     path    => "${splunk::params::linux_stage_dir}/${splunk::params::installer}",
-    source  => "puppet:///files/${module_name}/${splunk::params::installer}",
+    source  => $splunk::params::installer_source,
     require => File["${splunk::params::linux_stage_dir}"],
   }
   package {"splunkforwarder":
