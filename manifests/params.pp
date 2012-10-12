@@ -24,7 +24,7 @@ class splunk::params {
         /(?i)(centos|redhat)/ => "splunk-${splunk_ver}.i386.rpm",
         'debian'              => "splunk-${splunk_ver}-linux-2.6-intel.deb",
       },
-      'x86_64' => $::operatingsystem ? {
+      /(?i)(x86_64|x64)/ => $::operatingsystem ? {
         'windows'             => "splunk-${splunk_ver}-x64-release.msi",
         /(?i)(centos|redhat)/ => "splunk-${splunk_ver}-linux-2.6-x86_64.rpm",
         'debian'              => "splunk-${splunk_ver}-linux-2.6-amd64.deb",
@@ -40,7 +40,7 @@ class splunk::params {
         /(?i)(centos|redhat)/ => "splunkforwarder-${splunk_ver}.i386.rpm",
         /(?i)(debian|ubuntu)/ => "splunkforwarder-${splunk_ver}-linux-2.6-intel.deb",
       },
-      'x86_64' => $::operatingsystem ? {
+      /(?i)(x86_64|x64)/ => $::operatingsystem ? {
         'windows'             => "splunkforwarder-${splunk_ver}-x64-release.msi",
         /(?i)(centos|redhat)/ => "splunkforwarder-${splunk_ver}-linux-2.6-x86_64.rpm",
         /(?i)(debian|ubuntu)/ => "splunkforwarder-${splunk_ver}-linux-2.6-amd64.deb",
