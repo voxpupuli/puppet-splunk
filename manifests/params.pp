@@ -4,7 +4,7 @@ class splunk::params {
   $deploy              = $::splunk_deploy #valid values are server, syslog, forwarder
   $linux_stage_dir     = "/usr/local/installers"
   $logging_port        = $::splunk_forwarder_port
-  $logging_server      = $::splunk_logging_server #not validated, but should be hostname or IP
+  $logging_server      = $::splunk_logging_server
   $source_root         = "puppet:///files/${module_name}"
   $splunk_admin        = "admin"
   $splunk_admin_pass   = "changeme"
@@ -13,41 +13,38 @@ class splunk::params {
   $syslogging_port     = $::splunk_syslog_port
   $windows_stage_drive = "C:"
 
-  $installer = $deploy ? {
-    'server' => $::architecture ? {
-      'i386' => $::operatingsystem ? {
-        'windows' => $::path ? {
-          #This evaluation is in here because of an issue identifying some windows architectures
-          /\(x86\)/           => "splunk-${splunk_ver}-x64-release.msi",
-          default             => "splunk-${splunk_ver}-x86-release.msi",
-        },
-        /(?i)(centos|redhat)/ => "splunk-${splunk_ver}.i386.rpm",
-        'debian'              => "splunk-${splunk_ver}-linux-2.6-intel.deb",
-      },
-      /(?i)(x86_64|x64)/ => $::operatingsystem ? {
-        'windows'             => "splunk-${splunk_ver}-x64-release.msi",
-        /(?i)(centos|redhat)/ => "splunk-${splunk_ver}-linux-2.6-x86_64.rpm",
-        'debian'              => "splunk-${splunk_ver}-linux-2.6-amd64.deb",
-      },
-    },
-    'forwarder' => $::architecture ? {
-      'i386' => $::operatingsystem ? {
-        'windows' => $::path ? {
-          #This evaluation is in here because of an issue identifying some windows architectures
-          /\(x86\)/           => "splunkforwarder-${splunk_ver}-x64-release.msi",
-          default             => "splunkforwarder-${splunk_ver}-x86-release.msi",
-        },
-        /(?i)(centos|redhat)/ => "splunkforwarder-${splunk_ver}.i386.rpm",
-        /(?i)(debian|ubuntu)/ => "splunkforwarder-${splunk_ver}-linux-2.6-intel.deb",
-      },
-      /(?i)(x86_64|x64)/ => $::operatingsystem ? {
-        'windows'             => "splunkforwarder-${splunk_ver}-x64-release.msi",
-        /(?i)(centos|redhat)/ => "splunkforwarder-${splunk_ver}-linux-2.6-x86_64.rpm",
-        /(?i)(debian|ubuntu)/ => "splunkforwarder-${splunk_ver}-linux-2.6-amd64.deb",
-      },
-    },
-    'syslog' => undef,
+  case "$::osfamily $::architecture" {
+    "RedHat i386": {
+      $package_suffix = "${splunk_ver}.i386.rpm"
+    }
+    "RedHat x86_64": {
+      $package_suffix = "${splunk_ver}-linux-2.6-x86_64.rpm"
+    }
+    "Debian i386": {
+      $package_suffix = "${splunk_ver}-linux-2.6-intel.deb"
+    }
+    "Debian x86_64": {
+      $package_suffix = "${splunk_ver}-linux-2.6-amd64.deb"
+    }
+    /^(W|w)indows (x86|i386)$/: {
+      $package_suffix = "${splunk_ver}-x86-release.msi"
+    }
+    /^(W|w)indows (x64|x86_64)$/: {
+      $package_suffix = "${splunk_ver}-x64-release.msi"
+    }
+    default: {
+      fail("osfamily/architecture $::osfamily/$::architecture not supported")
+    }
+  }
+
+  $splunk_package_name = "splunk-$package_suffix"
+  $splunkforwarder_package_name = "splunkforwarder-$package_suffix"
+
+  case $deploy {
+    'server':    { $installer = $splunk_package_name }
+    'forwarder': { $installer = $splunkforwarder_package_name }
   }
 
   $installer_source = "${source_root}/${installer}"
+
 }
