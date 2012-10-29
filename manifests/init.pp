@@ -1,4 +1,9 @@
 class splunk inherits splunk::params {
+
+  if !($splunk::params::deploy) {
+    fail("missing parameter splunk::params::deploy")
+  }
+
   case $::kernel {
     /(?i)linux/: { include "splunk::linux_${splunk::params::deploy}" }
     /(?i)windows/: { 
