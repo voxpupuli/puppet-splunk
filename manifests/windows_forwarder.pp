@@ -1,4 +1,9 @@
 class splunk::windows_forwarder {
+
+  $server = $splunk::params::logging_server
+  $port   = $splunk::params::logging_port
+
+  # Installation source files
   file {"${splunk::params::windows_stage_drive}\\installers":
     ensure => directory;
   }
@@ -6,11 +11,13 @@ class splunk::windows_forwarder {
     path   => "${splunk::params::windows_stage_drive}\\installers\\${installer}", 
     source => $splunk::params::installer_source,
   }
+
+  # System resources
   package {"Universal Forwarder":
     source          => "${splunk::params::windows_stage_drive}\\installers\\${installer}",
     install_options => {
       "AGREETOLICENSE"         => 'Yes',
-      "RECEIVING_INDEXER"      => "${splunk::params::logging_server}:${splunk::params::logging_port}",
+      "RECEIVING_INDEXER"      => "${server}:${port}",
       "LAUNCHSPLUNK"           => "1",
       "SERVICESTARTTYPE"       => "auto",
       "WINEVENTLOG_APP_ENABLE" => "1",
@@ -22,7 +29,13 @@ class splunk::windows_forwarder {
     },
     require         => File['splunk_installer'],
   }
-  service {"SplunkForwarder":
+  file { 'C:\Program Files\SplunkUniversalForwarder\etc\system\local\outputs.conf':
+    ensure  => file,
+    content => template('splunk/outputs.conf.erb'),
+    require => Package['Universal Forwarder'],
+    notify  => Service['SplunkForwarder'],
+  }
+  service { 'SplunkForwarder':
     ensure  => running,
     enable  => true,
     require => Package['Universal Forwarder'],
