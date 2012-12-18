@@ -1,4 +1,8 @@
 class splunk::linux_forwarder {
+
+  $server = $splunk::params::logging_server
+  $port   = $splunk::params::logging_port
+
   file {"${splunk::params::linux_stage_dir}":
     ensure => directory,
     owner  => "root",
@@ -18,21 +22,11 @@ class splunk::linux_forwarder {
     },
     notify   => Exec['start_splunk'],
   }
-#  firewall { "100 allow Splunkd":
-#    action => "accept",
-#    proto  => "tcp",
-#    dport  => "${splunk::params::splunkd_port}",
-#  }
+
   exec {"start_splunk":
     creates => "/opt/splunkforwarder/etc/licenses",
     command => "/opt/splunkforwarder/bin/splunk start --accept-license",
     timeout => 0,
-  }
-  exec {"set_forwarder_port":
-    unless  => "/bin/grep \"server \= ${splunk::params::logging_server}:${splunk::params::logging_port}\" /opt/splunkforwarder/etc/system/local/outputs.conf",
-    command => "/opt/splunkforwarder/bin/splunk add forward-server ${splunk::params::logging_server}:${splunk::params::logging_port} -auth ${splunk::params::splunk_admin}:${splunk::params::splunk_admin_pass}",
-    require => Exec['set_monitor_default'],
-    notify  => Service['splunk'],
   }
   exec {"set_monitor_default":
     unless  => "/bin/grep \"\/var\/log\" /opt/splunkforwarder/etc/apps/search/local/inputs.conf",
@@ -54,5 +48,12 @@ class splunk::linux_forwarder {
     hasstatus  => true,
     hasrestart => true,
     require    => File['/etc/init.d/splunk'],
+  }
+
+  file { '/opt/splunkforwarder/etc/system/local/outputs.conf':
+    ensure  => file,
+    content => template('splunk/outputs.conf.erb'),
+    require => Package['splunkforwarder'],
+    notify  => Service['splunk'],
   }
 }
