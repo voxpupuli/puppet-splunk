@@ -5,7 +5,7 @@ class splunk::params {
   $linux_stage_dir     = "/usr/local/installers"
   $logging_port        = $::splunk_forwarder_port
   $logging_server      = $::splunk_logging_server
-  $source_root         = "puppet:///files/${module_name}"
+  $source_root         = "puppet:///modules/${module_name}"
   $splunk_admin        = "admin"
   $splunk_admin_pass   = "changeme"
   $splunk_ver          = '4.3.2-123586'
