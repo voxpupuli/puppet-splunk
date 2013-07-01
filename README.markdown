@@ -32,7 +32,7 @@ Installation section below to download and implement this module.
 To begin using this module, use the Puppet Module Tool (PMT) from the command
 line to install this module:
 
-`puppet module install dhogland-splunk`
+`puppet module install seteam-splunk`
 
 This will place the module into your primary module path if you do not utilize
 the -dir directive.
