@@ -29,6 +29,8 @@ Installation section below to download and implement this module.
 
 ### Installation & Setup
 
+*THESE INSTRUCTIONS ARE NOT UP TO DATE*
+
 To begin using this module, use the Puppet Module Tool (PMT) from the command
 line to install this module:
 
@@ -46,6 +48,9 @@ Once the module is in place, there is just a little setup needed:
        change the value to match.
      + the full file names for $installer match what you have placed into the
        files directory.
+
+*THIS SECTION OF THE INSTRUCTIONS IS IN DESPERATE NEED OF UPDATING*
+
 * second, you will need to configure a few objects in the Console
   - create a class and call it `splunk`.
   - create a group named to your desire with the following parameters:
