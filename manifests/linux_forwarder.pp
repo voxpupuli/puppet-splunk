@@ -1,53 +1,28 @@
-class splunk::linux_forwarder {
+class splunk::linux_forwarder (
+  $server            = 'master',
+  $port              = '9997',
+  $splunk_ver        = '4.3.2-123586',
+  $splunk_source     = "puppet:///files/${module_name}",
+  $splunk_admin      = "admin",
+  $splunk_admin_pass = "changeme",
+) inherits splunk::params {
 
-  $server = $splunk::params::logging_server
-  $port   = $splunk::params::logging_port
-
-  file {"${splunk::params::linux_stage_dir}":
-    ensure => directory,
-    owner  => "root",
-    group  => "root",
-  }
-  file {"splunk_installer":
-    path    => "${splunk::params::linux_stage_dir}/${splunk::params::installer}",
-    source  => $splunk::params::installer_source,
-    require => File["${splunk::params::linux_stage_dir}"],
-  }
-  package {"splunkforwarder":
-    ensure   => installed,
-    source   => "${splunk::params::linux_stage_dir}/${splunk::params::installer}",
-    provider => $::operatingsystem ? {
-      /(?i)(centos|redhat)/   => 'rpm',
-      /(?i)(debian|ubuntu)/ => 'dpkg',
-    },
-    notify   => Exec['start_splunk'],
+  staging::file { $splunk::params::splunkforwarder_pkg:
+    source => "${splunk_source}/${splunkforwarder_pkg}",
   }
 
-  exec {"start_splunk":
-    creates => "/opt/splunkforwarder/etc/licenses",
-    command => "/opt/splunkforwarder/bin/splunk start --accept-license",
-    timeout => 0,
+  package { 'splunkforwarder':
+    ensure   => present,
+    provider => $pkg_provider,
+    source   => "/opt/staging/splunk/${splunk::params::splunkforwarder_pkg}",
+    require  => Staging::File[$splunk::params::splunkforwarder_pkg],
   }
-  exec {"set_monitor_default":
-    unless  => "/bin/grep \"\/var\/log\" /opt/splunkforwarder/etc/apps/search/local/inputs.conf",
-    command => "/opt/splunkforwarder/bin/splunk add monitor \"/var/log/\" -auth ${splunk::params::splunk_admin}:${splunk::params::splunk_admin_pass}",
-    require => Exec['start_splunk','set_boot'],
-  }
-  exec {"set_boot":
-    creates => "/etc/init.d/splunk",
-    command => "/opt/splunkforwarder/bin/splunk enable boot-start",
-    require => Exec['start_splunk'],
-  }
-  file {'/etc/init.d/splunk':
+
+  file { '/opt/splunkforwarder/etc/system/local/inputs.conf':
     ensure  => file,
-    require => Exec['set_boot']
-  }
-  service {"splunk":
-    ensure     => running,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => true,
-    require    => File['/etc/init.d/splunk'],
+    content => template('splunk/inputs.conf.erb'),
+    require => Package['splunkforwarder'],
+    notify  => Service['splunk'],
   }
 
   file { '/opt/splunkforwarder/etc/system/local/outputs.conf':
@@ -56,4 +31,26 @@ class splunk::linux_forwarder {
     require => Package['splunkforwarder'],
     notify  => Service['splunk'],
   }
+
+  service { 'splunk':
+    ensure     => running,
+    enable     => true,
+    hasstatus  => true,
+    hasrestart => true,
+    require    => Exec['enable_splunk'],
+  }
+
+  exec { 'license_splunk':
+    command => "/opt/splunkforwarder/bin/splunk start --accept-license --answer-yes",
+    creates => "/opt/splunkforwarder/etc/auth/splunk.secret",
+    timeout => 0,
+    require => Package['splunkforwarder'],
+  }
+
+  exec { 'enable_splunk':
+    command => "/opt/splunkforwarder/bin/splunk enable boot-start",
+    creates => "/etc/init.d/splunk",
+    require => Exec['license_splunk'],
+  }
+
 }

@@ -1,23 +1,38 @@
-class splunk inherits splunk::params {
-
-  if !($splunk::params::deploy) {
-    fail("missing parameter splunk::params::deploy")
-  }
+class splunk (
+  $port              = '9997',
+  $splunk_ver        = '4.3.2-123586',
+  $splunk_source     = "puppet:///files/${module_name}",
+  $splunk_admin      = "admin",
+  $splunk_admin_pass = "changeme",
+  $server,
+) {
 
   case $::kernel {
-    /(?i)linux/: { include "splunk::linux_${splunk::params::deploy}" }
-    /(?i)windows/: { 
-      if $splunk::params::deploy == 'syslog' { 
-        notify {"Err":
-          message => "Syslog configuration is not available for ${::kernel} in this module.",
-        }
+    /(?i)linux/: {
+      class { '::splunk::linux_forwarder':
+        server             => $server,
+        port               => $port,
+        splunk_ver         => $splunk_ver,
+        splunk_source      => $splunk_source,
+        splunk_admin       => $splunk_admin,
+        splunk_admin_pass  => $splunk_admin_pass,
       }
-      else { 
-        include "splunk::windows_${splunk::params::deploy}" 
-        Exec {
-          path => "${::path}\;\"C:\\Program Files\\Splunk\\bin\""
-        }
+    }
+    /(?i)sunos/: {
+      class { "splunk::solaris_forwarder":
+        server => $server,
+        port   => $port,
+      }
+    }
+    /(?i)windows/: {
+      class { '::splunk::windows_forwarder':
+        server => $server,
+        port   => $port,
+      }
+      Exec {
+        path => "${::path}\;\"C:\\Program Files\\Splunk\\bin\""
       }
     }
   }
+
 }

@@ -1,20 +1,24 @@
-class splunk::windows_forwarder {
+class splunk::windows_forwarder (
+  $server,
+  $port,
+) inherits splunk::params {
 
-  $server = $splunk::params::logging_server
-  $port   = $splunk::params::logging_port
+  # For convenience, declare local short variables
+  $splunkforwarder_pkg = $splunk::params::splunkforwarder_pkg
+  $splunk_source       = $splunk::params::source_root
+  $windows_stage_drive = $splunk::params::windows_stage_drive
 
-  # Installation source files
-  file {"${splunk::params::windows_stage_drive}\\installers":
+  file { "${windows_stage_drive}\\installers":
     ensure => directory;
   }
-  file {"splunk_installer":
-    path   => "${splunk::params::windows_stage_drive}\\installers\\${installer}", 
-    source => $splunk::params::installer_source,
+  file { "splunk_installer":
+    path   => "${windows_stage_drive}\\installers\\${splunkforwarder_pkg}", 
+    source => "${splunk_source}/${splunkforwarder_pkg}",
   }
 
-  # System resources
-  package {"Universal Forwarder":
-    source          => "${splunk::params::windows_stage_drive}\\installers\\${installer}",
+  package { "Universal Forwarder":
+    source          => "${windows_stage_drive}\\installers\\${splunkforwarder_pkg}",
+    require         => File['splunk_installer'],
     install_options => {
       "AGREETOLICENSE"         => 'Yes',
       "RECEIVING_INDEXER"      => "${server}:${port}",
@@ -27,17 +31,19 @@ class splunk::windows_forwarder {
       "WINEVENTLOG_SET_ENABLE" => "1",
       "ENABLEADMON"            => "1",
     },
-    require         => File['splunk_installer'],
   }
+
   file { 'C:\Program Files\SplunkUniversalForwarder\etc\system\local\outputs.conf':
     ensure  => file,
     content => template('splunk/outputs.conf.erb'),
     require => Package['Universal Forwarder'],
     notify  => Service['SplunkForwarder'],
   }
+
   service { 'SplunkForwarder':
     ensure  => running,
     enable  => true,
     require => Package['Universal Forwarder'],
   }
+
 }
