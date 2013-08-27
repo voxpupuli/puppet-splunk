@@ -1,0 +1,13 @@
+# http://docs.sun.com/app/docs/doc/805-7228/6j6q7uerj?a=view
+# "Avoiding User Interaction When Adding Packages"
+mail=
+instance=overwrite
+partial=nocheck
+runlevel=nocheck
+idepend=nocheck
+rdepend=nocheck
+space=nocheck
+setuid=nocheck
+conflict=nocheck
+action=nocheck
+basedir=default
