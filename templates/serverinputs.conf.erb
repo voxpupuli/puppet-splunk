@@ -1,8 +1,8 @@
 [default]
-host = <%= scope.lookupvar('clientcert') %>
+host = <%= scope.lookupvar('::clientcert') %>
 
 [monitor://opt/splunk/var/log/splunk]
-host = <%= scope.lookupvar('clientcert') %>
+host = <%= scope.lookupvar('::clientcert') %>
 
 [monitor://var/log/]
-host = <%= scope.lookupvar('clientcert') %>
+host = <%= scope.lookupvar('::clientcert') %>

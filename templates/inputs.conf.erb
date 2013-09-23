@@ -1,5 +1,5 @@
 [default]
-host = <%= scope.lookupvar('clientcert') %>
+host = <%= scope.lookupvar('::clientcert') %>
 
 [monitor://var/log/]
-host = <%= scope.lookupvar('clientcert') %>
+host = <%= scope.lookupvar('::clientcert') %>

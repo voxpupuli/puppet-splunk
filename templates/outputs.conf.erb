@@ -1,7 +1,7 @@
 [tcpout]
-defaultGroup = <%= server %>_<%= port %>
+defaultGroup = <%= @server %>_<%= @logging_port %>
 
-[tcpout:<%= server %>_<%= port %>]
-server = <%= server %>:<%= port %>
+[tcpout:<%= @server %>_<%= @logging_port %>]
+server = <%= @server %>:<%= @logging_port %>
 
-[tcpout-server://<%= server %>:<%= port %>]
+[tcpout-server://<%= @server %>:<%= @logging_port %>]
