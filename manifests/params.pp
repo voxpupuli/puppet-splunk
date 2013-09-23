@@ -1,30 +1,47 @@
-class splunk::params {
+class splunk::params (
+  $version      = '5.0.4',
+  $build        = '172409',
+  $admin_port   = '8000',
+  $splunkd_port = '8089',
+  $logging_port = '9997',
+  $src_root     = "http://download.splunk.com/releases/5.0.4",
+) {
 
-  $admin_port          = '8000'
-  $linux_stage_dir     = "/usr/local/installers"
-  $solaris_stage_dir   = "/usr/local/installers"
-  $logging_port        = $::splunk_forwarder_port
-  $logging_server      = $::splunk_logging_server
-  $source_root         = "puppet:///files/${module_name}"
-  $splunk_admin        = "admin"
-  $splunk_admin_pass   = "changeme"
-  $splunk_ver          = '4.3.2-123586'
-  $splunkd_port        = '8089'
-  $syslogging_port     = $::splunk_syslog_port
-  $windows_stage_drive = "C:"
+  # Based on the small number of inputs above, we can construct sane defaults
+  # for pretty much everything else.
 
   case "$::osfamily $::architecture" {
     "RedHat i386": {
-      $package_suffix           = "${splunk_ver}.i386.rpm"
-      $pkg_provider             = 'rpm'
-      $splunk_pkg_name          = "splunk-${splunk_ver}.${::architecture}"
-      $splunkforwarder_pkg_name = "splunkforwarders-${splunk_ver}.${::architecture}"
+      $forwarder_src_subdir = 'universalforwarder/linux'
+      $forwarder_src_pkg    = "splunkforwarder-${version}-${build}.i386.rpm"
+      $forwarder_pkg_name   = "splunkforwarder-${version}-${build}"
+      $forwarder_service    = 'splunkforwarder_service_same_as_server'
+
+      $server_src_subdir    = 'splunk/linux'
+      $server_src_pkg       = "splunk-${version}-${build}.i386.rpm"
+      $server_pkg_name      = "splunk-${version}-${build}"
+      $server_service       = 'splunk'
+
+      $pkg_provider              = 'rpm'
+      $config_dir                = '/opt/splunkforwarder/etc/system/local'
+      $forwarder_virtual_service = 'splunk'
+      $server_virtual_service    = 'splunk'
     }
     "RedHat x86_64": {
-      $package_suffix           = "${splunk_ver}-linux-2.6-x86_64.rpm"
-      $pkg_provider             = 'rpm'
-      $splunk_pkg_name          = "splunk-${splunk_ver}.${::architecture}"
-      $splunkforwarder_pkg_name = "splunkforwarders-${splunk_ver}.${::architecture}"
+      $forwarder_src_subdir = 'universalforwarder/linux'
+      $forwarder_src_pkg    = "splunkforwarder-${version}-${build}-linux-2.6-x86_64.rpm"
+      $forwarder_pkg_name   = "splunkforwarder-${version}-${build}"
+      $forwarder_service    = 'splunkforwarder_service_same_as_server'
+
+      $server_src_subdir    = 'splunk/linux'
+      $server_src_pkg       = "splunk-${version}-${build}-linux-2.6-x86_64.rpm"
+      $server_pkg_name      = "splunk-${version}-${build}"
+      $server_service       = 'splunk'
+
+      $pkg_provider              = 'rpm'
+      $config_dir                = '/opt/splunkforwarder/etc/system/local'
+      $forwarder_virtual_service = 'splunk'
+      $server_virtual_service    = 'splunk'
     }
     "Debian i386": {
       $package_suffix           = "${splunk_ver}-linux-2.6-intel.deb"
@@ -54,5 +71,8 @@ class splunk::params {
 
   $splunk_pkg = "splunk-$package_suffix"
   $splunkforwarder_pkg = "splunkforwarder-$package_suffix"
+
+  $server_pkg_src    = "${src_root}/${server_src_subdir}/${server_src_pkg}"
+  $forwarder_pkg_src = "${src_root}/${forwarder_src_subdir}/${forwarder_src_pkg}"
 
 }

@@ -30,7 +30,7 @@ class splunk (
         port   => $port,
       }
       Exec {
-        path => "${::path}\;\"C:\\Program Files\\Splunk\\bin\""
+        path => "${::path};\"C:\\Program Files\\Splunk\\bin\""
       }
     }
   }
