@@ -17,4 +17,11 @@ class splunk::virtual {
     hasrestart => true,
   }
 
+  @splunk_input { 'default_host':
+    section => 'default',
+    setting => 'host',
+    value   => $::clientcert,
+    tag     => [ 'splunk_server', 'splunk_forwarder' ],
+  }
+
 }

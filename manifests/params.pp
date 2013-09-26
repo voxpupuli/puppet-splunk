@@ -1,10 +1,10 @@
 class splunk::params (
-  $version      = '5.0.4',
-  $build        = '172409',
+  $version      = '4.3.2',
+  $build        = '123586',
   $admin_port   = '8000',
   $splunkd_port = '8089',
   $logging_port = '9997',
-  $src_root     = "http://download.splunk.com/releases/5.0.4",
+  $src_root     = "puppet:///modules/splunk/releases/4.3.2",
 ) {
 
   # Based on the small number of inputs above, we can construct sane defaults
