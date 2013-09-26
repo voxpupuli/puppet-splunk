@@ -7,9 +7,9 @@ Puppet::Type.type(:splunk_input).provide(
   def self.file_path
     case Facter.value(:osfamily)
     when 'windows'
-      'C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf'
+      'C:\Program Files\Splunk\etc\system\local\inputs.conf'
     else
-      '/opt/splunkforwarder/etc/system/local/inputs.conf'
+      '/opt/splunk/etc/system/local/inputs.conf'
     end
   end
 end
