@@ -25,18 +25,21 @@ class splunk::forwarder (
   include splunk::virtual
   realize(Service[$splunk::params::forwarder_virtual_service])
 
-  file { "${splunk::params::config_dir}/inputs.conf":
-    ensure  => file,
-    content => template('splunk/inputs.conf.erb'),
-    require => Package[$splunk::params::forwarder_pkg_name],
-    notify  => Service[$splunk::params::forwarder_virtual_service],
+  splunk_output { 'tcpout_defaultgroup':
+    section => 'default',
+    setting => 'defaultGroup',
+    value   => "${server}_${logging_port}",
+  }
+  splunk_output { 'defaultgroup_server':
+    section => "tcpout:${server}_${logging_port}",
+    setting => 'server',
+    value   => "${server}:${logging_port}",
   }
 
-  file { "${splunk::params::config_dir}/outputs.conf":
-    ensure  => file,
-    content => template('splunk/outputs.conf.erb'),
-    require => Package[$splunk::params::forwarder_pkg_name],
-    notify  => Service[$splunk::params::forwarder_virtual_service],
+  splunk_input { 'default_host':
+    section => 'default',
+    setting => 'host',
+    value   => $::clientcert,
   }
 
   case $::kernel {
