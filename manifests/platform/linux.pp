@@ -1,19 +1,33 @@
 class splunk::platform::linux {
-  include splunk::params
 
-  exec { 'license_splunk':
-    command => "/opt/splunkforwarder/bin/splunk start --accept-license --answer-yes",
-    creates => "/opt/splunkforwarder/etc/auth/splunk.secret",
+  @exec { 'license_splunkforwarder':
+    path    => '/opt/splunkforwarder/bin',
+    command => 'splunk start --accept-license --answer-yes',
+    creates => '/opt/splunkforwarder/etc/auth/splunk.secret',
     timeout => 0,
-    require => Package[$splunk::params::forwarder_pkg_name],
-    before  => Service[$splunk::params::forwarder_virtual_service],
-  } ->
+    tag     => 'splunk_forwarder',
+  }
+  @exec { 'enable_splunkforwarder':
+    path    => '/opt/splunkforwarder/bin',
+    command => 'splunk enable boot-start',
+    creates => '/etc/init.d/splunk',
+    require => Exec['license_splunkforwarder'],
+    tag     => 'splunk_forwarder',
+  }
 
-  exec { 'enable_splunk':
-    command => "/opt/splunkforwarder/bin/splunk enable boot-start",
-    creates => "/etc/init.d/splunk",
-    require => Package[$splunk::params::forwarder_pkg_name],
-    before  => Service[$splunk::params::forwarder_virtual_service],
+  @exec { 'license_splunk':
+    path    => '/opt/splunk/bin',
+    command => 'splunk start --accept-license --answer-yes',
+    creates => '/opt/splunk/etc/auth/splunk.secret',
+    timeout => 0,
+    tag     => 'splunk_server',
+  }
+  @exec { 'enable_splunk':
+    path    => '/opt/splunk/bin',
+    command => 'splunk enable boot-start',
+    creates => '/etc/init.d/splunk',
+    require => Exec['license_splunk'],
+    tag     => 'splunk_server',
   }
 
 }

@@ -4,6 +4,8 @@ class splunk::forwarder (
   $logging_port      = $splunk::params::logging_port,
   $package_source    = $splunk::params::forwarder_pkg_src,
   $package_name      = $splunk::params::forwarder_pkg_name,
+  $purge_inputs      = false,
+  $purge_outputs     = false,
 ) inherits splunk::params {
   include splunk
   include staging
@@ -25,27 +27,57 @@ class splunk::forwarder (
     before   => Service[$virtual_service],
   }
 
-  # Realize and setup chain dependencies for resources shared between server
-  # and forwarder profiles
-  include splunk::virtual
-  Service      <| title == $virtual_service   |> <- Package[$package_name]
-  Splunk_input <| tag   == 'splunk_forwarder' |> ~> Service[$virtual_service]
-
-  # Declare outputs specific to the forwarder profile
-  splunk_output { 'tcpout_defaultgroup':
+  # Declare inputs and outputs specific to the forwarder profile
+  splunkforwarder_input { 'default_host':
+    section => 'default',
+    setting => 'host',
+    value   => $::clientcert,
+    tag     => 'splunk_forwarder',
+  }
+  splunkforwarder_output { 'tcpout_defaultgroup':
     section => 'default',
     setting => 'defaultGroup',
     value   => "${server}_${logging_port}",
+    tag     => 'splunk_forwarder',
   }
-  splunk_output { 'defaultgroup_server':
+  splunkforwarder_output { 'defaultgroup_server':
     section => "tcpout:${server}_${logging_port}",
     setting => 'server',
     value   => "${server}:${logging_port}",
+    tag     => 'splunk_forwarder',
   }
 
+  # If the purge parameters have been set, remove all unmanaged entries from
+  # the inputs.conf and outputs.conf files, respectively.
+  if $purge_inputs  {
+    resources { 'splunkforwarder_input':  purge => true; }
+  }
+  if $purge_outputs {
+    resources { 'splunkforwarder_output': purge => true; }
+  }
+
+  # This is a module that supports multiple platforms. For some platforms
+  # there is non-generic configuration that needs to be declared in addition
+  # to the agnostic resources declared here.
   case $::kernel {
     default: { } # no special configuration needed
     'Linux': { include splunk::platform::linux }
   }
+
+  # Realize and setup chain dependencies for resources shared between server
+  # and forwarder profiles
+  include splunk::virtual
+
+  Package               <| title == $package_name       |> ->
+  Exec                  <| tag   == 'splunk_forwarder'  |> ->
+  Service               <| title == $virtual_service |>
+
+  Package               <| title == $package_name       |> ->
+  Splunkforwarder_input <| tag   == 'splunk_forwarder'  |> ~>
+  Service               <| title == $virtual_service    |>
+
+  Package                <| title == $package_name      |> ->
+  Splunkforwarder_output <| tag   == 'splunk_forwarder' |> ~>
+  Service                <| title == $virtual_service   |>
 
 }

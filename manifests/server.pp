@@ -15,7 +15,7 @@ class splunk::server (
   staging::file { $staged_package:
     source => $package_source,
     subdir => $staging_subdir,
-    before => Package['splunk'],
+    before => Package[$package_name],
   }
 
   package { $package_name:
@@ -25,18 +25,32 @@ class splunk::server (
     before   => Service[$virtual_service],
   }
 
-  # Realize and setup chain dependencies for resources shared between server
-  # and forwarder profiles
-  include splunk::virtual
-  Service      <| title == $virtual_service |> <- Package[$package_name]
-  Splunk_input <| tag   == 'splunk_server'  |> ~> Service[$virtual_service]
-
-  # Declare inputs specific to the server profile
-  ## none at present
+  splunk_input { 'default_host':
+    section => 'default',
+    setting => 'host',
+    value   => $::clientcert,
+    tag     => 'splunk_server',
+  }
 
   case $::kernel {
     default: { } # no special configuration needed
     'Linux': { include splunk::platform::linux }
   }
+
+  # Realize and setup chain dependencies for resources shared between server
+  # and forwarder profiles
+  include splunk::virtual
+
+  Package       <| title == $package_name    |> ->
+  Exec          <| tag   == 'splunk_server'  |> ->
+  Service       <| title == $virtual_service |>
+
+  Package       <| title == $package_name    |> ->
+  Splunk_input  <| tag   == 'splunk_server'  |> ~>
+  Service       <| title == $virtual_service |>
+
+  Package       <| title == $package_name    |> ->
+  Splunk_output <| tag   == 'splunk_server'  |> ~>
+  Service       <| title == $virtual_service |>
 
 }
