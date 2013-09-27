@@ -1,17 +1,13 @@
 class splunk::virtual {
   include splunk::params
 
-  @service { 'splunk':
-    ensure     => running,
-    name       => $splunk::params::server_service,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => true,
-  }
+  $virtual_services = unique([
+    $splunk::params::server_service,
+    $splunk::params::forwarder_service,
+  ])
 
-  @service { 'splunkforwarder':
+  @service { $virtual_services:
     ensure     => running,
-    name       => $splunk::params::forwarder_service,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
