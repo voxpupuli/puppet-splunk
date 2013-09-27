@@ -40,7 +40,7 @@ class splunk::params (
       $forwarder_service    = [ 'SplunkForwarder' ] # UNKNOWN
       $forwarder_confdir    = 'C:/Program Files/SplunkUniversalForwarder/etc/system/local'
       $server_src_subdir    = 'splunk/windows'
-      $server_service       = [ 'Splunk' ] # UNKNOWN
+      $server_service       = [ 'Splunkd', 'Splunkweb' ] # UNKNOWN
       $server_confdir       = 'C:/Program Files/Splunk/etc/system/local' # UNKNOWN
       $forwarder_install_options = [
         'AGREETOLICENSE=Yes',
