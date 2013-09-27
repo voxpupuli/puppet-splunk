@@ -12,7 +12,11 @@ class splunk (
 
   $virtual_service = $splunk::params::server_service
   $staged_package  = staging_parse($package_source)
-  $staging_subdir  = 'splunk'
+  $staging_subdir  = $splunk::params::staging_subdir
+
+  $path_delimiter  = $splunk::params::path_delimiter
+  $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
+  $pkg_source      = join($pkg_path_parts, $path_delimiter)
 
   staging::file { $staged_package:
     source => $package_source,
@@ -23,8 +27,9 @@ class splunk (
   package { $package_name:
     ensure   => installed,
     provider => $splunk::params::pkg_provider,
-    source   => "${staging::path}/${staging_subdir}/${staged_package}",
+    source   => $pkg_source,
     before   => Service[$virtual_service],
+    tag      => 'splunk_server',
   }
 
   splunk_input { 'default_host':
@@ -62,7 +67,8 @@ class splunk (
   # to the agnostic resources declared here.
   case $::kernel {
     default: { } # no special configuration needed
-    'Linux': { include splunk::platform::linux }
+    'Linux': { include splunk::platform::posix   }
+    'SunOS': { include splunk::platform::solaris }
   }
 
   # Realize resources shared between server and forwarder profiles, and set up

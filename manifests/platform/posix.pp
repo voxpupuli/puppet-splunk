@@ -1,18 +1,7 @@
-class splunk::platform::linux inherits splunk::virtual {
+class splunk::platform::posix inherits splunk::virtual {
 
-  # Validate: if both Splunk and Splunk Universal Forwarder are installed on
-  # the same system, then they must use different admin ports.
-  if (defined(Class['splunk']) and defined(Class['splunk::forwarder'])) {
-    $s_port = $splunk::splunkd_port
-    $f_port = $splunk::forwarder::splunkd_port
-    if $s_port == $f_port {
-      fail(regsubst("Both splunk and splunk::forwarder are included, but both
-        are configured to use the same splunkd port (${s_port}). Please either
-        include only one of splunk, splunk::forwarder, or else configure them
-        to use non-conflicting splunkd ports.", '\s\s+', ' ', 'G')
-      )
-    }
-  }
+  # Many of the resources declared here are virtual. They will be realized by
+  # the appropriate including class if required.
 
   # Commands to run to enable the SplunkUniversalForwarder
   @exec { 'license_splunkforwarder':
@@ -54,7 +43,9 @@ class splunk::platform::linux inherits splunk::virtual {
     tag     => 'splunk_forwarder',
   }
 
-  # Modify virtual service definitions specific to the Linux platform
+  # Modify virtual service definitions specific to the Linux platform. These
+  # are virtual resources declared in the splunk::virtual class, which we
+  # inherit.
   Service['splunkd'] {
     provider => 'base',
     restart  => '/opt/splunk/bin/splunk restart splunkd',

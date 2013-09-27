@@ -4,7 +4,7 @@ class splunk::forwarder (
   $package_name      = $splunk::params::forwarder_pkg_name,
   $logging_port      = $splunk::params::logging_port,
   $splunkd_listen    = '127.0.0.1',
-  $splunkd_port      = '8089',
+  $splunkd_port      = $splunk::params::splunkd_port,
   $purge_inputs      = false,
   $purge_outputs     = false,
 ) inherits splunk::params {
@@ -12,7 +12,11 @@ class splunk::forwarder (
 
   $virtual_service = $splunk::params::forwarder_service
   $staged_package  = staging_parse($package_source)
-  $staging_subdir  = 'splunk'
+  $staging_subdir  = $splunk::params::staging_subdir
+
+  $path_delimiter  = $splunk::params::path_delimiter
+  $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
+  $pkg_source      = join($pkg_path_parts, $path_delimiter)
 
   staging::file { $staged_package:
     source => $package_source,
@@ -23,9 +27,10 @@ class splunk::forwarder (
   package { $package_name:
     ensure          => installed,
     provider        => $pkg_provider,
-    source          => "${staging::path}/${staging_subdir}/${staged_package}",
+    source          => $pkg_source,
     before          => Service[$virtual_service],
     install_options => $splunk::params::forwarder_install_options,
+    tag             => 'splunk_forwarder',
   }
 
   # Declare inputs and outputs specific to the forwarder profile
@@ -69,9 +74,9 @@ class splunk::forwarder (
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.
   case $::kernel {
-    default:   { } # no special configuration needed
-    'Linux':   { include splunk::platform::linux   }
-    'Windows': { include splunk::platform::windows }
+    default: { } # no special configuration needed
+    'Linux': { include splunk::platform::posix   }
+    'SunOS': { include splunk::platform::solaris }
   }
 
   # Realize resources shared between server and forwarder profiles, and set up
