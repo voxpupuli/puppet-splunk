@@ -10,65 +10,96 @@ class splunk::params (
   # Based on the small number of inputs above, we can construct sane defaults
   # for pretty much everything else.
 
-  case "$::osfamily $::architecture" {
-    "RedHat i386": {
+  # Settings common to a kernel
+  case $::kernel {
+    default: { fail("splunk module does not support kernel ${kernel}") }
+    'Linux': {
       $forwarder_src_subdir = 'universalforwarder/linux'
-      $forwarder_src_pkg    = "splunkforwarder-${version}-${build}.i386.rpm"
-      $forwarder_pkg_name   = "splunkforwarder-${version}-${build}"
       $forwarder_service    = [ 'splunk' ]
       $forwarder_confdir    = '/opt/splunkforwarder/etc/system/local'
-
       $server_src_subdir    = 'splunk/linux'
-      $server_src_pkg       = "splunk-${version}-${build}.i386.rpm"
-      $server_pkg_name      = "splunk-${version}-${build}"
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = '/opt/splunk/etc/system/local'
-
-      $pkg_provider         = 'rpm'
     }
-    "RedHat x86_64": {
-      $forwarder_src_subdir = 'universalforwarder/linux'
-      $forwarder_src_pkg    = "splunkforwarder-${version}-${build}-linux-2.6-x86_64.rpm"
-      $forwarder_pkg_name   = "splunkforwarder-${version}-${build}"
-      $forwarder_service    = [ 'splunk' ]
-      $forwarder_confdir    = '/opt/splunkforwarder/etc/system/local'
-
-      $server_src_subdir    = 'splunk/linux'
-      $server_src_pkg       = "splunk-${version}-${build}-linux-2.6-x86_64.rpm"
-      $server_pkg_name      = "splunk-${version}-${build}"
-      $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
-      $server_confdir       = '/opt/splunk/etc/system/local'
-
-      $pkg_provider         = 'rpm'
-    }
-    "Debian i386": {
-      $package_suffix           = "${splunk_ver}-linux-2.6-intel.deb"
-      $pkg_provider             = 'dpkg'
-      $splunk_pkg_name          = "splunk"
-      $splunkforwarder_pkg_name = "splunkforwarders"
-    }
-    "Debian x86_64": {
-      $package_suffix           = "${splunk_ver}-linux-2.6-amd64.deb"
-      $pkg_provider             = 'dpkg'
-      $splunk_pkg_name          = "splunk"
-      $splunkforwarder_pkg_name = "splunkforwarders"
-    }
-    /^(W|w)indows (x86|i386)$/: {
-      $package_suffix = "${splunk_ver}-x86-release.msi"
-    }
-    /^(W|w)indows (x64|x86_64)$/: {
-      $package_suffix = "${splunk_ver}-x64-release.msi"
-    }
-    "Solaris i86pc": {
-      $package_suffix = "${splunk_ver}-solaris-9-intel.pkg"
-    }
-    default: {
-      fail("osfamily/architecture $::osfamily/$::architecture not supported")
+    'Solaris': { }
+    'Windows': {
+      $forwarder_src_subdir = 'universalforwarder/windows'
+      $forwarder_service    = [ 'splunk' ] # UNKNOWN
+      $forwarder_confdir    = 'C:/Program Files/SplunkUniversalForwarder/etc/system/local'
+      $server_src_subdir    = 'splunk/windows'
+      $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ] # UNKNOWN
+      $server_confdir       = 'C:/Program Files/Splunk/etc/system/local' # UNKNOWN
+      $forwarder_install_options = [
+        'AGREETOLICENSE=Yes',
+        'LAUNCHSPLUNK=0',
+        'SERVICESTARTTYPE=auto',
+        'WINEVENTLOG_APP_ENABLE=1',
+        'WINEVENTLOG_SEC_ENABLE=1',
+        'WINEVENTLOG_SYS_ENABLE=1',
+        'WINEVENTLOG_FWD_ENABLE=1',
+        'WINEVENTLOG_SET_ENABLE=1',
+        'ENABLEADMON=1',
+      ]
+      $server_install_options = [
+        'LAUNCHSPLUNK=1',
+        'WINEVENTLOG_APP_ENABLE=1',
+        'WINEVENTLOG_SEC_ENABLE=1',
+        'WINEVENTLOG_SYS_ENABLE=1',
+        'WINEVENTLOG_FWD_ENABLE=1',
+        'WINEVENTLOG_SET_ENABLE=1',
+      ]
     }
   }
 
-  $splunk_pkg = "splunk-$package_suffix"
-  $splunkforwarder_pkg = "splunkforwarder-$package_suffix"
+  # Settings common to an OS family
+  case $::osfamily {
+    default:  { $pkg_provider = undef  } # Don't define a $pkg_provider
+    'RedHat': { $pkg_provider = 'rpm'  }
+    'Debian': { $pkg_provider = 'dpkg' }
+  }
+
+  # Settings specific to an architecture as well as an OS family
+  case "$::osfamily $::architecture" {
+    default: { fail("unsupported osfamily/arch $::osfamily/$::architecture") }
+    "RedHat i386": {
+      $package_suffix       = "${version}-${build}.i386.rpm"
+      $forwarder_pkg_name   = "splunkforwarder-${version}-${build}"
+      $server_pkg_name      = "splunk-${version}-${build}"
+    }
+    "RedHat x86_64": {
+      $package_suffix       = "${version}-${build}-linux-2.6-x86_64.rpm"
+      $forwarder_pkg_name   = "splunkforwarder-${version}-${build}"
+      $server_pkg_name      = "splunk-${version}-${build}"
+    }
+    "Debian i386": {
+      $package_suffix       = "${version}-${build}-linux-2.6-intel.deb"
+      $forwarder_pkg_name   = 'splunkforwarders'
+      $server_pkg_name      = 'splunk'
+    }
+    "Debian x86_64": {
+      $package_suffix       = "${version}-${build}-linux-2.6-amd64.deb"
+      $forwarder_pkg_name   = 'splunkforwarders'
+      $server_pkg_name      = 'splunk'
+    }
+    /^(W|w)indows (x86|i386)$/: {
+      $package_suffix       = "${version}-${build}-x86-release.msi"
+      $forwarder_pkg_name   = 'UNKNOWN'
+      $server_pkg_name      = 'UNKNOWN'
+    }
+    /^(W|w)indows (x64|x86_64)$/: {
+      $package_suffix       = "${version}-${build}-x64-release.msi"
+      $forwarder_pkg_name   = 'UNKNOWN'
+      $server_pkg_name      = 'UNKNOWN'
+    }
+    "Solaris i86pc": {
+      $package_suffix       = "${version}-${build}-solaris-9-intel.pkg"
+      $forwarder_pkg_name   = 'UNKNOWN'
+      $server_pkg_name      = 'UNKNOWN'
+    }
+  }
+
+  $forwarder_src_pkg = "splunkforwarder-$package_suffix"
+  $server_src_pkg    = "splunk-$package_suffix"
 
   $server_pkg_src    = "${src_root}/${server_src_subdir}/${server_src_pkg}"
   $forwarder_pkg_src = "${src_root}/${forwarder_src_subdir}/${forwarder_src_pkg}"

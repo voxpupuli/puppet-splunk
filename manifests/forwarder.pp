@@ -8,7 +8,6 @@ class splunk::forwarder (
   $purge_inputs      = false,
   $purge_outputs     = false,
 ) inherits splunk::params {
-  include splunk
   include staging
 
   $virtual_service = $splunk::params::forwarder_service
@@ -22,10 +21,11 @@ class splunk::forwarder (
   }
 
   package { $package_name:
-    ensure   => installed,
-    provider => $pkg_provider,
-    source   => "${staging::path}/${staging_subdir}/${staged_package}",
-    before   => Service[$virtual_service],
+    ensure          => installed,
+    provider        => $pkg_provider,
+    source          => "${staging::path}/${staging_subdir}/${staged_package}",
+    before          => Service[$virtual_service],
+    install_options => $splunk::params::forwarder_install_options,
   }
 
   # Declare inputs and outputs specific to the forwarder profile
@@ -69,8 +69,9 @@ class splunk::forwarder (
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.
   case $::kernel {
-    default: { } # no special configuration needed
-    'Linux': { include splunk::platform::linux }
+    default:   { } # no special configuration needed
+    'Linux':   { include splunk::platform::linux   }
+    'Windows': { include splunk::platform::windows }
   }
 
   # Realize resources shared between server and forwarder profiles, and set up

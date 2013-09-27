@@ -1,0 +1,3 @@
+class splunk::platform::windows {
+
+}
