@@ -15,13 +15,13 @@ class splunk::params (
       $forwarder_src_subdir = 'universalforwarder/linux'
       $forwarder_src_pkg    = "splunkforwarder-${version}-${build}.i386.rpm"
       $forwarder_pkg_name   = "splunkforwarder-${version}-${build}"
-      $forwarder_service    = 'splunk'
+      $forwarder_service    = [ 'splunk' ]
       $forwarder_confdir    = '/opt/splunkforwarder/etc/system/local'
 
       $server_src_subdir    = 'splunk/linux'
       $server_src_pkg       = "splunk-${version}-${build}.i386.rpm"
       $server_pkg_name      = "splunk-${version}-${build}"
-      $server_service       = 'splunk'
+      $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = '/opt/splunk/etc/system/local'
 
       $pkg_provider         = 'rpm'
@@ -30,13 +30,13 @@ class splunk::params (
       $forwarder_src_subdir = 'universalforwarder/linux'
       $forwarder_src_pkg    = "splunkforwarder-${version}-${build}-linux-2.6-x86_64.rpm"
       $forwarder_pkg_name   = "splunkforwarder-${version}-${build}"
-      $forwarder_service    = 'splunk'
+      $forwarder_service    = [ 'splunk' ]
       $forwarder_confdir    = '/opt/splunkforwarder/etc/system/local'
 
       $server_src_subdir    = 'splunk/linux'
       $server_src_pkg       = "splunk-${version}-${build}-linux-2.6-x86_64.rpm"
       $server_pkg_name      = "splunk-${version}-${build}"
-      $server_service       = 'splunk'
+      $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = '/opt/splunk/etc/system/local'
 
       $pkg_provider         = 'rpm'

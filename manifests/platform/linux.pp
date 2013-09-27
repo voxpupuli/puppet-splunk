@@ -54,4 +54,22 @@ class splunk::platform::linux inherits splunk::virtual {
     tag     => 'splunk_forwarder',
   }
 
+  # Modify virtual service definitions specific to the Linux platform
+  Service['splunkd'] {
+    provider => 'base',
+    restart  => '/opt/splunk/bin/splunk restart splunkd',
+    start    => '/opt/splunk/bin/splunk start splunkd',
+    stop     => '/opt/splunk/bin/splunk stop splunkd',
+    pattern  => "splunkd -p ${splunk::splunkd_port} (restart|start)",
+    require  => Service['splunk'],
+  }
+  Service['splunkweb'] {
+    provider => 'base',
+    restart  => '/opt/splunk/bin/splunk restart splunkweb',
+    start    => '/opt/splunk/bin/splunk start splunkweb',
+    stop     => '/opt/splunk/bin/splunk stop splunkweb',
+    pattern  => 'python -O /opt/splunk/lib/python.*/splunk/.*/root.py (restart|start)',
+    require  => Service['splunk'],
+  }
+
 }
