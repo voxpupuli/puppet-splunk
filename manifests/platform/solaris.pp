@@ -1,3 +1,17 @@
+# Class: splunk::platform::solaris
+#
+# This class extends splunk::platform::posix with Solaris-specific resources
+# required for deploying Splunk to a solaris host.
+#
+# Parameters: none
+#
+# Actions:
+#
+#   Declares, tags, and modifies virtual resources realized by other classes
+#   in the splunk module.
+#
+# Requires: nothing
+#
 class splunk::platform::solaris inherits splunk::virtual {
   include staging
   include splunk::params

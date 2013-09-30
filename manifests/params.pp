@@ -1,10 +1,77 @@
+# Class: splunk::params
+#
+# This class takes a small number of arguments (can be set through Hiera) and
+# generates sane default values installation media names and locations. Default
+# ports can also be specified here. This is a parameters class, and contributes
+# no resources to the graph. Rather, it only sets values for parameters to be
+# consumed by child classes.
+#
+# Parameters:
+#
+# [*version*]
+#   The version of Splunk to install. This will be in the form x.y.z; e.g.
+#   "4.3.2".
+#
+# [*build*]
+#   Splunk packages are typically named based on the platform, architecture,
+#   version, and build. Puppet can determine the platform information
+#   automatically but a build number must be supplied in order to correctly
+#   construct the path to the packages. A build number will be six digits;
+#   e.g. "123586".
+#
+# [*splunkd_port*]
+#   The splunkd port. Used as a default for both splunk and splunk::forwarder.
+#
+# [*logging_port*]
+#   The port on which to send logs, and listen for logs. Used as a default for
+#   splunk and splunk::forwarder.
+#
+# [*src_root*]
+#   The root URL at which to find the splunk packages. The sane-default logic
+#   assumes that the packages are located under this URL in the same way that
+#   they are placed on download.splunk.com. The URL can be any protocol that
+#   the nanliu/staging module supports. This includes both puppet:// and
+#   http://.  The expected directory structure is:
+#
+#     `-- $root_url
+#         |-- splunk
+#         |   `-- $platform
+#         |       `-- splunk-${version}-${build}-${additl}
+#         `-- universalforwarder
+#             `-- $platform
+#                 `-- splunkforwarder-${version}-${build}-${additl}
+#
+#   A semi-populated example src_root then contain:
+#
+#     `-- $root_url
+#         |-- splunk
+#         |   `-- linux
+#         |       |-- splunk-4.3.2-123586-linux-2.6-amd64.deb
+#         |       |-- splunk-4.3.2-123586-linux-2.6-intel.deb
+#         |       `-- splunk-4.3.2-123586-linux-2.6-x86_64.rpm
+#         `-- universalforwarder
+#             |-- linux
+#             |   |-- splunkforwarder-4.3.2-123586-linux-2.6-amd64.deb
+#             |   |-- splunkforwarder-4.3.2-123586-linux-2.6-intel.deb
+#             |   `-- splunkforwarder-4.3.2-123586-linux-2.6-x86_64.rpm
+#             |-- solaris
+#             |   `-- splunkforwarder-4.3.2-123586-solaris-9-intel.pkg
+#             `-- windows
+#                 |-- splunkforwarder-4.3.2-123586-x64-release.msi
+#                 `-- splunkforwarder-4.3.2-123586-x86-release.msi
+#
+# Actions:
+#
+#   Declares parameters to be consumed by other classes in the splunk module.
+#
+# Requires: nothing
+#
 class splunk::params (
   $version      = '4.3.2',
   $build        = '123586',
-  $admin_port   = '8000',
+  $src_root     = "puppet:///modules/splunk/releases/4.3.2",
   $splunkd_port = '8089',
   $logging_port = '9997',
-  $src_root     = "puppet:///modules/splunk/releases/4.3.2",
 ) {
 
   # Based on the small number of inputs above, we can construct sane defaults

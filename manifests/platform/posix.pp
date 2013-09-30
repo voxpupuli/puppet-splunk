@@ -1,3 +1,19 @@
+# Class: splunk::platform::posix
+#
+# This class declares virtual resources and collects existing virtual
+# resources for adjustment appropriate to deployment on a Posix host.
+# It extends functionality of either splunk, splunk::forwarder, or
+# both.
+#
+# Parameters: none
+#
+# Actions:
+#
+#   Declares, tags, and modifies virtual resources realized by other classes
+#   in the splunk module.
+#
+# Requires: nothing
+#
 class splunk::platform::posix inherits splunk::virtual {
 
   # Many of the resources declared here are virtual. They will be realized by

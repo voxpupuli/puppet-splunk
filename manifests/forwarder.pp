@@ -1,10 +1,52 @@
+# Class: splunk
+#
+# This class deploys the Splunk Universal Forwarder on Linux, Windows, Solaris
+# platforms.
+#
+# Parameters:
+#
+# [*server*]
+#   The address of a server to send logs to.
+#
+# [*package_source*]
+#   The source URL for the splunk installation media (typically an RPM, MSI,
+#   etc). If a $src_root parameter is set in splunk::params, this will be
+#   automatically supplied. Otherwise it is required. The URL can be of any
+#   protocol supported by the nanliu/staging module.
+#
+# [*package_name*]
+#   The name of the package(s) as they will exist or be detected on the host.
+#
+# [*logging_port*]
+#   The port to send splunktcp logs to.
+#
+# [*splunkd_port*]
+#   The splunkd port. Used as a default for both splunk and splunk::forwarder.
+#
+# [*splunkd_listen*]
+#   The address on which splunkd should listen. Defaults to localhost only.
+#
+# [*purge_inputs*]
+#   If set to true, will remove any inputs.conf configuration not supplied by
+#   Puppet from the target system. Defaults to false.
+#
+# [*purge_outputs*]
+#   If set to true, will remove any outputs.conf configuration not supplied by
+#   Puppet from the target system. Defaults to false.
+#
+# Actions:
+#
+#   Declares parameters to be consumed by other classes in the splunk module.
+#
+# Requires: nothing
+#
 class splunk::forwarder (
   $server            = 'splunk',
   $package_source    = $splunk::params::forwarder_pkg_src,
   $package_name      = $splunk::params::forwarder_pkg_name,
   $logging_port      = $splunk::params::logging_port,
-  $splunkd_listen    = '127.0.0.1',
   $splunkd_port      = $splunk::params::splunkd_port,
+  $splunkd_listen    = '127.0.0.1',
   $purge_inputs      = false,
   $purge_outputs     = false,
 ) inherits splunk::params {
