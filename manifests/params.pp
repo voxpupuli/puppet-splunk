@@ -144,13 +144,13 @@ class splunk::params (
     default: { fail("unsupported osfamily/arch $::osfamily/$::architecture") }
     "RedHat i386": {
       $package_suffix       = "${version}-${build}.i386.rpm"
-      $forwarder_pkg_name   = "splunkforwarder-${version}-${build}"
-      $server_pkg_name      = "splunk-${version}-${build}"
+      $forwarder_pkg_name   = "splunkforwarder"
+      $server_pkg_name      = "splunk"
     }
     "RedHat x86_64": {
       $package_suffix       = "${version}-${build}-linux-2.6-x86_64.rpm"
-      $forwarder_pkg_name   = "splunkforwarder-${version}-${build}"
-      $server_pkg_name      = "splunk-${version}-${build}"
+      $forwarder_pkg_name   = "splunkforwarder"
+      $server_pkg_name      = "splunk"
     }
     "Debian i386": {
       $package_suffix       = "${version}-${build}-linux-2.6-intel.deb"
