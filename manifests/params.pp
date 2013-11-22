@@ -55,7 +55,7 @@
 #             |   |-- splunkforwarder-4.3.2-123586-linux-2.6-intel.deb
 #             |   `-- splunkforwarder-4.3.2-123586-linux-2.6-x86_64.rpm
 #             |-- solaris
-#             |   `-- splunkforwarder-4.3.2-123586-solaris-9-intel.pkg
+#             |   `-- splunkforwarder-4.3.2-123586-solaris-10-intel.pkg
 #             `-- windows
 #                 |-- splunkforwarder-4.3.2-123586-x64-release.msi
 #                 `-- splunkforwarder-4.3.2-123586-x86-release.msi
@@ -173,7 +173,7 @@ class splunk::params (
       $server_pkg_name      = 'Splunk'
     }
     "Solaris i86pc": {
-      $package_suffix       = "${version}-${build}-solaris-9-intel.pkg"
+      $package_suffix       = "${version}-${build}-solaris-10-intel.pkg"
       $forwarder_pkg_name   = 'splunkforwarder'
       $server_pkg_name      = 'splunk'
     }
