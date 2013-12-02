@@ -164,12 +164,12 @@ class splunk::params (
     }
     /^(W|w)indows (x86|i386)$/: {
       $package_suffix       = "${version}-${build}-x86-release.msi"
-      $forwarder_pkg_name   = 'Universal Forwarder'
+      $forwarder_pkg_name   = 'UniversalForwarder'
       $server_pkg_name      = 'Splunk'
     }
     /^(W|w)indows (x64|x86_64)$/: {
       $package_suffix       = "${version}-${build}-x64-release.msi"
-      $forwarder_pkg_name   = 'Universal Forwarder'
+      $forwarder_pkg_name   = 'UniversalForwarder'
       $server_pkg_name      = 'Splunk'
     }
     "Solaris i86pc": {

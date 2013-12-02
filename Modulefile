@@ -1,5 +1,5 @@
 name    'seteam-splunk'
-version '3.0.0'
+version '3.0.1'
 source  'https://github.com/puppetlabs-seteam/puppet-module-splunk.git'
 author  'puppetlabs-seteam'
 license 'Apache License, Version 2.0'
