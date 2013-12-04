@@ -9,3 +9,4 @@ project_page 'https://github.com/puppetlabs-seteam/puppet-module-splunk'
 
 dependency 'nanliu/staging', '>= 0.3.1'
 dependency 'puppetlabs/inifile', '>= 1.0.0'
+dependency 'puppetlabs/stdlib', '>= 2.4.0'
