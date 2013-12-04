@@ -14,7 +14,9 @@
 #
 # Requires: nothing
 #
-class splunk::platform::posix inherits splunk::virtual {
+class splunk::platform::posix (
+  $splunkd_port = $splunk::splunkd_port,
+) inherits splunk::virtual {
 
   # Many of the resources declared here are virtual. They will be realized by
   # the appropriate including class if required.
@@ -67,7 +69,7 @@ class splunk::platform::posix inherits splunk::virtual {
     restart  => '/opt/splunk/bin/splunk restart splunkd',
     start    => '/opt/splunk/bin/splunk start splunkd',
     stop     => '/opt/splunk/bin/splunk stop splunkd',
-    pattern  => "splunkd -p ${splunk::splunkd_port} (restart|start)",
+    pattern  => "splunkd -p ${splunkd_port} (restart|start)",
     require  => Service['splunk'],
   }
   Service['splunkweb'] {
