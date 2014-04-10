@@ -35,6 +35,7 @@ class splunk::peer
     "update_replication_port":
       command => "/bin/sed -i \"s#\\[replication_port://\\([0-9]\\+\\)\\]#[replication_port://$splunk::replication_port]#g\" ${splunk::params::server_confdir}/server.conf",
       unless => "/bin/grep \"\\[replication_port://$splunk::replication_port\\]\" ${splunk::params::server_confdir}/server.conf",
+      require => Package[$splunk::package_name],
       before => Exec['add_replication_port'];
 }
 
