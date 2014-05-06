@@ -1,6 +1,6 @@
 name    'puppetlabs-splunk'
-version '3.0.1'
-source  'https://github.com/puppetlabs/puppetlabs-splunk.git'
+version '3.0.1-1'
+source  'https://github.com/hyclak/puppetlabs-splunk.git'
 author  'Puppet Labs'
 license 'Apache License, Version 2.0'
 summary 'Manage and deploy Splunk servers and forwarders'

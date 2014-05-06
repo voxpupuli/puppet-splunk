@@ -40,14 +40,22 @@
 # Requires: nothing
 #
 class splunk (
-  $package_source = $splunk::params::server_pkg_src,
-  $package_name   = $splunk::params::server_pkg_name,
-  $logging_port   = $splunk::params::logging_port,
-  $splunkd_port   = $splunk::params::splunkd_port,
-  $splunkd_listen = '127.0.0.1',
-  $web_port       = '8000',
-  $purge_inputs   = false,
-  $purge_outputs  = false,
+  $package_source     = $splunk::params::server_pkg_src,
+  $package_name       = $splunk::params::server_pkg_name,
+  $logging_port       = $splunk::params::logging_port,
+  $splunkd_port       = $splunk::params::splunkd_port,
+  $version            = $splunk::params::version,
+  $build              = $splunk::params::build,
+  $src_root           = $splunk::params::src_root,
+  $master_uri         = $splunk::params::master_uri,
+  $replication_port   = $splunk::params::replication_port,
+  $replication_factor = $splunk::params::replication_factor,
+  $search_factor      = $splunk::params::search_factor,
+  $pass4SymmKey       = $splunk::params::pass4SymmKey,
+  $splunkd_listen     = '127.0.0.1',
+  $web_port           = '8000',
+  $purge_inputs       = false,
+  $purge_outputs      = false,
 ) inherits splunk::params {
   include staging
 
