@@ -15,7 +15,7 @@ be aquired seperately, and the module configured to use it.
 To begin using this module, use the Puppet Module Tool (PMT) from the command
 line to install this module:
 
-`puppet module install seteam-splunk`
+`puppet module install puppetlabs-splunk`
 
 This will place the module into your primary module path if you do not utilize
 the --target-dir directive.
