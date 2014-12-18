@@ -59,6 +59,7 @@ class splunk::forwarder (
   $path_delimiter  = $splunk::params::path_delimiter
   $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
   $pkg_source      = join($pkg_path_parts, $path_delimiter)
+  $pkg_provider    = $splunk::params::pkg_provider
 
   staging::file { $staged_package:
     source => $package_source,
@@ -94,7 +95,7 @@ class splunk::forwarder (
     value   => "${server}:${logging_port}",
     tag     => 'splunk_forwarder',
   }
-  ini_setting { "forwarder_splunkd_port":
+  ini_setting { 'forwarder_splunkd_port':
     path    => "${splunk::params::forwarder_confdir}/web.conf",
     section => 'settings',
     setting => 'mgmtHostPort',

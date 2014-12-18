@@ -23,11 +23,11 @@ class splunk::platform::solaris inherits splunk::virtual {
   $adminfile    = '/var/sadm/install/admin/splunk-noask'
 
   file { 'splunk_adminfile':
-    ensure  => file,
-    path    => $adminfile,
-    owner   => 'root',
-    group   => 'root',
-    source  => 'puppet:///modules/splunk/splunk-noask',
+    ensure => file,
+    path   => $adminfile,
+    owner  => 'root',
+    group  => 'root',
+    source => 'puppet:///modules/splunk/splunk-noask',
   }
 
   file { 'splunk_pkg_response_file':

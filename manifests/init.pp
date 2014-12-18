@@ -85,7 +85,7 @@ class splunk (
     value   => 'dns',
     tag     => 'splunk_server',
   }
-  ini_setting { "splunk_server_splunkd_port":
+  ini_setting { 'splunk_server_splunkd_port':
     path    => "${splunk::params::server_confdir}/web.conf",
     section => 'settings',
     setting => 'mgmtHostPort',
@@ -93,7 +93,7 @@ class splunk (
     require => Package[$package_name],
     notify  => Service[$virtual_service],
   }
-  ini_setting { "splunk_server_web_port":
+  ini_setting { 'splunk_server_web_port':
     path    => "${splunk::params::server_confdir}/web.conf",
     section => 'settings',
     setting => 'httpport',

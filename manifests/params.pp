@@ -69,7 +69,7 @@
 class splunk::params (
   $version      = '5.0.5',
   $build        = '179365',
-  $src_root     = "puppet:///modules/splunk",
+  $src_root     = 'puppet:///modules/splunk',
   $splunkd_port = '8089',
   $logging_port = '9997',
 ) {
@@ -82,7 +82,7 @@ class splunk::params (
 
   # Settings common to a kernel
   case $::kernel {
-    default: { fail("splunk module does not support kernel ${kernel}") }
+    default: { fail("splunk module does not support kernel ${::kernel}") }
     'Linux': {
       $path_delimiter       = '/'
       $forwarder_src_subdir = 'universalforwarder/linux'
@@ -140,24 +140,24 @@ class splunk::params (
   }
 
   # Settings specific to an architecture as well as an OS family
-  case "$::osfamily $::architecture" {
-    default: { fail("unsupported osfamily/arch $::osfamily/$::architecture") }
-    "RedHat i386": {
+  case "${::osfamily} ${::architecture}" {
+    default: { fail("unsupported osfamily/arch ${::osfamily}/${::architecture}") }
+    'RedHat i386': {
       $package_suffix       = "${version}-${build}.i386.rpm"
-      $forwarder_pkg_name   = "splunkforwarder"
-      $server_pkg_name      = "splunk"
+      $forwarder_pkg_name   = 'splunkforwarder'
+      $server_pkg_name      = 'splunk'
     }
-    "RedHat x86_64": {
+    'RedHat x86_64': {
       $package_suffix       = "${version}-${build}-linux-2.6-x86_64.rpm"
-      $forwarder_pkg_name   = "splunkforwarder"
-      $server_pkg_name      = "splunk"
+      $forwarder_pkg_name   = 'splunkforwarder'
+      $server_pkg_name      = 'splunk'
     }
-    "Debian i386": {
+    'Debian i386': {
       $package_suffix       = "${version}-${build}-linux-2.6-intel.deb"
       $forwarder_pkg_name   = 'splunkforwarder'
       $server_pkg_name      = 'splunk'
     }
-    "Debian amd64": {
+    'Debian amd64': {
       $package_suffix       = "${version}-${build}-linux-2.6-amd64.deb"
       $forwarder_pkg_name   = 'splunkforwarder'
       $server_pkg_name      = 'splunk'
@@ -172,20 +172,20 @@ class splunk::params (
       $forwarder_pkg_name   = 'UniversalForwarder'
       $server_pkg_name      = 'Splunk'
     }
-    "Solaris i86pc": {
+    'Solaris i86pc': {
       $package_suffix       = "${version}-${build}-solaris-10-intel.pkg"
       $forwarder_pkg_name   = 'splunkforwarder'
       $server_pkg_name      = 'splunk'
     }
-    "Solaris sun4v": {
+    'Solaris sun4v': {
       $package_suffix       = "${version}-${build}-solaris-8-sparc.pkg"
       $forwarder_pkg_name   = 'splunkforwarder'
       $server_pkg_name      = 'splunk'
     }
   }
 
-  $forwarder_src_pkg = "splunkforwarder-$package_suffix"
-  $server_src_pkg    = "splunk-$package_suffix"
+  $forwarder_src_pkg = "splunkforwarder-${package_suffix}"
+  $server_src_pkg    = "splunk-${package_suffix}"
 
   $server_pkg_src    = "${src_root}/${server_src_subdir}/${server_src_pkg}"
   $forwarder_pkg_src = "${src_root}/${forwarder_src_subdir}/${forwarder_src_pkg}"
