@@ -177,6 +177,11 @@ class splunk::params (
       $forwarder_pkg_name   = 'splunkforwarder'
       $server_pkg_name      = 'splunk'
     }
+    "Solaris sun4v": {
+      $package_suffix       = "${version}-${build}-solaris-8-sparc.pkg"
+      $forwarder_pkg_name   = 'splunkforwarder'
+      $server_pkg_name      = 'splunk'
+    }
   }
 
   $forwarder_src_pkg = "splunkforwarder-$package_suffix"
