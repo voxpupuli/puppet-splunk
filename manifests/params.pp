@@ -67,12 +67,14 @@
 # Requires: nothing
 #
 class splunk::params (
-  $version      = '5.0.5',
-  $build        = '179365',
-  $src_root     = 'puppet:///modules/splunk',
-  $splunkd_port = '8089',
-  $logging_port = '9997',
-  $server       = 'splunk'
+  $version              = '5.0.5',
+  $build                = '179365',
+  $src_root             = 'puppet:///modules/splunk',
+  $splunkd_port         = '8089',
+  $logging_port         = '9997',
+  $server               = 'splunk'
+  $forwarder_installdir = undef,
+  $server_installdir    = undef,
 ) {
 
   # Based on the small number of inputs above, we can construct sane defaults
@@ -85,29 +87,37 @@ class splunk::params (
   $password_content = ':admin:$6$pIE/xAyP9mvBaewv$4GYFxC0SqonT6/x8qGcZXVCRLUVKODj9drDjdu/JJQ/Iw0Gg.aTkFzCjNAbaK4zcCHbphFz1g1HK18Z2bI92M0::Administrator:admin:changeme@example.com::'
 
 
+  if $::osfamily == 'Windows' {
+    $forwarder_dir = pick($forwarder_installdir, 'C:/Program Files/SplunkUniversalForwarder')
+    $server_dir    = pick($server_installdir, 'C:/Program Files/Splunk')
+  } else {
+    $forwarder_dir = pick($forwarder_installdir, '/opt/splunkforwarder')
+    $server_dir    = pick($server_installdir, '/opt/splunk')
+  }
+
   # Settings common to a kernel
   case $::kernel {
     'Linux': {
       $path_delimiter       = '/'
       $forwarder_src_subdir = 'universalforwarder/linux'
       $forwarder_service    = [ 'splunk' ]
-      $password_config_file = '/opt/splunkforwarder/etc/passwd'
-      $forwarder_confdir    = '/opt/splunkforwarder/etc/system/local'
-      $secret_file          =  '/opt/splunkforwarder/etc/splunk.secret'
+      $password_config_file = "${forwarder_dir}/etc/passwd"
+      $secret_file          = "${forwarder_dir}/etc/splunk.secret"
+      $forwarder_confdir    = "${forwarder_dir}/etc/system/local"
       $server_src_subdir    = 'splunk/linux'
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
-      $server_confdir       = '/opt/splunk/etc/system/local'
+      $server_confdir       = "${server_dir}/etc/system/local"
     }
     'SunOS': {
       $path_delimiter       = '/'
       $forwarder_src_subdir = 'universalforwarder/solaris'
       $forwarder_service    = [ 'splunk' ]
-      $password_config_file = '/opt/splunkforwarder/etc/passwd'
-      $forwarder_confdir    = '/opt/splunkforwarder/etc/system/local'
-      $secret_file          =  '/opt/splunkforwarder/etc/splunk.secret'
+      $password_config_file = "${forwarder_dir}/etc/passwd"
+      $secret_file          = "${forwarder_dir}/etc/splunk.secret"
+      $forwarder_confdir    = "${forwarder_dir}/etc/system/local"
       $server_src_subdir    = 'splunk/solaris'
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
-      $server_confdir       = '/opt/splunk/etc/system/local'
+      $server_confdir       = "${server_dir}/etc/system/local"
     }
     'Windows': {
       $path_delimiter       = '\\'
@@ -115,10 +125,10 @@ class splunk::params (
       $password_config_file = 'C:/Program Files/SplunkUniversalForwarder/etc/passwd'
       $secret_file          =  'C:/Program Files/SplunkUniversalForwarder/etc/splunk.secret'
       $forwarder_service    = [ 'SplunkForwarder' ] # UNKNOWN
-      $forwarder_confdir    = 'C:/Program Files/SplunkUniversalForwarder/etc/system/local'
+      $forwarder_confdir    = "${forwarder_dir}/etc/system/local"
       $server_src_subdir    = 'splunk/windows'
       $server_service       = [ 'Splunkd', 'Splunkweb' ] # UNKNOWN
-      $server_confdir       = 'C:/Program Files/Splunk/etc/system/local' # UNKNOWN
+      $server_confdir       = "${server_dir}/etc/system/local"
       $forwarder_install_options = [
         'AGREETOLICENSE=Yes',
         'LAUNCHSPLUNK=0',
@@ -129,6 +139,7 @@ class splunk::params (
         'WINEVENTLOG_FWD_ENABLE=1',
         'WINEVENTLOG_SET_ENABLE=1',
         'ENABLEADMON=1',
+        "INSTALLDIR=\"${forwarder_dir}\"",
       ]
       $server_install_options = [
         'LAUNCHSPLUNK=1',
@@ -227,4 +238,12 @@ class splunk::params (
   $create_password   = true
 
   $forwarder_pkg_ensure = 'installed'
+
+  # A meta resource so providers know where splunk is installed:
+  splunk_config { 'splunk':
+    forwarder_installdir => $forwarder_dir,
+    forwarder_confdir    => $forwarder_confdir,
+    server_installdir    => $server_dir,
+    server_confdir       => $server_confdir,
+  }
 }
