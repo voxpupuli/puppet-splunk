@@ -23,6 +23,9 @@
 # [*splunkd_port*]
 #   The splunkd port. Used as a default for both splunk and splunk::forwarder.
 #
+# [*install_options*]
+#   The splunkd forwarder installation options. Only applicable for Windows.
+#
 # [*splunkd_listen*]
 #   The address on which splunkd should listen. Defaults to localhost only.
 #
@@ -47,6 +50,7 @@ class splunk::forwarder (
   $package_ensure    = $splunk::params::forwarder_pkg_ensure,
   $logging_port      = $splunk::params::logging_port,
   $splunkd_port      = $splunk::params::splunkd_port,
+  $install_options   = $splunk::params::forwarder_install_options,
   $splunkd_listen    = '127.0.0.1',
   $purge_inputs      = false,
   $purge_outputs     = false,
@@ -80,7 +84,7 @@ class splunk::forwarder (
     provider        => $pkg_provider,
     source          => $pkg_source,
     before          => Service[$virtual_service],
-    install_options => $splunk::params::forwarder_install_options,
+    install_options => $install_options,
     tag             => 'splunk_forwarder',
   }
   # Declare inputs and outputs specific to the forwarder profile
