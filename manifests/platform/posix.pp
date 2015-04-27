@@ -72,13 +72,18 @@ class splunk::platform::posix (
     pattern  => "splunkd -p ${splunkd_port} (restart|start)",
     require  => Service['splunk'],
   }
-  Service['splunkweb'] {
-    provider => 'base',
-    restart  => '/opt/splunk/bin/splunk restart splunkweb',
-    start    => '/opt/splunk/bin/splunk start splunkweb',
-    stop     => '/opt/splunk/bin/splunk stop splunkweb',
-    pattern  => 'python -O /opt/splunk/lib/python.*/splunk/.*/root.py (restart|start)',
-    require  => Service['splunk'],
+
+  # As of Splunk 6.2 the splunkweb service has been incorporated into the splunkd service
+  # http://docs.splunk.com/Documentation/Splunk/6.2.0/Installation/Aboutupgradingto6.2READTHISFIRST
+  if $splunk::params::legacy_mode {
+    Service['splunkweb'] {
+      provider => 'base',
+      restart  => '/opt/splunk/bin/splunk restart splunkweb',
+      start    => '/opt/splunk/bin/splunk start splunkweb',
+      stop     => '/opt/splunk/bin/splunk stop splunkweb',
+      pattern  => 'python -O /opt/splunk/lib/python.*/splunk/.*/root.py (restart|start)',
+      require  => Service['splunk'],
+    }
   }
 
 }

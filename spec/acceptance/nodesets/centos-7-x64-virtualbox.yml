@@ -1,0 +1,8 @@
+HOSTS:
+  centos-7-x64:
+    platform: el-7-x86_64
+    box : centos-7.0-64-puppet
+    box_url : https://vagrantcloud.com/puppetlabs/boxes/centos-7.0-64-puppet/versions/1.0.1/providers/virtualbox.box
+    hypervisor : vagrant
+CONFIG:
+  type: foss

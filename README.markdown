@@ -64,5 +64,16 @@ pieces of information.
 
 In the example given above, the version is 4.3.2, the build is 123586, and the
 root URL is puppet:///modules/splunk. See the splunk::params class
-documentation for more information.
+documentation for more information. If using Splunk >= 6.2 please see take note
+of the splunk::params::legacy_mode parameter.
+
+### Contributing
+
+Contributions for this module are welcome. To contribute please fork this
+repository, and use a new branch for your changes. Then open a pull request
+against the master branch of [https://github.com/puppetlabs/puppetlabs-splunk](https://github.com/puppetlabs/puppetlabs-splunk).
+
+All pull requests must be accompanied with puppet-rspec and/or beaker-rspec
+tests for the new functionality.
+
 
