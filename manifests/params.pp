@@ -82,7 +82,6 @@ class splunk::params (
 
   # Settings common to a kernel
   case $::kernel {
-    default: { fail("splunk module does not support kernel ${::kernel}") }
     'Linux': {
       $path_delimiter       = '/'
       $forwarder_src_subdir = 'universalforwarder/linux'
@@ -129,19 +128,19 @@ class splunk::params (
         'WINEVENTLOG_SET_ENABLE=1',
       ]
     }
+    default: { fail("splunk module does not support kernel ${::kernel}") }
   }
 
   # Settings common to an OS family
   case $::osfamily {
-    default:   { $pkg_provider = undef  } # Don't define a $pkg_provider
     'RedHat':  { $pkg_provider = 'rpm'  }
     'Debian':  { $pkg_provider = 'dpkg' }
     'Solaris': { $pkg_provider = 'sun'  }
+    default:   { $pkg_provider = undef  } # Don't define a $pkg_provider
   }
 
   # Settings specific to an architecture as well as an OS family
   case "${::osfamily} ${::architecture}" {
-    default: { fail("unsupported osfamily/arch ${::osfamily}/${::architecture}") }
     'RedHat i386': {
       $package_suffix       = "${version}-${build}.i386.rpm"
       $forwarder_pkg_name   = 'splunkforwarder'
@@ -182,6 +181,7 @@ class splunk::params (
       $forwarder_pkg_name   = 'splunkforwarder'
       $server_pkg_name      = 'splunk'
     }
+    default: { fail("unsupported osfamily/arch ${::osfamily}/${::architecture}") }
   }
 
   $forwarder_src_pkg = "splunkforwarder-${package_suffix}"
