@@ -19,6 +19,11 @@
 #   construct the path to the packages. A build number will be six digits;
 #   e.g. "123586".
 #
+# [*legacy_mode*]
+#   As of Splunk 6.2 the splunkweb service has been incorporated into the 
+#   splunkd service. Running in legacy mode reverts to pre 6.2 behaviour.
+#   This flag also determines if a Service[splunkweb] resource is created.
+#
 # [*splunkd_port*]
 #   The splunkd port. Used as a default for both splunk and splunk::forwarder.
 #
@@ -67,8 +72,9 @@
 # Requires: nothing
 #
 class splunk::params (
-  $version      = '5.0.5',
-  $build        = '179365',
+  $version      = '6.2.2',
+  $build        = '255606',
+  $legacy_mode  = false,
   $src_root     = 'puppet:///modules/splunk',
   $splunkd_port = '8089',
   $logging_port = '9997',
@@ -88,7 +94,11 @@ class splunk::params (
       $forwarder_service    = [ 'splunk' ]
       $forwarder_confdir    = '/opt/splunkforwarder/etc/system/local'
       $server_src_subdir    = 'splunk/linux'
-      $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
+      if $legacy_mode {
+        $server_service     = [ 'splunk', 'splunkd', 'splunkweb' ]
+      } else {
+        $server_service     = [ 'splunk', 'splunkd' ]
+      }
       $server_confdir       = '/opt/splunk/etc/system/local'
     }
     'SunOS': {
@@ -97,7 +107,11 @@ class splunk::params (
       $forwarder_service    = [ 'splunk' ]
       $forwarder_confdir    = '/opt/splunkforwarder/etc/system/local'
       $server_src_subdir    = 'splunk/solaris'
-      $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
+      if $legacy_mode {
+        $server_service     = [ 'splunk', 'splunkd', 'splunkweb' ]
+      } else {
+        $server_service     = [ 'splunk', 'splunkd' ]
+      }
       $server_confdir       = '/opt/splunk/etc/system/local'
     }
     'Windows': {
@@ -106,7 +120,11 @@ class splunk::params (
       $forwarder_service    = [ 'SplunkForwarder' ] # UNKNOWN
       $forwarder_confdir    = 'C:/Program Files/SplunkUniversalForwarder/etc/system/local'
       $server_src_subdir    = 'splunk/windows'
-      $server_service       = [ 'Splunkd', 'Splunkweb' ] # UNKNOWN
+      if $legacy_mode {
+        $server_service     = [ 'Splunkd', 'Splunkweb' ]
+      } else {
+        $server_service     = [ 'Splunkd' ]
+      }
       $server_confdir       = 'C:/Program Files/Splunk/etc/system/local' # UNKNOWN
       $forwarder_install_options = [
         'AGREETOLICENSE=Yes',
