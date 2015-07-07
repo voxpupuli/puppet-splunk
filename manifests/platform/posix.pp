@@ -25,7 +25,7 @@ class splunk::platform::posix (
   @exec { 'license_splunkforwarder':
     path    => '/opt/splunkforwarder/bin',
     command => 'splunk start --accept-license --answer-yes',
-    creates => '/opt/splunkforwarder/etc/auth/splunk.secret',
+    creates => '/opt/splunkforwarder/etc/auth/server.pem',
     timeout => 0,
     tag     => 'splunk_forwarder',
   }
@@ -53,13 +53,6 @@ class splunk::platform::posix (
     tag     => 'splunk_server',
   }
 
-  # Default inputs/outputs to create on Linux systems
-  @splunkforwarder_input { 'monitor_varlog':
-    section => 'monitor://var/log/',
-    setting => 'host',
-    value   => $::clientcert,
-    tag     => 'splunk_forwarder',
-  }
 
   # Modify virtual service definitions specific to the Linux platform. These
   # are virtual resources declared in the splunk::virtual class, which we
