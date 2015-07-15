@@ -72,6 +72,7 @@ class splunk::params (
   $src_root     = 'puppet:///modules/splunk',
   $splunkd_port = '8089',
   $logging_port = '9997',
+  $server       = 'splunk'
 ) {
 
   # Based on the small number of inputs above, we can construct sane defaults
@@ -79,6 +80,10 @@ class splunk::params (
 
   # Settings common to everything
   $staging_subdir = 'splunk'
+  #password setting settings - default changeme
+  $secret           = 'hhy9DOGqli4.aZWCuGvz8stcqT2/OSJUZuyWHKc4wnJtQ6IZu2bfjeElgYmGHN9RWIT3zs5hRJcX1wGerpMNObWhFue78jZMALs3c3Mzc6CzM98/yGYdfcvWMo1HRdKn82LVeBJI5dNznlZWfzg6xdywWbeUVQZcOZtODi10hdxSJ4I3wmCv0nmkSWMVOEKHxti6QLgjfuj/MOoh8.2pM0/CqF5u6ORAzqFZ8Qf3c27uVEahy7ShxSv2K4K41z'
+  $password_content = ':admin:$6$pIE/xAyP9mvBaewv$4GYFxC0SqonT6/x8qGcZXVCRLUVKODj9drDjdu/JJQ/Iw0Gg.aTkFzCjNAbaK4zcCHbphFz1g1HK18Z2bI92M0::Administrator:admin:changeme@example.com::'
+
 
   # Settings common to a kernel
   case $::kernel {
@@ -86,7 +91,9 @@ class splunk::params (
       $path_delimiter       = '/'
       $forwarder_src_subdir = 'universalforwarder/linux'
       $forwarder_service    = [ 'splunk' ]
+      $password_config_file = '/opt/splunkforwarder/etc/passwd'
       $forwarder_confdir    = '/opt/splunkforwarder/etc/system/local'
+      $secret_file          =  '/opt/splunkforwarder/etc/splunk.secret'
       $server_src_subdir    = 'splunk/linux'
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = '/opt/splunk/etc/system/local'
@@ -95,7 +102,9 @@ class splunk::params (
       $path_delimiter       = '/'
       $forwarder_src_subdir = 'universalforwarder/solaris'
       $forwarder_service    = [ 'splunk' ]
+      $password_config_file = '/opt/splunkforwarder/etc/passwd'
       $forwarder_confdir    = '/opt/splunkforwarder/etc/system/local'
+      $secret_file          =  '/opt/splunkforwarder/etc/splunk.secret'
       $server_src_subdir    = 'splunk/solaris'
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = '/opt/splunk/etc/system/local'
@@ -103,6 +112,8 @@ class splunk::params (
     'Windows': {
       $path_delimiter       = '\\'
       $forwarder_src_subdir = 'universalforwarder/windows'
+      $password_config_file = 'C:/Program Files/SplunkUniversalForwarder/etc/passwd'
+      $secret_file          =  'C:/Program Files/SplunkUniversalForwarder/etc/splunk.secret'
       $forwarder_service    = [ 'SplunkForwarder' ] # UNKNOWN
       $forwarder_confdir    = 'C:/Program Files/SplunkUniversalForwarder/etc/system/local'
       $server_src_subdir    = 'splunk/windows'
@@ -130,7 +141,30 @@ class splunk::params (
     }
     default: { fail("splunk module does not support kernel ${::kernel}") }
   }
+  # default splunk agent settings in a hash so that the cya be easily parsed to other classes
 
+  $forwarder_output = {
+    "tcpout_defaultgroup"          => {
+      section                      => 'default',
+      setting                      => 'defaultGroup',
+      value                        => "${server}_${logging_port}",
+      tag                          => 'splunk_forwarder'
+    },
+    "defaultgroup_server" => {
+      section             => "tcpout:${server}_${logging_port}",
+      setting             => 'server',
+      value               => "${server}:${logging_port}",
+      tag                 => 'splunk_forwarder'
+    }
+  }
+  $forwarder_input = {
+    'default_host' => {
+      section      => 'default',
+      setting      => 'host',
+      value        => "$::clientcert",
+      tag          => 'splunk_forwarder'
+    }
+  }
   # Settings common to an OS family
   case $::osfamily {
     'RedHat':  { $pkg_provider = 'rpm'  }
@@ -189,5 +223,6 @@ class splunk::params (
 
   $server_pkg_src    = "${src_root}/${server_src_subdir}/${server_src_pkg}"
   $forwarder_pkg_src = "${src_root}/${forwarder_src_subdir}/${forwarder_src_pkg}"
+  $create_password   = true
 
 }

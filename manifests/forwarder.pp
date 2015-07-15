@@ -41,7 +41,7 @@
 # Requires: nothing
 #
 class splunk::forwarder (
-  $server            = 'splunk',
+  $server            = $splunk::params::server,
   $package_source    = $splunk::params::forwarder_pkg_src,
   $package_name      = $splunk::params::forwarder_pkg_name,
   $logging_port      = $splunk::params::logging_port,
@@ -49,24 +49,30 @@ class splunk::forwarder (
   $splunkd_listen    = '127.0.0.1',
   $purge_inputs      = false,
   $purge_outputs     = false,
+  $pkg_provider      = undef,
+  $forwarder_confdir = $splunk::params::forwarder_confdir,
+  $forwarder_output  = $splunk::params::forwarder_output,
+  $forwarder_input   = $splunk::params::forwarder_input,
+  $create_password   = $splunk::params::create_password,
 ) inherits splunk::params {
-  include staging
 
   $virtual_service = $splunk::params::forwarder_service
-  $staged_package  = staging_parse($package_source)
   $staging_subdir  = $splunk::params::staging_subdir
 
   $path_delimiter  = $splunk::params::path_delimiter
-  $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
-  $pkg_source      = join($pkg_path_parts, $path_delimiter)
-  $pkg_provider    = $splunk::params::pkg_provider
+  if $pkg_provider != undef and $pkg_provider != 'yum' and  $pkg_provider != 'apt' {
+    include staging
+    $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
+    $pkg_source      = join($pkg_path_parts, $path_delimiter)
 
-  staging::file { $staged_package:
-    source => $package_source,
-    subdir => $staging_subdir,
-    before => Package[$package_name],
+    #no need for staging the source if we have yum or apt
+    $staged_package  = staging_parse($package_source)
+    staging::file { $staged_package:
+      source => $package_source,
+      subdir => $staging_subdir,
+      before => Package[$package_name],
+    }
   }
-
   package { $package_name:
     ensure          => installed,
     provider        => $pkg_provider,
@@ -75,26 +81,10 @@ class splunk::forwarder (
     install_options => $splunk::params::forwarder_install_options,
     tag             => 'splunk_forwarder',
   }
-
   # Declare inputs and outputs specific to the forwarder profile
-  splunkforwarder_input { 'default_host':
-    section => 'default',
-    setting => 'host',
-    value   => $::clientcert,
-    tag     => 'splunk_forwarder',
-  }
-  splunkforwarder_output { 'tcpout_defaultgroup':
-    section => 'default',
-    setting => 'defaultGroup',
-    value   => "${server}_${logging_port}",
-    tag     => 'splunk_forwarder',
-  }
-  splunkforwarder_output { 'defaultgroup_server':
-    section => "tcpout:${server}_${logging_port}",
-    setting => 'server',
-    value   => "${server}:${logging_port}",
-    tag     => 'splunk_forwarder',
-  }
+  create_resources( 'splunkforwarder_input',$forwarder_input)
+  create_resources( 'splunkforwarder_output',$forwarder_output)
+  # this is default
   ini_setting { 'forwarder_splunkd_port':
     path    => "${splunk::params::forwarder_confdir}/web.conf",
     section => 'settings',

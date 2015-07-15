@@ -44,6 +44,7 @@ class splunk (
   $package_name   = $splunk::params::server_pkg_name,
   $logging_port   = $splunk::params::logging_port,
   $splunkd_port   = $splunk::params::splunkd_port,
+  $pkg_provider   = $splunk::params::pkg_provider,
   $splunkd_listen = '127.0.0.1',
   $web_port       = '8000',
   $purge_inputs   = false,
@@ -67,7 +68,7 @@ class splunk (
 
   package { $package_name:
     ensure   => installed,
-    provider => $splunk::params::pkg_provider,
+    provider => $pkg_provider,
     source   => $pkg_source,
     before   => Service[$virtual_service],
     tag      => 'splunk_server',
@@ -130,13 +131,16 @@ class splunk (
 
   Package       <| title == $package_name    |> ->
   Exec          <| tag   == 'splunk_server'  |> ->
+  File          <| tag   == 'splunk_server'  |> ->
   Service       <| title == $virtual_service |>
 
   Package       <| title == $package_name    |> ->
+  File          <| tag   == 'splunk_server'  |> ->
   Splunk_input  <| tag   == 'splunk_server'  |> ~>
   Service       <| title == $virtual_service |>
 
   Package       <| title == $package_name    |> ->
+  File          <| tag   == 'splunk_server'  |> ->
   Splunk_output <| tag   == 'splunk_server'  |> ~>
   Service       <| title == $virtual_service |>
 
