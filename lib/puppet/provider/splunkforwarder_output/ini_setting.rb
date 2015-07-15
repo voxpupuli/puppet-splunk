@@ -7,7 +7,7 @@ Puppet::Type.type(:splunkforwarder_output).provide(
   def self.file_path
     case Facter.value(:osfamily)
     when 'windows'
-     'C:\Program Files\SplunkUniversalForwarder\etc\system\local\outputs.conf'
+      'C:\Program Files\SplunkUniversalForwarder\etc\system\local\outputs.conf'
     else
       '/opt/splunkforwarder/etc/system/local/outputs.conf'
     end
