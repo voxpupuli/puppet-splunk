@@ -1,7 +1,7 @@
 Puppet::Type.newtype(:splunk_transforms) do
   ensurable
   newparam(:name, :namevar => true) do
-    desc 'Setting name to manage from inputs.conf'
+    desc 'Setting name to manage from transforms.conf'
   end
   newproperty(:value) do
     desc 'The value of the setting to be defined.'
