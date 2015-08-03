@@ -225,4 +225,5 @@ class splunk::params (
   $forwarder_pkg_src = "${src_root}/${forwarder_src_subdir}/${forwarder_src_pkg}"
   $create_password   = true
 
+  $forwarder_pkg_ensure = 'installed'
 }

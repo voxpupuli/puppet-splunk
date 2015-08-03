@@ -44,6 +44,7 @@ class splunk::forwarder (
   $server            = $splunk::params::server,
   $package_source    = $splunk::params::forwarder_pkg_src,
   $package_name      = $splunk::params::forwarder_pkg_name,
+  $package_ensure    = $splunk::params::forwarder_pkg_ensure,
   $logging_port      = $splunk::params::logging_port,
   $splunkd_port      = $splunk::params::splunkd_port,
   $splunkd_listen    = '127.0.0.1',
@@ -74,7 +75,7 @@ class splunk::forwarder (
     }
   }
   package { $package_name:
-    ensure          => installed,
+    ensure          => $package_ensure,
     provider        => $pkg_provider,
     source          => $pkg_source,
     before          => Service[$virtual_service],
