@@ -54,6 +54,7 @@ class splunk::forwarder (
   $forwarder_confdir = $splunk::params::forwarder_confdir,
   $forwarder_output  = $splunk::params::forwarder_output,
   $forwarder_input   = $splunk::params::forwarder_input,
+  $forwarder_ensure  = $splunk::params::forwarder_pkg_ensure,
   $create_password   = $splunk::params::create_password,
 ) inherits splunk::params {
 
@@ -75,7 +76,7 @@ class splunk::forwarder (
     }
   }
   package { $package_name:
-    ensure          => $splunk::params::forwarder_pkg_ensure,
+    ensure          => $forwarder_ensure,
     provider        => $pkg_provider,
     source          => $pkg_source,
     before          => Service[$virtual_service],
