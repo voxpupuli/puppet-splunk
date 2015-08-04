@@ -62,11 +62,11 @@ class splunk::forwarder (
   $path_delimiter  = $splunk::params::path_delimiter
   if $pkg_provider != undef and $pkg_provider != 'yum' and  $pkg_provider != 'apt' {
     include staging
+    $staged_package  = staging_parse($package_source)
     $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
     $pkg_source      = join($pkg_path_parts, $path_delimiter)
 
     #no need for staging the source if we have yum or apt
-    $staged_package  = staging_parse($package_source)
     staging::file { $staged_package:
       source => $package_source,
       subdir => $staging_subdir,
