@@ -54,7 +54,7 @@ class splunk::forwarder (
   $splunkd_listen    = '127.0.0.1',
   $purge_inputs      = false,
   $purge_outputs     = false,
-  $pkg_provider      = undef,
+  $pkg_provider      = $splunk::params::pkg_provider,
   $forwarder_confdir = $splunk::params::forwarder_confdir,
   $forwarder_output  = $splunk::params::forwarder_output,
   $forwarder_input   = $splunk::params::forwarder_input,
