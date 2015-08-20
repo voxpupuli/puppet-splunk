@@ -50,7 +50,6 @@ class splunk (
   $purge_inputs   = false,
   $purge_outputs  = false,
 ) inherits splunk::params {
-  include staging
 
   $virtual_service = $splunk::params::server_service
   $staging_subdir  = $splunk::params::staging_subdir
