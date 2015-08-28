@@ -116,17 +116,23 @@ class splunk::forwarder (
   # dependency chains.
   include splunk::virtual
 
-  Package               <| title  == $package_name      |> ->
-  Exec                  <| tag    == 'splunk_forwarder' |> ->
-  Service               <| title  == $virtual_service   |>
+  realize Package[$package_name]
+  realize Service[$virtual_service]
 
-  Package               <| title  == $package_name      |> ->
-  Splunkforwarder_input <| tag    == 'splunk_forwarder' |> ~>
-  Service               <| title  == $virtual_service   |>
+  Exec <| tag == 'splunk_forwarder' |> {
+    require +> Package[$package_name],
+    before  +> Service[$virtual_service],
+  }
 
-  Package                <| title == $package_name      |> ->
-  Splunkforwarder_output <| tag   == 'splunk_forwarder' |> ~>
-  Service                <| title == $virtual_service   |>
+  Splunkforwarder_input <| tag == 'splunk_forwarder' |> {
+    require +> Package[$package_name],
+    notify  +> Service[$virtual_service],
+  }
+
+  Splunkforwarder_output <| tag == 'splunk_forwarder' |> {
+    require +> Package[$package_name],
+    notify  +> Service[$virtual_service],
+  }
 
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on
   # the same system, then they must use different admin ports.
