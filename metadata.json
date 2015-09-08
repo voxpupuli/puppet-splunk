@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-splunk",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "author": "puppetlabs",
   "summary": "Manage and deploy Splunk servers and forwarders",
   "license": "Apache-2.0",
