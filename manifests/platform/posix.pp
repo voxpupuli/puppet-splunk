@@ -16,6 +16,7 @@
 #
 class splunk::platform::posix (
   $splunkd_port = $splunk::splunkd_port,
+  $splunk_user = $splunk::splunk_user,
 ) inherits splunk::virtual {
 
   # Many of the resources declared here are virtual. They will be realized by
@@ -31,7 +32,7 @@ class splunk::platform::posix (
   }
   @exec { 'enable_splunkforwarder':
     path    => '/opt/splunkforwarder/bin',
-    command => 'splunk enable boot-start',
+    command => 'splunk enable boot-start -user $splunk_user',
     creates => '/etc/init.d/splunk',
     require => Exec['license_splunkforwarder'],
     tag     => 'splunk_forwarder',
@@ -47,7 +48,7 @@ class splunk::platform::posix (
   }
   @exec { 'enable_splunk':
     path    => '/opt/splunk/bin',
-    command => 'splunk enable boot-start',
+    command => 'splunk enable boot-start -user $splunk_user',
     creates => '/etc/init.d/splunk',
     require => Exec['license_splunk'],
     tag     => 'splunk_server',

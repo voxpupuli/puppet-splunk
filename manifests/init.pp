@@ -45,6 +45,7 @@ class splunk (
   $logging_port   = $splunk::params::logging_port,
   $splunkd_port   = $splunk::params::splunkd_port,
   $pkg_provider   = $splunk::params::pkg_provider,
+  $splunk_user    = $splunk::params::splunk_user,
   $splunkd_listen = '127.0.0.1',
   $web_port       = '8000',
   $purge_inputs   = false,
