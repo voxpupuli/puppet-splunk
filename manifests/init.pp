@@ -45,25 +45,30 @@ class splunk (
   $logging_port   = $splunk::params::logging_port,
   $splunkd_port   = $splunk::params::splunkd_port,
   $pkg_provider   = $splunk::params::pkg_provider,
+  $splunk_user    = $splunk::params::splunk_user,
   $splunkd_listen = '127.0.0.1',
   $web_port       = '8000',
   $purge_inputs   = false,
   $purge_outputs  = false,
 ) inherits splunk::params {
-  include staging
 
   $virtual_service = $splunk::params::server_service
-  $staged_package  = staging_parse($package_source)
   $staging_subdir  = $splunk::params::staging_subdir
 
   $path_delimiter  = $splunk::params::path_delimiter
-  $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
-  $pkg_source      = join($pkg_path_parts, $path_delimiter)
 
-  staging::file { $staged_package:
-    source => $package_source,
-    subdir => $staging_subdir,
-    before => Package[$package_name],
+  if $pkg_provider != undef and $pkg_provider != 'yum' and  $pkg_provider != 'apt' {
+    include staging
+    $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
+    $pkg_source      = join($pkg_path_parts, $path_delimiter)
+
+    #no need for staging the source if we have yum or apt
+    $staged_package  = staging_parse($package_source)
+    staging::file { $staged_package:
+      source => $package_source,
+      subdir => $staging_subdir,
+      before => Package[$package_name],
+    }
   }
 
   package { $package_name:

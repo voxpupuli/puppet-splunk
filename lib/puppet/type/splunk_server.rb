@@ -1,7 +1,7 @@
-Puppet::Type.newtype(:splunk_props) do
+Puppet::Type.newtype(:splunk_server) do
   ensurable
   newparam(:name, :namevar => true) do
-    desc 'Setting name to manage from props.conf'
+    desc 'Setting name to manage from server.conf'
   end
   newproperty(:value) do
     desc 'The value of the setting to be defined.'
