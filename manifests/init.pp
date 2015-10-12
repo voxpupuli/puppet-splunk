@@ -194,7 +194,7 @@ class splunk (
   File {
     owner => $splunk_user,
     group => $splunk_user,
-    mode => 644,
+    mode => 600,
   }
 
   file { "/opt/splunk/etc/system/local/authentication.conf":
@@ -217,7 +217,7 @@ class splunk (
     tag => 'splunk_server'
   }
 
-  file { "/opt/splunk/etc/system/local/input.conf":
+  file { "/opt/splunk/etc/system/local/inputs.conf":
     ensure => present,
     tag => 'splunk_server'
   }
@@ -227,7 +227,7 @@ class splunk (
     tag => 'splunk_server'
   }
 
-  file { "/opt/splunk/etc/system/local/output.conf":
+  file { "/opt/splunk/etc/system/local/outputs.conf":
     ensure => present,
     tag => 'splunk_server'
   }
