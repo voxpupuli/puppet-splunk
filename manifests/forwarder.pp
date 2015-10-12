@@ -141,19 +141,19 @@ class splunk::forwarder (
     mode => 644,
   }
 
-  file { "/opt/splunk/etc/system/local/inputs.conf":
+  file { "/opt/splunkforwarder/etc/system/local/inputs.conf":
     ensure => present,
-    tag => 'splunk_server'
+    tag => 'splunk_forwarder'
   }
 
-  file { "/opt/splunk/etc/system/local/outputs.conf":
+  file { "/opt/splunkforwarder/etc/system/local/outputs.conf":
     ensure => present,
-    tag => 'splunk_server'
+    tag => 'splunk_forwarder'
   }
 
-  file { "/opt/splunk/etc/system/local/web.conf":
+  file { "/opt/splunkforwarder/etc/system/local/web.conf":
     ensure => present,
-    tag => 'splunk_server'
+    tag => 'splunk_forwarder'
   }
 
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on
