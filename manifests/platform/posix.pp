@@ -26,13 +26,14 @@ class splunk::platform::posix (
   @exec { 'license_splunkforwarder':
     path    => '/opt/splunkforwarder/bin',
     command => 'splunk start --accept-license --answer-yes',
+    user    => $splunk_user,
     creates => '/opt/splunkforwarder/etc/auth/server.pem',
     timeout => 0,
     tag     => 'splunk_forwarder',
   }
   @exec { 'enable_splunkforwarder':
     path    => '/opt/splunkforwarder/bin',
-    command => 'splunk enable boot-start -user $splunk_user',
+    command => "splunk enable boot-start -user $splunk_user",
     creates => '/etc/init.d/splunk',
     require => Exec['license_splunkforwarder'],
     tag     => 'splunk_forwarder',
@@ -42,18 +43,17 @@ class splunk::platform::posix (
   @exec { 'license_splunk':
     path    => '/opt/splunk/bin',
     command => 'splunk start --accept-license --answer-yes',
+    user    => $splunk_user,
     creates => '/opt/splunk/etc/auth/splunk.secret',
     timeout => 0,
     tag     => 'splunk_server',
   }
   @exec { 'enable_splunk':
     path    => '/opt/splunk/bin',
-    command => 'splunk enable boot-start -user $splunk_user',
+    command => "splunk enable boot-start -user $splunk_user",
     creates => '/etc/init.d/splunk',
     require => Exec['license_splunk'],
     tag     => 'splunk_server',
-  }
-
 
   # Modify virtual service definitions specific to the Linux platform. These
   # are virtual resources declared in the splunk::virtual class, which we

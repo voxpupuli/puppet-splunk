@@ -46,6 +46,7 @@ class splunk::forwarder (
   $package_name      = $splunk::params::forwarder_pkg_name,
   $logging_port      = $splunk::params::logging_port,
   $splunkd_port      = $splunk::params::splunkd_port,
+  $splunk_user       = $splunk::params::splunk_user,
   $splunkd_listen    = '127.0.0.1',
   $purge_inputs      = false,
   $purge_outputs     = false,
@@ -85,13 +86,11 @@ class splunk::forwarder (
   create_resources( 'splunkforwarder_input',$forwarder_input)
   create_resources( 'splunkforwarder_output',$forwarder_output)
   # this is default
-  ini_setting { 'forwarder_splunkd_port':
-    path    => "${splunk::params::forwarder_confdir}/web.conf",
+  splunk_web { 'forwarder_splunkd_port':
     section => 'settings',
     setting => 'mgmtHostPort',
     value   => "${splunkd_listen}:${splunkd_port}",
-    require => Package[$package_name],
-    notify  => Service[$virtual_service],
+    tag => 'splunk_forwarder'
   }
 
   # If the purge parameters have been set, remove all unmanaged entries from
@@ -117,16 +116,45 @@ class splunk::forwarder (
   include splunk::virtual
 
   Package               <| title  == $package_name      |> ->
+  File                   <| tag   == 'splunk_forwarder' |> ->
   Exec                  <| tag    == 'splunk_forwarder' |> ->
   Service               <| title  == $virtual_service   |>
 
   Package               <| title  == $package_name      |> ->
+  File                   <| tag   == 'splunk_forwarder' |> ->
   Splunkforwarder_input <| tag    == 'splunk_forwarder' |> ~>
   Service               <| title  == $virtual_service   |>
 
   Package                <| title == $package_name      |> ->
+  File                   <| tag   == 'splunk_forwarder' |> ->
   Splunkforwarder_output <| tag   == 'splunk_forwarder' |> ~>
   Service                <| title == $virtual_service   |>
+
+  Package                <| title == $package_name      |> ->
+  File                   <| tag   == 'splunk_forwarder' |> ->
+  Splunk_web             <| tag   == 'splunk_forwarder' |> ~>
+  Service                <| title == $virtual_service   |>
+
+  File {
+    owner => $splunk_user,
+    group => $splunk_user,
+    mode => 644,
+  }
+
+  file { "/opt/splunk/etc/system/local/inputs.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/outputs.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/web.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
 
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on
   # the same system, then they must use different admin ports.

@@ -91,21 +91,18 @@ class splunk (
     value   => 'dns',
     tag     => 'splunk_server',
   }
-  ini_setting { 'splunk_server_splunkd_port':
-    path    => "${splunk::params::server_confdir}/web.conf",
+  splunk_web { 'splunk_server_splunkd_port':
     section => 'settings',
     setting => 'mgmtHostPort',
     value   => "${splunkd_listen}:${splunkd_port}",
-    require => Package[$package_name],
-    notify  => Service[$virtual_service],
+    tag => 'splunk_server'
   }
-  ini_setting { 'splunk_server_web_port':
-    path    => "${splunk::params::server_confdir}/web.conf",
+
+  splunk_web { 'splunk_server_web_port':
     section => 'settings',
     setting => 'httpport',
     value   => $web_port,
-    require => Package[$package_name],
-    notify  => Service[$virtual_service],
+    tag => 'splunk_server'
   }
 
   # If the purge parameters have been set, remove all unmanaged entries from
@@ -193,6 +190,67 @@ class splunk (
   File                   <| tag   == 'splunk_server'  |> ->
   Splunk_web             <| tag   == 'splunk_server'  |> ~>
   Service                <| title == $virtual_service |>
+
+  File {
+    owner => $splunk_user,
+    group => $splunk_user,
+    mode => 644,
+  }
+
+  file { "/opt/splunk/etc/system/local/authentication.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/authorize.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/distsearch.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/indexes.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/input.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/limits.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/output.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/props.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/server.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/transforms.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
+
+  file { "/opt/splunk/etc/system/local/web.conf":
+    ensure => present,
+    tag => 'splunk_server'
+  }
 
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on
   # the same system, then they must use different admin ports.
