@@ -51,6 +51,7 @@ class splunk::forwarder (
   $logging_port      = $splunk::params::logging_port,
   $splunkd_port      = $splunk::params::splunkd_port,
   $install_options   = $splunk::params::forwarder_install_options,
+  $splunk_user       = $splunk::params::splunk_user,
   $splunkd_listen    = '127.0.0.1',
   $purge_inputs      = false,
   $purge_outputs     = false,
@@ -97,13 +98,11 @@ class splunk::forwarder (
   create_resources( 'splunkforwarder_input',$forwarder_input, $tag_resources)
   create_resources( 'splunkforwarder_output',$forwarder_output, $tag_resources)
   # this is default
-  ini_setting { 'forwarder_splunkd_port':
-    path    => "${splunk::params::forwarder_confdir}/web.conf",
+  splunkforwarder_web { 'forwarder_splunkd_port':
     section => 'settings',
     setting => 'mgmtHostPort',
     value   => "${splunkd_listen}:${splunkd_port}",
-    require => Package[$package_name],
-    notify  => Service[$virtual_service],
+    tag => 'splunk_forwarder'
   }
 
   # If the purge parameters have been set, remove all unmanaged entries from
@@ -119,7 +118,8 @@ class splunk::forwarder (
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.
   case $::kernel {
-    'Linux': { class { 'splunk::platform::posix': splunkd_port => $splunkd_port, } }
+    'Linux': { class { 'splunk::platform::posix': splunkd_port => $splunkd_port,
+                                                  splunk_user  => $splunk_user } }
     'SunOS': { include splunk::platform::solaris }
     default: { } # no special configuration needed
   }
@@ -131,19 +131,45 @@ class splunk::forwarder (
   realize Package[$package_name]
   realize Service[$virtual_service]
 
-  Exec <| tag == 'splunk_forwarder' |> {
-    require +> Package[$package_name],
-    before  +> Service[$virtual_service],
+  Package                <| title  == $package_name     |> ->
+  File                   <| tag   == 'splunk_forwarder' |> ->
+  Exec                   <| tag   == 'splunk_forwarder' |> ->
+  Service                <| title == $virtual_service   |>
+
+  Package                <| title == $package_name      |> ->
+  File                   <| tag   == 'splunk_forwarder' |> ->
+  Splunkforwarder_input  <| tag   == 'splunk_forwarder' |> ~>
+  Service                <| title == $virtual_service   |>
+
+  Package                <| title == $package_name      |> ->
+  File                   <| tag   == 'splunk_forwarder' |> ->
+  Splunkforwarder_output <| tag   == 'splunk_forwarder' |> ~>
+  Service                <| title == $virtual_service   |>
+
+  Package                <| title == $package_name      |> ->
+  File                   <| tag   == 'splunk_forwarder' |> ->
+  Splunkforwarder_web    <| tag   == 'splunk_forwarder' |> ~>
+  Service                <| title == $virtual_service   |>
+
+  File {
+    owner => $splunk_user,
+    group => $splunk_user,
+    mode => 644,
   }
 
-  Splunkforwarder_input <| tag == 'splunk_forwarder' |> {
-    require +> Package[$package_name],
-    notify  +> Service[$virtual_service],
+  file { "/opt/splunkforwarder/etc/system/local/inputs.conf":
+    ensure => present,
+    tag => 'splunk_forwarder'
   }
 
-  Splunkforwarder_output <| tag == 'splunk_forwarder' |> {
-    require +> Package[$package_name],
-    notify  +> Service[$virtual_service],
+  file { "/opt/splunkforwarder/etc/system/local/outputs.conf":
+    ensure => present,
+    tag => 'splunk_forwarder'
+  }
+
+  file { "/opt/splunkforwarder/etc/system/local/web.conf":
+    ensure => present,
+    tag => 'splunk_forwarder'
   }
 
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on
