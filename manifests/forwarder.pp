@@ -86,7 +86,7 @@ class splunk::forwarder (
   create_resources( 'splunkforwarder_input',$forwarder_input)
   create_resources( 'splunkforwarder_output',$forwarder_output)
   # this is default
-  splunk_web { 'forwarder_splunkd_port':
+  splunkforwarder_web { 'forwarder_splunkd_port':
     section => 'settings',
     setting => 'mgmtHostPort',
     value   => "${splunkd_listen}:${splunkd_port}",
