@@ -23,34 +23,34 @@ class splunk::platform::posix (
   # the appropriate including class if required.
 
   # Commands to run to enable the SplunkUniversalForwarder
+  @exec { 'enable_splunkforwarder':
+    path    => '/opt/splunkforwarder/bin',
+    command => 'splunk enable boot-start -user $splunk_user',
+    creates => '/etc/init.d/splunk',
+    tag     => 'splunk_forwarder',
+  }
   @exec { 'license_splunkforwarder':
     path    => '/opt/splunkforwarder/bin',
     command => 'splunk start --accept-license --answer-yes',
     creates => '/opt/splunkforwarder/etc/auth/server.pem',
     timeout => 0,
-    tag     => 'splunk_forwarder',
-  }
-  @exec { 'enable_splunkforwarder':
-    path    => '/opt/splunkforwarder/bin',
-    command => 'splunk enable boot-start -user $splunk_user',
-    creates => '/etc/init.d/splunk',
-    require => Exec['license_splunkforwarder'],
+    require => Exec['enable_splunkforwarder'],
     tag     => 'splunk_forwarder',
   }
 
   # Commands to run to enable full Splunk
+  @exec { 'enable_splunk':
+    path    => '/opt/splunk/bin',
+    command => 'splunk enable boot-start -user $splunk_user',
+    creates => '/etc/init.d/splunk',
+    tag     => 'splunk_server',
+  }
   @exec { 'license_splunk':
     path    => '/opt/splunk/bin',
     command => 'splunk start --accept-license --answer-yes',
     creates => '/opt/splunk/etc/auth/splunk.secret',
     timeout => 0,
-    tag     => 'splunk_server',
-  }
-  @exec { 'enable_splunk':
-    path    => '/opt/splunk/bin',
-    command => 'splunk enable boot-start -user $splunk_user',
-    creates => '/etc/init.d/splunk',
-    require => Exec['license_splunk'],
+    require => Exec['enable_splunk'],
     tag     => 'splunk_server',
   }
 
