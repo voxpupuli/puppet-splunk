@@ -116,15 +116,15 @@ class splunk::forwarder (
   # dependency chains.
   include splunk::virtual
 
-  Package               <| title  == $package_name      |> ->
+  Package                <| title == $package_name      |> ->
   File                   <| tag   == 'splunk_forwarder' |> ->
-  Exec                  <| tag    == 'splunk_forwarder' |> ->
-  Service               <| title  == $virtual_service   |>
+  Exec                   <| tag   == 'splunk_forwarder' |> ->
+  Service                <| title == $virtual_service   |>
 
-  Package               <| title  == $package_name      |> ->
+  Package                <| title == $package_name      |> ->
   File                   <| tag   == 'splunk_forwarder' |> ->
-  Splunkforwarder_input <| tag    == 'splunk_forwarder' |> ~>
-  Service               <| title  == $virtual_service   |>
+  Splunkforwarder_input  <| tag   == 'splunk_forwarder' |> ~>
+  Service                <| title == $virtual_service   |>
 
   Package                <| title == $package_name      |> ->
   File                   <| tag   == 'splunk_forwarder' |> ->
@@ -133,7 +133,7 @@ class splunk::forwarder (
 
   Package                <| title == $package_name      |> ->
   File                   <| tag   == 'splunk_forwarder' |> ->
-  Splunk_web             <| tag   == 'splunk_forwarder' |> ~>
+  Splunkforwarder_web    <| tag   == 'splunk_forwarder' |> ~>
   Service                <| title == $virtual_service   |>
 
   File {
