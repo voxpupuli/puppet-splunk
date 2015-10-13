@@ -1,4 +1,4 @@
-Puppet::Type.type(:splunk_web).provide(
+Puppet::Type.type(:splunkforwarder_web).provide(
   :ini_setting,
   # set ini_setting as the parent provider
   :parent => Puppet::Type.type(:ini_setting).provider(:ruby)
