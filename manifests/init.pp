@@ -132,22 +132,28 @@ class splunk (
 
   Exec <| tag == 'splunk_server' |> {
     require +> Package[$package_name],
+    before +> Service[$virtual_service],
   } ->
   File <| tag == 'splunk_server' |> {
+    require +> Package[$package_name],
     before +> Service[$virtual_service],
   }
 
   File <| tag   == 'splunk_server' |> {
     require +> Package[$package_name],
+    notify +> Service[$virtual_service],
   } ->
   Splunk_input <| tag   == 'splunk_server' |> {
+    require +> Package[$package_name],
     notify +> Service[$virtual_service],
   }
 
   File <| tag == 'splunk_server'  |> {
     require +> Package[$package_name],
+    notify +> Service[$virtual_service],
   } ->
   Splunk_output <| tag == 'splunk_server' |> {
+    require +> Package[$package_name],
     notify +> Service[$virtual_service],
   }
 
