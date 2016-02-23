@@ -72,7 +72,7 @@ class splunk::params (
   $src_root             = 'puppet:///modules/splunk',
   $splunkd_port         = '8089',
   $logging_port         = '9997',
-  $server               = 'splunk'
+  $server               = 'splunk',
   $forwarder_installdir = undef,
   $server_installdir    = undef,
 ) {
