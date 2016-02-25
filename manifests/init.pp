@@ -71,7 +71,7 @@ class splunk (
   }
 
   package { $package_name:
-    ensure   => installed,
+    ensure   => $package_ensure,
     provider => $pkg_provider,
     source   => $pkg_source,
     before   => Service[$virtual_service],
