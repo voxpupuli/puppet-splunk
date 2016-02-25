@@ -13,6 +13,9 @@
 # [*package_name*]
 #   The name of the package(s) as they will exist or be detected on the host.
 #
+# [*package_ensure]
+#   ensurance of the package
+#
 # [*logging_port*]
 #   The port to recieve splunktcp logs on.
 #
@@ -42,6 +45,7 @@
 class splunk (
   $package_source = $splunk::params::server_pkg_src,
   $package_name   = $splunk::params::server_pkg_name,
+  $package_ensure = $splunk::params::server_pkg_ensure,
   $logging_port   = $splunk::params::logging_port,
   $splunkd_port   = $splunk::params::splunkd_port,
   $pkg_provider   = $splunk::params::pkg_provider,

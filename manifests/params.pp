@@ -221,6 +221,7 @@ class splunk::params (
   $forwarder_src_pkg = "splunkforwarder-${package_suffix}"
   $server_src_pkg    = "splunk-${package_suffix}"
 
+  $server_pkg_ensure = 'installed'
   $server_pkg_src    = "${src_root}/${server_src_subdir}/${server_src_pkg}"
   $forwarder_pkg_src = "${src_root}/${forwarder_src_subdir}/${forwarder_src_pkg}"
   $create_password   = true
