@@ -59,6 +59,7 @@ class splunk::forwarder (
   $forwarder_output  = $splunk::params::forwarder_output,
   $forwarder_input   = $splunk::params::forwarder_input,
   $create_password   = $splunk::params::create_password,
+  $addons            = {},
 ) inherits splunk::params {
 
   $virtual_service = $splunk::params::forwarder_service
@@ -87,6 +88,10 @@ class splunk::forwarder (
     install_options => $install_options,
     tag             => 'splunk_forwarder',
   }
+
+  # Declare addons
+  create_resources('splunk::addon', $addons)
+
   # Declare inputs and outputs specific to the forwarder profile
   $tag_resources = { tag => 'splunk_forwarder' }
   create_resources( 'splunkforwarder_input',$forwarder_input, $tag_resources)
