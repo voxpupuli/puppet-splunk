@@ -84,7 +84,7 @@ class splunk::forwarder (
   }
 
   # Declare addons
-  create_resources('splunk::ta', $addons)
+  create_resources('splunk::addon', $addons)
 
   # Declare inputs and outputs specific to the forwarder profile
   create_resources( 'splunkforwarder_input',$forwarder_input)
