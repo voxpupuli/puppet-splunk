@@ -138,32 +138,65 @@ class splunk (
   realize(Package[$package_name])
   realize(Service[$virtual_service])
 
-  Exec <| tag == 'splunk_server' |> {
-    require +> Package[$package_name],
-    before +> Service[$virtual_service],
-  } ->
-  File <| tag == 'splunk_server' |> {
-    require +> Package[$package_name],
-    before +> Service[$virtual_service],
-  }
+  Package                <| title == $package_name    |> ->
+  Exec                   <| tag   == 'splunk_server'  |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Service                <| title == $virtual_service |>
 
-  File <| tag   == 'splunk_server' |> {
-    require +> Package[$package_name],
-    notify +> Service[$virtual_service],
-  } ->
-  Splunk_input <| tag   == 'splunk_server' |> {
-    require +> Package[$package_name],
-    notify +> Service[$virtual_service],
-  }
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_authentication  <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
 
-  File <| tag == 'splunk_server'  |> {
-    require +> Package[$package_name],
-    notify +> Service[$virtual_service],
-  } ->
-  Splunk_output <| tag == 'splunk_server' |> {
-    require +> Package[$package_name],
-    notify +> Service[$virtual_service],
-  }
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_authorize       <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
+
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_distsearch      <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
+
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_indexes         <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
+
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_input           <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
+
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_limits          <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
+
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_output          <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
+
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_props           <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
+
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_server          <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
+
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_transforms      <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
+
+  Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_web             <| tag   == 'splunk_server'  |> ~>
+  Service                <| title == $virtual_service |>
 
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on
   # the same system, then they must use different admin ports.
