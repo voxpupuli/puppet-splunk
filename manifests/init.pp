@@ -248,7 +248,7 @@ class splunk (
   File {
     owner => $splunk_user,
     group => $splunk_user,
-    mode => 600,
+    mode => '0600',
   }
 
   file { "/opt/splunk/etc/system/local/authentication.conf":
