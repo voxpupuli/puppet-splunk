@@ -27,10 +27,6 @@ Splunk Universal Forwarder installation media. Installation media will need to
 be aquired seperately, and the module configured to use it. Users can use yum
 or apt to install these components if they're self-hosted.
 
-
-If applicable, this section should have a brief description of the technology the module integrates with and what that integration enables. This section should answer the questions: "What does this module *do*?" and "Why would I use it?"
-
-
 ## Setup
 
 ### What splunk affects
@@ -38,7 +34,7 @@ If applicable, this section should have a brief description of the technology th
 * Installs the Splunk/Forwarder package and manages their config files. It does not purge them by default.
 * The module will set up both Splunk and Splunkforwarder to run as the 'root' user on POSIX platforms.
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
 To begin using this module, use the Puppet Module Tool (PMT) from the command
 line to install this module:
@@ -190,6 +186,6 @@ This virtual resource will get collected by the `::splunk::forwarder` class if i
 
 TBD
 
-## Release Notes/Contributors/Etc **Optional**
+## Release Notes/Contributors/Etc
 
 TBD
