@@ -16,14 +16,16 @@
 #
 class splunk::platform::posix (
   $splunkd_port = $splunk::splunkd_port,
+  $splunk_user = $splunk::params::splunk_user,
 ) inherits splunk::virtual {
 
+  include ::splunk::params
   # Many of the resources declared here are virtual. They will be realized by
   # the appropriate including class if required.
 
   # Commands to run to enable the SplunkUniversalForwarder
   @exec { 'license_splunkforwarder':
-    path    => '/opt/splunkforwarder/bin',
+    path    => "${splunk::params::forwarder_dir}/bin",
     command => 'splunk start --accept-license --answer-yes',
     user    => $splunk_user,
     creates => '/opt/splunkforwarder/etc/auth/server.pem',
@@ -31,8 +33,9 @@ class splunk::platform::posix (
     tag     => 'splunk_forwarder',
   }
   @exec { 'enable_splunkforwarder':
-    path    => '/opt/splunkforwarder/bin',
-    command => "splunk enable boot-start -user $splunk_user",
+
+    # The path parameter can't be set because the boot-start silently fails on systemd service providers
+    command => "${splunk::params::forwarder_dir}/bin/splunk enable boot-start -user ${splunk_user}",
     creates => '/etc/init.d/splunk',
     require => Exec['license_splunkforwarder'],
     tag     => 'splunk_forwarder',
@@ -40,7 +43,7 @@ class splunk::platform::posix (
 
   # Commands to run to enable full Splunk
   @exec { 'license_splunk':
-    path    => '/opt/splunk/bin',
+    path    => "${splunk::params::server_dir}/bin",
     command => 'splunk start --accept-license --answer-yes',
     user    => $splunk_user,
     creates => '/opt/splunk/etc/auth/splunk.secret',
@@ -48,8 +51,8 @@ class splunk::platform::posix (
     tag     => 'splunk_server',
   }
   @exec { 'enable_splunk':
-    path    => '/opt/splunk/bin',
-    command => "splunk enable boot-start -user $splunk_user",
+    # The path parameter can't be set because the boot-start silently fails on systemd service providers
+    command => "${splunk::params::server_dir}/bin/splunk enable boot-start -user ${splunk_user}",
     creates => '/etc/init.d/splunk',
     require => Exec['license_splunk'],
     tag     => 'splunk_server',
@@ -71,7 +74,7 @@ class splunk::platform::posix (
     restart  => '/opt/splunk/bin/splunk restart splunkweb',
     start    => '/opt/splunk/bin/splunk start splunkweb',
     stop     => '/opt/splunk/bin/splunk stop splunkweb',
-    pattern  => 'python -O /opt/splunk/lib/python.*/splunk/.*/root.py (restart|start)',
+    pattern  => 'python -O /opt/splunk/lib/python.*/splunk/.*/root.py.*',
     require  => Service['splunk'],
   }
 

@@ -67,8 +67,8 @@
 # Requires: nothing
 #
 class splunk::params (
-  $version              = '5.0.5',
-  $build                = '179365',
+  $version              = '6.3.3',
+  $build                = 'f44afce176d0',
   $src_root             = 'puppet:///modules/splunk',
   $splunkd_port         = '8089',
   $logging_port         = '9997',
@@ -127,7 +127,7 @@ class splunk::params (
       $forwarder_service    = [ 'SplunkForwarder' ] # UNKNOWN
       $forwarder_confdir    = "${forwarder_dir}/etc/system/local"
       $server_src_subdir    = 'splunk/windows'
-      $server_service       = [ 'Splunkd', 'Splunkweb' ] # UNKNOWN
+      $server_service       = [ 'Splunkd', 'SplunkWeb' ] # UNKNOWN
       $server_confdir       = "${server_dir}/etc/system/local"
       $forwarder_install_options = [
         'AGREETOLICENSE=Yes',
@@ -238,6 +238,7 @@ class splunk::params (
   $create_password   = true
 
   $forwarder_pkg_ensure = 'installed'
+  $splunk_user = 'root'
 
   # A meta resource so providers know where splunk is installed:
   splunk_config { 'splunk':

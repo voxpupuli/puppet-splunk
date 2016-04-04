@@ -128,7 +128,6 @@ class splunk::forwarder (
   # dependency chains.
   include splunk::virtual
 
-  realize Package[$package_name]
   realize Service[$virtual_service]
 
   Package                <| title  == $package_name     |> ->
