@@ -127,55 +127,183 @@ This virtual resource will get collected by the `::splunk::forwarder` class if i
 
 ## Reference
 
-###::splunk::params Parameters
+### Types
+
+
+* `splunk_config`: This is a meta resource used to configur defaults for all the splunkforwarder and splunk types.
+
+* `splunk_authentication`: Used to manage ini settings in [authentication.conf][authentication.conf-docs]
+* `splunk_authorize`: Used to manage ini settings in [authorize.conf][authorize.conf-docs]
+* `splunk_distsearch`: Used to manage ini settings in [distsearch.conf][distsearch.conf-docs]
+* `splunk_indexes`: Used to manage ini settings in [indexes.conf][indexes.conf-docs]
+* `splunk_input`: Used to manage ini settings in [inputs.ocnf][inputs.conf-docs]
+* `splunk_limits`: Used to mange ini settings in [limits.conf][limits.conf-docs]
+* `splunk_output`: Used to manage ini settings in [outputs.conf][outputs.conf-docs]
+* `splunk_props`: Used to manage ini settings in [props.conf][props.conf-docs]
+* `splunk_server`: Used to mangage ini settings in [server.conf][server.conf-docs]
+* `splunk_transforms`: Used to manage ini settings in [transforms.conf][transforms.conf-docs]
+* `splunk_web`: Used to manage ini settings in [web.conf][web.conf-docs]
+
+* `splunkforwarder_input`: Used to manage ini settings in [inputs.ocnf][inputs.conf-docs]
+* `splunkforwarder_output`:Used to manage ini settings in [outputs.conf][outputs.conf-docs]
+* `splunkforwarder_props`: Used to manage ini settings in [props.conf][props.conf-docs]
+* `splunkforwarder_transforms`: Used to manage ini settings in [transforms.conf][transforms.conf-docs]
+* `splunkforwarder_web`: Used to manage ini settings in [web.conf][web.conf-docs]
+
+
+## Parameters
+
+### Class: ::splunk::params
 
 ####`version`
+*Optional* Specifies the version of Splunk Enterprise that the module should install.
+
 ####`build`
+*Optional* Specifies the build of Splunk Enterprise that the module should use.
+
 ####`src_root`
-####`splunkd_port`
-####`logging_port`
-####`server`
+*Optional* The root path that the staging module will use to find packages for
+splunk and splunk::forwarder.
 
-###::splunk Parameters
+####`splunkd_port`
+*Optional* The splunkd port. Used as a default for both splunk and splunk::forwarder.
+
+####`logging_port`
+*Optional* The port on which to send and listen for logs. Used as a default for
+both splunk and splunk::forwarder.
+
+####`server`
+*Optional* The fqdn or IP address of the Splunk server. Used for setting up the
+default TCP output and input.
+
+### Class: ::splunk Parameters
 
 ####`package_source`
+The source URL for the splunk installation media (typically an RPM, MSI,
+etc). If a $src_root parameter is set in splunk::params, this will be
+automatically supplied. Otherwise it is required. The URL can be of any
+protocol supported by the nanliu/staging module.
+
 ####`package_name`
+The name of the package(s) Puppet will use to install Splunk.
+
 ####`package_ensure`
+Ensure parameter which will get passed to the Splunk package resource.
+Default to the value in splunk::params
+
 ####`logging_port`
+The port to receive TCP logs on. Default to the port specified in
+splunk::params.
+
 ####`splunk_user`
+The user to run Splunk as. Default to the value set in splunk::params.
+
 ####`splunkd_port`
+The management port for Splunk. Default to the value set in splunk::params.
+
 ####`web_port`
-####`purge_inputs`
-####`purge_outputs`
-####`purge_outputs`
-####`purge_authentication`
-####`purge_authorize`
-####`purge_distsearch`
-####`purge_indexes`
-####`purge_limits`
-####`purge_props`
-####`purge_server`
-####`purge_transforms`
-####`purge_web`
+The port on which to service the Splunk Web interface. Default to 8000.
 
-###::splunk::forwarder Parameters
+####`purge_inputs`
+*Optional* If set to true, inputs.conf will be purged of configuration that is
+no longer managed by the splunk_input type. Default to false.
+####`purge_outputs`
+*Optional* If set to true, outputs.conf will be purged of configuration that is
+no longer managed by the splunk_output type. Default to false.
+
+####`purge_authentication`
+*Optional* If set to true, authentication.conf will be purged of configuration
+that is no longer managed by the splunk_authentication type. Default to false.
+
+####`purge_authorize`
+*Optional* If set to true, authorize.conf will be purged of configuration that
+is no longer managed by the splunk_authorize type. Default to false.
+
+####`purge_distsearch`
+*Optional* If set to true, distsearch.conf will be purged of configuration that
+is no longer managed by the splunk_distsearch type. Default to false.
+
+####`purge_indexes`
+*Optional* If set to true, indexes.conf will be purged of configuration that is
+no longer managed by the splunk_indexes type. Default to false.
+
+####`purge_limits`
+*Optional* If set to true, limits.conf will be purged of configuration that is
+no longer managed by the splunk_limits type. Default to false.
+
+####`purge_props`
+*Optional* If set to true, props.conf will be purged of configuration that is
+no longer managed by the splunk_props type. Default to false.
+
+####`purge_server`
+*Optional* If set to true, server.conf will be purged of configuration that is
+no longer managed by the splunk_server type. Default to false.
+
+####`purge_transforms`
+*Optional* If set to true, transforms.conf will be purged of configuration that
+is no longer managed by the splunk_transforms type. Default to false.
+
+####`purge_web`
+*Optional* If set to true, web.conf will be purged of configuration that is no
+longer managed by the splunk_web type. Default to false.
+
+### Class ::splunk::forwarder Parameters
 
 ####`server`
+*Optional* The fqdn or IP address of the Splunk server. Default to the value in ::splunk::params.
+
 ####`package_source`
+The source URL for the splunk installation media (typically an RPM, MSI,
+etc). If a $src_root parameter is set in splunk::params, this will be
+automatically supplied. Otherwise it is required. The URL can be of any
+protocol supported by the nanliu/staging module.
+
 ####`package_name`
+The name of the package(s) Puppet will use to install Splunk Universal Forwarder.
 ####`package_ensure`
+Ensure parameter which will get passed to the Splunk package resource.
+Default to the value in ::splunk::params
+
 ####`logging_port`
+*Optional* The port on which to send and listen for logs. Default to the value
+in ::splunk::params.
+
 ####`splunkd_port`
+The management port for Splunk. Default to the value set in splunk::params.
+
 ####`install_options`
+This variable is passed to the package resources' *install_options* parameter.
+Default to the value in ::splunk::params.
 ####`splunk_user`
+The user to run Splunk as. Default to the value set in splunk::params.
+
 ####`splunkd_listen`
+The address on which splunkd should listen. Defaults to 127.0.0.1.
+
 ####`purge_inputs`
+*Optional* If set to true, inputs.conf will be purged of configuration that is
+no longer managed by the splunkforwarder_input type. Default to false.
+
 ####`purge_outputs`
+*Optional* If set to true, outputs.conf will be purged of configuration that is
+no longer managed by the splunk_output type. Default to false.
+
 ####`pkg_provider`
+*Optional* This will override the default package provider for the package
+resource. Default to undef.
+
 ####`forwarder_confdir`
+The root directory where Splunk Universal Forwarder is installed. Default to
+the value in ::splunk::params.
+
 ####`forwarder_input`
+Used to override the default forwarder_input type defined in ::splunk::params.
+
 ####`forwarder_output`
+Used to override the default forwarder_output type defined in ::splunk::params.
+
 ####`create_password`
+Not yet implemented.
 
 ## Limitations
 
@@ -189,3 +317,15 @@ TBD
 ## Release Notes/Contributors/Etc
 
 TBD
+
+[authentication.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Authenticationconf
+[authorize.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Authenticationconf
+[distsearch.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Distsearchconf
+[indexes.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Indexesconf
+[inputs.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Inputsconf
+[limits.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Limitsconf
+[output.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Outputsconf
+[props.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Propsconf
+[server.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Serverconf
+[transforms.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Transformsconf
+[web.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Webconf
