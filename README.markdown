@@ -324,7 +324,7 @@ TBD
 [indexes.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Indexesconf
 [inputs.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Inputsconf
 [limits.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Limitsconf
-[output.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Outputsconf
+[outputs.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Outputsconf
 [props.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Propsconf
 [server.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Serverconf
 [transforms.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Transformsconf
