@@ -1,15 +1,29 @@
 {
   "name": "puppetlabs-splunk",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "author": "puppetlabs",
   "summary": "Manage and deploy Splunk servers and forwarders",
   "license": "Apache-2.0",
   "source": "http://github.com/puppetlabs/puppetlabs-splunk",
   "project_page": "https://github.com/puppetlabs/puppetlabs-splunk",
   "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.0.0 < 5.0.0"
+    }
+  ],
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 2.4.0 < 5.0.0"},
     {"name":"puppetlabs-inifile","version_requirement":">= 1.0.0 < 2.0.0"},
-    {"name":"nanliu-staging","version_requirement":">= 0.3.1"}
+    {"name":"puppet-staging","version_requirement":">= 0.3.1"}
   ]
 }
