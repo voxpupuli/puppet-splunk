@@ -60,6 +60,9 @@
 #                 |-- splunkforwarder-4.3.2-123586-x64-release.msi
 #                 `-- splunkforwarder-4.3.2-123586-x86-release.msi
 #
+# [*default_host*]
+#   The host identifier that will be used for splunk. Default: $::clientcert
+#
 # Actions:
 #
 #   Declares parameters to be consumed by other classes in the splunk module.
@@ -73,6 +76,7 @@ class splunk::params (
   $splunkd_port         = '8089',
   $logging_port         = '9997',
   $server               = 'splunk',
+  $default_host         = $::clientcert,
   $forwarder_installdir = undef,
   $server_installdir    = undef,
 ) {
@@ -172,7 +176,7 @@ class splunk::params (
     'default_host' => {
       section      => 'default',
       setting      => 'host',
-      value        => "$::clientcert",
+      value        => "$default_host",
       tag          => 'splunk_forwarder'
     }
   }

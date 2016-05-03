@@ -50,6 +50,7 @@ class splunk (
   $splunkd_port         = $splunk::params::splunkd_port,
   $splunk_user          = $splunk::params::splunk_user,
   $pkg_provider         = $splunk::params::pkg_provider,
+  $default_host         = $splunk::params::default_host,
   $splunkd_listen       = '127.0.0.1',
   $web_port             = '8000',
   $purge_authentication = false,
@@ -96,7 +97,7 @@ class splunk (
   splunk_input { 'default_host':
     section => 'default',
     setting => 'host',
-    value   => $::clientcert,
+    value   => $default_host,
     tag     => 'splunk_server',
   }
   splunk_input { 'default_splunktcp':
