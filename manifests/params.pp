@@ -185,6 +185,7 @@ class splunk::params (
     'RedHat':  { $pkg_provider = 'rpm'  }
     'Debian':  { $pkg_provider = 'dpkg' }
     'Solaris': { $pkg_provider = 'sun'  }
+    'Suse':    { $pkg_provider = 'rpm'  }
     default:   { $pkg_provider = undef  } # Don't define a $pkg_provider
   }
 
@@ -227,6 +228,11 @@ class splunk::params (
     }
     'Solaris sun4v': {
       $package_suffix       = "${version}-${build}-solaris-8-sparc.pkg"
+      $forwarder_pkg_name   = 'splunkforwarder'
+      $server_pkg_name      = 'splunk'
+    }
+    'Suse x86_64': {
+      $package_suffix       = "${version}-${build}-linux-2.6-x86_64.rpm"
       $forwarder_pkg_name   = 'splunkforwarder'
       $server_pkg_name      = 'splunk'
     }
