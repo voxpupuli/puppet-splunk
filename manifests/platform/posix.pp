@@ -39,6 +39,7 @@ class splunk::platform::posix (
     creates => '/etc/init.d/splunk',
     require => Exec['license_splunkforwarder'],
     tag     => 'splunk_forwarder',
+    notify  => Service['splunk'],
   }
 
   # Commands to run to enable full Splunk
