@@ -118,8 +118,8 @@ class splunk::forwarder (
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.
   case $::kernel {
-    'Linux': { class { 'splunk::platform::posix': splunkd_port => $splunkd_port,
-                                                  splunk_user  => $splunk_user } }
+    'Linux': { class { 'splunk::platform::posix::forwarder': splunkd_port => $splunkd_port,
+                                                             splunk_user  => $splunk_user } }
     'SunOS': { include splunk::platform::solaris }
     default: { } # no special configuration needed
   }
