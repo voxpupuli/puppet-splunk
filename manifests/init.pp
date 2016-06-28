@@ -173,8 +173,8 @@ class splunk (
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.
   case $::kernel {
-    'Linux': { include splunk::platform::posix   }
-    'SunOS': { include splunk::platform::solaris }
+    'Linux': { include splunk::platform::posix::server   }
+    'SunOS': { include splunk::platform::solaris         }
     default: { } # no special configuration needed
   }
 
