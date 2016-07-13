@@ -55,6 +55,9 @@ class splunk::forwarder (
   $splunkd_listen    = '127.0.0.1',
   $purge_inputs      = false,
   $purge_outputs     = false,
+  $purge_props       = false,
+  $purge_transforms  = false,
+  $purge_web         = false,
   $pkg_provider      = $splunk::params::pkg_provider,
   $forwarder_confdir = $splunk::params::forwarder_confdir,
   $forwarder_output  = $splunk::params::forwarder_output,
@@ -106,14 +109,16 @@ class splunk::forwarder (
   }
 
   # If the purge parameters have been set, remove all unmanaged entries from
-  # the inputs.conf and outputs.conf files, respectively.
-  if $purge_inputs  {
-    resources { 'splunkforwarder_input':  purge => true; }
-  }
-  if $purge_outputs {
-    resources { 'splunkforwarder_output': purge => true; }
-  }
+  # the respective config files.
 
+  Splunk_config['splunk'] {
+    purge_forwarder_outputs    => $purge_outputs,
+    purge_forwarder_inputs     => $purge_forwarder_inputs,
+    purge_forwarder_props      => $purge_forwarder_props,
+    purge_forwarder_transforms => $purge_forwarder_transforms,
+    purge_forwarder_web        => $purge_forwarder_web
+  }
+  
   # This is a module that supports multiple platforms. For some platforms
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.

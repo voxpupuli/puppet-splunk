@@ -1,24 +1,6 @@
+require 'puppet_x/puppetlabs/splunk/type'
+
 Puppet::Type.newtype(:splunk_input) do
-  ensurable
-  newparam(:name, :namevar => true) do
-    desc 'Setting name to manage from inputs.conf'
-  end
-  newproperty(:value) do
-    desc 'The value of the setting to be defined.'
-    munge do |v|
-      v.to_s.strip
-    end
-  end
-  newproperty(:setting) do
-    desc 'The setting being defined.'
-    munge do |v|
-      v.to_s.strip
-    end
-  end
-  newproperty(:section) do
-    desc 'The section the setting is defined under.'
-    munge do |v|
-      v.to_s.strip
-    end
-  end
+  @doc = "Manage splunk input settings in inputs.conf"
+  PuppetX::Puppetlabs::Splunk::Type.clone(self)
 end
