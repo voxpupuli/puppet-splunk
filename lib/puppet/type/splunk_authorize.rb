@@ -2,5 +2,5 @@ require File.join(File.dirname(__FILE__), '..', '..', 'puppet_x/puppetlabs/splun
 
 Puppet::Type.newtype(:splunk_authorize) do
   @doc = "Manage splunk authorize settings in authorize.conf"
-  PuppetX::Puppetlabs::Splunk::Type.clone(self)
+  PuppetX::Puppetlabs::Splunk::Type.clone_type(self)
 end

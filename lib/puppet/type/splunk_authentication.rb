@@ -2,6 +2,6 @@ require File.join(File.dirname(__FILE__), '..', '..', 'puppet_x/puppetlabs/splun
 
 Puppet::Type.newtype(:splunk_authentication) do
   @doc = "Manage splunk authentication settings in authentication.conf"
-  PuppetX::Puppetlabs::Splunk::Type.clone(self)
+  PuppetX::Puppetlabs::Splunk::Type.clone_type(self)
 end
 

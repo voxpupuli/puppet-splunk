@@ -3,5 +3,5 @@ require File.join(File.dirname(__FILE__), '..', '..', 'puppet_x/puppetlabs/splun
 
 Puppet::Type.newtype(:splunkforwarder_output) do
   @doc = "Manage splunkforwarder output settings in outputs.conf"
-  PuppetX::Puppetlabs::Splunk::Type.clone(self)
+  PuppetX::Puppetlabs::Splunk::Type.clone_type(self)
 end

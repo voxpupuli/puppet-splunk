@@ -2,5 +2,5 @@ require File.join(File.dirname(__FILE__), '..', '..', 'puppet_x/puppetlabs/splun
 
 Puppet::Type.newtype(:splunkforwarder_input) do
   @doc = "Manage splunkforwarder input settings in inputs.conf"
-  PuppetX::Puppetlabs::Splunk::Type.clone(self)
+  PuppetX::Puppetlabs::Splunk::Type.clone_type(self)
 end

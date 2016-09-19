@@ -3,7 +3,7 @@ module PuppetX
     module Splunk
       module Type
 
-        def self.clone(type)
+        def self.clone_type(type)
           type.ensurable
 
           type.define_singleton_method(:title_patterns) do
