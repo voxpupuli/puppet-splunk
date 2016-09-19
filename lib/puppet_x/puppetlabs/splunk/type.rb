@@ -18,24 +18,24 @@ module PuppetX
             ]
           end
           type.newproperty(:value) do
-                desc 'The value of the setting to be defined.'
-                munge do |v|
-                  v.to_s.strip
-                end
+            desc 'The value of the setting to be defined.'
+            munge do |v|
+              v.to_s.strip
+            end
           end
           type.newparam(:setting) do
-                desc 'The setting being defined.'
-                isnamevar
-                munge do |v|
-                  v.to_s.strip
-                end
+            desc 'The setting being defined.'
+            isnamevar
+            munge do |v|
+              v.to_s.strip
+            end
            end
            type.newparam(:section) do
-                desc 'The section the setting is defined under.'
-                isnamevar
-                munge do |v|
-                  v.to_s.strip
-                end
+             desc 'The section the setting is defined under.'
+             isnamevar
+             munge do |v|
+               v.to_s.strip
+             end
            end
            type.newparam(:name)
         end
