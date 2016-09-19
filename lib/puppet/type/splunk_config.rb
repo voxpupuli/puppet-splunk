@@ -1,7 +1,7 @@
 # Require all of our types so the class names are resolvable for purging
 Dir[File.dirname(__FILE__) + '/*.rb'].each do |file| 
     unless file == __FILE__
-      require File.join("puppet", "type", File.basename(file, File.extname(file)))
+      require file
     end
 end
 

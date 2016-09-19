@@ -1,4 +1,4 @@
-require 'puppet_x/puppetlabs/splunk/type'
+require File.join(File.dirname(__FILE__), '..', '..', 'puppet_x/puppetlabs/splunk/type')
 
 Puppet::Type.newtype(:splunk_indexes) do
   @doc = "Manage splunk index settings in indexes.conf"
