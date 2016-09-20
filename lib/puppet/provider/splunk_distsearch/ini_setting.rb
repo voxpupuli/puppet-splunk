@@ -3,6 +3,6 @@ Puppet::Type.type(:splunk_distsearch).provide(
   :parent => Puppet::Type.type(:ini_setting).provider(:splunk)
 ) do
   def self.file_name
-    'distsearch.conf'
+    'system/local/distsearch.conf'
   end
 end

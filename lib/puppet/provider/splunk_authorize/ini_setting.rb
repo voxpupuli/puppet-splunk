@@ -3,6 +3,6 @@ Puppet::Type.type(:splunk_authorize).provide(
   :parent => Puppet::Type.type(:ini_setting).provider(:splunk)
 ) do
   def self.file_name
-    'authorize.conf'
+    'system/local/authorize.conf'
   end
 end

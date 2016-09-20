@@ -3,6 +3,6 @@ Puppet::Type.type(:splunkforwarder_input).provide(
   :parent => Puppet::Type.type(:ini_setting).provider(:splunk)
 ) do
   def self.file_name
-    'inputs.conf'
+    'system/local/inputs.conf'
   end
 end

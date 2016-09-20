@@ -3,6 +3,6 @@ Puppet::Type.type(:splunk_server).provide(
   :parent => Puppet::Type.type(:ini_setting).provider(:splunk)
 ) do
   def self.file_name
-    'server.conf'
+    'system/local/server.conf'
   end
 end
