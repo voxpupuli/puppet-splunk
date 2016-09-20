@@ -130,25 +130,16 @@ class splunk::forwarder (
 
   realize Service[$virtual_service]
 
-  Package                <| title  == $package_name     |> ->
-  File                   <| tag   == 'splunk_forwarder' |> ->
-  Exec                   <| tag   == 'splunk_forwarder' |> ->
-  Service                <| title == $virtual_service   |>
+  Package[$package_name] ->
+  File <| tag   == 'splunk_forwarder' |> ->
+  Exec <| tag   == 'splunk_forwarder' |> ->
+  Service[$virtual_service]
 
-  Package                <| title == $package_name      |> ->
-  File                   <| tag   == 'splunk_forwarder' |> ->
-  Splunkforwarder_input  <| tag   == 'splunk_forwarder' |> ~>
-  Service                <| title == $virtual_service   |>
-
-  Package                <| title == $package_name      |> ->
-  File                   <| tag   == 'splunk_forwarder' |> ->
-  Splunkforwarder_output <| tag   == 'splunk_forwarder' |> ~>
-  Service                <| title == $virtual_service   |>
-
-  Package                <| title == $package_name      |> ->
-  File                   <| tag   == 'splunk_forwarder' |> ->
-  Splunkforwarder_web    <| tag   == 'splunk_forwarder' |> ~>
-  Service                <| title == $virtual_service   |>
+  Package[$package_name] -> Splunkforwarder_output<||>     ~> Service[$virtual_service] 
+  Package[$package_name] -> Splunkforwarder_input<||>      ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_props<||>      ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_transforms<||> ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_web<||>        ~> Service[$virtual_service]
 
   File {
     owner => $splunk_user,
