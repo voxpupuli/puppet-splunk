@@ -119,56 +119,21 @@ class splunk (
     tag => 'splunk_server'
   }
 
-  # If the purge parameters have been set, remove all unmanaged entries from
-  # the inputs.conf and outputs.conf files, respectively.
-  if $purge_authentication  {
-    resources { 'splunk_authentication':  purge => true; }
+
+  # Purge resources if option set
+  Splunk_config['splunk'] {
+    purge_authentication => $purge_authentication,
+    purge_authorize      => $purge_authorize,
+    purge_distsearch     => $purge_distsearch,
+    purge_indexes        => $purge_indexes,
+    purge_inputs         => $purge_inputs,
+    purge_limits         => $purge_limits,
+    purge_outputs        => $purge_outputs,
+    purge_props          => $purge_props,
+    purge_server         => $purge_server,
+    purge_transforms     => $purge_transforms,
+    purge_web            => $purge_web
   }
-
-  if $purge_authorize  {
-    resources { 'splunk_authorize':  purge => true; }
-  }
-
-  if $purge_distsearch  {
-    resources { 'splunk_distsearch':  purge => true; }
-  }
-
-  if $purge_indexes  {
-    resources { 'splunk_indexes':  purge => true; }
-  }
-
-  if $purge_inputs  {
-    resources { 'splunk_input':  purge => true; 
-                'splunkforwarder_input':  purge => true; }
-  }
-
-  if $purge_limits  {
-    resources { 'splunk_limits':  purge => true; }
-  }
-
-  if $purge_outputs {
-    resources { 'splunk_output': purge => true;
-                'splunkforwarder_output': purge => true; }
-  }
-
-  if $purge_props  {
-    resources { 'splunk_props':  purge => true; }
-  }
-
-
-  if $purge_server  {
-    resources { 'splunk_server':  purge => true; }
-  }
-
-
-  if $purge_transforms  {
-    resources { 'splunk_transforms':  purge => true; }
-  }
-
-  if $purge_web  {
-    resources { 'splunk_web':  purge => true; }
-  }
-
   # This is a module that supports multiple platforms. For some platforms
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.

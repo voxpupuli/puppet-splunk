@@ -1,24 +1,6 @@
+require File.join(File.dirname(__FILE__), '..', '..', 'puppet_x/puppetlabs/splunk/type')
+
 Puppet::Type.newtype(:splunkforwarder_transforms) do
-  ensurable
-  newparam(:name, :namevar => true) do
-    desc 'Setting name to manage from transforms.conf'
-  end
-  newproperty(:value) do
-    desc 'The value of the setting to be defined.'
-    munge do |v|
-      v.to_s.strip
-    end
-  end
-  newproperty(:setting) do
-    desc 'The setting being defined.'
-    munge do |v|
-      v.to_s.strip
-    end
-  end
-  newproperty(:section) do
-    desc 'The section the setting is defined under.'
-    munge do |v|
-      v.to_s.strip
-    end
-  end
+  @doc = "Manage splunkforwarder transforms settings in transforms.conf"
+  PuppetX::Puppetlabs::Splunk::Type.clone_type(self)
 end

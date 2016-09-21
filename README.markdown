@@ -130,7 +130,7 @@ This virtual resource will get collected by the `::splunk::forwarder` class if i
 ### Types
 
 
-* `splunk_config`: This is a meta resource used to configur defaults for all the splunkforwarder and splunk types.
+* `splunk_config`: This is a meta resource used to configur defaults for all the splunkforwarder and splunk types. This type should not be declared directly as it is declared in `splunk::params` and used internally by the types and providers.
 
 * `splunk_authentication`: Used to manage ini settings in [authentication.conf][authentication.conf-docs]
 * `splunk_authorize`: Used to manage ini settings in [authorize.conf][authorize.conf-docs]
@@ -149,6 +149,40 @@ This virtual resource will get collected by the `::splunk::forwarder` class if i
 * `splunkforwarder_props`: Used to manage ini settings in [props.conf][props.conf-docs]
 * `splunkforwarder_transforms`: Used to manage ini settings in [transforms.conf][transforms.conf-docs]
 * `splunkforwarder_web`: Used to manage ini settings in [web.conf][web.conf-docs]
+
+All of the above types use `puppetlabs/ini_file` as a parent and are declared in an identical way, and accept the following parameters:
+
+* `section`:  The name of the section in the configuration file
+* `setting`:  The setting to be managed
+* `value`: The value of the setting
+
+Both section and setting are namevars for the types.  Specifying a single string as the title without a forward slash implies that the title is the section to be managed (if the section attribute is not defined).  You can also specify the resource title as `section/setting` and ommit both `section` and `setting` params for a more shortform way of declaring the resource.   Eg:
+
+```puppet
+splunkforwarder_output { 'useless title':
+  section => 'default',
+  setting => 'defaultGroup',
+  value   => 'splunk_9777',
+}
+
+splunkforwarder_output { 'default':
+  setting => 'defaultGroup',
+  value   => 'splunk_9777',
+}
+
+splunkforwarder_output { 'default/defaultGroup':
+  value   => 'splunk_9777',
+}
+```
+
+The above resource declarations will all configure the following entry in `outputs.conf`
+
+```
+[default]
+defaultGroup=splunk_9997
+```
+
+Note: if the section contains forward slashes you should not use it as the resource title and should explicitly declare it with the `section` attribute.
 
 
 ## Parameters
@@ -287,6 +321,18 @@ no longer managed by the splunkforwarder_input type. Default to false.
 ####`purge_outputs`
 *Optional* If set to true, outputs.conf will be purged of configuration that is
 no longer managed by the splunk_output type. Default to false.
+
+####`purge_props`
+*Optional* If set to true, props.conf will be purged of configuration that is
+no longer managed by the splunk_props type. Default to false.
+
+####`purge_transforms`
+*Optional* If set to true, transforms.conf will be purged of configuration that is
+no longer managed by the splunk_transforms type. Default to false.
+
+####`purge_web`
+*Optional* If set to true, web.conf will be purged of configuration that is
+no longer managed by the splunk_web type. Default to false.
 
 ####`pkg_provider`
 *Optional* This will override the default package provider for the package

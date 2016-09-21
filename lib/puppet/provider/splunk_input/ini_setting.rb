@@ -1,15 +1,8 @@
 Puppet::Type.type(:splunk_input).provide(
   :ini_setting,
-  # set ini_setting as the parent provider
-  :parent => Puppet::Type.type(:ini_setting).provider(:ruby)
+  :parent => Puppet::Type.type(:ini_setting).provider(:splunk)
 ) do
-  # hard code the file path (this allows purging)
-  def self.file_path
-    case Facter.value(:osfamily)
-    when 'windows'
-      'C:\Program Files\Splunk\etc\system\local\inputs.conf'
-    else
-      '/opt/splunk/etc/system/local/inputs.conf'
-    end
+  def self.file_name
+    'system/local/inputs.conf'
   end
 end

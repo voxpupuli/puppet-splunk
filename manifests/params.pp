@@ -103,10 +103,10 @@ class splunk::params (
       $forwarder_service    = [ 'splunk' ]
       $password_config_file = "${forwarder_dir}/etc/passwd"
       $secret_file          = "${forwarder_dir}/etc/splunk.secret"
-      $forwarder_confdir    = "${forwarder_dir}/etc/system/local"
+      $forwarder_confdir    = "${forwarder_dir}/etc"
       $server_src_subdir    = 'splunk/linux'
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
-      $server_confdir       = "${server_dir}/etc/system/local"
+      $server_confdir       = "${server_dir}/etc"
     }
     'SunOS': {
       $path_delimiter       = '/'
@@ -114,10 +114,10 @@ class splunk::params (
       $forwarder_service    = [ 'splunk' ]
       $password_config_file = "${forwarder_dir}/etc/passwd"
       $secret_file          = "${forwarder_dir}/etc/splunk.secret"
-      $forwarder_confdir    = "${forwarder_dir}/etc/system/local"
+      $forwarder_confdir    = "${forwarder_dir}/etc"
       $server_src_subdir    = 'splunk/solaris'
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
-      $server_confdir       = "${server_dir}/etc/system/local"
+      $server_confdir       = "${server_dir}/etc"
     }
     'Windows': {
       $path_delimiter       = '\\'
@@ -125,10 +125,10 @@ class splunk::params (
       $password_config_file = 'C:/Program Files/SplunkUniversalForwarder/etc/passwd'
       $secret_file          =  'C:/Program Files/SplunkUniversalForwarder/etc/splunk.secret'
       $forwarder_service    = [ 'SplunkForwarder' ] # UNKNOWN
-      $forwarder_confdir    = "${forwarder_dir}/etc/system/local"
+      $forwarder_confdir    = "${forwarder_dir}/etc"
       $server_src_subdir    = 'splunk/windows'
       $server_service       = [ 'Splunkd', 'SplunkWeb' ] # UNKNOWN
-      $server_confdir       = "${server_dir}/etc/system/local"
+      $server_confdir       = "${server_dir}/etc"
       $forwarder_install_options = [
         'AGREETOLICENSE=Yes',
         'LAUNCHSPLUNK=0',
