@@ -8,7 +8,8 @@ module PuppetX
 
           type.define_singleton_method(:title_patterns) do
             [
-              [ /^([^\/]*)$/, [ [ :section ] ] ],
+              [ /^([^\/]*)$/,   [ [ :section ] ] ],
+              [ /^(.*\/\/.*)$/, [ [ :section ] ] ],
               [ /^(.*)\/(.*)$/,
                 [
                   [:section, lambda{|x| x} ],
