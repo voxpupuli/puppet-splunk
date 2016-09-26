@@ -1,5 +1,5 @@
 # Require all of our types so the class names are resolvable for purging
-Dir[File.dirname(__FILE__) + '/*.rb'].each do |file| 
+Dir[File.dirname(__FILE__) + '/*.rb'].each do |file|
   unless file == __FILE__
     require file
   end
@@ -23,7 +23,7 @@ Puppet::Type.newtype(:splunk_config) do
   end
 
   ## Generate purge parameters for the splunk_config type
-  [ 
+  [
       :purge_inputs,
       :purge_outputs,
       :purge_authentication,
@@ -104,7 +104,7 @@ Puppet::Type.newtype(:splunk_config) do
       Puppet::Type.type(res_type).provider(:ini_setting).set_file_path(self[:forwarder_confdir])
     end
   end
-    
+
   def purge_splunk_resources(klass)
     type_name = klass.name
     purge_resources = Array.new
@@ -136,5 +136,5 @@ Puppet::Type.newtype(:splunk_config) do
 
     return purge_resources
   end
-    
+
 end
