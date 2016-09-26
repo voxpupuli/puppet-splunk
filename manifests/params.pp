@@ -155,26 +155,26 @@ class splunk::params (
   # default splunk agent settings in a hash so that the cya be easily parsed to other classes
 
   $forwarder_output = {
-    "tcpout_defaultgroup"          => {
+    'tcpout_defaultgroup'          => {
       section                      => 'default',
       setting                      => 'defaultGroup',
       value                        => "${server}_${logging_port}",
-      tag                          => 'splunk_forwarder'
+      tag                          => 'splunk_forwarder',
     },
-    "defaultgroup_server" => {
+    'defaultgroup_server' => {
       section             => "tcpout:${server}_${logging_port}",
       setting             => 'server',
       value               => "${server}:${logging_port}",
-      tag                 => 'splunk_forwarder'
-    }
+      tag                 => 'splunk_forwarder',
+    },
   }
   $forwarder_input = {
     'default_host' => {
       section      => 'default',
       setting      => 'host',
-      value        => "$::clientcert",
-      tag          => 'splunk_forwarder'
-    }
+      value        => $::clientcert,
+      tag          => 'splunk_forwarder',
+    },
   }
   # Settings common to an OS family
   case $::osfamily {

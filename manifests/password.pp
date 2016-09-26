@@ -26,28 +26,29 @@
 # which service we should expect the licesnse to be accepted for
 #
 # sponsored by balgroup
-class splunk::password( $password_config_file = $splunk::params::password_config_file,
-                        $secret_file          = $splunk::params::secret_file,
-                        $secret               = $splunk::params::secret,
-                        $password_content     = $splunk::params::password_content,
-                        $service_password     = 'splunk_forwarder',
-                        $virtual_service      = $splunk::params::forwarder_service,
-                        $license              = 'license_splunkforwarder',
-                        $package_name         = $splunk::params::forwarder_pkg_name,
-                      ) inherits splunk::params {
+class splunk::password(
+  $password_config_file = $splunk::params::password_config_file,
+  $secret_file          = $splunk::params::secret_file,
+  $secret               = $splunk::params::secret,
+  $password_content     = $splunk::params::password_content,
+  $service_password     = 'splunk_forwarder',
+  $virtual_service      = $splunk::params::forwarder_service,
+  $license              = 'license_splunkforwarder',
+  $package_name         = $splunk::params::forwarder_pkg_name,
+) inherits splunk::params {
   if ! defined(Class['splunk::forwarder']) and ! defined(Class['splunk']){
     fail('You must include the splunk forwarder or splunk class before changing the password defined resources')
   }
 
-  file { "$password_config_file":
+  file { $password_config_file:
     ensure  => file,
     content => $password_content,
     require => Package[$package_name],
     notify  => Service[$virtual_service],
-    tag     => "splunk_password",
+    tag     => 'splunk_password',
   }
 
-  file { "$secret_file":
+  file { $secret_file:
     ensure  => file,
     content => $secret,
     require => Package[$package_name],
