@@ -2,7 +2,6 @@ module PuppetX
   module Puppetlabs
     module Splunk
       module Type
-
         def self.clone_type(type)
           type.ensurable
 
