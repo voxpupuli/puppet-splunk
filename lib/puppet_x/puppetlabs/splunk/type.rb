@@ -7,9 +7,9 @@ module PuppetX
 
           type.define_singleton_method(:title_patterns) do
             [
-              [/^([^\/]*)$/,   [[:section]]],
-              [/^(.*\/\/.*)$/, [[:section]]],
-              [/^(.*)\/(.*)$/,
+              [%r{^([^\/]*)$},   [[:section]]],
+              [%r{^(.*\/\/.*)$}, [[:section]]],
+              [%r{^(.*)\/(.*)$},
                [
                  [:section, ->(x) { x }],
                  [:setting, ->(x) { x }]
