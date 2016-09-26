@@ -24,22 +24,22 @@ Puppet::Type.newtype(:splunk_config) do
 
   ## Generate purge parameters for the splunk_config type
   [
-      :purge_inputs,
-      :purge_outputs,
-      :purge_authentication,
-      :purge_authorize,
-      :purge_distsearch,
-      :purge_indexes,
-      :purge_limits,
-      :purge_props,
-      :purge_server,
-      :purge_transforms,
-      :purge_web,
-      :purge_forwarder_inputs,
-      :purge_forwarder_outputs,
-      :purge_forwarder_props,
-      :purge_forwarder_transforms,
-      :purge_forwarder_web
+    :purge_inputs,
+    :purge_outputs,
+    :purge_authentication,
+    :purge_authorize,
+    :purge_distsearch,
+    :purge_indexes,
+    :purge_limits,
+    :purge_props,
+    :purge_server,
+    :purge_transforms,
+    :purge_web,
+    :purge_forwarder_inputs,
+    :purge_forwarder_outputs,
+    :purge_forwarder_props,
+    :purge_forwarder_transforms,
+    :purge_forwarder_web
   ].each do |p|
     newparam(p) do
       newvalues(:true, :false)

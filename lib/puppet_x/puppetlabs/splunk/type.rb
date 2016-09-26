@@ -10,10 +10,10 @@ module PuppetX
               [/^([^\/]*)$/,   [[:section]]],
               [/^(.*\/\/.*)$/, [[:section]]],
               [/^(.*)\/(.*)$/,
-                [
-                  [:section, lambda { |x| x }],
-                  [:setting, lambda { |x| x }]
-                ]
+               [
+                 [:section, lambda { |x| x }],
+                 [:setting, lambda { |x| x }]
+               ]
               ]
             ]
           end
