@@ -13,8 +13,7 @@ module PuppetX
                [
                  [:section, ->(x) { x }],
                  [:setting, ->(x) { x }]
-               ]
-              ]
+               ]]
             ]
           end
           type.newproperty(:value) do
