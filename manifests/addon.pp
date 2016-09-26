@@ -2,7 +2,7 @@
 # Defined type: splunk::addon
 #
 # This define sets up a TA (Technology Addon) for Splunk.  It (optionally)
-# installed a package, and configures input forwarders in 
+# installed a package, and configures input forwarders in
 # $SPLUNK_HOME/etc/apps/<app name>/local/inputs.conf
 #
 # Examples
@@ -57,9 +57,9 @@ define splunk::addon (
       path    => "${splunk_home}/etc/apps/${name}/local/inputs.conf",
       require => File["${splunk_home}/etc/apps/${name}/local"]
     }
-  
+
     create_resources('splunk::addon::input', $inputs, {"addon" =>  $name })
   }
-  
+
 }
 

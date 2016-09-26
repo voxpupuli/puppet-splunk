@@ -71,7 +71,7 @@ class splunk (
   $path_delimiter  = $splunk::params::path_delimiter
 
   if $pkg_provider != undef and $pkg_provider != 'yum' and  $pkg_provider != 'apt' {
-    include staging
+    include ::staging
 
     $staged_package  = staging_parse($package_source)
     $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
@@ -138,14 +138,14 @@ class splunk (
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.
   case $::kernel {
-    'Linux': { include splunk::platform::posix   }
-    'SunOS': { include splunk::platform::solaris }
+    'Linux': { include ::splunk::platform::posix   }
+    'SunOS': { include ::splunk::platform::solaris }
     default: { } # no special configuration needed
   }
 
   # Realize resources shared between server and forwarder profiles, and set up
   # dependency chains.
-  include splunk::virtual
+  include ::splunk::virtual
 
   # This realize() call is because the collectors don't seem to work well with
   # arrays. They'll set the dependencies but not realize all Service resources

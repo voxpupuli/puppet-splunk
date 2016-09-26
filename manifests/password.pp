@@ -40,19 +40,17 @@ class splunk::password( $password_config_file = $splunk::params::password_config
   }
 
   file { "$password_config_file":
+    ensure  => file,
     content => $password_content,
-    ensure  => present,
     require => Package[$package_name],
     notify  => Service[$virtual_service],
     tag     => "splunk_password",
   }
 
   file { "$secret_file":
+    ensure  => file,
     content => $secret,
     require => Package[$package_name],
     notify  => Service[$virtual_service],
-    ensure  => present,
   }
-  
-
 }

@@ -72,7 +72,7 @@ class splunk::forwarder (
   $path_delimiter  = $splunk::params::path_delimiter
   #no need for staging the source if we have yum or apt
   if $pkg_provider != undef and $pkg_provider != 'yum' and  $pkg_provider != 'apt' {
-    include staging
+    include ::staging
 
     $staged_package  = staging_parse($package_source)
     $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
@@ -118,20 +118,20 @@ class splunk::forwarder (
     purge_forwarder_transforms => $purge_forwarder_transforms,
     purge_forwarder_web        => $purge_forwarder_web
   }
-  
+
   # This is a module that supports multiple platforms. For some platforms
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.
   case $::kernel {
-    'Linux': { class { 'splunk::platform::posix': splunkd_port => $splunkd_port,
+    'Linux': { class { '::splunk::platform::posix': splunkd_port => $splunkd_port,
                                                   splunk_user  => $splunk_user } }
-    'SunOS': { include splunk::platform::solaris }
+    'SunOS': { ::include splunk::platform::solaris }
     default: { } # no special configuration needed
   }
 
   # Realize resources shared between server and forwarder profiles, and set up
   # dependency chains.
-  include splunk::virtual
+  include ::splunk::virtual
 
   realize Service[$virtual_service]
 
@@ -140,7 +140,7 @@ class splunk::forwarder (
   Exec <| tag   == 'splunk_forwarder' |> ->
   Service[$virtual_service]
 
-  Package[$package_name] -> Splunkforwarder_output<||>     ~> Service[$virtual_service] 
+  Package[$package_name] -> Splunkforwarder_output<||>     ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_input<||>      ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_props<||>      ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_transforms<||> ~> Service[$virtual_service]

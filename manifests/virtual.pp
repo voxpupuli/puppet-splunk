@@ -14,7 +14,7 @@
 # Requires: nothing
 #
 class splunk::virtual {
-  include splunk::params
+  include ::splunk::params
 
   $virtual_services = unique(flatten([
     $splunk::params::server_service,
