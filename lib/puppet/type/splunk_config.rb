@@ -75,7 +75,7 @@ Puppet::Type.newtype(:splunk_config) do
       resources.concat(purge_splunk_resources(k)) if purge == :true
     end
 
-    return resources
+    resources
   end
 
   def set_provider_paths
@@ -132,7 +132,7 @@ Puppet::Type.newtype(:splunk_config) do
       end
     end
 
-    return purge_resources
+    purge_resources
   end
 
 end
