@@ -53,7 +53,7 @@ Puppet::Type.newtype(:splunk_config) do
   def generate
     set_provider_paths
 
-    resources = Array.new
+    resources = []
 
     {
       Puppet::Type::Splunk_output               => self[:purge_outputs],
@@ -106,8 +106,8 @@ Puppet::Type.newtype(:splunk_config) do
 
   def purge_splunk_resources(klass)
     type_name = klass.name
-    purge_resources = Array.new
-    puppet_resources = Array.new
+    purge_resources = []
+    puppet_resources = []
 
     # Search the catalog for resource types matching the provided class
     # type and build an array of puppet resources matching the namevar
