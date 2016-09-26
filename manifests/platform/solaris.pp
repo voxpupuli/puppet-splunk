@@ -13,9 +13,9 @@
 # Requires: nothing
 #
 class splunk::platform::solaris inherits splunk::virtual {
-  include staging
-  include splunk::params
-  include splunk::platform::posix
+  include ::staging
+  include ::splunk::params
+  include ::splunk::platform::posix
 
   $path         = $staging::path
   $subdir       = $splunk::params::staging_subdir
