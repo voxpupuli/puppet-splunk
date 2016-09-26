@@ -1,3 +1,7 @@
+# Splunk Puppet Module
+
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-splunk.png)](https://travis-ci.org/voxpupuli/puppet-splunk)
+
 #### Table of Contents
 
 1. [Overview](#overview)
