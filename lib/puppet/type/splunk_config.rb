@@ -116,7 +116,7 @@ Puppet::Type.newtype(:splunk_config) do
     #
     catalog_resources = catalog.resources.select { |r| r.is_a?(klass) }
     catalog_resources.each do |res|
-      puppet_resources << res[:section] + "/" + res[:setting]
+      puppet_resources << res[:section] + '/' + res[:setting]
     end
 
 
