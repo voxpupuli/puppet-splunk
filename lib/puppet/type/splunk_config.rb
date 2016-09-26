@@ -78,7 +78,6 @@ Puppet::Type.newtype(:splunk_config) do
     return resources
   end
 
-
   def set_provider_paths
     [
       :splunk_authentication,
@@ -118,7 +117,6 @@ Puppet::Type.newtype(:splunk_config) do
     catalog_resources.each do |res|
       puppet_resources << res[:section] + '/' + res[:setting]
     end
-
 
     # Search the configured instances of the class type and purge them if
     # the instance name (setion/setting) isn't found in puppet_resources
