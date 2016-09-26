@@ -2,7 +2,6 @@ require 'spec_helper_system'
 require 'pry'
 
 describe 'setting up the forwarder' do
-
   it 'should be able to set up a forwarder' do
     pp = <<-EOS
       class { 'splunk::params':
