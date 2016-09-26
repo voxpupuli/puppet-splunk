@@ -113,10 +113,10 @@ class splunk::forwarder (
 
   Splunk_config['splunk'] {
     purge_forwarder_outputs    => $purge_outputs,
-    purge_forwarder_inputs     => $purge_forwarder_inputs,
-    purge_forwarder_props      => $purge_forwarder_props,
-    purge_forwarder_transforms => $purge_forwarder_transforms,
-    purge_forwarder_web        => $purge_forwarder_web
+    purge_forwarder_inputs     => $purge_inputs,
+    purge_forwarder_props      => $purge_props,
+    purge_forwarder_transforms => $purge_transforms,
+    purge_forwarder_web        => $purge_web,
   }
 
   # This is a module that supports multiple platforms. For some platforms
