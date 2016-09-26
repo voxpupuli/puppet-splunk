@@ -120,14 +120,13 @@ Puppet::Type.newtype(:splunk_config) do
     # the instance name (setion/setting) isn't found in puppet_resources
     #
     Puppet::Type.type(type_name).instances.each do |instance|
-      unless puppet_resources.include?(instance.name)
-        purge_resources << Puppet::Type.type(type_name).new(
-          name: instance.name,
-          section: instance[:section],
-          setting: instance[:setting],
-          ensure: :absent
-        )
-      end
+      next if puppet_resources.include?(instance.name)
+      purge_resources << Puppet::Type.type(type_name).new(
+        name: instance.name,
+        section: instance[:section],
+        setting: instance[:setting],
+        ensure: :absent
+      )
     end
 
     purge_resources
