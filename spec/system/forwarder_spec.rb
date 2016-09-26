@@ -13,7 +13,7 @@ describe 'setting up the forwarder' do
 
     # Run it twice and test for idempotency
     puppet_apply(pp) do |r|
-      r.exit_code.should_not == 1
+      r.exit_code.should_not eq(1)
       r.refresh
       r.exit_code.should be_zero
     end
@@ -39,7 +39,7 @@ describe 'setting up the forwarder' do
 
     # Run it twice and test for idempotency
     puppet_apply(pp) do |r|
-      r.exit_code.should_not == 1
+      r.exit_code.should_not eq(1)
       r.refresh
       r.exit_code.should be_zero
     end
