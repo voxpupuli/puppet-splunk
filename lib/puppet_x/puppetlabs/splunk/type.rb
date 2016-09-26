@@ -11,8 +11,8 @@ module PuppetX
               [/^(.*\/\/.*)$/, [[:section]]],
               [/^(.*)\/(.*)$/,
                [
-                 [:section, lambda { |x| x }],
-                 [:setting, lambda { |x| x }]
+                 [:section, ->(x) { x }],
+                 [:setting, ->(x) { x }]
                ]
               ]
             ]
