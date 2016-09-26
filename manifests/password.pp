@@ -53,6 +53,4 @@ class splunk::password( $password_config_file = $splunk::params::password_config
     require => Package[$package_name],
     notify  => Service[$virtual_service],
   }
-  
-
 }

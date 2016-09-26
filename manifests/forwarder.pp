@@ -118,7 +118,7 @@ class splunk::forwarder (
     purge_forwarder_transforms => $purge_forwarder_transforms,
     purge_forwarder_web        => $purge_forwarder_web
   }
-  
+
   # This is a module that supports multiple platforms. For some platforms
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.
@@ -140,7 +140,7 @@ class splunk::forwarder (
   Exec <| tag   == 'splunk_forwarder' |> ->
   Service[$virtual_service]
 
-  Package[$package_name] -> Splunkforwarder_output<||>     ~> Service[$virtual_service] 
+  Package[$package_name] -> Splunkforwarder_output<||>     ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_input<||>      ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_props<||>      ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_transforms<||> ~> Service[$virtual_service]
