@@ -17,9 +17,9 @@ RSpec.configure do |c|
     # Need to stage the Splunk/Splunkforwarder packages here.
     puppet_module_install(source: proj_root, module_name: 'splunk')
     hosts.each do |host|
-      on host, puppet('module', 'install', 'puppetlabs-stdlib'), { acceptable_exit_codes: [0,1] }
-      on host, puppet('module', 'install', 'nanliu-staging'), { acceptable_exit_codes: [0,1] }
-      on host, puppet('module', 'install', 'puppetlabs-inifile'), { acceptable_exit_codes: [0,1] }
+      on host, puppet('module', 'install', 'puppetlabs-stdlib'), acceptable_exit_codes: [0,1]
+      on host, puppet('module', 'install', 'nanliu-staging'), acceptable_exit_codes: [0,1]
+      on host, puppet('module', 'install', 'puppetlabs-inifile'), acceptable_exit_codes: [0,1]
     end
   end
 end
