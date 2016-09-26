@@ -14,6 +14,6 @@ Puppet::Type.type(:ini_setting).provide(
   end
 
   def self.set_file_path(path)
-    @file_path=path
+    @file_path = path
   end
 end
