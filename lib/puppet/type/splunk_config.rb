@@ -1,8 +1,8 @@
 # Require all of our types so the class names are resolvable for purging
 Dir[File.dirname(__FILE__) + '/*.rb'].each do |file| 
-    unless file == __FILE__
-      require file
-    end
+  unless file == __FILE__
+    require file
+  end
 end
 
 Puppet::Type.newtype(:splunk_config) do

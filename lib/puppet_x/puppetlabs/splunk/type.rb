@@ -25,7 +25,7 @@ module PuppetX
             end
           end
           type.newparam(:setting) do
-            desc 'The setting being defined.'
+             desc 'The setting being defined.'
             isnamevar
             munge do |v|
               v.to_s.strip
