@@ -132,5 +132,4 @@ Puppet::Type.newtype(:splunk_config) do
 
     purge_resources
   end
-
 end
