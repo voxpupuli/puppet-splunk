@@ -24,12 +24,12 @@ module PuppetX
             end
           end
           type.newparam(:setting) do
-             desc 'The setting being defined.'
-             isnamevar
-             munge do |v|
-               v.to_s.strip
-             end
-           end
+            desc 'The setting being defined.'
+            isnamevar
+            munge do |v|
+              v.to_s.strip
+            end
+          end
           type.newparam(:section) do
             desc 'The section the setting is defined under.'
             isnamevar
