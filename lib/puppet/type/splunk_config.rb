@@ -42,7 +42,7 @@ Puppet::Type.newtype(:splunk_config) do
       :purge_forwarder_web
   ].each do |p|
     newparam(p) do
-      newvalues(:true,:false)
+      newvalues(:true, :false)
       defaultto :false
     end
   end
@@ -71,7 +71,7 @@ Puppet::Type.newtype(:splunk_config) do
       Puppet::Type::Splunkforwarder_props       => self[:purge_forwarder_props],
       Puppet::Type::Splunkforwarder_transforms  => self[:purge_forwarder_transforms],
       Puppet::Type::Splunkforwarder_web         => self[:purge_forwarder_web]
-    }.each do |k,purge|
+    }.each do |k, purge|
       resources.concat(purge_splunk_resources(k)) if purge == :true
     end
 
