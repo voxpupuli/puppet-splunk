@@ -4,4 +4,3 @@ Puppet::Type.newtype(:splunk_distsearch) do
   @doc= 'Manage distsearch entries in distsearch.conf'
   PuppetX::Puppetlabs::Splunk::Type.clone_type(self)
 end
-

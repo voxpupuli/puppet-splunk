@@ -4,4 +4,3 @@ Puppet::Type.newtype(:splunk_authentication) do
   @doc = 'Manage splunk authentication settings in authentication.conf'
   PuppetX::Puppetlabs::Splunk::Type.clone_type(self)
 end
-

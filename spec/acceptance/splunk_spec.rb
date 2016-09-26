@@ -23,4 +23,3 @@ describe 'splunk class' do
     end
   end
 end
-

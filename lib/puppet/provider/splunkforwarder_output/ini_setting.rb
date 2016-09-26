@@ -6,4 +6,3 @@ Puppet::Type.type(:splunkforwarder_output).provide(
     'system/local/outputs.conf'
   end
 end
-

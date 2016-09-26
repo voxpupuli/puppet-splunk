@@ -24,4 +24,3 @@ RSpec.configure do |c|
     shell('puppet module install puppetlabs-inifile --version 1.0.0')
   end
 end
-
