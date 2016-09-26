@@ -1,9 +1,9 @@
 Puppet::Type.type(:ini_setting).provide(
   :splunk,
-  :parent => Puppet::Type.type(:ini_setting).provider(:ruby)
+  parent: Puppet::Type.type(:ini_setting).provider(:ruby)
 ) do
 
-  confine :true => false # Never automatically select this provider
+  confine true: false # Never automatically select this provider
 
   @file_path = nil
 

@@ -6,7 +6,7 @@ Dir[File.dirname(__FILE__) + '/*.rb'].each do |file|
 end
 
 Puppet::Type.newtype(:splunk_config) do
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'splunk config'
   end
 
@@ -126,10 +126,10 @@ Puppet::Type.newtype(:splunk_config) do
     Puppet::Type.type(type_name).instances.each do |instance|
       unless puppet_resources.include?(instance.name)
         purge_resources << Puppet::Type.type(type_name).new(
-          :name    => instance.name,
-          :section => instance[:section],
-          :setting => instance[:setting],
-          :ensure => :absent
+          name: instance.name,
+          section: instance[:section],
+          setting: instance[:setting],
+          ensure: :absent
         )
       end
     end
