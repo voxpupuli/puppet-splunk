@@ -89,7 +89,7 @@ Puppet::Type.newtype(:splunk_config) do
       :splunk_transforms,
       :splunk_web
     ].each do |res_type|
-      Puppet::Type.type(res_type).provider(:ini_setting).set_file_path(self[:server_confdir])
+      Puppet::Type.type(res_type).provider(:ini_setting).file_path = self[:server_confdir]
     end
     [
       :splunkforwarder_input,
@@ -98,7 +98,7 @@ Puppet::Type.newtype(:splunk_config) do
       :splunkforwarder_transforms,
       :splunkforwarder_web
     ].each do |res_type|
-      Puppet::Type.type(res_type).provider(:ini_setting).set_file_path(self[:forwarder_confdir])
+      Puppet::Type.type(res_type).provider(:ini_setting).file_path = self[:forwarder_confdir]
     end
   end
 
