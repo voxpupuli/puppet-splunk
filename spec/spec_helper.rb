@@ -13,5 +13,5 @@ RSpec.configure do |c|
   c.default_facts = default_facts
 end
 
-$:.unshift File.dirname(__FILE__) + "/fixtures/modules/inifile/lib"
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/fixtures/modules/inifile/lib'
 # vim: syntax=ruby

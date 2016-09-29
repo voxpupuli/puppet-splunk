@@ -1,15 +1,15 @@
 require 'spec_helper'
 
 describe Puppet::Type.type(:splunk_config) do
-
-  let(:subject) {
+  let(:subject) do
     described_class.new(
-      :name => "config",
-      :server_confdir => '/opt/splunk/etc',
-      :forwarder_confdir => '/opt/splunkforwarder/etc')
-  }
+      name: 'config',
+      server_confdir: '/opt/splunk/etc',
+      forwarder_confdir: '/opt/splunkforwarder/etc'
+    )
+  end
 
-  describe "generate" do
+  describe 'generate' do
     before do
       subject.generate
     end
@@ -19,9 +19,9 @@ describe Puppet::Type.type(:splunk_config) do
     # type with the correct file path.
     #
     SPLUNK_TYPES.each do |type, file_name|
-      if SPLUNK_SERVER_TYPES.has_key?(type)
+      if SPLUNK_SERVER_TYPES.key?(type)
         file_path = File.join('/opt/splunk/etc', file_name)
-      elsif SPLUNK_FORWARDER_TYPES.has_key?(type)
+      elsif SPLUNK_FORWARDER_TYPES.key?(type)
         file_path = File.join('/opt/splunkforwarder/etc', file_name)
       end
 
