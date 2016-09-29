@@ -18,10 +18,9 @@ RSpec.configure do |c|
     puppet_install
 
     # Install modules and dependencies
-    puppet_module_install(:source => proj_root, :module_name => 'splunk')
+    puppet_module_install(source: proj_root, module_name: 'splunk')
     shell('puppet module install nanliu-staging --version 0.3.1')
     shell('puppet module install puppetlabs-stdlib --version 3.0.0')
     shell('puppet module install puppetlabs-inifile --version 1.0.0')
   end
 end
-

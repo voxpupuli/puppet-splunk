@@ -105,7 +105,7 @@ class splunk::forwarder (
     section => 'settings',
     setting => 'mgmtHostPort',
     value   => "${splunkd_listen}:${splunkd_port}",
-    tag => 'splunk_forwarder'
+    tag     => 'splunk_forwarder',
   }
 
   # If the purge parameters have been set, remove all unmanaged entries from
@@ -113,19 +113,23 @@ class splunk::forwarder (
 
   Splunk_config['splunk'] {
     purge_forwarder_outputs    => $purge_outputs,
-    purge_forwarder_inputs     => $purge_forwarder_inputs,
-    purge_forwarder_props      => $purge_forwarder_props,
-    purge_forwarder_transforms => $purge_forwarder_transforms,
-    purge_forwarder_web        => $purge_forwarder_web
+    purge_forwarder_inputs     => $purge_inputs,
+    purge_forwarder_props      => $purge_props,
+    purge_forwarder_transforms => $purge_transforms,
+    purge_forwarder_web        => $purge_web,
   }
 
   # This is a module that supports multiple platforms. For some platforms
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.
   case $::kernel {
-    'Linux': { class { '::splunk::platform::posix': splunkd_port => $splunkd_port,
-                                                  splunk_user  => $splunk_user } }
-    'SunOS': { ::include splunk::platform::solaris }
+    'Linux': {
+      class { '::splunk::platform::posix':
+        splunkd_port => $splunkd_port,
+        splunk_user  => $splunk_user,
+      }
+    }
+    'SunOS': { include ::splunk::platform::solaris }
     default: { } # no special configuration needed
   }
 
@@ -152,19 +156,19 @@ class splunk::forwarder (
     mode => '0644',
   }
 
-  file { "/opt/splunkforwarder/etc/system/local/inputs.conf":
-    ensure => present,
-    tag => 'splunk_forwarder'
+  file { '/opt/splunkforwarder/etc/system/local/inputs.conf':
+    ensure => file,
+    tag    => 'splunk_forwarder',
   }
 
-  file { "/opt/splunkforwarder/etc/system/local/outputs.conf":
-    ensure => present,
-    tag => 'splunk_forwarder'
+  file { '/opt/splunkforwarder/etc/system/local/outputs.conf':
+    ensure => file,
+    tag    => 'splunk_forwarder',
   }
 
-  file { "/opt/splunkforwarder/etc/system/local/web.conf":
-    ensure => present,
-    tag => 'splunk_forwarder'
+  file { '/opt/splunkforwarder/etc/system/local/web.conf':
+    ensure => file,
+    tag    => 'splunk_forwarder',
   }
 
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on

@@ -109,14 +109,14 @@ class splunk (
     section => 'settings',
     setting => 'mgmtHostPort',
     value   => "${splunkd_listen}:${splunkd_port}",
-    tag => 'splunk_server'
+    tag     => 'splunk_server',
   }
 
   splunk_web { 'splunk_server_web_port':
     section => 'settings',
     setting => 'httpport',
     value   => $web_port,
-    tag => 'splunk_server'
+    tag     => 'splunk_server',
   }
 
 
@@ -217,59 +217,59 @@ class splunk (
     mode => '0600',
   }
 
-  file { "/opt/splunk/etc/system/local/authentication.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/authentication.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
-  file { "/opt/splunk/etc/system/local/authorize.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/authorize.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
-  file { "/opt/splunk/etc/system/local/distsearch.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/distsearch.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
-  file { "/opt/splunk/etc/system/local/indexes.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/indexes.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
-  file { "/opt/splunk/etc/system/local/inputs.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/inputs.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
-  file { "/opt/splunk/etc/system/local/limits.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/limits.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
-  file { "/opt/splunk/etc/system/local/outputs.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/outputs.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
-  file { "/opt/splunk/etc/system/local/props.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/props.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
-  file { "/opt/splunk/etc/system/local/server.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/server.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
-  file { "/opt/splunk/etc/system/local/transforms.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/transforms.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
-  file { "/opt/splunk/etc/system/local/web.conf":
-    ensure => present,
-    tag => 'splunk_server'
+  file { '/opt/splunk/etc/system/local/web.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on

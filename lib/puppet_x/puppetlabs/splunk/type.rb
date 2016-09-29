@@ -2,20 +2,18 @@ module PuppetX
   module Puppetlabs
     module Splunk
       module Type
-
         def self.clone_type(type)
           type.ensurable
 
           type.define_singleton_method(:title_patterns) do
             [
-              [ /^([^\/]*)$/,   [ [ :section ] ] ],
-              [ /^(.*\/\/.*)$/, [ [ :section ] ] ],
-              [ /^(.*)\/(.*)$/,
-                [
-                  [:section, lambda{|x| x} ],
-                  [:setting, lambda{|x| x} ]
-                ]
-              ]
+              [%r{^([^\/]*)$},   [[:section]]],
+              [%r{^(.*\/\/.*)$}, [[:section]]],
+              [%r{^(.*)\/(.*)$},
+               [
+                 [:section, ->(x) { x }],
+                 [:setting, ->(x) { x }]
+               ]]
             ]
           end
           type.newproperty(:value) do
@@ -30,15 +28,15 @@ module PuppetX
             munge do |v|
               v.to_s.strip
             end
-           end
-           type.newparam(:section) do
-             desc 'The section the setting is defined under.'
-             isnamevar
-             munge do |v|
-               v.to_s.strip
-             end
-           end
-           type.newparam(:name)
+          end
+          type.newparam(:section) do
+            desc 'The section the setting is defined under.'
+            isnamevar
+            munge do |v|
+              v.to_s.strip
+            end
+          end
+          type.newparam(:name)
         end
       end
     end

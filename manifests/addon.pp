@@ -55,10 +55,10 @@ define splunk::addon (
   if $inputs {
     concat { "splunk::addon::inputs_${name}":
       path    => "${splunk_home}/etc/apps/${name}/local/inputs.conf",
-      require => File["${splunk_home}/etc/apps/${name}/local"]
+      require => File["${splunk_home}/etc/apps/${name}/local"],
     }
 
-    create_resources('splunk::addon::input', $inputs, {"addon" =>  $name })
+    create_resources('splunk::addon::input', $inputs, {'addon' =>  $name })
   }
 
 }

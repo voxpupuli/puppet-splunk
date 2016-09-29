@@ -1,12 +1,10 @@
 # Require all of our types so the class names are resolvable for purging
-Dir[File.dirname(__FILE__) + '/*.rb'].each do |file| 
-    unless file == __FILE__
-      require file
-    end
+Dir[File.dirname(__FILE__) + '/*.rb'].each do |file|
+  require file unless file == __FILE__
 end
 
 Puppet::Type.newtype(:splunk_config) do
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'splunk config'
   end
 
@@ -23,26 +21,26 @@ Puppet::Type.newtype(:splunk_config) do
   end
 
   ## Generate purge parameters for the splunk_config type
-  [ 
-      :purge_inputs,
-      :purge_outputs,
-      :purge_authentication,
-      :purge_authorize,
-      :purge_distsearch,
-      :purge_indexes,
-      :purge_limits,
-      :purge_props,
-      :purge_server,
-      :purge_transforms,
-      :purge_web,
-      :purge_forwarder_inputs,
-      :purge_forwarder_outputs,
-      :purge_forwarder_props,
-      :purge_forwarder_transforms,
-      :purge_forwarder_web
+  [
+    :purge_inputs,
+    :purge_outputs,
+    :purge_authentication,
+    :purge_authorize,
+    :purge_distsearch,
+    :purge_indexes,
+    :purge_limits,
+    :purge_props,
+    :purge_server,
+    :purge_transforms,
+    :purge_web,
+    :purge_forwarder_inputs,
+    :purge_forwarder_outputs,
+    :purge_forwarder_props,
+    :purge_forwarder_transforms,
+    :purge_forwarder_web
   ].each do |p|
     newparam(p) do
-      newvalues(:true,:false)
+      newvalues(:true, :false)
       defaultto :false
     end
   end
@@ -53,7 +51,7 @@ Puppet::Type.newtype(:splunk_config) do
   def generate
     set_provider_paths
 
-    resources = Array.new
+    resources = []
 
     {
       Puppet::Type::Splunk_output               => self[:purge_outputs],
@@ -71,13 +69,12 @@ Puppet::Type.newtype(:splunk_config) do
       Puppet::Type::Splunkforwarder_props       => self[:purge_forwarder_props],
       Puppet::Type::Splunkforwarder_transforms  => self[:purge_forwarder_transforms],
       Puppet::Type::Splunkforwarder_web         => self[:purge_forwarder_web]
-    }.each do |k,purge|
+    }.each do |k, purge|
       resources.concat(purge_splunk_resources(k)) if purge == :true
     end
 
-    return resources
+    resources
   end
-
 
   def set_provider_paths
     [
@@ -92,7 +89,7 @@ Puppet::Type.newtype(:splunk_config) do
       :splunk_transforms,
       :splunk_web
     ].each do |res_type|
-      Puppet::Type.type(res_type).provider(:ini_setting).set_file_path(self[:server_confdir])
+      Puppet::Type.type(res_type).provider(:ini_setting).file_path = self[:server_confdir]
     end
     [
       :splunkforwarder_input,
@@ -101,14 +98,14 @@ Puppet::Type.newtype(:splunk_config) do
       :splunkforwarder_transforms,
       :splunkforwarder_web
     ].each do |res_type|
-      Puppet::Type.type(res_type).provider(:ini_setting).set_file_path(self[:forwarder_confdir])
+      Puppet::Type.type(res_type).provider(:ini_setting).file_path = self[:forwarder_confdir]
     end
   end
-    
+
   def purge_splunk_resources(klass)
     type_name = klass.name
-    purge_resources = Array.new
-    puppet_resources = Array.new
+    purge_resources = []
+    puppet_resources = []
 
     # Search the catalog for resource types matching the provided class
     # type and build an array of puppet resources matching the namevar
@@ -116,25 +113,22 @@ Puppet::Type.newtype(:splunk_config) do
     #
     catalog_resources = catalog.resources.select { |r| r.is_a?(klass) }
     catalog_resources.each do |res|
-      puppet_resources << res[:section] + "/" + res[:setting]
+      puppet_resources << res[:section] + '/' + res[:setting]
     end
-
 
     # Search the configured instances of the class type and purge them if
     # the instance name (setion/setting) isn't found in puppet_resources
     #
     Puppet::Type.type(type_name).instances.each do |instance|
-      unless puppet_resources.include?(instance.name)
-        purge_resources << Puppet::Type.type(type_name).new(
-          :name    => instance.name,
-          :section => instance[:section],
-          :setting => instance[:setting],
-          :ensure => :absent
-        )
-      end
+      next if puppet_resources.include?(instance.name)
+      purge_resources << Puppet::Type.type(type_name).new(
+        name: instance.name,
+        section: instance[:section],
+        setting: instance[:setting],
+        ensure: :absent
+      )
     end
 
-    return purge_resources
+    purge_resources
   end
-    
 end

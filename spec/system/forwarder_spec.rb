@@ -2,8 +2,7 @@ require 'spec_helper_system'
 require 'pry'
 
 describe 'setting up the forwarder' do
-
-  it 'should be able to set up a forwarder' do
+  it 'is able to set up a forwarder' do
     pp = <<-EOS
       class { 'splunk::params':
         version => '6.0',
@@ -14,7 +13,7 @@ describe 'setting up the forwarder' do
 
     # Run it twice and test for idempotency
     puppet_apply(pp) do |r|
-      r.exit_code.should_not == 1
+      r.exit_code.should_not eq(1)
       r.refresh
       r.exit_code.should be_zero
     end
@@ -40,13 +39,13 @@ describe 'setting up the forwarder' do
 
     # Run it twice and test for idempotency
     puppet_apply(pp) do |r|
-      r.exit_code.should_not == 1
+      r.exit_code.should_not eq(1)
       r.refresh
       r.exit_code.should be_zero
     end
   end
 
   describe file('/opt/splunkforwarder/etc/system/local/transforms.conf') do
-    its(:content) { should match(/\[hadoop_severity\]\nREGEX=\\d\nFORMAT=severity/) }
+    its(:content) { should match(%r{\[hadoop_severity\]\nREGEX=\\d\nFORMAT=severity}) }
   end
 end
