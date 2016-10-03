@@ -17,8 +17,11 @@ SPLUNK_TYPES.each do |type, file_name|
         end
       end
 
-      it 'has a setting property' do
+      it 'has a setting attribute' do
         expect(described_class.attrclass(:setting)).not_to be_nil
+      end
+
+      it 'specifies setting as a parameter'
         expect(described_class.attrtype(:setting)).to eq(:param)
       end
 
@@ -48,8 +51,8 @@ SPLUNK_TYPES.each do |type, file_name|
         expect(type[:section]).to eq('delta')
       end
       it 'ignores title when setting is declared' do
-        type = described_class.new(title: 'foo/bar', setting: 'tango', setting: 'delta')
-        expect(type[:setting]).to eq('delta')
+        type = described_class.new(title: 'foo/bar', setting: 'tango', section: 'delta')
+        expect(type[:setting]).to eq('tango')
       end
     end
 

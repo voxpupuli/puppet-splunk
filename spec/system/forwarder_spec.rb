@@ -46,6 +46,6 @@ describe 'setting up the forwarder' do
   end
 
   describe file('/opt/splunkforwarder/etc/system/local/transforms.conf') do
-    its(:content) { should match(/\[hadoop_severity\]\nREGEX=\\d\nFORMAT=severity/) }
+    its(:content) { should match(%r{\[hadoop_severity\]\nREGEX=\\d\nFORMAT=severity}) }
   end
 end
