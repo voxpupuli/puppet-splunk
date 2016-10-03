@@ -1,5 +1,9 @@
 ## Release 5.0.0
 
+### Migration from puppetlabs/splunk
+
+This module has been migrated from `puppetlabs/splunk` and is now maintained under the [Vox Pupuli](https://voxpupuli.org) namespace as of this release.
+
 ### Summary
 
 This major release includes a major internal refactoring and code optimizations around the splunk types and providers as well as changes to how resource purging is handled.  This release should be mostly backwardly compatible with the only notable API change being the title_patterns parsing of resource titles and namevar differences.
