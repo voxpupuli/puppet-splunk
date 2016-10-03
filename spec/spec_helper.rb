@@ -1,5 +1,6 @@
 require 'puppetlabs_spec_helper/module_spec_helper'
 require 'rspec-puppet-facts'
+require 'splunk_data.rb'
 include RspecPuppetFacts
 
 RSpec.configure do |c|
@@ -12,4 +13,5 @@ RSpec.configure do |c|
   c.default_facts = default_facts
 end
 
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/fixtures/modules/inifile/lib'
 # vim: syntax=ruby

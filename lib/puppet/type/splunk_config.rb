@@ -83,13 +83,15 @@ Puppet::Type.newtype(:splunk_config) do
       :splunk_distsearch,
       :splunk_indexes,
       :splunk_limits,
+      :splunk_input,
       :splunk_output,
       :splunk_props,
       :splunk_server,
       :splunk_transforms,
       :splunk_web
     ].each do |res_type|
-      Puppet::Type.type(res_type).provider(:ini_setting).file_path = self[:server_confdir]
+      provider_class = Puppet::Type.type(res_type).provider(:ini_setting)
+      provider_class.file_path = self[:server_confdir]
     end
     [
       :splunkforwarder_input,
@@ -98,12 +100,13 @@ Puppet::Type.newtype(:splunk_config) do
       :splunkforwarder_transforms,
       :splunkforwarder_web
     ].each do |res_type|
-      Puppet::Type.type(res_type).provider(:ini_setting).file_path = self[:forwarder_confdir]
+      provider_class = Puppet::Type.type(res_type).provider(:ini_setting)
+      provider_class.file_path = self[:forwarder_confdir]
     end
   end
 
-  def purge_splunk_resources(klass)
-    type_name = klass.name
+  def purge_splunk_resources(type_class)
+    type_name = type_class.name
     purge_resources = []
     puppet_resources = []
 
@@ -111,7 +114,7 @@ Puppet::Type.newtype(:splunk_config) do
     # type and build an array of puppet resources matching the namevar
     # as section/setting
     #
-    catalog_resources = catalog.resources.select { |r| r.is_a?(klass) }
+    catalog_resources = catalog.resources.select { |r| r.is_a?(type_class) }
     catalog_resources.each do |res|
       puppet_resources << res[:section] + '/' + res[:setting]
     end
