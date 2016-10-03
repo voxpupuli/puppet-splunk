@@ -1,3 +1,24 @@
+## Release 5.0.0
+
+### Summary
+
+This major release includes a major internal refactoring and code optimizations around the splunk types and providers as well as changes to how resource purging is handled.  This release should be mostly backwardly compatible with the only notable API change being the title_patterns parsing of resource titles and namevar differences.
+
+See: https://github.com/voxpupuli/puppet-splunk/pull/49
+
+#### Changes
+ 
+- `section` and `setting` are composite namevars.  This also fixes idempotency issues with duplicate section/setting pairs.
+- The resource title is parsed for the title pattern "section/setting" allowing for shorter resource declarations. The new title patterns match `/^([^\/]*)$/` as "section" or `/^(.*)\/(.*)$/` as "section/setting" 
+- Purging is now done from the `splunk_config` type.  Previously `resources` resource was used, but this was flawed since the providers cannot support an `instances` method and have the ability to change the location of the config files.
+- Purging now enabled for all forwarder types
+- `forwarder_confdir` and `server_confdir` are now relative to `./etc` not `./etc/system/local` meaning config files can be managed outside of `./etc/system/local`
+
+- (internal) Types use a kind of mixin pattern provided by `PuppetX::Puppetlabs::Splunk::Type.clone_type` so the parameters, properties and methods of the types are centrally managed - but you can still add additional ones, or documentation, to individual types.
+- (internal) Providers have been simplified a bit, they are only responsible for defining what their filename is, and they inherit from `Puppet::Type.type(:ini_file).provider(:splunk)` where generic stuff around file_path is set (by `splunk_config`).  This then inturn inherits from the `:ini_file` provider in `puppetlabs-inifile`
+
+
+
 ## Release 4.0.0
 ### Summary
 This major release includes new features, types and providers, as well as various bugfixes. This release introduces some backwards incompatibility.
