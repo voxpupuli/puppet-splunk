@@ -1,24 +1,65 @@
 {
-  "name": "puppetlabs-splunk",
-  "version": "4.0.0",
-  "author": "puppetlabs",
+  "name": "puppet-splunk",
+  "version": "5.0.0",
+  "author": "Vox Pupuli",
   "summary": "Manage and deploy Splunk servers and forwarders",
   "license": "Apache-2.0",
-  "source": "http://github.com/puppetlabs/puppetlabs-splunk",
-  "project_page": "https://github.com/puppetlabs/puppetlabs-splunk",
-  "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
+  "source": "https://github.com/voxpupuli/puppet-splunk",
+  "project_page": "https://github.com/voxpupuli/puppet-splunk",
+  "issues_url": "https://github.com/voxpupuli/puppet-splunk/issues",
   "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
+        "6",
         "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "14.04"
+      ]
+    },
+    {
+      "operatingsystem": "Solaris",
+      "operatingsystemrelease": [
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [
+        "Server 2008",
+        "Server 2012",
+        "7",
+        "8",
+        "10"
       ]
     }
   ],
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.0.0 < 5.0.0"
+      "version_requirement": ">= 3.8.0 < 5.0.0"
     }
   ],
   "dependencies": [
