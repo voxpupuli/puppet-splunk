@@ -21,7 +21,7 @@ SPLUNK_TYPES.each do |type, file_name|
         expect(described_class.attrclass(:setting)).not_to be_nil
       end
 
-      it 'specifies setting as a parameter'
+      it 'specifies setting as a parameter' do
         expect(described_class.attrtype(:setting)).to eq(:param)
       end
 
