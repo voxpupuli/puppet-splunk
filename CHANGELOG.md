@@ -1,4 +1,4 @@
-## Release 5.0.1
+## 2016-10-04 Release 5.0.1
 
 Minor bugfix release
 
@@ -7,7 +7,7 @@ Minor bugfix release
 - #57 - Added refresh relationship between `Splunk::Addon` defined resources and the splunk service
 
 
-## Release 5.0.0
+## 2016-10-03 Release 5.0.0
 
 ### Migration from puppetlabs/splunk
 
