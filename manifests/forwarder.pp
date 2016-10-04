@@ -96,6 +96,9 @@ class splunk::forwarder (
   # Declare addons
   create_resources('splunk::addon', $addons)
 
+  # Ensure that the service restarts upon changes to addons
+  Splunk::Addon <||> ~> Service[$virtual_service]
+
   # Declare inputs and outputs specific to the forwarder profile
   $tag_resources = { tag => 'splunk_forwarder' }
   create_resources( 'splunkforwarder_input',$forwarder_input, $tag_resources)
