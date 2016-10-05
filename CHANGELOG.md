@@ -1,3 +1,12 @@
+## 2016-10-05 Release 5.0.2
+
+Minor bugfix release
+
+### Changes
+
+- #59 - Fixed missing relationship between `Splunk::Addon` defined types and the package resource that creates the parent directory that is required.
+
+
 ## 2016-10-04 Release 5.0.1
 
 Minor bugfix release
