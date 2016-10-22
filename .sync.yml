@@ -1,4 +1,7 @@
 ---
 .travis.yml:
   secure: "RrAmWtM6eTjZZzD954AIgR179Pqp14lzHhd/C9cpKbTPynLncuim08CEvjmq+7pgAy9XDg1d02x3udfZt4btR1sBdyNRpNN3yUhWptmGU61HRJdiZq+nSLQkIYsqXanhk+O3NndFojO58WRD01dkWEc6HRHjlivuYNxDXmMkg9k="
-
+spec/spec_helper.rb:
+  spec_overrides: 
+  - "require 'splunk_data.rb'"
+  - "$LOAD_PATH.unshift File.dirname(__FILE__) + '/fixtures/modules/inifile/lib'"
