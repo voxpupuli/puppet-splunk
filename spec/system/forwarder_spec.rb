@@ -20,7 +20,7 @@ describe 'setting up the forwarder' do
   end
 
   describe service('splunk') do
-    it { should be_running }
+    it { is_expected.to be_running }
   end
 
   it 'changes the transforms settings for the forwarder' do
@@ -46,6 +46,6 @@ describe 'setting up the forwarder' do
   end
 
   describe file('/opt/splunkforwarder/etc/system/local/transforms.conf') do
-    its(:content) { should match(%r{\[hadoop_severity\]\nREGEX=\\d\nFORMAT=severity}) }
+    its(:content) { is_expected.to match(%r{\[hadoop_severity\]\nREGEX=\\d\nFORMAT=severity}) }
   end
 end
