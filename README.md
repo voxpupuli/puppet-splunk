@@ -1,7 +1,3 @@
-# Deprecated
-
-The module has moved to: https://forge.puppet.com/puppet/splunk
-
 # Splunk module for Puppet
 
 [![Build Status](https://travis-ci.org/voxpupuli/puppet-splunk.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-splunk)
