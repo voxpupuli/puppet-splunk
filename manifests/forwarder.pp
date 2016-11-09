@@ -159,17 +159,17 @@ class splunk::forwarder (
     mode => '0644',
   }
 
-  file { '/opt/splunkforwarder/etc/system/local/inputs.conf':
+  file { "${forwarder_confdir}/system/local/inputs.conf":
     ensure => file,
     tag    => 'splunk_forwarder',
   }
 
-  file { '/opt/splunkforwarder/etc/system/local/outputs.conf':
+  file { "${forwarder_confdir}/system/local/outputs.conf":
     ensure => file,
     tag    => 'splunk_forwarder',
   }
 
-  file { '/opt/splunkforwarder/etc/system/local/web.conf':
+  file { "${forwarder_confdir}/system/local/web.conf":
     ensure => file,
     tag    => 'splunk_forwarder',
   }
