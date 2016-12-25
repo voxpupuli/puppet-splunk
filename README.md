@@ -435,8 +435,7 @@ Not yet implemented.
 
 - Currently tested manually on Centos 7, but we will eventually add automated
   testing and are targeting compatibility with other platforms.
-- Tested with Puppet 4.x but should work with older versions. This will get
-  updated soon.
+- Tested with Puppet 4.x
 
 ## Development
 
