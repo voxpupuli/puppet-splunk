@@ -1,3 +1,14 @@
+# Changelog
+
+## 2017-01-12 - Release 5.1.0
+
+This is the last release with Pupept 3 support!
+* Modulesync with latest Vox Pupuli defaults
+* Fix several markdown issues
+* Add missing badges
+* Fix several rubocop issues
+* Bump min version_requirement for Puppet + deps
+
 ## 2016-10-05 Release 5.0.2
 
 Minor bugfix release
@@ -29,9 +40,9 @@ This major release includes a major internal refactoring and code optimizations 
 See: https://github.com/voxpupuli/puppet-splunk/pull/49
 
 #### Changes
- 
+
 - `section` and `setting` are composite namevars.  This also fixes idempotency issues with duplicate section/setting pairs.
-- The resource title is parsed for the title pattern "section/setting" allowing for shorter resource declarations. The new title patterns match `/^([^\/]*)$/` as "section" or `/^(.*)\/(.*)$/` as "section/setting" 
+- The resource title is parsed for the title pattern "section/setting" allowing for shorter resource declarations. The new title patterns match `/^([^\/]*)$/` as "section" or `/^(.*)\/(.*)$/` as "section/setting"
 - Purging is now done from the `splunk_config` type.  Previously `resources` resource was used, but this was flawed since the providers cannot support an `instances` method and have the ability to change the location of the config files.
 - Purging now enabled for all forwarder types
 - `forwarder_confdir` and `server_confdir` are now relative to `./etc` not `./etc/system/local` meaning config files can be managed outside of `./etc/system/local`
