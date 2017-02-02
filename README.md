@@ -50,7 +50,7 @@ or apt to install these components if they're self-hosted.
 To begin using this module, use the Puppet Module Tool (PMT) from the command
 line to install this module:
 
-`puppet module install puppetlabs-splunk`
+`puppet module install puppet-splunk`
 
 This will place the module into your primary module path if you do not utilize
 the --target-dir directive.
