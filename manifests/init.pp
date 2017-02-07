@@ -46,6 +46,7 @@ class splunk (
   $package_source       = $splunk::params::server_pkg_src,
   $package_name         = $splunk::params::server_pkg_name,
   $package_ensure       = $splunk::params::server_pkg_ensure,
+  $server_service       = $splunk::params::server_service,
   $logging_port         = $splunk::params::logging_port,
   $splunkd_port         = $splunk::params::splunkd_port,
   $splunk_user          = $splunk::params::splunk_user,
@@ -65,7 +66,7 @@ class splunk (
   $purge_web            = false,
 ) inherits splunk::params {
 
-  $virtual_service = $splunk::params::server_service
+  $virtual_service = $server_service
   $staging_subdir  = $splunk::params::staging_subdir
 
   $path_delimiter  = $splunk::params::path_delimiter
