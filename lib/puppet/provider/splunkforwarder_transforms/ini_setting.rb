@@ -3,6 +3,6 @@ Puppet::Type.type(:splunkforwarder_transforms).provide(
   parent: Puppet::Type.type(:ini_setting).provider(:splunk)
 ) do
   def self.file_name
-    'system/local/transforms.conf'
+    'transforms.conf'
   end
 end
