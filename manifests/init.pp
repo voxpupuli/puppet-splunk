@@ -152,65 +152,65 @@ class splunk (
   # arrays. They'll set the dependencies but not realize all Service resources
   realize(Service[$virtual_service])
 
-  Package                   <| title == $package_name    |>
-  -> Exec                   <| tag   == 'splunk_server'  |>
-  -> File                   <| tag   == 'splunk_server'  |>
-  -> Service                <| title == $virtual_service |>
+  Package[$package_name]
+  -> Exec <| tag   == 'splunk_server'  |>
+  -> File <| tag   == 'splunk_server'  |>
+  -> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_authentication  <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_authorize       <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_distsearch      <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_indexes         <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_input           <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_limits          <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_output          <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_props           <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_server          <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_transforms      <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
-  Package                   <| title == $package_name    |>
+  Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_web             <| tag   == 'splunk_server'  |>
-  ~> Service                <| title == $virtual_service |>
+  ~> Service[$virtual_service]
 
   File {
     owner => $splunk_user,
