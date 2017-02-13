@@ -144,10 +144,10 @@ class splunk::forwarder (
 
   realize Service[$virtual_service]
 
-  Package[$package_name] ->
-  File <| tag   == 'splunk_forwarder' |> ->
-  Exec <| tag   == 'splunk_forwarder' |> ->
-  Service[$virtual_service]
+  Package[$package_name]
+  -> File <| tag   == 'splunk_forwarder' |>
+  -> Exec <| tag   == 'splunk_forwarder' |>
+  -> Service[$virtual_service]
 
   Package[$package_name] -> Splunkforwarder_deploymentclient<||>  ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_output<||>            ~> Service[$virtual_service]
@@ -155,11 +155,16 @@ class splunk::forwarder (
   Package[$package_name] -> Splunkforwarder_props<||>             ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_transforms<||>        ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_web<||>               ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_limits<||>            ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_server<||>            ~> Service[$virtual_service]
 
   File {
     owner => $splunk_user,
     group => $splunk_user,
-    mode => '0644',
+    mode  => $facts['kernel'] ? {
+      'windows' => undef,
+      default   => '0644',
+    }
   }
 
   file { "${forwarder_confdir}/system/local/deploymentclient.conf":
