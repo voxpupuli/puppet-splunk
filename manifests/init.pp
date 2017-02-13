@@ -43,26 +43,27 @@
 # Requires: nothing
 #
 class splunk (
-  $package_source       = $splunk::params::server_pkg_src,
-  $package_name         = $splunk::params::server_pkg_name,
-  $package_ensure       = $splunk::params::server_pkg_ensure,
-  $logging_port         = $splunk::params::logging_port,
-  $splunkd_port         = $splunk::params::splunkd_port,
-  $splunk_user          = $splunk::params::splunk_user,
-  $pkg_provider         = $splunk::params::pkg_provider,
-  $splunkd_listen       = '127.0.0.1',
-  $web_port             = '8000',
-  $purge_authentication = false,
-  $purge_authorize      = false,
-  $purge_distsearch     = false,
-  $purge_indexes        = false,
-  $purge_inputs         = false,
-  $purge_limits         = false,
-  $purge_outputs        = false,
-  $purge_props          = false,
-  $purge_server         = false,
-  $purge_transforms     = false,
-  $purge_web            = false,
+  $package_source         = $splunk::params::server_pkg_src,
+  $package_name           = $splunk::params::server_pkg_name,
+  $package_ensure         = $splunk::params::server_pkg_ensure,
+  $logging_port           = $splunk::params::logging_port,
+  $splunkd_port           = $splunk::params::splunkd_port,
+  $splunk_user            = $splunk::params::splunk_user,
+  $pkg_provider           = $splunk::params::pkg_provider,
+  $splunkd_listen         = '127.0.0.1',
+  $web_port               = '8000',
+  $purge_authentication   = false,
+  $purge_authorize        = false,
+  $purge_deploymentclient = false,
+  $purge_distsearch       = false,
+  $purge_indexes          = false,
+  $purge_inputs           = false,
+  $purge_limits           = false,
+  $purge_outputs          = false,
+  $purge_props            = false,
+  $purge_server           = false,
+  $purge_transforms       = false,
+  $purge_web              = false,
 ) inherits splunk::params {
 
   $virtual_service = $splunk::params::server_service
@@ -122,17 +123,18 @@ class splunk (
 
   # Purge resources if option set
   Splunk_config['splunk'] {
-    purge_authentication => $purge_authentication,
-    purge_authorize      => $purge_authorize,
-    purge_distsearch     => $purge_distsearch,
-    purge_indexes        => $purge_indexes,
-    purge_inputs         => $purge_inputs,
-    purge_limits         => $purge_limits,
-    purge_outputs        => $purge_outputs,
-    purge_props          => $purge_props,
-    purge_server         => $purge_server,
-    purge_transforms     => $purge_transforms,
-    purge_web            => $purge_web
+    purge_authentication   => $purge_authentication,
+    purge_authorize        => $purge_authorize,
+    purge_deploymentclient => $purge_deploymentclient,
+    purge_distsearch       => $purge_distsearch,
+    purge_indexes          => $purge_indexes,
+    purge_inputs           => $purge_inputs,
+    purge_limits           => $purge_limits,
+    purge_outputs          => $purge_outputs,
+    purge_props            => $purge_props,
+    purge_server           => $purge_server,
+    purge_transforms       => $purge_transforms,
+    purge_web              => $purge_web
   }
   # This is a module that supports multiple platforms. For some platforms
   # there is non-generic configuration that needs to be declared in addition
@@ -167,6 +169,11 @@ class splunk (
   Service                <| title == $virtual_service |>
 
   Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_deploymentclient<| tag   == 'splunk_server'  |> ~>
+  Service[$virtual_service]
+
+  Package[$package_name] ->
   File                   <| tag   == 'splunk_server'  |> ->
   Splunk_distsearch      <| tag   == 'splunk_server'  |> ~>
   Service                <| title == $virtual_service |>
@@ -223,6 +230,11 @@ class splunk (
   }
 
   file { '/opt/splunk/etc/system/local/authorize.conf':
+    ensure => file,
+    tag    => 'splunk_server',
+  }
+
+  file { '/opt/splunk/etc/system/local/deploymentclient.conf':
     ensure => file,
     tag    => 'splunk_server',
   }
