@@ -26,6 +26,7 @@ Puppet::Type.newtype(:splunk_config) do
     :purge_outputs,
     :purge_authentication,
     :purge_authorize,
+    :purge_deploymentclient,
     :purge_distsearch,
     :purge_indexes,
     :purge_limits,
@@ -58,6 +59,7 @@ Puppet::Type.newtype(:splunk_config) do
       Puppet::Type::Splunk_input                => self[:purge_inputs],
       Puppet::Type::Splunk_authentication       => self[:purge_authentication],
       Puppet::Type::Splunk_authorize            => self[:purge_authorize],
+      Puppet::Type::Splunk_deploymentclient     => self[:purge_deploymentclient],
       Puppet::Type::Splunk_distsearch           => self[:purge_distsearch],
       Puppet::Type::Splunk_indexes              => self[:purge_indexes],
       Puppet::Type::Splunk_props                => self[:purge_props],
@@ -80,6 +82,7 @@ Puppet::Type.newtype(:splunk_config) do
     [
       :splunk_authentication,
       :splunk_authorize,
+      :splunk_deploymentclient,
       :splunk_distsearch,
       :splunk_indexes,
       :splunk_limits,
@@ -94,6 +97,7 @@ Puppet::Type.newtype(:splunk_config) do
       provider_class.file_path = self[:server_confdir]
     end
     [
+      :splunkforwarder_deploymentclient,
       :splunkforwarder_input,
       :splunkforwarder_output,
       :splunkforwarder_props,
