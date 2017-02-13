@@ -44,26 +44,27 @@
 # Requires: nothing
 #
 class splunk::forwarder (
-  $server            = $splunk::params::server,
-  $package_source    = $splunk::params::forwarder_pkg_src,
-  $package_name      = $splunk::params::forwarder_pkg_name,
-  $package_ensure    = $splunk::params::forwarder_pkg_ensure,
-  $logging_port      = $splunk::params::logging_port,
-  $splunkd_port      = $splunk::params::splunkd_port,
-  $install_options   = $splunk::params::forwarder_install_options,
-  $splunk_user       = $splunk::params::splunk_user,
-  $splunkd_listen    = '127.0.0.1',
-  $purge_inputs      = false,
-  $purge_outputs     = false,
-  $purge_props       = false,
-  $purge_transforms  = false,
-  $purge_web         = false,
-  $pkg_provider      = $splunk::params::pkg_provider,
-  $forwarder_confdir = $splunk::params::forwarder_confdir,
-  $forwarder_output  = $splunk::params::forwarder_output,
-  $forwarder_input   = $splunk::params::forwarder_input,
-  $create_password   = $splunk::params::create_password,
-  $addons            = {},
+  $server                 = $splunk::params::server,
+  $package_source         = $splunk::params::forwarder_pkg_src,
+  $package_name           = $splunk::params::forwarder_pkg_name,
+  $package_ensure         = $splunk::params::forwarder_pkg_ensure,
+  $logging_port           = $splunk::params::logging_port,
+  $splunkd_port           = $splunk::params::splunkd_port,
+  $install_options        = $splunk::params::forwarder_install_options,
+  $splunk_user            = $splunk::params::splunk_user,
+  $splunkd_listen         = '127.0.0.1',
+  $purge_deploymentclient = false,
+  $purge_inputs           = false,
+  $purge_outputs          = false,
+  $purge_props            = false,
+  $purge_transforms       = false,
+  $purge_web              = false,
+  $pkg_provider           = $splunk::params::pkg_provider,
+  $forwarder_confdir      = $splunk::params::forwarder_confdir,
+  $forwarder_output       = $splunk::params::forwarder_output,
+  $forwarder_input        = $splunk::params::forwarder_input,
+  $create_password        = $splunk::params::create_password,
+  $addons                 = {},
 ) inherits splunk::params {
 
   $virtual_service = $splunk::params::forwarder_service
@@ -115,11 +116,12 @@ class splunk::forwarder (
   # the respective config files.
 
   Splunk_config['splunk'] {
-    purge_forwarder_outputs    => $purge_outputs,
-    purge_forwarder_inputs     => $purge_inputs,
-    purge_forwarder_props      => $purge_props,
-    purge_forwarder_transforms => $purge_transforms,
-    purge_forwarder_web        => $purge_web,
+    purge_forwarder_deploymentclient => $purge_deploymentclient,
+    purge_forwarder_outputs          => $purge_outputs,
+    purge_forwarder_inputs           => $purge_inputs,
+    purge_forwarder_props            => $purge_props,
+    purge_forwarder_transforms       => $purge_transforms,
+    purge_forwarder_web              => $purge_web,
   }
 
   # This is a module that supports multiple platforms. For some platforms
@@ -147,16 +149,22 @@ class splunk::forwarder (
   Exec <| tag   == 'splunk_forwarder' |> ->
   Service[$virtual_service]
 
-  Package[$package_name] -> Splunkforwarder_output<||>     ~> Service[$virtual_service]
-  Package[$package_name] -> Splunkforwarder_input<||>      ~> Service[$virtual_service]
-  Package[$package_name] -> Splunkforwarder_props<||>      ~> Service[$virtual_service]
-  Package[$package_name] -> Splunkforwarder_transforms<||> ~> Service[$virtual_service]
-  Package[$package_name] -> Splunkforwarder_web<||>        ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_deploymentclient<||>  ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_output<||>            ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_input<||>             ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_props<||>             ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_transforms<||>        ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_web<||>               ~> Service[$virtual_service]
 
   File {
     owner => $splunk_user,
     group => $splunk_user,
     mode => '0644',
+  }
+
+  file { "${forwarder_confdir}/system/local/deploymentclient.conf":
+    ensure => file,
+    tag    => 'splunk_forwarder',
   }
 
   file { "${forwarder_confdir}/system/local/inputs.conf":
