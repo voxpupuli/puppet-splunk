@@ -176,6 +176,11 @@ class splunk (
 
   Package[$package_name] ->
   File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_deploymentclient<| tag   == 'splunk_server'  |> ~>
+  Service[$virtual_service]
+
+  Package[$package_name] ->
+  File                   <| tag   == 'splunk_server'  |> ->
   Splunk_distsearch      <| tag   == 'splunk_server'  |> ~>
   Service[$virtual_service]
 
