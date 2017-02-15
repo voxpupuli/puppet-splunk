@@ -24,6 +24,7 @@ Puppet::Type.newtype(:splunk_config) do
   [
     :purge_inputs,
     :purge_outputs,
+    :purge_alert_actions,
     :purge_authentication,
     :purge_authorize,
     :purge_deploymentclient,
@@ -58,6 +59,7 @@ Puppet::Type.newtype(:splunk_config) do
     {
       Puppet::Type::Splunk_output                     => self[:purge_outputs],
       Puppet::Type::Splunk_input                      => self[:purge_inputs],
+      Puppet::Type::Splunk_alert_actions              => self[:purge_alert_actions],
       Puppet::Type::Splunk_authentication             => self[:purge_authentication],
       Puppet::Type::Splunk_authorize                  => self[:purge_authorize],
       Puppet::Type::Splunk_deploymentclient           => self[:purge_deploymentclient],
@@ -82,6 +84,7 @@ Puppet::Type.newtype(:splunk_config) do
 
   def set_provider_paths
     [
+      :splunk_alert_actions,
       :splunk_authentication,
       :splunk_authorize,
       :splunk_deploymentclient,

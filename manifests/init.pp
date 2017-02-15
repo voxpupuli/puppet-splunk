@@ -52,6 +52,7 @@ class splunk (
   $pkg_provider           = $splunk::params::pkg_provider,
   $splunkd_listen         = '127.0.0.1',
   $web_port               = '8000',
+  $purge_alert_actions    = false,
   $purge_authentication   = false,
   $purge_authorize        = false,
   $purge_deploymentclient = false,
@@ -123,6 +124,7 @@ class splunk (
 
   # Purge resources if option set
   Splunk_config['splunk'] {
+    purge_alert_actions    => $purge_alert_actions,
     purge_authentication   => $purge_authentication,
     purge_authorize        => $purge_authorize,
     purge_deploymentclient => $purge_deploymentclient,
@@ -159,6 +161,11 @@ class splunk (
   Service                <| title == $virtual_service |>
 
   Package                <| title == $package_name    |> ->
+  File                   <| tag   == 'splunk_server'  |> ->
+  Splunk_alert_actions   <| tag   == 'splunk_server'  |> ~>
+  Service[$virtual_service]
+
+  Package[$package_name] ->
   File                   <| tag   == 'splunk_server'  |> ->
   Splunk_authentication  <| tag   == 'splunk_server'  |> ~>
   Service                <| title == $virtual_service |>
@@ -222,6 +229,11 @@ class splunk (
     owner => $splunk_user,
     group => $splunk_user,
     mode => '0600',
+  }
+
+  file { '/opt/splunk/etc/system/local/alert_actions.conf':
+    ensure => file,
+    tag    => 'splunk_server',
   }
 
   file { '/opt/splunk/etc/system/local/authentication.conf':
