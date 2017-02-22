@@ -83,6 +83,4 @@ class splunk::platform::posix (
       require  => Service['splunk'],
     }
   }
-
-
 }
