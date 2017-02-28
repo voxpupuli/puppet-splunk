@@ -1,5 +1,5 @@
 # Require all of our types so the class names are resolvable for purging
-Dir[File.dirname(__FILE__) + '/*.rb'].each do |file|
+Dir[File.dirname(__FILE__) + '/splunk*.rb'].each do |file|
   require file unless file == __FILE__
 end
 
