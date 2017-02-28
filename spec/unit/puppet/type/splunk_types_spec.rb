@@ -41,9 +41,19 @@ SPLUNK_TYPES.each do |type, file_name|
         expect(type[:setting]).to eq('bar')
       end
 
-      it 'does not try and split URLs' do
+      it 'does not try and split simple URLs' do
         type = described_class.new(title: 'http://foo')
         expect(type[:section]).to eq('http://foo')
+      end
+
+      it 'splits more complicated URL-like patterns' do
+        type = described_class.new(title: 'monitor:///var/log/foo/index')
+        expect(type[:section]).to eq('monitor:///var/log/foo')
+      end
+
+      it 'splits more complicated URL-like patterns' do
+        type = described_class.new(title: 'monitor:///var/log/foo/index')
+        expect(type[:setting]).to eq('index')
       end
 
       it 'ignores title when section is declared' do
