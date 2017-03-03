@@ -58,6 +58,7 @@ class splunk::platform::posix (
     creates => '/etc/init.d/splunk',
     require => Exec['license_splunk'],
     tag     => 'splunk_server',
+    before  => Service['splunk'],
   }
 
   # Modify virtual service definitions specific to the Linux platform. These
