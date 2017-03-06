@@ -7,9 +7,14 @@ module PuppetX
 
           type.define_singleton_method(:title_patterns) do
             [
-              [%r{^([^\/]*)$},   [[:section]]],
-              [%r{^(.*\/\/.*)$}, [[:section]]],
-              [%r{^(.*)\/(.*)$},
+              [%r{^([^\/]*)$}, [[:section]]],   # matches section titles without slashes, like 'tcpout:indexers'
+              [%r{^(.*\/\/.*)\/(.*)$},          # matches section titles containing '//' and a setting,
+               [                                # like: 'monitor:///var/log/messages/index'
+                 [:section, ->(x) { x }],       # where 'monitor:///var/log/messages' is the section
+                 [:setting, ->(x) { x }]        # and 'index' is the setting.
+               ]],
+              [%r{^(.*\/\/.*)$}, [[:section]]], # matches section titles containing '//', like 'tcp://127.0.0.1:19500'
+              [%r{^(.*)\/(.*)$},                # matches plain 'section/setting' titles, like: 'tcpout:indexers/server'
                [
                  [:section, ->(x) { x }],
                  [:setting, ->(x) { x }]
