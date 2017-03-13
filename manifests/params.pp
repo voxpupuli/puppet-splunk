@@ -107,6 +107,7 @@ class splunk::params (
       $server_src_subdir    = 'splunk/linux'
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = "${server_dir}/etc"
+      $forwarder_install_options = undef
     }
     'SunOS': {
       $path_delimiter       = '/'
@@ -118,6 +119,7 @@ class splunk::params (
       $server_src_subdir    = 'splunk/solaris'
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = "${server_dir}/etc"
+      $forwarder_install_options = undef
     }
     'Windows': {
       $path_delimiter       = '\\'
