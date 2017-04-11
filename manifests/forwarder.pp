@@ -142,10 +142,10 @@ class splunk::forwarder (
 
   realize Service[$virtual_service]
 
-  Package[$package_name] ->
-  File <| tag   == 'splunk_forwarder' |> ->
-  Exec <| tag   == 'splunk_forwarder' |> ->
-  Service[$virtual_service]
+  Package[$package_name]
+  -> File <| tag   == 'splunk_forwarder' |>
+  -> Exec <| tag   == 'splunk_forwarder' |>
+  -> Service[$virtual_service]
 
   Package[$package_name] -> Splunkforwarder_output<||>     ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_input<||>      ~> Service[$virtual_service]
