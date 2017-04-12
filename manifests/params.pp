@@ -139,7 +139,7 @@ class splunk::params (
         'WINEVENTLOG_FWD_ENABLE=1',
         'WINEVENTLOG_SET_ENABLE=1',
         'ENABLEADMON=1',
-        "INSTALLDIR=\"${forwarder_dir}\"",
+        { 'INSTALLDIR' => $forwarder_dir },
       ]
       $server_install_options = [
         'LAUNCHSPLUNK=1',
