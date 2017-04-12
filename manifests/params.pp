@@ -88,7 +88,7 @@ class splunk::params (
 
 
   if $::osfamily == 'Windows' {
-    $forwarder_dir = pick($forwarder_installdir, 'C:/Program Files/SplunkUniversalForwarder')
+    $forwarder_dir = pick($forwarder_installdir, 'C:\\Program Files\\SplunkUniversalForwarder')
     $server_dir    = pick($server_installdir, 'C:/Program Files/Splunk')
   } else {
     $forwarder_dir = pick($forwarder_installdir, '/opt/splunkforwarder')
