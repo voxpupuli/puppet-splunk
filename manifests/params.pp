@@ -88,7 +88,7 @@ class splunk::params (
 
 
   if $::osfamily == 'Windows' {
-    $forwarder_dir = pick($forwarder_installdir, 'C:/Program Files/SplunkUniversalForwarder')
+    $forwarder_dir = pick($forwarder_installdir, 'C:\\Program Files\\SplunkUniversalForwarder')
     $server_dir    = pick($server_installdir, 'C:/Program Files/Splunk')
   } else {
     $forwarder_dir = pick($forwarder_installdir, '/opt/splunkforwarder')
@@ -139,7 +139,7 @@ class splunk::params (
         'WINEVENTLOG_FWD_ENABLE=1',
         'WINEVENTLOG_SET_ENABLE=1',
         'ENABLEADMON=1',
-        "INSTALLDIR=\"${forwarder_dir}\"",
+        { 'INSTALLDIR' => $forwarder_dir },
       ]
       $server_install_options = [
         'LAUNCHSPLUNK=1',
