@@ -35,6 +35,7 @@ Puppet::Type.newtype(:splunk_config) do
     :purge_server,
     :purge_transforms,
     :purge_web,
+    :purge_uiprefs,
     :purge_forwarder_deploymentclient,
     :purge_forwarder_inputs,
     :purge_forwarder_outputs,
@@ -69,6 +70,7 @@ Puppet::Type.newtype(:splunk_config) do
       Puppet::Type::Splunk_server                     => self[:purge_server],
       Puppet::Type::Splunk_transforms                 => self[:purge_transforms],
       Puppet::Type::Splunk_web                        => self[:purge_web],
+      Puppet::Type::Splunk_uiprefs                    => self[:purge_uiprefs],
       Puppet::Type::Splunkforwarder_deploymentclient  => self[:purge_forwarder_deploymentclient],
       Puppet::Type::Splunkforwarder_input             => self[:purge_forwarder_inputs],
       Puppet::Type::Splunkforwarder_output            => self[:purge_forwarder_outputs],
@@ -97,6 +99,7 @@ Puppet::Type.newtype(:splunk_config) do
       :splunk_server,
       :splunk_transforms,
       :splunk_web
+      :splunk_uiprefs
     ].each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:ini_setting)
       provider_class.file_path = self[:server_confdir]
