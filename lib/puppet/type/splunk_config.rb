@@ -90,7 +90,7 @@ Puppet::Type.newtype(:splunk_config) do
       :splunk_props,
       :splunk_server,
       :splunk_transforms,
-      :splunk_web
+      :splunk_web,
       :splunk_uiprefs
     ].each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:ini_setting)
