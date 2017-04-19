@@ -90,9 +90,11 @@ class splunk::params (
   if $::osfamily == 'Windows' {
     $forwarder_dir = pick($forwarder_installdir, 'C:\\Program Files\\SplunkUniversalForwarder')
     $server_dir    = pick($server_installdir, 'C:/Program Files/Splunk')
+    $splunk_user   = 'Administrator'
   } else {
     $forwarder_dir = pick($forwarder_installdir, '/opt/splunkforwarder')
     $server_dir    = pick($server_installdir, '/opt/splunk')
+    $splunk_user   = 'root'
   }
 
   # Settings common to a kernel
@@ -238,7 +240,6 @@ class splunk::params (
   $create_password   = true
 
   $forwarder_pkg_ensure = 'installed'
-  $splunk_user = 'root'
 
   # A meta resource so providers know where splunk is installed:
   splunk_config { 'splunk':
