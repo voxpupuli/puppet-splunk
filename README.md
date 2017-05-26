@@ -257,7 +257,8 @@ default TCP output and input.
 The source URL for the splunk installation media (typically an RPM, MSI,
 etc). If a $src_root parameter is set in splunk::params, this will be
 automatically supplied. Otherwise it is required. The URL can be of any
-protocol supported by the nanliu/staging module.
+protocol supported by the nanliu/staging module. On Windows, this can be
+a UNC path to the MSI.
 
 #### `package_name`
 
@@ -351,7 +352,8 @@ longer managed by the splunk_web type. Default to false.
 The source URL for the splunk installation media (typically an RPM, MSI,
 etc). If a $src_root parameter is set in splunk::params, this will be
 automatically supplied. Otherwise it is required. The URL can be of any
-protocol supported by the nanliu/staging module.
+protocol supported by the nanliu/staging module. On Windows, this can be
+a UNC path to the MSI.
 
 #### `package_name`
 

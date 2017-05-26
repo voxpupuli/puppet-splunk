@@ -8,7 +8,8 @@
 #   The source URL for the splunk installation media (typically an RPM, MSI,
 #   etc). If a $src_root parameter is set in splunk::params, this will be
 #   automatically supplied. Otherwise it is required. The URL can be of any
-#   protocol supported by the nanliu/staging module.
+#   protocol supported by the nanliu/staging module. On Windows, this can
+#   be a UNC path to the MSI.
 #
 # [*package_name*]
 #   The name of the package(s) as they will exist or be detected on the host.
@@ -74,12 +75,12 @@ class splunk (
   if $pkg_provider != undef and $pkg_provider != 'yum' and  $pkg_provider != 'apt' {
     include ::staging
 
-    $staged_package  = staging_parse($package_source)
-    $pkg_path_parts  = [$staging::path, $staging_subdir, $staged_package]
-    $pkg_source      = join($pkg_path_parts, $path_delimiter)
+    $src_pkg_filename = staging_parse($package_source)
+    $pkg_path_parts   = [$staging::path, $staging_subdir, $src_pkg_filename]
+    $staged_package   = join($pkg_path_parts, $path_delimiter)
 
     #no need for staging the source if we have yum or apt
-    staging::file { $staged_package:
+    staging::file { $src_pkg_filename:
       source => $package_source,
       subdir => $staging_subdir,
       before => Package[$package_name],
@@ -89,7 +90,7 @@ class splunk (
   package { $package_name:
     ensure   => $package_ensure,
     provider => $pkg_provider,
-    source   => $pkg_source,
+    source   => pick($staged_package, $package_source),
     before   => Service[$virtual_service],
     tag      => 'splunk_server',
   }
