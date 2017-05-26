@@ -20,13 +20,14 @@ describe Puppet::Type.type(:splunk_config) do
     #
     SPLUNK_TYPES.each do |type, file_name|
       if SPLUNK_SERVER_TYPES.key?(type)
-        file_path = File.join('/opt/splunk/etc', file_name)
+        file_path = File.join('/opt/splunk/etc/system/local', file_name)
       elsif SPLUNK_FORWARDER_TYPES.key?(type)
-        file_path = File.join('/opt/splunkforwarder/etc', file_name)
+        file_path = File.join('/opt/splunkforwarder/etc/system/local', file_name)
       end
 
       it "should configure the #{type} type with file path #{file_path}" do
-        provider = Puppet::Type.type(type).provider(:ini_setting)
+        resource = Puppet::Type.type(type).new(name: 'foo', setting: 'foo', section: 'foo')
+        provider = Puppet::Type.type(type).provider(:ini_setting).new(resource)
         expect(provider.file_path).to eq(file_path)
       end
     end

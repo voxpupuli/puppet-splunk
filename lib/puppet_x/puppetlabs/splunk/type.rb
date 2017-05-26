@@ -41,6 +41,13 @@ module PuppetX
               v.to_s.strip
             end
           end
+          type.newparam(:context) do
+            desc 'The context in which to define the setting.'
+            munge do |v|
+              v.to_s.strip
+            end
+            defaultto('system/local')
+          end
           type.newparam(:name)
         end
       end
