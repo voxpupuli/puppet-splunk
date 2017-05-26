@@ -156,7 +156,10 @@ class splunk::forwarder (
   File {
     owner => $splunk_user,
     group => $splunk_user,
-    mode => '0644',
+    mode  => $facts['kernel'] ? {
+      'windows' => undef,
+      default   => '0644',
+    }
   }
 
   file { "${forwarder_confdir}/system/local/inputs.conf":
