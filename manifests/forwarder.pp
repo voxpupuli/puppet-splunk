@@ -12,7 +12,8 @@
 #   The source URL for the splunk installation media (typically an RPM, MSI,
 #   etc). If a $src_root parameter is set in splunk::params, this will be
 #   automatically supplied. Otherwise it is required. The URL can be of any
-#   protocol supported by the nanliu/staging module.
+#   protocol supported by the nanliu/staging module. On Windows, this can
+#   be a UNC path to the MSI.
 #
 # [*package_name*]
 #   The name of the package(s) as they will exist or be detected on the host.
@@ -87,7 +88,7 @@ class splunk::forwarder (
   package { $package_name:
     ensure          => $package_ensure,
     provider        => $pkg_provider,
-    source          => $pkg_source,
+    source          => pick($pkg_source, $package_source),
     before          => Service[$virtual_service],
     install_options => $install_options,
     tag             => 'splunk_forwarder',
