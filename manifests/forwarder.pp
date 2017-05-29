@@ -72,7 +72,7 @@ class splunk::forwarder (
 
   $path_delimiter  = $splunk::params::path_delimiter
   #no need for staging the source if we have yum or apt
-  if $pkg_provider != undef and $pkg_provider != 'yum' and  $pkg_provider != 'apt' {
+  if $pkg_provider != undef and $pkg_provider != 'yum' and $pkg_provider != 'apt' and $pkg_provider != 'chocolatey' {
     include ::staging
 
     $src_pkg_filename = staging_parse($package_source)
@@ -86,10 +86,16 @@ class splunk::forwarder (
     }
   }
 
+  Package  {
+    source          => $pkg_provider ? {
+      'chocolatey' => undef,
+      default      => pick($staged_package, $package_source),
+    },
+  }
+
   package { $package_name:
     ensure          => $package_ensure,
     provider        => $pkg_provider,
-    source          => pick($staged_package, $package_source),
     before          => Service[$virtual_service],
     install_options => $install_options,
     tag             => 'splunk_forwarder',
