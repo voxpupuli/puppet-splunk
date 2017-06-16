@@ -165,7 +165,7 @@ the inputs.conf file and refresh the service.
 * `splunk_authorize`: Used to manage ini settings in [authorize.conf][authorize.conf-docs]
 * `splunk_distsearch`: Used to manage ini settings in [distsearch.conf][distsearch.conf-docs]
 * `splunk_indexes`: Used to manage ini settings in [indexes.conf][indexes.conf-docs]
-* `splunk_input`: Used to manage ini settings in [inputs.ocnf][inputs.conf-docs]
+* `splunk_input`: Used to manage ini settings in [inputs.conf][inputs.conf-docs]
 * `splunk_limits`: Used to mange ini settings in [limits.conf][limits.conf-docs]
 * `splunk_output`: Used to manage ini settings in [outputs.conf][outputs.conf-docs]
 * `splunk_props`: Used to manage ini settings in [props.conf][props.conf-docs]
@@ -173,7 +173,7 @@ the inputs.conf file and refresh the service.
 * `splunk_transforms`: Used to manage ini settings in [transforms.conf][transforms.conf-docs]
 * `splunk_web`: Used to manage ini settings in [web.conf][web.conf-docs]
 
-* `splunkforwarder_input`: Used to manage ini settings in [inputs.ocnf][inputs.conf-docs]
+* `splunkforwarder_input`: Used to manage ini settings in [inputs.conf][inputs.conf-docs]
 * `splunkforwarder_output`:Used to manage ini settings in [outputs.conf][outputs.conf-docs]
 * `splunkforwarder_props`: Used to manage ini settings in [props.conf][props.conf-docs]
 * `splunkforwarder_transforms`: Used to manage ini settings in [transforms.conf][transforms.conf-docs]
