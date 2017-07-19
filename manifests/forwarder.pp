@@ -160,6 +160,8 @@ class splunk::forwarder (
   Package[$package_name] -> Splunkforwarder_props<||>      ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_transforms<||> ~> Service[$virtual_service]
   Package[$package_name] -> Splunkforwarder_web<||>        ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_limits<||>     ~> Service[$virtual_service]
+  Package[$package_name] -> Splunkforwarder_server<||>     ~> Service[$virtual_service]
 
   File {
     owner => $splunk_user,
@@ -183,6 +185,16 @@ class splunk::forwarder (
   file { "${forwarder_confdir}/system/local/web.conf":
     ensure => file,
     tag    => 'splunk_forwarder',
+  }
+
+  file { "${forwarder_confdir}/system/local/limits.conf":
+    ensure => file,
+    tag    => 'splunk_forwader',
+  }
+
+  file { "${forwarder_confdir}/system/local/server.conf":
+    ensure => file,
+    tag    => 'splunk_forwader',
   }
 
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on
