@@ -178,6 +178,8 @@ the inputs.conf file and refresh the service.
 * `splunkforwarder_props`: Used to manage ini settings in [props.conf][props.conf-docs]
 * `splunkforwarder_transforms`: Used to manage ini settings in [transforms.conf][transforms.conf-docs]
 * `splunkforwarder_web`: Used to manage ini settings in [web.conf][web.conf-docs]
+* `splunkforwarder_limits`: Used to manage ini settings in [limits.conf][limits.conf-docs]
+* `splunkforwarder_server`: Used to manage ini settings in [server.conf][server.conf-docs]
 
 All of the above types use `puppetlabs/ini_file` as a parent and are declared in
 an identical way, and accept the following parameters:
