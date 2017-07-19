@@ -189,12 +189,12 @@ class splunk::forwarder (
 
   file { "${forwarder_confdir}/system/local/limits.conf":
     ensure => file,
-    tag    => 'splunk_forwader',
+    tag    => 'splunk_forwarder',
   }
 
   file { "${forwarder_confdir}/system/local/server.conf":
     ensure => file,
-    tag    => 'splunk_forwader',
+    tag    => 'splunk_forwarder',
   }
 
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on
