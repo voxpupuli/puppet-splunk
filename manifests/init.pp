@@ -64,6 +64,7 @@ class splunk (
   $purge_props          = false,
   $purge_server         = false,
   $purge_transforms     = false,
+  $purge_uiprefs        = false,
   $purge_web            = false,
 ) inherits splunk::params {
 
@@ -140,6 +141,7 @@ class splunk (
     purge_props          => $purge_props,
     purge_server         => $purge_server,
     purge_transforms     => $purge_transforms,
+    purge_uiprefs        => $purge_uiprefs,
     purge_web            => $purge_web
   }
   # This is a module that supports multiple platforms. For some platforms
@@ -216,6 +218,11 @@ class splunk (
 
   Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
+  -> Splunk_uiprefs         <| tag   == 'splunk_server'  |>
+  ~> Service[$virtual_service]
+
+  Package[$package_name]
+  -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_web             <| tag   == 'splunk_server'  |>
   ~> Service[$virtual_service]
 
@@ -271,6 +278,11 @@ class splunk (
   }
 
   file { '/opt/splunk/etc/system/local/transforms.conf':
+    ensure => file,
+    tag    => 'splunk_server',
+  }
+
+  file { '/opt/splunk/etc/system/local/ui-prefs.conf':
     ensure => file,
     tag    => 'splunk_server',
   }
