@@ -18,7 +18,8 @@ SPLUNK_FORWARDER_TYPES = {
   splunkforwarder_output: 'outputs.conf',
   splunkforwarder_props: 'props.conf',
   splunkforwarder_transforms: 'transforms.conf',
-  splunkforwarder_web: 'web.conf'
+  splunkforwarder_web: 'web.conf',
+  splunkforwarder_server: 'server.conf'
 }.freeze
 
 SPLUNK_TYPES = SPLUNK_SERVER_TYPES.merge(SPLUNK_FORWARDER_TYPES)
