@@ -22,5 +22,6 @@ RSpec.configure do |c|
     shell('puppet module install nanliu-staging --version 0.3.1')
     shell('puppet module install puppetlabs-stdlib --version 3.0.0')
     shell('puppet module install puppetlabs-inifile --version 1.0.0')
+    shell('puppet module install puppetlabs-concat --version 4.0.0')
   end
 end
