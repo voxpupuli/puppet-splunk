@@ -6,11 +6,7 @@ describe 'splunk::forwarder' do
       let(:facts) { os_facts }
 
       context 'with defaults' do
-        if os == 'solaris-11-i86pc'
-          pending
-        else
-          it { is_expected.to compile.with_all_deps }
-        end
+        it { is_expected.to compile.with_all_deps }
       end
     end
   end
