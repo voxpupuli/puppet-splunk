@@ -38,7 +38,8 @@ Puppet::Type.newtype(:splunk_config) do
     :purge_forwarder_outputs,
     :purge_forwarder_props,
     :purge_forwarder_transforms,
-    :purge_forwarder_web
+    :purge_forwarder_web,
+    :purge_forwarder_server
   ].each do |p|
     newparam(p) do
       newvalues(:true, :false)
@@ -70,7 +71,8 @@ Puppet::Type.newtype(:splunk_config) do
       Puppet::Type::Splunkforwarder_output      => self[:purge_forwarder_outputs],
       Puppet::Type::Splunkforwarder_props       => self[:purge_forwarder_props],
       Puppet::Type::Splunkforwarder_transforms  => self[:purge_forwarder_transforms],
-      Puppet::Type::Splunkforwarder_web         => self[:purge_forwarder_web]
+      Puppet::Type::Splunkforwarder_web         => self[:purge_forwarder_web],
+      Puppet::Type::Splunkforwarder_server      => self[:purge_forwarder_server]
     }.each do |k, purge|
       resources.concat(purge_splunk_resources(k)) if purge == :true
     end
@@ -101,7 +103,8 @@ Puppet::Type.newtype(:splunk_config) do
       :splunkforwarder_output,
       :splunkforwarder_props,
       :splunkforwarder_transforms,
-      :splunkforwarder_web
+      :splunkforwarder_web,
+      :splunkforwarder_server
     ].each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:ini_setting)
       provider_class.file_path = self[:forwarder_confdir]
