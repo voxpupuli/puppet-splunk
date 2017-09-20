@@ -15,7 +15,7 @@
 # Requires: nothing
 #
 class splunk::platform::posix (
-  $splunkd_port = $splunk::splunkd_port,
+  $splunkd_port = undef,
   $splunk_user = $splunk::params::splunk_user,
   $server_service = undef,
 ) inherits splunk::virtual {

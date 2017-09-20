@@ -136,7 +136,6 @@ class splunk::forwarder (
   case $::kernel {
     'Linux': {
       class { '::splunk::platform::posix':
-        splunkd_port => $splunkd_port,
         splunk_user  => $splunk_user,
       }
     }
