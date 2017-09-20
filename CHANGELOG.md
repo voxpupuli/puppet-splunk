@@ -1,8 +1,43 @@
-# Change log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
-These should not impact the functionality of the module.
+These should not affect the functionality of the module.
+
+## [v6.1.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.1.0) (2017-09-20)
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.0.0...v6.1.0)
+
+**Implemented enhancements:**
+
+- Ability to manage ui-prefs.conf [\#103](https://github.com/voxpupuli/puppet-splunk/issues/103)
+- Added splunkforwarder\_server and splunkforwarder\_limits providers/types. [\#118](https://github.com/voxpupuli/puppet-splunk/pull/118) ([nicholaspearson](https://github.com/nicholaspearson))
+- Allow redirecting of settings into custom contexts [\#87](https://github.com/voxpupuli/puppet-splunk/pull/87) ([michaelweiser](https://github.com/michaelweiser))
+
+**Fixed bugs:**
+
+- splunkd\_port not defined for forwarder [\#133](https://github.com/voxpupuli/puppet-splunk/issues/133)
+- concat dependency is missing from metadata.json [\#122](https://github.com/voxpupuli/puppet-splunk/issues/122)
+- splunkforwarder\_server not working [\#121](https://github.com/voxpupuli/puppet-splunk/issues/121)
+- Fix .conf file modes for Windows forwarders [\#114](https://github.com/voxpupuli/puppet-splunk/pull/114) ([natemccurdy](https://github.com/natemccurdy))
+- Allow for installing packages from UNC paths on Windows [\#113](https://github.com/voxpupuli/puppet-splunk/pull/113) ([natemccurdy](https://github.com/natemccurdy))
+- Fix resource ordering in splunk class so that splunk types will properly notify services [\#91](https://github.com/voxpupuli/puppet-splunk/pull/91) ([treydock](https://github.com/treydock))
+
+**Closed issues:**
+
+- Ruby load error when using splunk::forwarder on Windows [\#110](https://github.com/voxpupuli/puppet-splunk/issues/110)
+
+**Merged pull requests:**
+
+- SplunkForwarder has no concept of a splunkd\_port [\#134](https://github.com/voxpupuli/puppet-splunk/pull/134) ([TraGicCode](https://github.com/TraGicCode))
+- Remove unused spec\_helper\_system.rb [\#132](https://github.com/voxpupuli/puppet-splunk/pull/132) ([wyardley](https://github.com/wyardley))
+- SplunkForwarder has no concept of a server\_service.  [\#130](https://github.com/voxpupuli/puppet-splunk/pull/130) ([TraGicCode](https://github.com/TraGicCode))
+- Update missing concat dependency in acceptance tests. [\#129](https://github.com/voxpupuli/puppet-splunk/pull/129) ([TraGicCode](https://github.com/TraGicCode))
+- wire up splunkforwarder\_server type [\#126](https://github.com/voxpupuli/puppet-splunk/pull/126) ([alexcreek](https://github.com/alexcreek))
+- Added missing concat dependency to metadata.json + .fixtures.yml [\#123](https://github.com/voxpupuli/puppet-splunk/pull/123) ([TraGicCode](https://github.com/TraGicCode))
+- Fix typo in extension filename [\#117](https://github.com/voxpupuli/puppet-splunk/pull/117) ([gregoirefra](https://github.com/gregoirefra))
+- This commit adds the pkg\_provider 'chocolatey' to the module [\#108](https://github.com/voxpupuli/puppet-splunk/pull/108) ([ralfbosz](https://github.com/ralfbosz))
+- Ability to configure ui-prefs.conf [\#104](https://github.com/voxpupuli/puppet-splunk/pull/104) ([TraGicCode](https://github.com/TraGicCode))
+- Set `forwarder\_install\_options` to be `undef` for OS other than Windows. [\#99](https://github.com/voxpupuli/puppet-splunk/pull/99) ([shadow999](https://github.com/shadow999))
 
 ## [v6.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.0.0) (2017-05-25)
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v5.1.0...v6.0.0)
@@ -18,6 +53,7 @@ These should not impact the functionality of the module.
 
 **Merged pull requests:**
 
+- Bump release for 6.0.0 [\#112](https://github.com/voxpupuli/puppet-splunk/pull/112) ([petems](https://github.com/petems))
 - Add LICENSE file [\#109](https://github.com/voxpupuli/puppet-splunk/pull/109) ([alexjfisher](https://github.com/alexjfisher))
 - This commit sets the splunk\_user for Windows to 'administrator' [\#107](https://github.com/voxpupuli/puppet-splunk/pull/107) ([ralfbosz](https://github.com/ralfbosz))
 - Lint fixes [\#101](https://github.com/voxpupuli/puppet-splunk/pull/101) ([treydock](https://github.com/treydock))
