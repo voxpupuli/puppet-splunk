@@ -13,11 +13,11 @@
 # Requires: nothing
 #
 class splunk::platform::solaris inherits splunk::virtual {
-  include ::staging
+  include ::archive
   include ::splunk::params
   include ::splunk::platform::posix
 
-  $path         = $staging::path
+  $path         = $archive::path
   $subdir       = $splunk::params::staging_subdir
   $responsefile = "${path}/${subdir}/response.txt"
   $adminfile    = '/var/sadm/install/admin/splunk-noask'

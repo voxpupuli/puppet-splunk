@@ -30,7 +30,7 @@
 #   The root URL at which to find the splunk packages. The sane-default logic
 #   assumes that the packages are located under this URL in the same way that
 #   they are placed on download.splunk.com. The URL can be any protocol that
-#   the nanliu/staging module supports. This includes both puppet:// and
+#   the puppet/archive module supports. This includes both puppet:// and
 #   http://.  The expected directory structure is:
 #
 #     `-- $root_url
