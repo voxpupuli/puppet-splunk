@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.2.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.2.0) (2017-09-23)
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.1.0...v6.2.0)
+
+**Implemented enhancements:**
+
+- Replace Staging with archive module [\#127](https://github.com/voxpupuli/puppet-splunk/issues/127)
+
+**Closed issues:**
+
+- Evaluation Error: Unknown variable: 'splunk::params::forwarder\_install\_options' [\#97](https://github.com/voxpupuli/puppet-splunk/issues/97)
+
+**Merged pull requests:**
+
+- Replace staging module with archive module [\#128](https://github.com/voxpupuli/puppet-splunk/pull/128) ([TraGicCode](https://github.com/TraGicCode))
+
 ## [v6.1.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.1.0) (2017-09-20)
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.0.0...v6.1.0)
 
@@ -28,6 +43,7 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- Release v6.1.0 [\#135](https://github.com/voxpupuli/puppet-splunk/pull/135) ([TraGicCode](https://github.com/TraGicCode))
 - SplunkForwarder has no concept of a splunkd\_port [\#134](https://github.com/voxpupuli/puppet-splunk/pull/134) ([TraGicCode](https://github.com/TraGicCode))
 - Remove unused spec\_helper\_system.rb [\#132](https://github.com/voxpupuli/puppet-splunk/pull/132) ([wyardley](https://github.com/wyardley))
 - SplunkForwarder has no concept of a server\_service.  [\#130](https://github.com/voxpupuli/puppet-splunk/pull/130) ([TraGicCode](https://github.com/TraGicCode))
