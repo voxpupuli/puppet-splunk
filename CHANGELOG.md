@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v6.2.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.2.0) (2017-09-23)
+## [v6.3.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.3.0) (2017-09-24)
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.2.0...v6.3.0)
+
+**Implemented enhancements:**
+
+- Add splunk\_alert\_actions type. [\#142](https://github.com/voxpupuli/puppet-splunk/pull/142) ([TraGicCode](https://github.com/TraGicCode))
+- Add deploymentclient types [\#141](https://github.com/voxpupuli/puppet-splunk/pull/141) ([TraGicCode](https://github.com/TraGicCode))
+- Add Purge + File Management for splunk\_uiprefs [\#124](https://github.com/voxpupuli/puppet-splunk/pull/124) ([treydock](https://github.com/treydock))
+
+**Closed issues:**
+
+- Add Windows Server 2016 + Ubuntu 16.04 to Supported OS's [\#137](https://github.com/voxpupuli/puppet-splunk/issues/137)
+
+## [v6.2.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.2.0) (2017-09-24)
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.1.0...v6.2.0)
 
 **Implemented enhancements:**
@@ -17,6 +30,8 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- 6.2.0 Release [\#139](https://github.com/voxpupuli/puppet-splunk/pull/139) ([TraGicCode](https://github.com/TraGicCode))
+- Added ubuntu 16.04 & 2016 + 2008R2 support. [\#138](https://github.com/voxpupuli/puppet-splunk/pull/138) ([TraGicCode](https://github.com/TraGicCode))
 - Replace staging module with archive module [\#128](https://github.com/voxpupuli/puppet-splunk/pull/128) ([TraGicCode](https://github.com/TraGicCode))
 
 ## [v6.1.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.1.0) (2017-09-20)
