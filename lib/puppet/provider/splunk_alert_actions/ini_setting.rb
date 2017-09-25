@@ -3,6 +3,6 @@ Puppet::Type.type(:splunk_alert_actions).provide(
   parent: Puppet::Type.type(:ini_setting).provider(:splunk)
 ) do
   def self.file_name
-    'system/local/alert_actions.conf'
+    'alert_actions.conf'
   end
 end

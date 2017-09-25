@@ -3,6 +3,6 @@ Puppet::Type.type(:splunkforwarder_deploymentclient).provide(
   parent: Puppet::Type.type(:ini_setting).provider(:splunk)
 ) do
   def self.file_name
-    'system/local/deploymentclient.conf'
+    'deploymentclient.conf'
   end
 end
