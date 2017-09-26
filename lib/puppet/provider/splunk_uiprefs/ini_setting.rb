@@ -3,6 +3,6 @@ Puppet::Type.type(:splunk_uiprefs).provide(
   parent: Puppet::Type.type(:ini_setting).provider(:splunk)
 ) do
   def self.file_name
-    'system/local/ui-prefs.conf'
+    'ui-prefs.conf'
   end
 end
