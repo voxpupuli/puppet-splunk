@@ -4,7 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v6.3.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.3.0) (2017-09-24)
+## [v6.3.1](https://github.com/voxpupuli/puppet-splunk/tree/v6.3.1) (2017-09-26)
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.3.0...v6.3.1)
+
+**Fixed bugs:**
+
+- Fix config file location for splunkforwarder\_deploymentclient, deployment client, and alert\_actions. [\#144](https://github.com/voxpupuli/puppet-splunk/pull/144) ([treydock](https://github.com/treydock))
+
+## [v6.3.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.3.0) (2017-09-25)
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.2.0...v6.3.0)
 
 **Implemented enhancements:**
@@ -16,6 +23,10 @@ These should not affect the functionality of the module.
 **Closed issues:**
 
 - Add Windows Server 2016 + Ubuntu 16.04 to Supported OS's [\#137](https://github.com/voxpupuli/puppet-splunk/issues/137)
+
+**Merged pull requests:**
+
+- v6.3.0 release [\#143](https://github.com/voxpupuli/puppet-splunk/pull/143) ([TraGicCode](https://github.com/TraGicCode))
 
 ## [v6.2.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.2.0) (2017-09-24)
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.1.0...v6.2.0)
