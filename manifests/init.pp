@@ -65,6 +65,7 @@ class splunk (
   $purge_outputs          = false,
   $purge_props            = false,
   $purge_server           = false,
+  $purge_serverclass      = false,
   $purge_transforms       = false,
   $purge_uiprefs          = false,
   $purge_web              = false,
@@ -142,6 +143,7 @@ class splunk (
     purge_outputs          => $purge_outputs,
     purge_props            => $purge_props,
     purge_server           => $purge_server,
+    purge_serverclass      => $purge_serverclass,
     purge_transforms       => $purge_transforms,
     purge_uiprefs          => $purge_uiprefs,
     purge_web              => $purge_web
@@ -231,6 +233,11 @@ class splunk (
 
   Package[$package_name]
   -> File                   <| tag   == 'splunk_server'  |>
+  -> Splunk_serverclass     <| tag   == 'splunk_server'  |>
+  ~> Service[$virtual_service]
+
+  Package[$package_name]
+  -> File                   <| tag   == 'splunk_server'  |>
   -> Splunk_transforms      <| tag   == 'splunk_server'  |>
   ~> Service[$virtual_service]
 
@@ -301,6 +308,11 @@ class splunk (
   }
 
   file { '/opt/splunk/etc/system/local/server.conf':
+    ensure => file,
+    tag    => 'splunk_server',
+  }
+
+  file { '/opt/splunk/etc/system/local/serverclass.conf':
     ensure => file,
     tag    => 'splunk_server',
   }
