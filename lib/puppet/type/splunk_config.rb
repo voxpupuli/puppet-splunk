@@ -33,6 +33,7 @@ Puppet::Type.newtype(:splunk_config) do
     :purge_limits,
     :purge_props,
     :purge_server,
+    :purge_serverclass,
     :purge_transforms,
     :purge_web,
     :purge_uiprefs,
@@ -69,6 +70,7 @@ Puppet::Type.newtype(:splunk_config) do
       Puppet::Type::Splunk_indexes                   => self[:purge_indexes],
       Puppet::Type::Splunk_props                     => self[:purge_props],
       Puppet::Type::Splunk_server                    => self[:purge_server],
+      Puppet::Type::Splunk_serverclass               => self[:purge_serverclass],
       Puppet::Type::Splunk_transforms                => self[:purge_transforms],
       Puppet::Type::Splunk_web                       => self[:purge_web],
       Puppet::Type::Splunk_uiprefs                   => self[:purge_uiprefs],
@@ -99,6 +101,7 @@ Puppet::Type.newtype(:splunk_config) do
       :splunk_output,
       :splunk_props,
       :splunk_server,
+      :splunk_serverclass,
       :splunk_transforms,
       :splunk_web,
       :splunk_uiprefs
