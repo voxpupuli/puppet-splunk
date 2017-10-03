@@ -5,7 +5,11 @@ describe 'splunk::forwarder class' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
       pp = <<-EOS
-      class { '::splunk::forwarder': }
+      class { '::splunk::params':
+      }
+      class { '::splunk::forwarder':
+        splunkd_port => 8090,
+      }
       EOS
 
       # Run it twice and test for idempotency
