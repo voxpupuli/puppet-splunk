@@ -33,32 +33,43 @@
 #   the puppet/archive module supports. This includes both puppet:// and
 #   http://.  The expected directory structure is:
 #
-#     `-- $root_url
-#         |-- splunk
-#         |   `-- $platform
-#         |       `-- splunk-${version}-${build}-${additl}
-#         `-- universalforwarder
-#             `-- $platform
-#                 `-- splunkforwarder-${version}-${build}-${additl}
+#
+#     $root_url/
+#     └── products/
+#         ├── universalforwarder/
+#         │   └── releases/
+#         |       └── $version/
+#         |           └── $platform/
+#         |               └── splunkforwarder-${version}-${build}-${additl}
+#         └── splunk/
+#             └── releases/
+#                 └── $version/
+#                     └── $platform/
+#                         └── splunk-${version}-${build}-${additl}
+#
 #
 #   A semi-populated example src_root then contain:
 #
-#     `-- $root_url
-#         |-- splunk
-#         |   `-- linux
-#         |       |-- splunk-4.3.2-123586-linux-2.6-amd64.deb
-#         |       |-- splunk-4.3.2-123586-linux-2.6-intel.deb
-#         |       `-- splunk-4.3.2-123586-linux-2.6-x86_64.rpm
-#         `-- universalforwarder
-#             |-- linux
-#             |   |-- splunkforwarder-4.3.2-123586-linux-2.6-amd64.deb
-#             |   |-- splunkforwarder-4.3.2-123586-linux-2.6-intel.deb
-#             |   `-- splunkforwarder-4.3.2-123586-linux-2.6-x86_64.rpm
-#             |-- solaris
-#             |   `-- splunkforwarder-4.3.2-123586-solaris-10-intel.pkg
-#             `-- windows
-#                 |-- splunkforwarder-4.3.2-123586-x64-release.msi
-#                 `-- splunkforwarder-4.3.2-123586-x86-release.msi
+#     $root_url/
+#     └── products/
+#         ├── universalforwarder/
+#         │   └── releases/
+#         |       └── 7.0.0/
+#         |           ├── linux/
+#         |           |   ├── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
+#         |           |   ├── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
+#         |           |   └── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
+#         |           ├── solaris/
+#         |           └── windows/
+#         |               └── splunkforwarder-7.0.0-c8a78efdd40f-x64-release.msi
+#         └── splunk/
+#             └── releases/
+#                 └── 7.0.0/
+#                     └── linux/
+#                         ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
+#                         ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
+#                         └── splunk-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
+#
 #
 # Actions:
 #
@@ -67,9 +78,9 @@
 # Requires: nothing
 #
 class splunk::params (
-  $version              = '6.3.3',
-  $build                = 'f44afce176d0',
-  $src_root             = 'puppet:///modules/splunk',
+  $version              = '7.0.0',
+  $build                = 'c8a78efdd40f',
+  $src_root             = 'https://download.splunk.com',
   $splunkd_port         = '8089',
   $logging_port         = '9997',
   $server               = 'splunk',
@@ -101,36 +112,36 @@ class splunk::params (
   case $::kernel {
     'Linux': {
       $path_delimiter       = '/'
-      $forwarder_src_subdir = 'universalforwarder/linux'
+      $forwarder_src_subdir = 'linux'
       $forwarder_service    = [ 'splunk' ]
       $password_config_file = "${forwarder_dir}/etc/passwd"
       $secret_file          = "${forwarder_dir}/etc/splunk.secret"
       $forwarder_confdir    = "${forwarder_dir}/etc"
-      $server_src_subdir    = 'splunk/linux'
+      $server_src_subdir    = 'linux'
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = "${server_dir}/etc"
       $forwarder_install_options = undef
     }
     'SunOS': {
       $path_delimiter       = '/'
-      $forwarder_src_subdir = 'universalforwarder/solaris'
+      $forwarder_src_subdir = 'solaris'
       $forwarder_service    = [ 'splunk' ]
       $password_config_file = "${forwarder_dir}/etc/passwd"
       $secret_file          = "${forwarder_dir}/etc/splunk.secret"
       $forwarder_confdir    = "${forwarder_dir}/etc"
-      $server_src_subdir    = 'splunk/solaris'
+      $server_src_subdir    = 'solaris'
       $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = "${server_dir}/etc"
       $forwarder_install_options = undef
     }
     'Windows': {
       $path_delimiter       = '\\'
-      $forwarder_src_subdir = 'universalforwarder/windows'
+      $forwarder_src_subdir = 'windows'
       $password_config_file = 'C:/Program Files/SplunkUniversalForwarder/etc/passwd'
       $secret_file          =  'C:/Program Files/SplunkUniversalForwarder/etc/splunk.secret'
       $forwarder_service    = [ 'SplunkForwarder' ] # UNKNOWN
       $forwarder_confdir    = "${forwarder_dir}/etc"
-      $server_src_subdir    = 'splunk/windows'
+      $server_src_subdir    = 'windows'
       $server_service       = [ 'Splunkd', 'SplunkWeb' ] # UNKNOWN
       $server_confdir       = "${server_dir}/etc"
       $forwarder_install_options = [
@@ -237,8 +248,8 @@ class splunk::params (
   $server_src_pkg    = "splunk-${package_suffix}"
 
   $server_pkg_ensure = 'installed'
-  $server_pkg_src    = "${src_root}/${server_src_subdir}/${server_src_pkg}"
-  $forwarder_pkg_src = "${src_root}/${forwarder_src_subdir}/${forwarder_src_pkg}"
+  $server_pkg_src    = "${src_root}/products/splunk/releases/${version}/${server_src_subdir}/${server_src_pkg}"
+  $forwarder_pkg_src = "${src_root}/products/universalforwarder/releases/${version}/${forwarder_src_subdir}/${forwarder_src_pkg}"
   $create_password   = true
 
   $forwarder_pkg_ensure = 'installed'

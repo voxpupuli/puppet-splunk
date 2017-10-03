@@ -70,32 +70,40 @@ The files must be placed according to directory structure example given below.
 
 The expected directory structure is:
 
-      `-- files
-          |-- splunk
-          |   `-- $platform
-          |       `-- splunk-${version}-${build}-${additl}
-          `-- universalforwarder
-              `-- $platform
-                  `-- splunkforwarder-${version}-${build}-${additl}
+     $root_url/
+     └── products/
+         ├── universalforwarder/
+         │   └── releases/
+         |       └── $version/
+         |           └── $platform/
+         |               └── splunkforwarder-${version}-${build}-${additl}
+         └── splunk/
+             └── releases/
+                 └── $version/
+                     └── $platform/
+                         └── splunk-${version}-${build}-${additl}
 
 A semi-populated example files directory might then contain:
 
-      `-- files
-          |-- splunk
-          |   `-- linux
-          |       |-- splunk-6.3.3-f44afce176d0-linux-2.6-amd64.deb
-          |       |-- splunk-6.3.3-f44afce176d0-linux-2.6-intel.deb
-          |       `-- splunk-6.3.3-f44afce176d0-linux-2.6-x86_64.rpm
-          `-- universalforwarder
-              |-- linux
-              |   |-- splunkforwarder-6.3.3-f44afce176d0-linux-2.6-amd64.deb
-              |   |-- splunkforwarder-6.3.3-f44afce176d0-linux-2.6-intel.deb
-              |   `-- splunkforwarder-6.3.3-f44afce176d0-linux-2.6-x86_64.rpm
-              |-- solaris
-              |   `-- splunkforwarder-6.3.3-f44afce176d0-solaris-9-intel.pkg
-              `-- windows
-                  |-- splunkforwarder-6.3.3-f44afce176d0-x64-release.msi
-                  `-- splunkforwarder-6.3.3-f44afce176d0-x86-release.msi
+    $root_url/
+    └── products/
+        ├── universalforwarder/
+        │   └── releases/
+        |       └── 7.0.0/
+        |           ├── linux/
+        |           |   ├── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
+        |           |   ├── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
+        |           |   └── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
+        |           ├── solaris/
+        |           └── windows/
+        |               └── splunkforwarder-7.0.0-c8a78efdd40f-x64-release.msi
+        └── splunk/
+            └── releases/
+                └── 7.0.0/
+                    └── linux/
+                        ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
+                        ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
+                        └── splunk-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
 
 Second, you will need to supply the `splunk::params` class with three critical
 pieces of information.
