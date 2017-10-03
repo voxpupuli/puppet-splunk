@@ -103,6 +103,21 @@ class splunk (
     tag      => 'splunk_server',
   }
 
+  if $facts['virtual'] == 'docker' {
+    ini_setting { 'OPTIMISTIC_ABOUT_FILE_LOCKING':
+      ensure  => present,
+      section => '',
+      setting => 'OPTIMISTIC_ABOUT_FILE_LOCKING',
+      value   => '1',
+      path    => '/opt/splunk/etc/splunk-launch.conf',
+    }
+
+    Package[$package_name]
+    -> Ini_setting['OPTIMISTIC_ABOUT_FILE_LOCKING']
+    -> Exec <| tag   == 'splunk_server'  |>
+  }
+
+
   splunk_input { 'default_host':
     section => 'default',
     setting => 'host',
