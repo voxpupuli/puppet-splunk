@@ -170,7 +170,7 @@ class splunk::forwarder (
     group => $splunk_user,
     mode  => $facts['kernel'] ? {
       'windows' => undef,
-      default   => '0644',
+      default   => '0600',
     }
   }
 
