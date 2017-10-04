@@ -4,12 +4,28 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v7.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v7.0.0) (2017-10-03)
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.3.1...v7.0.0)
+
+**Implemented enhancements:**
+
+- BREAKING: Ability to download from download.splunk.com [\#150](https://github.com/voxpupuli/puppet-splunk/pull/150) ([TraGicCode](https://github.com/TraGicCode))
+- Add serverclass type [\#147](https://github.com/voxpupuli/puppet-splunk/pull/147) ([TraGicCode](https://github.com/TraGicCode))
+
+**Closed issues:**
+
+- Create a type to manage deployment server "ServerClasses" [\#146](https://github.com/voxpupuli/puppet-splunk/issues/146)
+
 ## [v6.3.1](https://github.com/voxpupuli/puppet-splunk/tree/v6.3.1) (2017-09-26)
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.3.0...v6.3.1)
 
 **Fixed bugs:**
 
 - Fix config file location for splunkforwarder\_deploymentclient, deployment client, and alert\_actions. [\#144](https://github.com/voxpupuli/puppet-splunk/pull/144) ([treydock](https://github.com/treydock))
+
+**Merged pull requests:**
+
+- Release v6.3.1 [\#145](https://github.com/voxpupuli/puppet-splunk/pull/145) ([TraGicCode](https://github.com/TraGicCode))
 
 ## [v6.3.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.3.0) (2017-09-25)
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.2.0...v6.3.0)
