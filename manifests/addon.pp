@@ -32,16 +32,16 @@
 #   }
 # }
 #
+
 define splunk::addon (
-  $splunk_home    = '/opt/splunkforwarder',
-  $package_manage = true,
-  $package_name   = undef,
-  $inputs         = {},
+  $splunk_home                   = '/opt/splunkforwarder',
+  $package_manage                = true,
+  Optional[String] $package_name = undef,
+  $inputs                        = {},
 ) {
 
 
-  if ( $package_manage ) {
-    validate_string($package_name)
+  if $package_manage {
     package { $package_name:
       ensure => installed,
       before => File["${splunk_home}/etc/apps/${name}/local"],
