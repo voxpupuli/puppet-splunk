@@ -112,7 +112,7 @@ pieces of information.
 * The build of Splunk you are using
 * The root URL to use to retrieve the packages
 
-In the example given above, the version is 6.3.3, the build is f44afce176d0,
+In the example given above, the version is 7.0.0, the build is c8a78efdd40f,
 and the root URL is puppet:///modules/splunk. See the splunk::params class
 documentation for more information.
 
