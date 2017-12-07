@@ -177,6 +177,15 @@ class splunk::forwarder (
     }
   }
 
+  # To make sure upgrades also don't ask for licensing
+  # Cannot run before license_splunkforwarder (or that will fail)
+  # Cannot run before the service is started (or that will complain about license)
+  file { "${splunk::params::forwarder_dir}/ftr" :
+    ensure  => absent,
+    require => Exec['license_splunkforwarder'],
+    before  => Service[$virtual_service],
+  }
+
   file { "${forwarder_confdir}/system/local/deploymentclient.conf":
     ensure => file,
     tag    => 'splunk_forwarder',
