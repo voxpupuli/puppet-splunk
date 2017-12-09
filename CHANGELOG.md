@@ -4,19 +4,54 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v7.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v7.0.0) (2017-10-03)
-[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.3.1...v7.0.0)
+## [v7.1.0](https://github.com/voxpupuli/puppet-splunk/tree/v7.1.0) (2017-12-09)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v7.0.0...v7.1.0)
 
 **Implemented enhancements:**
 
+- Update splunk installer directory structure + enable automated tests [\#149](https://github.com/voxpupuli/puppet-splunk/issues/149)
+
+**Fixed bugs:**
+
+- Error on using ini\_setting [\#77](https://github.com/voxpupuli/puppet-splunk/issues/77)
+- The splunk::forwarder::purge\_inputs generates error  [\#69](https://github.com/voxpupuli/puppet-splunk/issues/69)
+
+**Closed issues:**
+
+- Agent run fails: no parameter named 'purge\_forwarder\_deploymentclient'  [\#158](https://github.com/voxpupuli/puppet-splunk/issues/158)
+- Allow /opt/splunkforwarder/var/run/splunk splunkd.pid to run as splunk [\#154](https://github.com/voxpupuli/puppet-splunk/issues/154)
+- Erro deploying Splunk both Server and Forwarder [\#76](https://github.com/voxpupuli/puppet-splunk/issues/76)
+- Need a `splunkforwarder\_input` defined resource type [\#75](https://github.com/voxpupuli/puppet-splunk/issues/75)
+
+**Merged pull requests:**
+
+- Update README [\#162](https://github.com/voxpupuli/puppet-splunk/pull/162) ([arjenz](https://github.com/arjenz))
+- replace validate\_string with assert\_type [\#161](https://github.com/voxpupuli/puppet-splunk/pull/161) ([bastelfreak](https://github.com/bastelfreak))
+- v7.0.0 Release [\#152](https://github.com/voxpupuli/puppet-splunk/pull/152) ([TraGicCode](https://github.com/TraGicCode))
+
+## [v7.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v7.0.0) (2017-10-04)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.3.1...v7.0.0)
+
+**Breaking changes:**
+
 - BREAKING: Ability to download from download.splunk.com [\#150](https://github.com/voxpupuli/puppet-splunk/pull/150) ([TraGicCode](https://github.com/TraGicCode))
+
+**Implemented enhancements:**
+
 - Add serverclass type [\#147](https://github.com/voxpupuli/puppet-splunk/pull/147) ([TraGicCode](https://github.com/TraGicCode))
 
 **Closed issues:**
 
 - Create a type to manage deployment server "ServerClasses" [\#146](https://github.com/voxpupuli/puppet-splunk/issues/146)
 
+**Merged pull requests:**
+
+- Release v6.3.1 [\#145](https://github.com/voxpupuli/puppet-splunk/pull/145) ([TraGicCode](https://github.com/TraGicCode))
+
 ## [v6.3.1](https://github.com/voxpupuli/puppet-splunk/tree/v6.3.1) (2017-09-26)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.3.0...v6.3.1)
 
 **Fixed bugs:**
@@ -25,9 +60,10 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- Release v6.3.1 [\#145](https://github.com/voxpupuli/puppet-splunk/pull/145) ([TraGicCode](https://github.com/TraGicCode))
+- v6.3.0 release [\#143](https://github.com/voxpupuli/puppet-splunk/pull/143) ([TraGicCode](https://github.com/TraGicCode))
 
 ## [v6.3.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.3.0) (2017-09-25)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.2.0...v6.3.0)
 
 **Implemented enhancements:**
@@ -42,9 +78,10 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- v6.3.0 release [\#143](https://github.com/voxpupuli/puppet-splunk/pull/143) ([TraGicCode](https://github.com/TraGicCode))
+- Added ubuntu 16.04 & 2016 + 2008R2 support. [\#138](https://github.com/voxpupuli/puppet-splunk/pull/138) ([TraGicCode](https://github.com/TraGicCode))
 
 ## [v6.2.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.2.0) (2017-09-24)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.1.0...v6.2.0)
 
 **Implemented enhancements:**
@@ -58,10 +95,11 @@ These should not affect the functionality of the module.
 **Merged pull requests:**
 
 - 6.2.0 Release [\#139](https://github.com/voxpupuli/puppet-splunk/pull/139) ([TraGicCode](https://github.com/TraGicCode))
-- Added ubuntu 16.04 & 2016 + 2008R2 support. [\#138](https://github.com/voxpupuli/puppet-splunk/pull/138) ([TraGicCode](https://github.com/TraGicCode))
+- Release v6.1.0 [\#135](https://github.com/voxpupuli/puppet-splunk/pull/135) ([TraGicCode](https://github.com/TraGicCode))
 - Replace staging module with archive module [\#128](https://github.com/voxpupuli/puppet-splunk/pull/128) ([TraGicCode](https://github.com/TraGicCode))
 
 ## [v6.1.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.1.0) (2017-09-20)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v6.0.0...v6.1.0)
 
 **Implemented enhancements:**
@@ -85,7 +123,6 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- Release v6.1.0 [\#135](https://github.com/voxpupuli/puppet-splunk/pull/135) ([TraGicCode](https://github.com/TraGicCode))
 - SplunkForwarder has no concept of a splunkd\_port [\#134](https://github.com/voxpupuli/puppet-splunk/pull/134) ([TraGicCode](https://github.com/TraGicCode))
 - Remove unused spec\_helper\_system.rb [\#132](https://github.com/voxpupuli/puppet-splunk/pull/132) ([wyardley](https://github.com/wyardley))
 - SplunkForwarder has no concept of a server\_service.  [\#130](https://github.com/voxpupuli/puppet-splunk/pull/130) ([TraGicCode](https://github.com/TraGicCode))
@@ -98,6 +135,7 @@ These should not affect the functionality of the module.
 - Set `forwarder\_install\_options` to be `undef` for OS other than Windows. [\#99](https://github.com/voxpupuli/puppet-splunk/pull/99) ([shadow999](https://github.com/shadow999))
 
 ## [v6.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.0.0) (2017-05-25)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v5.1.0...v6.0.0)
 
 **Fixed bugs:**
@@ -122,8 +160,10 @@ These should not affect the functionality of the module.
 - Ensure /etc/init.d/splunk is created before splunk services [\#89](https://github.com/voxpupuli/puppet-splunk/pull/89) ([treydock](https://github.com/treydock))
 - Update README.md from puppetlabs-splunk [\#85](https://github.com/voxpupuli/puppet-splunk/pull/85) ([Cinderhaze](https://github.com/Cinderhaze))
 - Modulesync 0.18.0 [\#83](https://github.com/voxpupuli/puppet-splunk/pull/83) ([bastelfreak](https://github.com/bastelfreak))
+- release 5.1.0 [\#82](https://github.com/voxpupuli/puppet-splunk/pull/82) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [v5.1.0](https://github.com/voxpupuli/puppet-splunk/tree/v5.1.0) (2017-01-12)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v5.0.2...v5.1.0)
 
 **Closed issues:**
@@ -132,7 +172,6 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- release 5.1.0 [\#82](https://github.com/voxpupuli/puppet-splunk/pull/82) ([bastelfreak](https://github.com/bastelfreak))
 - modulesync 0.16.7 [\#81](https://github.com/voxpupuli/puppet-splunk/pull/81) ([bastelfreak](https://github.com/bastelfreak))
 - Bump min version\_requirement for Puppet + deps [\#80](https://github.com/voxpupuli/puppet-splunk/pull/80) ([juniorsysadmin](https://github.com/juniorsysadmin))
 - modulesync 0.16.6 [\#79](https://github.com/voxpupuli/puppet-splunk/pull/79) ([bastelfreak](https://github.com/bastelfreak))
@@ -145,6 +184,7 @@ These should not affect the functionality of the module.
 - Update based on voxpupuli/modulesync\_config 0.14.1. This might fix \#62 [\#64](https://github.com/voxpupuli/puppet-splunk/pull/64) ([dhoppe](https://github.com/dhoppe))
 
 ## [v5.0.2](https://github.com/voxpupuli/puppet-splunk/tree/v5.0.2) (2016-10-05)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v5.0.1...v5.0.2)
 
 **Fixed bugs:**
@@ -162,6 +202,7 @@ These should not affect the functionality of the module.
 - prepped 5.0.2 [\#60](https://github.com/voxpupuli/puppet-splunk/pull/60) ([crayfishx](https://github.com/crayfishx))
 
 ## [v5.0.1](https://github.com/voxpupuli/puppet-splunk/tree/v5.0.1) (2016-10-04)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v5.0.0...v5.0.1)
 
 **Fixed bugs:**
@@ -173,6 +214,7 @@ These should not affect the functionality of the module.
 - Prepped 5.0.1 [\#58](https://github.com/voxpupuli/puppet-splunk/pull/58) ([crayfishx](https://github.com/crayfishx))
 
 ## [v5.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v5.0.0) (2016-10-03)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/4.0.0...v5.0.0)
 
 **Closed issues:**
@@ -191,6 +233,7 @@ These should not affect the functionality of the module.
 - \(maint\) Fix resource order for installing splunk forwarders [\#47](https://github.com/voxpupuli/puppet-splunk/pull/47) ([briancain](https://github.com/briancain))
 
 ## [4.0.0](https://github.com/voxpupuli/puppet-splunk/tree/4.0.0) (2016-04-11)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/3.2.1...4.0.0)
 
 **Merged pull requests:**
@@ -219,24 +262,27 @@ These should not affect the functionality of the module.
 - Expose splunk forwarder windows install options [\#14](https://github.com/voxpupuli/puppet-splunk/pull/14) ([nanliu](https://github.com/nanliu))
 
 ## [3.2.1](https://github.com/voxpupuli/puppet-splunk/tree/3.2.1) (2015-09-08)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/3.2.0...3.2.1)
 
 **Merged pull requests:**
 
 - 3.2.1 prep [\#24](https://github.com/voxpupuli/puppet-splunk/pull/24) ([underscorgan](https://github.com/underscorgan))
 - MODULES-2448 - Improved collector compatibility [\#23](https://github.com/voxpupuli/puppet-splunk/pull/23) ([underscorgan](https://github.com/underscorgan))
+- Release 3.2.0 [\#19](https://github.com/voxpupuli/puppet-splunk/pull/19) ([hunner](https://github.com/hunner))
 
 ## [3.2.0](https://github.com/voxpupuli/puppet-splunk/tree/3.2.0) (2015-07-21)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/3.1.1...3.2.0)
 
 **Merged pull requests:**
 
-- Release 3.2.0 [\#19](https://github.com/voxpupuli/puppet-splunk/pull/19) ([hunner](https://github.com/hunner))
 - Update splunkforwarder\_output [\#18](https://github.com/voxpupuli/puppet-splunk/pull/18) ([hunner](https://github.com/hunner))
 - Repository and password changes [\#17](https://github.com/voxpupuli/puppet-splunk/pull/17) ([ckyriakidou](https://github.com/ckyriakidou))
 - \(MODULES-2096\) Move default cases last [\#16](https://github.com/voxpupuli/puppet-splunk/pull/16) ([DavidS](https://github.com/DavidS))
 
 ## [3.1.1](https://github.com/voxpupuli/puppet-splunk/tree/3.1.1) (2014-12-18)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/3.1.0...3.1.1)
 
 **Merged pull requests:**
@@ -246,6 +292,7 @@ These should not affect the functionality of the module.
 - Add solaris sparc parameters. [\#10](https://github.com/voxpupuli/puppet-splunk/pull/10) ([nanliu](https://github.com/nanliu))
 
 ## [3.1.0](https://github.com/voxpupuli/puppet-splunk/tree/3.1.0) (2014-08-06)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/3.0.1...3.1.0)
 
 **Merged pull requests:**
@@ -257,18 +304,23 @@ These should not affect the functionality of the module.
 - Add dependency on stdlib \>= 2.4.0 [\#5](https://github.com/voxpupuli/puppet-splunk/pull/5) ([hunner](https://github.com/hunner))
 
 ## [3.0.1](https://github.com/voxpupuli/puppet-splunk/tree/3.0.1) (2013-12-02)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/3.0.0...3.0.1)
 
 ## [3.0.0](https://github.com/voxpupuli/puppet-splunk/tree/3.0.0) (2013-11-22)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/2.0.1...3.0.0)
 
 ## [2.0.1](https://github.com/voxpupuli/puppet-splunk/tree/2.0.1) (2013-10-25)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/2.0.0...2.0.1)
 
 ## [2.0.0](https://github.com/voxpupuli/puppet-splunk/tree/2.0.0) (2013-09-30)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/0.3.0...2.0.0)
 
 ## [0.3.0](https://github.com/voxpupuli/puppet-splunk/tree/0.3.0) (2013-08-27)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/0.2.0...0.3.0)
 
 **Merged pull requests:**
@@ -276,6 +328,9 @@ These should not affect the functionality of the module.
 - typo in puppet module install command [\#2](https://github.com/voxpupuli/puppet-splunk/pull/2) ([fiddyspence](https://github.com/fiddyspence))
 
 ## [0.2.0](https://github.com/voxpupuli/puppet-splunk/tree/0.2.0) (2012-12-18)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/b61fce61714ec54dafd9364a4f102647cd5cf185...0.2.0)
+
 
 
 \* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
