@@ -78,9 +78,9 @@
 # Requires: nothing
 #
 class splunk::params (
-  $version              = '7.0.0',
-  $build                = 'c8a78efdd40f',
-  $src_root             = 'https://download.splunk.com',
+  $version              = '7.0.1',
+  $build                = '2b5b15c4ee89',
+  $src_root             = 'puppet:///modules/splunk',
   $splunkd_port         = '8089',
   $logging_port         = '9997',
   $server               = 'splunk',
@@ -182,13 +182,29 @@ class splunk::params (
       value               => "${server}:${logging_port}",
       tag                 => 'splunk_forwarder',
     },
-  }
+   
+}
   $forwarder_input = {
     'default_host' => {
       section      => 'default',
       setting      => 'host',
       value        => $::clientcert,
       tag          => 'splunk_forwarder',
+    },
+  }
+  $splunkforwarder_input = { 
+    'puppetserver-sourcetype' => {
+  section => 'monitor:///var/log/',
+  setting => 'sourcetype',
+  value   => 'puppetserver',
+  tag     => 'splunk_forwarder',
+    },
+  }
+  $splunkforwarder_deploymentclient = { 
+   'deployment-server-to-call' => {
+	section => 'target-broker:deploymentServer',
+	setting => 'targetUri',
+  	value   => "${server}:${splunkd_port}",
     },
   }
   # Settings common to an OS family
