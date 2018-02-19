@@ -182,7 +182,7 @@ class splunk::params (
       value               => "${server}:${logging_port}",
       tag                 => 'splunk_forwarder',
     },
-   
+
 }
   $forwarder_input = {
     'default_host' => {
