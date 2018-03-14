@@ -182,13 +182,29 @@ class splunk::params (
       value               => "${server}:${logging_port}",
       tag                 => 'splunk_forwarder',
     },
-  }
+
+}
   $forwarder_input = {
     'default_host' => {
       section      => 'default',
       setting      => 'host',
       value        => $::clientcert,
       tag          => 'splunk_forwarder',
+    },
+  }
+  $splunkforwarder_input = { 
+    'puppetserver-sourcetype' => {
+  section => 'monitor:///var/log/',
+  setting => 'sourcetype',
+  value   => 'puppetserver',
+  tag     => 'splunk_forwarder',
+    },
+  }
+  $splunkforwarder_deploymentclient = { 
+   'deployment-server-to-call' => {
+	section => 'target-broker:deploymentServer',
+	setting => 'targetUri',
+  	value   => "${server}:${splunkd_port}",
     },
   }
   # Settings common to an OS family

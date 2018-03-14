@@ -38,6 +38,10 @@
 #   If set to true, will remove any outputs.conf configuration not supplied by
 #   Puppet from the target system. Defaults to false.
 #
+# [*use_deployment_server*]
+#  If set to true, will set the deploymentclient.conf to call the
+#  ${server}:${splunkd_port} deployment server. Defaults to false.
+#
 # Actions:
 #
 #   Declares parameters to be consumed by other classes in the splunk module.
@@ -45,27 +49,29 @@
 # Requires: nothing
 #
 class splunk::forwarder (
-  $server                 = $splunk::params::server,
-  $package_source         = $splunk::params::forwarder_pkg_src,
-  $package_name           = $splunk::params::forwarder_pkg_name,
-  $package_ensure         = $splunk::params::forwarder_pkg_ensure,
-  $logging_port           = $splunk::params::logging_port,
-  $splunkd_port           = $splunk::params::splunkd_port,
-  $install_options        = $splunk::params::forwarder_install_options,
-  $splunk_user            = $splunk::params::splunk_user,
-  $splunkd_listen         = '127.0.0.1',
-  $purge_deploymentclient = false,
-  $purge_inputs           = false,
-  $purge_outputs          = false,
-  $purge_props            = false,
-  $purge_transforms       = false,
-  $purge_web              = false,
-  $pkg_provider           = $splunk::params::pkg_provider,
-  $forwarder_confdir      = $splunk::params::forwarder_confdir,
-  $forwarder_output       = $splunk::params::forwarder_output,
-  $forwarder_input        = $splunk::params::forwarder_input,
-  $create_password        = $splunk::params::create_password,
-  $addons                 = {},
+  $server                 	= $splunk::params::server,
+  $package_source         	= $splunk::params::forwarder_pkg_src,
+  $package_name           	= $splunk::params::forwarder_pkg_name,
+  $package_ensure         	= $splunk::params::forwarder_pkg_ensure,
+  $logging_port           	= $splunk::params::logging_port,
+  $splunkd_port           	= $splunk::params::splunkd_port,
+  $install_options        	= $splunk::params::forwarder_install_options,
+  $splunk_user            	= $splunk::params::splunk_user,
+  $splunkd_listen         	= '127.0.0.1',
+  $purge_deploymentclient 	= false,
+  $purge_inputs           	= false,
+  $purge_outputs          	= false,
+  $purge_props            	= false,
+  $purge_transforms       	= false,
+  $purge_web              	= false,
+  $use_deployment_server  	= false,
+  $pkg_provider           	= $splunk::params::pkg_provider,
+  $forwarder_confdir      	= $splunk::params::forwarder_confdir,
+  $forwarder_output       	= $splunk::params::forwarder_output,
+  $forwarder_deploymentclient	= $splunk::params::splunkforwarder_deploymentclient,
+  $forwarder_input        	= $splunk::params::forwarder_input,
+  $create_password        	= $splunk::params::create_password,
+  $addons                 	= {},
 ) inherits splunk::params {
 
   $virtual_service = $splunk::params::forwarder_service
@@ -112,7 +118,12 @@ class splunk::forwarder (
   $tag_resources = { tag => 'splunk_forwarder' }
   create_resources( 'splunkforwarder_input',$forwarder_input, $tag_resources)
   create_resources( 'splunkforwarder_output',$forwarder_output, $tag_resources)
-  # this is default
+  
+  # Declare the Deloyment Server if '$use_deployment_server' is true
+  if $use_deployment_server == true {
+  create_resources( 'splunkforwarder_deploymentclient',$forwarder_deploymentclient, $tag_resources)
+  }
+# this is default
   splunkforwarder_web { 'forwarder_splunkd_port':
     section => 'settings',
     setting => 'mgmtHostPort',
