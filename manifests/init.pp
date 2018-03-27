@@ -349,6 +349,11 @@ class splunk (
     tag    => 'splunk_server',
   }
 
+  file { '/opt/splunk/etc/system/metadata/local.meta':
+    ensure => file,
+    tag    => 'splunk_server',
+  }
+
   # Validate: if both Splunk and Splunk Universal Forwarder are installed on
   # the same system, then they must use different admin ports.
   if (defined(Class['splunk']) and defined(Class['splunk::forwarder'])) {
