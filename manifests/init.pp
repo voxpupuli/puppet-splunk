@@ -272,77 +272,77 @@ class splunk (
     mode => '0600',
   }
 
-  file { '/opt/splunk/etc/system/local/alert_actions.conf':
+  file { "${server_confdir}/system/local/alert_actions.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/authentication.conf':
+  file { "${server_confdir}/system/local/authentication.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/authorize.conf':
+  file { "${server_confdir}/system/local/authorize.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/deploymentclient.conf':
+  file { "${server_confdir}/system/local/deploymentclient.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/distsearch.conf':
+  file { "${server_confdir}/system/local/distsearch.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/indexes.conf':
+  file { "${server_confdir}/system/local/indexes.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/inputs.conf':
+  file { "${server_confdir}/system/local/inputs.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/limits.conf':
+  file { "${server_confdir}/system/local/limits.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/outputs.conf':
+  file { "${server_confdir}/system/local/outputs.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/props.conf':
+  file { "${server_confdir}/system/local/props.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/server.conf':
+  file { "${server_confdir}/system/local/server.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/serverclass.conf':
+  file { "${server_confdir}/system/local/serverclass.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/transforms.conf':
+  file { "${server_confdir}/system/local/transforms.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/ui-prefs.conf':
+  file { "${server_confdir}/system/local/ui-prefs.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
 
-  file { '/opt/splunk/etc/system/local/web.conf':
+  file { "${server_confdir}/system/local/web.conf":
     ensure => file,
     tag    => 'splunk_server',
   }
