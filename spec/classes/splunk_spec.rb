@@ -3,6 +3,13 @@ require 'spec_helper'
 describe 'splunk' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
+      package_name = 'splunk'
+      service_name = 'splunk'
+      if /^windows-/ =~ os then
+        package_name = 'Splunk'
+	service_name = 'Splunkd'
+      end
+
       context "on #{os}" do
         let(:facts) do
           facts
@@ -13,8 +20,8 @@ describe 'splunk' do
 
           it { is_expected.to contain_class('splunk::params') }
 
-          it { is_expected.to contain_service('splunk') }
-          it { is_expected.to contain_package('splunk').with_ensure('installed') }
+          it { is_expected.to contain_service(service_name) }
+          it { is_expected.to contain_package(package_name).with_ensure('installed') }
         end
       end
     end
