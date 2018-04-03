@@ -85,6 +85,8 @@ class splunk::forwarder (
       extract => false,
       before  => Package[$package_name],
     }
+  } else {
+    $staged_package = undef
   }
 
   Package  {

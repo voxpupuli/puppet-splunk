@@ -3,18 +3,22 @@ require 'spec_helper'
 describe 'splunk' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
-      context "on #{os}" do
-        let(:facts) do
-          facts
-        end
+      if os.start_with?('windows')
+        # Splunk Server not used supported on windows
+      else
+        context "on #{os}" do
+          let(:facts) do
+            facts
+          end
 
-        context 'splunk class without any parameters' do
-          it { is_expected.to compile.with_all_deps }
+          context 'splunk class without any parameters' do
+            it { is_expected.to compile.with_all_deps }
 
-          it { is_expected.to contain_class('splunk::params') }
+            it { is_expected.to contain_class('splunk::params') }
 
-          it { is_expected.to contain_service('splunk') }
-          it { is_expected.to contain_package('splunk').with_ensure('installed') }
+            it { is_expected.to contain_service('splunk') }
+            it { is_expected.to contain_package('splunk').with_ensure('installed') }
+          end
         end
       end
     end
