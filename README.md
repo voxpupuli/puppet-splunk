@@ -175,6 +175,7 @@ the inputs.conf file and refresh the service.
 * `splunk_indexes`: Used to manage ini settings in [indexes.conf][indexes.conf-docs]
 * `splunk_input`: Used to manage ini settings in [inputs.conf][inputs.conf-docs]
 * `splunk_limits`: Used to mange ini settings in [limits.conf][limits.conf-docs]
+* `splunk_metadata`: Used to manage ini settings in [default.meta][default.meta-docs]
 * `splunk_output`: Used to manage ini settings in [outputs.conf][outputs.conf-docs]
 * `splunk_props`: Used to manage ini settings in [props.conf][props.conf-docs]
 * `splunk_server`: Used to mangage ini settings in [server.conf][server.conf-docs]
@@ -459,6 +460,7 @@ TBD
 
 [authentication.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Authenticationconf
 [authorize.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Authenticationconf
+[default.meta-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Defaultmetaconf
 [distsearch.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Distsearchconf
 [indexes.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Indexesconf
 [inputs.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Inputsconf

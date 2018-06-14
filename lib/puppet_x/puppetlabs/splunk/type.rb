@@ -43,6 +43,7 @@ module PuppetX
           end
           type.newparam(:context) do
             desc 'The context in which to define the setting.'
+            isnamevar
             munge do |v|
               v.to_s.strip
             end

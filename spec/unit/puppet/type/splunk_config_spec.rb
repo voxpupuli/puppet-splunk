@@ -20,7 +20,8 @@ describe Puppet::Type.type(:splunk_config) do
     #
     SPLUNK_TYPES.each do |type, file_name|
       if SPLUNK_SERVER_TYPES.key?(type)
-        file_path = File.join('/opt/splunk/etc/system/local', file_name)
+        context = type == :splunk_metadata ? 'metadata' : 'local'
+        file_path = File.join('/opt/splunk/etc/system', context, file_name)
       elsif SPLUNK_FORWARDER_TYPES.key?(type)
         file_path = File.join('/opt/splunkforwarder/etc/system/local', file_name)
       end

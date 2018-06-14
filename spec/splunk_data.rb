@@ -8,6 +8,7 @@ SPLUNK_SERVER_TYPES = {
   splunk_indexes: 'indexes.conf',
   splunk_input: 'inputs.conf',
   splunk_limits: 'limits.conf',
+  splunk_metadata: 'local.meta',
   splunk_output: 'outputs.conf',
   splunk_props: 'props.conf',
   splunk_server: 'server.conf',

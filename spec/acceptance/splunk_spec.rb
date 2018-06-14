@@ -22,8 +22,9 @@ describe 'splunk class' do
       it { is_expected.to be_running }
     end
 
-    SPLUNK_TYPES.select { |type| SPLUNK_SERVER_TYPES.key?(type) }.each do |_type, file_name|
-      conf_file_path = File.join('/opt/splunk/etc/system/local', file_name)
+    SPLUNK_TYPES.select { |type| SPLUNK_SERVER_TYPES.key?(type) }.each do |type, file_name|
+      context = type == :splunk_metadata ? 'metadata' : 'local'
+      conf_file_path = File.join('/opt/splunk/etc/system', context, file_name)
       describe file(conf_file_path) do
         it { is_expected.to be_file }
         it { is_expected.to be_mode 600 }
