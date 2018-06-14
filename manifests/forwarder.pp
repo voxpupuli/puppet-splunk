@@ -126,6 +126,7 @@ class splunk::forwarder (
   # the respective config files.
 
   Splunk_config['splunk'] {
+    forwarder_confdir                => $forwarder_confdir,
     purge_forwarder_deploymentclient => $purge_deploymentclient,
     purge_forwarder_outputs          => $purge_outputs,
     purge_forwarder_inputs           => $purge_inputs,
