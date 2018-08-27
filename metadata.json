@@ -74,7 +74,7 @@
     },
     {
       "name": "puppetlabs-concat",
-      "version_requirement": "4.x"
+      "version_requirement": ">= 4.2.1 < 6.0.0"
     },
     {
       "name": "puppet-archive",
