@@ -26,6 +26,9 @@
 #   The port on which to send logs, and listen for logs. Used as a default for
 #   splunk and splunk::forwarder.
 #
+# [*splunk_user*]
+#   The user that splunk runs as.
+#
 # [*src_root*]
 #   The root URL at which to find the splunk packages. The sane-default logic
 #   assumes that the packages are located under this URL in the same way that
@@ -86,6 +89,10 @@ class splunk::params (
   $server               = 'splunk',
   $forwarder_installdir = undef,
   $server_installdir    = undef,
+  $splunk_user = $::osfamily ? {
+    'Windows' => 'Administrator',
+    default => 'root'
+  }
 ) {
 
   # Based on the small number of inputs above, we can construct sane defaults
@@ -101,11 +108,9 @@ class splunk::params (
   if $::osfamily == 'Windows' {
     $forwarder_dir = pick($forwarder_installdir, 'C:\\Program Files\\SplunkUniversalForwarder')
     $server_dir    = pick($server_installdir, 'C:/Program Files/Splunk')
-    $splunk_user   = 'Administrator'
   } else {
     $forwarder_dir = pick($forwarder_installdir, '/opt/splunkforwarder')
     $server_dir    = pick($server_installdir, '/opt/splunk')
-    $splunk_user   = 'root'
   }
 
   # Settings common to a kernel
