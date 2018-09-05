@@ -89,7 +89,7 @@ class splunk::params (
   $server               = 'splunk',
   $forwarder_installdir = undef,
   $server_installdir    = undef,
-  $splunk_user          = $::osfamily ? {
+  $splunk_user          = $facts['os']['family'] ? {
     'Windows' => 'Administrator',
     default => 'root'
   }
