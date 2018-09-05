@@ -28,6 +28,11 @@ describe 'splunk' do
     describe 'splunk class without any parameters on Solaris/Nexenta' do
       let(:facts) do
         {
+          os: {
+            family:       'Solaris',
+            name:         'Nexenta',
+            architecture: 'sparc'
+          },
           osfamily:        'Solaris',
           operatingsystem: 'Nexenta',
           kernel:          'SunOS',
