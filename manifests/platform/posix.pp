@@ -29,7 +29,7 @@ class splunk::platform::posix (
     path    => "${splunk::params::forwarder_dir}/bin",
     command => 'splunk ftr --accept-license --answer-yes --no-prompt',
     user    => $splunk_user,
-    creates => '/opt/splunkforwarder/etc/auth/server.pem',
+    onlyif  => "/usr/bin/test -f ${splunk::params::forwarder_dir}/ftr",
     timeout => 0,
     tag     => 'splunk_forwarder',
     notify  => Service['splunk'],
