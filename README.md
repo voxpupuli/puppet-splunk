@@ -16,6 +16,8 @@
     * [Setup requirements](#setup-requirements)
     * [Beginning with splunk](#beginning-with-splunk)
 1. [Usage - Configuration options and additional functionality](#usage)
+    * [Upgrade splunk/splunkforwarder packages](#upgrade-splunksplunkforwarder-packages)
+      * [Upgrade Example](#upgrade-example)
 1. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
@@ -161,6 +163,39 @@ This virtual resource will get collected by the `::splunk::forwarder` class if
 it is tagged with `splunk_forwarder` and will add the appropriate setting to
 the inputs.conf file and refresh the service.
 
+### Upgrade splunk/splunkforwarder packages
+
+This module has the ability to install *and* upgrade the splunk and splunkforwarder packages. All you have to do is declare `package_ensure => 'latest'` when calling the `::splunk` or `::splunk::forwarder` classes.
+
+#### Upgrade Example
+
+The following code will install the 6.6.8 version of the splunk forwarder. Then
+comment out the 6.6.8 version and build values and uncomment the 7.1.2 version
+and build values. Running puppet again will perform the following:
+
+1. splunk forwarder package is upgraded
+    1. splunk service is stopped as part of the package upgrade process
+1. new license agreement is automatically accepted
+    1. license agreement must be accepted or the splunk service will fail to start
+1. splunk service is started
+
+```puppet
+# Tell the module to get packages directly from Splunk.
+class { '::splunk::params':
+  version  => '6.6.8',
+  build    => '6c27a8439c1e',
+  #version  => '7.1.2',
+  #build    => 'a0c72a66db66',
+  src_root => 'https://download.splunk.com',
+}
+
+# Specifying package_ensure => 'latest' will ensure that the splunk and
+# splunkforwarder packages will be upgraded when you specify newer values for
+# version and build.
+class { '::splunk::forwarder':
+  package_ensure => 'latest',
+}
+```
 ## Reference
 
 ### Types
