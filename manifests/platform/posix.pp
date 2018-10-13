@@ -27,11 +27,12 @@ class splunk::platform::posix (
   # Commands to run to enable the SplunkUniversalForwarder
   @exec { 'license_splunkforwarder':
     path    => "${splunk::params::forwarder_dir}/bin",
-    command => 'splunk start --accept-license --answer-yes --no-prompt',
+    command => 'splunk ftr --accept-license --answer-yes --no-prompt',
     user    => $splunk_user,
-    creates => '/opt/splunkforwarder/etc/auth/server.pem',
+    onlyif  => "/usr/bin/test -f ${splunk::params::forwarder_dir}/ftr",
     timeout => 0,
     tag     => 'splunk_forwarder',
+    notify  => Service['splunk'],
   }
   @exec { 'enable_splunkforwarder':
 
