@@ -4,5 +4,3 @@ fixtures:
     inifile: 'https://github.com/puppetlabs/puppetlabs-inifile.git'
     concat: 'https://github.com/puppetlabs/puppetlabs-concat.git'
     archive: 'https://github.com/voxpupuli/puppet-archive.git'
-  symlinks:
-    splunk: "#{source_dir}"
