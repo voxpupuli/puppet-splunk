@@ -9,13 +9,13 @@ describe 'splunk::forwarder' do
         it { is_expected.to compile.with_all_deps }
       end
 
-      context 'with forwarder_outputs set to undef' do
-        let(:params) { { forwarder_outputs => :undef } }
+      context 'with forwarder_output set to undef' do
+        let(:params) { { forwarder_output => :undef } }
         it { is_expected.to compile.with_all_deps }
       end
 
-      context 'with forwarder_inputs set to undef' do
-        let(:params) { { forwarder_inputs => :undef } }
+      context 'with forwarder_input set to undef' do
+        let(:params) { { forwarder_input => :undef } }
         it { is_expected.to compile.with_all_deps }
       end
     end
