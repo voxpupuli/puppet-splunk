@@ -118,10 +118,10 @@ class splunk::forwarder (
 
   # Declare inputs and outputs specific to the forwarder profile
   $tag_resources = { tag => 'splunk_forwarder' }
-  if $forwarder_input != undef {
+  if $forwarder_input {
     create_resources( 'splunkforwarder_input',$forwarder_input, $tag_resources)
   }
-  if $forwarder_output != undef {
+  if $forwarder_output {
     create_resources( 'splunkforwarder_output',$forwarder_output, $tag_resources)
   }
   # this is default
