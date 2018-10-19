@@ -119,7 +119,8 @@ Puppet::Type.newtype(:splunk_config) do
       :splunkforwarder_props,
       :splunkforwarder_transforms,
       :splunkforwarder_web,
-      :splunkforwarder_server
+      :splunkforwarder_server,
+      :splunkforwarder_limits
     ].each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:ini_setting)
       provider_class.file_path = self[:forwarder_confdir]
