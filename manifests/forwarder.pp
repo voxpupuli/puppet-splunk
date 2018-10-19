@@ -38,6 +38,12 @@
 #   If set to true, will remove any outputs.conf configuration not supplied by
 #   Puppet from the target system. Defaults to false.
 #
+# [*forwarder_output*]
+#   Hash of output configs.  If undefined will not populate the outputs.conf file.
+#
+# [*forwarder_input*]
+#   Hash of input configs.  If undefined will not populate the inputs.conf file.
+#
 # Actions:
 #
 #   Declares parameters to be consumed by other classes in the splunk module.
@@ -112,8 +118,12 @@ class splunk::forwarder (
 
   # Declare inputs and outputs specific to the forwarder profile
   $tag_resources = { tag => 'splunk_forwarder' }
-  create_resources( 'splunkforwarder_input',$forwarder_input, $tag_resources)
-  create_resources( 'splunkforwarder_output',$forwarder_output, $tag_resources)
+  if $forwarder_input {
+    create_resources( 'splunkforwarder_input',$forwarder_input, $tag_resources)
+  }
+  if $forwarder_output {
+    create_resources( 'splunkforwarder_output',$forwarder_output, $tag_resources)
+  }
   # this is default
   splunkforwarder_web { 'forwarder_splunkd_port':
     section => 'settings',
