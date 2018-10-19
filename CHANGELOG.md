@@ -4,7 +4,27 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v7.2.1](https://github.com/voxpupuli/puppet-splunk/tree/v7.2.1) (2018-08-19)
+## [v7.3.0](https://github.com/voxpupuli/puppet-splunk/tree/v7.3.0) (2018-10-19)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v7.2.1...v7.3.0)
+
+**Implemented enhancements:**
+
+- Make splunk\_user configurable. [\#195](https://github.com/voxpupuli/puppet-splunk/pull/195) ([mdwheele](https://github.com/mdwheele))
+
+**Fixed bugs:**
+
+- file\_path not set for splunkforwarder\_limits resource [\#202](https://github.com/voxpupuli/puppet-splunk/issues/202)
+- Fixes \#202 [\#203](https://github.com/voxpupuli/puppet-splunk/pull/203) ([Renelast](https://github.com/Renelast))
+- Improve ftr license agreement [\#199](https://github.com/voxpupuli/puppet-splunk/pull/199) ([Joshua-Snapp](https://github.com/Joshua-Snapp))
+
+**Merged pull requests:**
+
+- Allow empty local and outputs files to keep centralized Splunk happier. [\#201](https://github.com/voxpupuli/puppet-splunk/pull/201) ([gregswift](https://github.com/gregswift))
+- modulesync 2.2.0 and allow puppet 6.x [\#200](https://github.com/voxpupuli/puppet-splunk/pull/200) ([bastelfreak](https://github.com/bastelfreak))
+- Allow puppetlabs/stdlib 5.x and puppetlabs/concat 5.x [\#193](https://github.com/voxpupuli/puppet-splunk/pull/193) ([bastelfreak](https://github.com/bastelfreak))
+
+## [v7.2.1](https://github.com/voxpupuli/puppet-splunk/tree/v7.2.1) (2018-08-20)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v7.2.0...v7.2.1)
 
