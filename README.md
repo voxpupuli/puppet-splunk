@@ -206,6 +206,7 @@ class { '::splunk::forwarder':
 
 * `splunk_authentication`: Used to manage ini settings in [authentication.conf][authentication.conf-docs]
 * `splunk_authorize`: Used to manage ini settings in [authorize.conf][authorize.conf-docs]
+* `splunk_deploymentclient`: Used to manage ini settings in [deploymentclient.conf][deploymentclient.conf-docs]
 * `splunk_distsearch`: Used to manage ini settings in [distsearch.conf][distsearch.conf-docs]
 * `splunk_indexes`: Used to manage ini settings in [indexes.conf][indexes.conf-docs]
 * `splunk_input`: Used to manage ini settings in [inputs.conf][inputs.conf-docs]
@@ -217,6 +218,7 @@ class { '::splunk::forwarder':
 * `splunk_transforms`: Used to manage ini settings in [transforms.conf][transforms.conf-docs]
 * `splunk_web`: Used to manage ini settings in [web.conf][web.conf-docs]
 
+* `splunkforwarder_deploymentclient`: Used to manage ini settings in [deploymentclient.conf][deploymentclient.conf-docs]
 * `splunkforwarder_input`: Used to manage ini settings in [inputs.conf][inputs.conf-docs]
 * `splunkforwarder_output`:Used to manage ini settings in [outputs.conf][outputs.conf-docs]
 * `splunkforwarder_props`: Used to manage ini settings in [props.conf][props.conf-docs]
@@ -496,6 +498,7 @@ TBD
 [authentication.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Authenticationconf
 [authorize.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Authenticationconf
 [default.meta-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Defaultmetaconf
+[deploymentclient.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Deploymentclientconf
 [distsearch.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Distsearchconf
 [indexes.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Indexesconf
 [inputs.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Inputsconf
