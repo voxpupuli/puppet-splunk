@@ -4,6 +4,10 @@
 #
 # Parameters:
 #
+# [*manage_package_source*]
+#   By default, this class will handle downloading the Splunk module you need
+#   but you can set this to false if you do not want that behaviour
+#
 # [*package_source*]
 #   The source URL for the splunk installation media (typically an RPM, MSI,
 #   etc). If a $src_root parameter is set in splunk::params, this will be
@@ -44,7 +48,8 @@
 # Requires: nothing
 #
 class splunk (
-  $package_source         = $splunk::params::server_pkg_src,
+  $manage_package_source  = true,
+  $package_source         = undef,
   $package_name           = $splunk::params::server_pkg_name,
   $package_ensure         = $splunk::params::server_pkg_ensure,
   $server_service         = $splunk::params::server_service,
@@ -76,6 +81,11 @@ class splunk (
 
   $path_delimiter  = $splunk::params::path_delimiter
 
+  $_package_source = $manage_package_source ? {
+    true  => $splunk::params::server_pkg_src,
+    false => $package_source
+  }
+
   if $pkg_provider != undef and $pkg_provider != 'yum' and $pkg_provider != 'apt' and $pkg_provider != 'chocolatey' {
     include ::archive::staging
     $src_pkg_filename = basename($package_source)
@@ -91,10 +101,13 @@ class splunk (
     $staged_package = undef
   }
 
-  Package {
-    source   => $pkg_provider ? {
+  Package  {
+    source          => $pkg_provider ? {
       'chocolatey' => undef,
-      default      => pick($staged_package, $package_source),
+      default      => $manage_package_source ? {
+        true  => pick($staged_package, $_package_source),
+        false => $_package_source,
+      }
     },
   }
 

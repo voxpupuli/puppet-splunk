@@ -8,6 +8,10 @@
 # [*server*]
 #   The address of a server to send logs to.
 #
+# [*manage_package_source*]
+#   By default, this class will handle downloading the Splunk module you need
+#   but you can set this to false if you do not want that behaviour
+#
 # [*package_source*]
 #   The source URL for the splunk installation media (typically an RPM, MSI,
 #   etc). If a $src_root parameter is set in splunk::params, this will be
@@ -52,7 +56,8 @@
 #
 class splunk::forwarder (
   $server                 = $splunk::params::server,
-  $package_source         = $splunk::params::forwarder_pkg_src,
+  $manage_package_source  = true,
+  $package_source         = undef,
   $package_name           = $splunk::params::forwarder_pkg_name,
   $package_ensure         = $splunk::params::forwarder_pkg_ensure,
   $logging_port           = $splunk::params::logging_port,
@@ -78,6 +83,12 @@ class splunk::forwarder (
   $staging_subdir  = $splunk::params::staging_subdir
 
   $path_delimiter  = $splunk::params::path_delimiter
+
+  $_package_source = $manage_package_source ? {
+    true  => $splunk::params::forwarder_pkg_src,
+    false => $package_source,
+  }
+
   #no need for staging the source if we have yum or apt
   if $pkg_provider != undef and $pkg_provider != 'yum' and $pkg_provider != 'apt' and $pkg_provider != 'chocolatey' {
     include ::archive::staging
@@ -87,7 +98,7 @@ class splunk::forwarder (
     $staged_package   = join($pkg_path_parts, $path_delimiter)
 
     archive { $staged_package:
-      source  => $package_source,
+      source  => $_package_source,
       extract => false,
       before  => Package[$package_name],
     }
@@ -98,7 +109,10 @@ class splunk::forwarder (
   Package  {
     source          => $pkg_provider ? {
       'chocolatey' => undef,
-      default      => pick($staged_package, $package_source),
+      default      => $manage_package_source ? {
+        true  => pick($staged_package, $_package_source),
+        false => $_package_source,
+      }
     },
   }
 
