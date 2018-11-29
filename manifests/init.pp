@@ -48,32 +48,32 @@
 # Requires: nothing
 #
 class splunk (
-  $manage_package_source  = true,
-  $package_source         = undef,
-  $package_name           = $splunk::params::server_pkg_name,
-  $package_ensure         = $splunk::params::server_pkg_ensure,
-  $server_service         = $splunk::params::server_service,
-  $logging_port           = $splunk::params::logging_port,
-  $splunkd_port           = $splunk::params::splunkd_port,
-  $splunk_user            = $splunk::params::splunk_user,
-  $pkg_provider           = $splunk::params::pkg_provider,
-  $splunkd_listen         = '127.0.0.1',
-  $web_port               = '8000',
-  $purge_alert_actions    = false,
-  $purge_authentication   = false,
-  $purge_authorize        = false,
-  $purge_deploymentclient = false,
-  $purge_distsearch       = false,
-  $purge_indexes          = false,
-  $purge_inputs           = false,
-  $purge_limits           = false,
-  $purge_outputs          = false,
-  $purge_props            = false,
-  $purge_server           = false,
-  $purge_serverclass      = false,
-  $purge_transforms       = false,
-  $purge_uiprefs          = false,
-  $purge_web              = false,
+  Boolean $manage_package_source                = true,
+  Optional[String] $package_source              = undef,
+  String $package_name                          = $splunk::params::server_pkg_name,
+  String $package_ensure                        = $splunk::params::server_pkg_ensure,
+  Variant[Array[String],String] $server_service = $splunk::params::server_service,
+  Variant[String,Integer] $logging_port         = $splunk::params::logging_port,
+  Variant[String,Integer] $splunkd_port         = $splunk::params::splunkd_port,
+  String $splunk_user                           = $splunk::params::splunk_user,
+  String $pkg_provider                          = $splunk::params::pkg_provider,
+  String $splunkd_listen                        = '127.0.0.1',
+  Variant[String,Integer] $web_port             = '8000',
+  Boolean $purge_alert_actions                  = false,
+  Boolean $purge_authentication                 = false,
+  Boolean $purge_authorize                      = false,
+  Boolean $purge_deploymentclient               = false,
+  Boolean $purge_distsearch                     = false,
+  Boolean $purge_indexes                        = false,
+  Boolean $purge_inputs                         = false,
+  Boolean $purge_limits                         = false,
+  Boolean $purge_outputs                        = false,
+  Boolean $purge_props                          = false,
+  Boolean $purge_server                         = false,
+  Boolean $purge_serverclass                    = false,
+  Boolean $purge_transforms                     = false,
+  Boolean $purge_uiprefs                        = false,
+  Boolean $purge_web                            = false,
 ) inherits splunk::params {
 
   $virtual_service = $server_service
@@ -88,12 +88,12 @@ class splunk (
 
   if $pkg_provider != undef and $pkg_provider != 'yum' and $pkg_provider != 'apt' and $pkg_provider != 'chocolatey' {
     include ::archive::staging
-    $src_pkg_filename = basename($package_source)
+    $src_pkg_filename = basename($_package_source)
     $pkg_path_parts   = [$archive::path, $staging_subdir, $src_pkg_filename]
     $staged_package   = join($pkg_path_parts, $path_delimiter)
 
     archive { $staged_package:
-      source  => $package_source,
+      source  => $_package_source,
       extract => false,
       before  => Package[$package_name],
     }
