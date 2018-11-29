@@ -56,7 +56,7 @@ class splunk (
   Variant[String,Integer] $logging_port         = $splunk::params::logging_port,
   Variant[String,Integer] $splunkd_port         = $splunk::params::splunkd_port,
   String $splunk_user                           = $splunk::params::splunk_user,
-  String $pkg_provider                          = $splunk::params::pkg_provider,
+  Optional[String] $pkg_provider                = $splunk::params::pkg_provider,
   String $splunkd_listen                        = '127.0.0.1',
   Variant[String,Integer] $web_port             = '8000',
   Boolean $purge_alert_actions                  = false,
