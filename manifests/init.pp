@@ -4,6 +4,10 @@
 #
 # Parameters:
 #
+# [*manage_package_source*]
+#   By default, this class will handle downloading the Splunk module you need
+#   but you can set this to false if you do not want that behaviour
+#
 # [*package_source*]
 #   The source URL for the splunk installation media (typically an RPM, MSI,
 #   etc). If a $src_root parameter is set in splunk::params, this will be
@@ -44,31 +48,32 @@
 # Requires: nothing
 #
 class splunk (
-  $package_source         = $splunk::params::server_pkg_src,
-  $package_name           = $splunk::params::server_pkg_name,
-  $package_ensure         = $splunk::params::server_pkg_ensure,
-  $server_service         = $splunk::params::server_service,
-  $logging_port           = $splunk::params::logging_port,
-  $splunkd_port           = $splunk::params::splunkd_port,
-  $splunk_user            = $splunk::params::splunk_user,
-  $pkg_provider           = $splunk::params::pkg_provider,
-  $splunkd_listen         = '127.0.0.1',
-  $web_port               = '8000',
-  $purge_alert_actions    = false,
-  $purge_authentication   = false,
-  $purge_authorize        = false,
-  $purge_deploymentclient = false,
-  $purge_distsearch       = false,
-  $purge_indexes          = false,
-  $purge_inputs           = false,
-  $purge_limits           = false,
-  $purge_outputs          = false,
-  $purge_props            = false,
-  $purge_server           = false,
-  $purge_serverclass      = false,
-  $purge_transforms       = false,
-  $purge_uiprefs          = false,
-  $purge_web              = false,
+  Boolean $manage_package_source                = true,
+  Optional[String] $package_source              = undef,
+  String $package_name                          = $splunk::params::server_pkg_name,
+  String $package_ensure                        = $splunk::params::server_pkg_ensure,
+  Variant[Array[String],String] $server_service = $splunk::params::server_service,
+  Stdlib::Port $logging_port                    = $splunk::params::logging_port,
+  Stdlib::Port $splunkd_port                    = $splunk::params::splunkd_port,
+  String $splunk_user                           = $splunk::params::splunk_user,
+  Optional[String] $pkg_provider                = $splunk::params::pkg_provider,
+  Stdlib::Host $splunkd_listen                  = '127.0.0.1',
+  Stdlib::Port $web_port                        = 8000,
+  Boolean $purge_alert_actions                  = false,
+  Boolean $purge_authentication                 = false,
+  Boolean $purge_authorize                      = false,
+  Boolean $purge_deploymentclient               = false,
+  Boolean $purge_distsearch                     = false,
+  Boolean $purge_indexes                        = false,
+  Boolean $purge_inputs                         = false,
+  Boolean $purge_limits                         = false,
+  Boolean $purge_outputs                        = false,
+  Boolean $purge_props                          = false,
+  Boolean $purge_server                         = false,
+  Boolean $purge_serverclass                    = false,
+  Boolean $purge_transforms                     = false,
+  Boolean $purge_uiprefs                        = false,
+  Boolean $purge_web                            = false,
 ) inherits splunk::params {
 
   $virtual_service = $server_service
@@ -76,14 +81,19 @@ class splunk (
 
   $path_delimiter  = $splunk::params::path_delimiter
 
+  $_package_source = $manage_package_source ? {
+    true  => $splunk::params::server_pkg_src,
+    false => $package_source
+  }
+
   if $pkg_provider != undef and $pkg_provider != 'yum' and $pkg_provider != 'apt' and $pkg_provider != 'chocolatey' {
     include ::archive::staging
-    $src_pkg_filename = basename($package_source)
+    $src_pkg_filename = basename($_package_source)
     $pkg_path_parts   = [$archive::path, $staging_subdir, $src_pkg_filename]
     $staged_package   = join($pkg_path_parts, $path_delimiter)
 
     archive { $staged_package:
-      source  => $package_source,
+      source  => $_package_source,
       extract => false,
       before  => Package[$package_name],
     }
@@ -91,10 +101,13 @@ class splunk (
     $staged_package = undef
   }
 
-  Package {
-    source   => $pkg_provider ? {
+  Package  {
+    source          => $pkg_provider ? {
       'chocolatey' => undef,
-      default      => pick($staged_package, $package_source),
+      default      => $manage_package_source ? {
+        true  => pick($staged_package, $_package_source),
+        false => $_package_source,
+      }
     },
   }
 

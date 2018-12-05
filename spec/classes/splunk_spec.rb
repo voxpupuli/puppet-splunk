@@ -19,6 +19,19 @@ describe 'splunk' do
             it { is_expected.to contain_service('splunk') }
             it { is_expected.to contain_package('splunk').with_ensure('installed') }
           end
+
+          context 'with pkg_provider set to yum and manage_package_source set to false' do
+            let(:params) do
+              {
+                'pkg_provider'          => 'yum',
+                'package_name'          => 'splunk_server_X',
+                'manage_package_source' => false
+              }
+            end
+
+            it { is_expected.to compile.with_all_deps }
+            it { is_expected.to contain_package('splunk_server_X').with_provider('yum').without_source }
+          end
         end
       end
     end

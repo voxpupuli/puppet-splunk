@@ -81,15 +81,15 @@
 # Requires: nothing
 #
 class splunk::params (
-  $version              = '7.0.0',
-  $build                = 'c8a78efdd40f',
-  $src_root             = 'https://download.splunk.com',
-  $splunkd_port         = '8089',
-  $logging_port         = '9997',
-  $server               = 'splunk',
-  $forwarder_installdir = undef,
-  $server_installdir    = undef,
-  $splunk_user          = $facts['os']['family'] ? {
+  String $version                        = '7.0.0',
+  String $build                          = 'c8a78efdd40f',
+  String $src_root                       = 'https://download.splunk.com',
+  Stdlib::Port $splunkd_port             = 8089,
+  Stdlib::Port $logging_port             = 9997,
+  String $server                         = 'splunk',
+  Optional[String] $forwarder_installdir = undef,
+  Optional[String] $server_installdir    = undef,
+  String $splunk_user                    = $facts['os']['family'] ? {
     'Windows' => 'Administrator',
     default => 'root'
   }

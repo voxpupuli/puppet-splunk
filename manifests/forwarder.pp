@@ -8,6 +8,10 @@
 # [*server*]
 #   The address of a server to send logs to.
 #
+# [*manage_package_source*]
+#   By default, this class will handle downloading the Splunk module you need
+#   but you can set this to false if you do not want that behaviour
+#
 # [*package_source*]
 #   The source URL for the splunk installation media (typically an RPM, MSI,
 #   etc). If a $src_root parameter is set in splunk::params, this will be
@@ -51,43 +55,50 @@
 # Requires: nothing
 #
 class splunk::forwarder (
-  $server                 = $splunk::params::server,
-  $package_source         = $splunk::params::forwarder_pkg_src,
-  $package_name           = $splunk::params::forwarder_pkg_name,
-  $package_ensure         = $splunk::params::forwarder_pkg_ensure,
-  $logging_port           = $splunk::params::logging_port,
-  $splunkd_port           = $splunk::params::splunkd_port,
-  $install_options        = $splunk::params::forwarder_install_options,
-  $splunk_user            = $splunk::params::splunk_user,
-  $splunkd_listen         = '127.0.0.1',
-  $purge_deploymentclient = false,
-  $purge_inputs           = false,
-  $purge_outputs          = false,
-  $purge_props            = false,
-  $purge_transforms       = false,
-  $purge_web              = false,
-  $pkg_provider           = $splunk::params::pkg_provider,
-  $forwarder_confdir      = $splunk::params::forwarder_confdir,
-  $forwarder_output       = $splunk::params::forwarder_output,
-  $forwarder_input        = $splunk::params::forwarder_input,
-  $create_password        = $splunk::params::create_password,
-  $addons                 = {},
+  String $server                        = $splunk::params::server,
+  Boolean $manage_package_source        = true,
+  Optional[String] $package_source      = undef,
+  String $package_name                  = $splunk::params::forwarder_pkg_name,
+  String $package_ensure                = $splunk::params::forwarder_pkg_ensure,
+  Stdlib::Port $logging_port            = $splunk::params::logging_port,
+  Stdlib::Port $splunkd_port            = $splunk::params::splunkd_port,
+  Optional[Array] $install_options      = $splunk::params::forwarder_install_options,
+  String $splunk_user                   = $splunk::params::splunk_user,
+  Stdlib::Host $splunkd_listen          = '127.0.0.1',
+  Boolean $purge_deploymentclient       = false,
+  Boolean $purge_inputs                 = false,
+  Boolean $purge_outputs                = false,
+  Boolean $purge_props                  = false,
+  Boolean $purge_transforms             = false,
+  Boolean $purge_web                    = false,
+  Optional[String] $pkg_provider        = $splunk::params::pkg_provider,
+  String $forwarder_confdir             = $splunk::params::forwarder_confdir,
+  Hash $forwarder_output                = $splunk::params::forwarder_output,
+  Hash $forwarder_input                 = $splunk::params::forwarder_input,
+  Boolean $create_password              = $splunk::params::create_password,
+  Hash $addons                          = {},
 ) inherits splunk::params {
 
   $virtual_service = $splunk::params::forwarder_service
   $staging_subdir  = $splunk::params::staging_subdir
 
   $path_delimiter  = $splunk::params::path_delimiter
+
+  $_package_source = $manage_package_source ? {
+    true  => $splunk::params::forwarder_pkg_src,
+    false => $package_source,
+  }
+
   #no need for staging the source if we have yum or apt
   if $pkg_provider != undef and $pkg_provider != 'yum' and $pkg_provider != 'apt' and $pkg_provider != 'chocolatey' {
     include ::archive::staging
 
-    $src_pkg_filename = basename($package_source)
+    $src_pkg_filename = basename($_package_source)
     $pkg_path_parts   = [$archive::path, $staging_subdir, $src_pkg_filename]
     $staged_package   = join($pkg_path_parts, $path_delimiter)
 
     archive { $staged_package:
-      source  => $package_source,
+      source  => $_package_source,
       extract => false,
       before  => Package[$package_name],
     }
@@ -98,7 +109,10 @@ class splunk::forwarder (
   Package  {
     source          => $pkg_provider ? {
       'chocolatey' => undef,
-      default      => pick($staged_package, $package_source),
+      default      => $manage_package_source ? {
+        true  => pick($staged_package, $_package_source),
+        false => $_package_source,
+      }
     },
   }
 
