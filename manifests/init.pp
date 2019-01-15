@@ -33,6 +33,16 @@
 # [*web_port*]
 #   The port on which to serve the Splunk Web interface.
 #
+# [*app_server_ports*]
+#   Port number(s) for the python-based application server to listen on.
+#   This port is bound only on the loopback interface -- it is not
+#   exposed to the network at large.
+#
+#   If set to "0", prevents the application server from
+#   being run from splunkd. Instead, Splunk Web starts as
+#   a separate python-based service which directly listens to the
+#   'httpport'. This is how Splunk 6.1.X and earlier behaved.
+#
 # [*purge_inputs*]
 #   If set to true, will remove any inputs.conf configuration not supplied by
 #   Puppet from the target system. Defaults to false.
@@ -58,6 +68,7 @@ class splunk (
   String $splunk_user                           = $splunk::params::splunk_user,
   Optional[String] $pkg_provider                = $splunk::params::pkg_provider,
   Stdlib::Host $splunkd_listen                  = '127.0.0.1',
+  Stdlib::Port $app_server_ports                = 0,
   Stdlib::Port $web_port                        = 8000,
   Boolean $purge_alert_actions                  = false,
   Boolean $purge_authentication                 = false,
@@ -157,6 +168,15 @@ class splunk (
     setting => 'httpport',
     value   => $web_port,
     tag     => 'splunk_server',
+  }
+
+  if $splunk::params::legacy_mode {
+    splunk_web { 'splunk_server_appserver_port':
+      section => 'settings',
+      setting => 'appServerPorts',
+      value   => $app_server_ports,
+      tag     => 'splunk_server',
+    }
   }
 
 
@@ -379,6 +399,15 @@ class splunk (
         to use non-conflicting splunkd ports.", '\s\s+', ' ', 'G')
       )
     }
+  }
+
+  # Enabling splunk boot-start creates as service file which will manage both
+  # the indexer and web service together.  Legacy mode requires the indexer and
+  # web service (splunkd and splunkweb) to be managed separately via binary
+  # calls, which is contradictory, and will result in an error when utilizing
+  # both at the same time.
+  if $splunk::params::boot_start and $splunk::params::legacy_mode {
+    fail('Splunk boot-start mode is enabled, you should not run in legacy mode.')
   }
 
 }

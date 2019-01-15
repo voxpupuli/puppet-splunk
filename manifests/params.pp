@@ -73,6 +73,15 @@
 #                         ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
 #                         └── splunk-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
 #
+# [*legacy_mode*]
+#   Run `splunkd` and `splunkweb` as separate services.
+#
+#   If `boot_start` is `true`, `legacy_mode` must be set `false`
+#
+# [*boot_start*]
+#   Enable Splunk to start at boot, create a system service file.
+#
+#   If `boot_start` is `true`, `legacy_mode` must be set `false`
 #
 # Actions:
 #
@@ -81,8 +90,8 @@
 # Requires: nothing
 #
 class splunk::params (
-  String $version                        = '7.0.0',
-  String $build                          = 'c8a78efdd40f',
+  String $version                        = '7.2.3',
+  String $build                          = '06d57c595b80',
   String $src_root                       = 'https://download.splunk.com',
   Stdlib::Port $splunkd_port             = 8089,
   Stdlib::Port $logging_port             = 9997,
@@ -92,7 +101,9 @@ class splunk::params (
   String $splunk_user                    = $facts['os']['family'] ? {
     'Windows' => 'Administrator',
     default => 'root'
-  }
+  },
+  Boolean $legacy_mode                   = false,
+  Boolean $boot_start                    = true,
 ) {
 
   # Based on the small number of inputs above, we can construct sane defaults
@@ -118,26 +129,52 @@ class splunk::params (
     'Linux': {
       $path_delimiter       = '/'
       $forwarder_src_subdir = 'linux'
-      $forwarder_service    = [ 'splunk' ]
       $password_config_file = "${forwarder_dir}/etc/passwd"
       $secret_file          = "${forwarder_dir}/etc/splunk.secret"
       $forwarder_confdir    = "${forwarder_dir}/etc"
       $server_src_subdir    = 'linux'
-      $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = "${server_dir}/etc"
       $forwarder_install_options = undef
+      if $legacy_mode {
+        $forwarder_service = [ 'splunkd', 'splunkweb' ]
+        $server_service = [ 'splunkd', 'splunkweb' ]
+      }
+      else {
+        # Systemd not supported until Splunk 7.2.2
+        if $facts['service_provider'] == 'systemd' {
+          $server_service = ($version >= '7.2.2') ? { true => ['Splunkd'], default => ['splunk'] }
+          $forwarder_service = ($version >= '7.2.2') ? { true => ['Splunkd'], default => ['splunk'] }
+        }
+        else {
+          $forwarder_service = ['splunk']
+          $server_service = ['splunk']
+        }
+      }
     }
     'SunOS': {
       $path_delimiter       = '/'
       $forwarder_src_subdir = 'solaris'
-      $forwarder_service    = [ 'splunk' ]
       $password_config_file = "${forwarder_dir}/etc/passwd"
       $secret_file          = "${forwarder_dir}/etc/splunk.secret"
       $forwarder_confdir    = "${forwarder_dir}/etc"
       $server_src_subdir    = 'solaris'
-      $server_service       = [ 'splunk', 'splunkd', 'splunkweb' ]
       $server_confdir       = "${server_dir}/etc"
       $forwarder_install_options = undef
+      if $legacy_mode {
+        $forwarder_service = [ 'splunkd', 'splunkweb' ]
+        $server_service = [ 'splunkd', 'splunkweb' ]
+      }
+      else {
+        # Systemd not supported until Splunk 7.2.2
+        if $facts['service_provider'] == 'systemd' {
+          $server_service = ($version >= '7.2.2') ? { true => ['Splunkd'], default => ['splunk'] }
+          $forwarder_service = ($version >= '7.2.2') ? { true => ['Splunkd'], default => ['splunk'] }
+        }
+        else {
+          $forwarder_service = ['splunk']
+          $server_service = ['splunk']
+        }
+      }
     }
     'Windows': {
       $path_delimiter       = '\\'
@@ -147,7 +184,7 @@ class splunk::params (
       $forwarder_service    = [ 'SplunkForwarder' ] # UNKNOWN
       $forwarder_confdir    = "${forwarder_dir}/etc"
       $server_src_subdir    = 'windows'
-      $server_service       = [ 'Splunkd', 'SplunkWeb' ] # UNKNOWN
+      $server_service       = legacy_mode ? { true => [ 'splunkd', 'splunkweb' ], default => [ 'splunkd' ] } # UNKNOWN
       $server_confdir       = "${server_dir}/etc"
       $forwarder_install_options = [
         'AGREETOLICENSE=Yes',

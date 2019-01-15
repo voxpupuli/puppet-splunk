@@ -46,7 +46,7 @@ class splunk::platform::solaris inherits splunk::virtual {
 
   # This is a virtual resource declared in the splunk::virtual class. We need
   # to override it since the default service provider on Solaris is not init.
-  Service['splunk'] {
+  Service[$splunk::params::server_service] {
     provider => 'init',
   }
 

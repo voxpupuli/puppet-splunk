@@ -24,65 +24,83 @@ class splunk::platform::posix (
   # Many of the resources declared here are virtual. They will be realized by
   # the appropriate including class if required.
 
-  # Commands to run to enable the SplunkUniversalForwarder
-  @exec { 'license_splunkforwarder':
-    path    => "${splunk::params::forwarder_dir}/bin",
-    command => 'splunk ftr --accept-license --answer-yes --no-prompt',
-    user    => $splunk_user,
-    onlyif  => "/usr/bin/test -f ${splunk::params::forwarder_dir}/ftr",
-    timeout => 0,
-    tag     => 'splunk_forwarder',
-    notify  => Service['splunk'],
+  case $facts['service_provider'] {
+    'systemd': { $_service_file = '/etc/systemd/system/multi-user.target.wants/Splunkd.service' }
+    default:   { $_service_file = '/etc/init.d/splunk' }
   }
-  @exec { 'enable_splunkforwarder':
 
-    # The path parameter can't be set because the boot-start silently fails on systemd service providers
-    command => "${splunk::params::forwarder_dir}/bin/splunk enable boot-start -user ${splunk_user}",
-    creates => '/etc/init.d/splunk',
-    require => Exec['license_splunkforwarder'],
-    tag     => 'splunk_forwarder',
-    notify  => Service['splunk'],
+  # Commands to run to enable the SplunkUniversalForwarder
+  if $splunk::params::boot_start {
+    @exec { 'enable_splunkforwarder':
+      command => "${splunk::params::forwarder_dir}/bin/splunk enable boot-start -user ${splunk_user} --accept-license --answer-yes --no-prompt",
+      creates => $_service_file,
+      tag     => 'splunk_forwarder',
+      notify  => Service[$splunk::params::server_service],
+    }
+  }
+  else {
+    @exec { 'license_splunkforwarder':
+      path    => "${splunk::params::forwarder_dir}/bin",
+      command => 'splunk ftr --accept-license --answer-yes --no-prompt',
+      user    => $splunk_user,
+      onlyif  => "/usr/bin/test -f ${splunk::params::forwarder_dir}/ftr",
+      timeout => 0,
+      tag     => 'splunk_forwarder',
+      notify  => Service[$splunk::params::server_service],
+    }
   }
 
   # Commands to run to enable full Splunk
-  @exec { 'license_splunk':
-    path    => "${splunk::params::server_dir}/bin",
-    command => 'splunk start --accept-license --answer-yes --no-prompt',
-    user    => $splunk_user,
-    creates => '/opt/splunk/etc/auth/splunk.secret',
-    timeout => 0,
-    tag     => 'splunk_server',
+  if $splunk::params::boot_start {
+    @exec { 'enable_splunk':
+      command => "${splunk::params::server_dir}/bin/splunk enable boot-start -user ${splunk_user} --accept-license --answer-yes --no-prompt",
+      creates => $_service_file,
+      tag     => 'splunk_server',
+      before  => Service[$splunk::params::server_service],
+    }
   }
-  @exec { 'enable_splunk':
-    # The path parameter can't be set because the boot-start silently fails on systemd service providers
-    command => "${splunk::params::server_dir}/bin/splunk enable boot-start -user ${splunk_user}",
-    creates => '/etc/init.d/splunk',
-    require => Exec['license_splunk'],
-    tag     => 'splunk_server',
-    before  => Service['splunk'],
+  else {
+    @exec { 'license_splunk':
+      path    => "${splunk::params::server_dir}/bin",
+      command => 'splunk start --accept-license --answer-yes --no-prompt',
+      user    => $splunk_user,
+      creates => "${splunk::params::server_dir}/etc/auth/splunk.secret",
+      timeout => 0,
+      tag     => 'splunk_server',
+    }
   }
 
   # Modify virtual service definitions specific to the Linux platform. These
   # are virtual resources declared in the splunk::virtual class, which we
   # inherit.
-  if 'splunkd' in $server_service {
-    Service['splunkd'] {
-      provider => 'base',
-      restart  => '/opt/splunk/bin/splunk restart splunkd',
-      start    => '/opt/splunk/bin/splunk start splunkd',
-      stop     => '/opt/splunk/bin/splunk stop splunkd',
-      pattern  => "splunkd -p ${splunkd_port} (restart|start)",
-      require  => Service['splunk'],
+  # The following code will only execute if splunk is not configured to start
+  # at boot.  The default is to use the system startup script.
+  if $splunk::params::boot_start == false {
+    if $splunk::params::legacy_mode == true {
+      Service['splunkweb'] {
+        provider => 'base',
+        restart  => "${splunk::params::server_dir}/bin/splunk restart splunkweb",
+        start    => "${splunk::params::server_dir}/bin/splunk start splunkweb",
+        stop     => "${splunk::params::server_dir}/bin/splunk stop splunkweb",
+        pattern  => 'python -O /opt/splunk/lib/python.*/splunk/.*/root.py.*',
+      }
+      Service['splunkd'] {
+        provider => 'base',
+        restart  => "${splunk::params::server_dir}/bin/splunk restart splunkd",
+        start    => "${splunk::params::server_dir}/bin/splunk start splunkd",
+        stop     => "${splunk::params::server_dir}/bin/splunk stop splunkd",
+        pattern  => "splunkd -p ${splunkd_port} (restart|start)",
+      }
     }
-  }
-  if 'splunkweb' in $server_service {
-    Service['splunkweb'] {
-      provider => 'base',
-      restart  => '/opt/splunk/bin/splunk restart splunkweb',
-      start    => '/opt/splunk/bin/splunk start splunkweb',
-      stop     => '/opt/splunk/bin/splunk stop splunkweb',
-      pattern  => 'python -O /opt/splunk/lib/python.*/splunk/.*/root.py.*',
-      require  => Service['splunk'],
+    else {
+      Service[$server_service] {
+        provider => 'base',
+        restart  => "${splunk::params::server_dir}/bin/splunk restart",
+        start    => "${splunk::params::server_dir}/bin/splunk start",
+        stop     => "${splunk::params::server_dir}/bin/splunk stop",
+        pattern  => "splunkd -p ${splunkd_port} (restart|start)",
+      }
+
     }
   }
 }

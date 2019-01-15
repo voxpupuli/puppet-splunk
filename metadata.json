@@ -1,6 +1,6 @@
 {
   "name": "puppet-splunk",
-  "version": "7.3.1-rc0",
+  "version": "7.4.0-rc1",
   "author": "Vox Pupuli",
   "summary": "Manage and deploy Splunk servers and forwarders",
   "license": "Apache-2.0",
@@ -17,6 +17,13 @@
     },
     {
       "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
         "6",
         "7"
@@ -66,7 +73,7 @@
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
-      "version_requirement": ">= 4.13.1 < 6.0.0"
+      "version_requirement": ">= 4.25.0 < 6.0.0"
     },
     {
       "name": "puppetlabs-inifile",
