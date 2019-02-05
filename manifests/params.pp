@@ -90,8 +90,8 @@
 # Requires: nothing
 #
 class splunk::params (
-  String $version                        = '7.2.3',
-  String $build                          = '06d57c595b80',
+  String $version                        = '7.0.0',
+  String $build                          = 'c8a78efdd40f',
   String $src_root                       = 'https://download.splunk.com',
   Stdlib::Port $splunkd_port             = 8089,
   Stdlib::Port $logging_port             = 9997,
@@ -142,8 +142,8 @@ class splunk::params (
       else {
         # Systemd not supported until Splunk 7.2.2
         if $facts['service_provider'] == 'systemd' {
-          $server_service = ($version >= '7.2.2') ? { true => ['Splunkd'], default => ['splunk'] }
-          $forwarder_service = ($version >= '7.2.2') ? { true => ['Splunkd'], default => ['splunk'] }
+          $server_service = versioncmp($version, '7.2.1') ? { 1 => ['Splunkd'], default => ['splunk'] }
+          $forwarder_service = versioncmp($version, '7.2.1') ? { 1 => ['Splunkd'], default => ['splunk'] }
         }
         else {
           $forwarder_service = ['splunk']
@@ -167,8 +167,8 @@ class splunk::params (
       else {
         # Systemd not supported until Splunk 7.2.2
         if $facts['service_provider'] == 'systemd' {
-          $server_service = ($version >= '7.2.2') ? { true => ['Splunkd'], default => ['splunk'] }
-          $forwarder_service = ($version >= '7.2.2') ? { true => ['Splunkd'], default => ['splunk'] }
+          $server_service = versioncmp($version, '7.2.1') ? { 1 => ['Splunkd'], default => ['splunk'] }
+          $forwarder_service = versioncmp($version, '7.2.1') ? { 1 => ['Splunkd'], default => ['splunk'] }
         }
         else {
           $forwarder_service = ['splunk']

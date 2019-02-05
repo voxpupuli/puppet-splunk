@@ -1,6 +1,6 @@
 {
   "name": "puppet-splunk",
-  "version": "7.4.0-rc1",
+  "version": "7.3.1",
   "author": "Vox Pupuli",
   "summary": "Manage and deploy Splunk servers and forwarders",
   "license": "Apache-2.0",
