@@ -141,13 +141,13 @@ class splunk::params (
       }
       else {
         # Systemd not supported until Splunk 7.2.2
-        if $facts['service_provider'] == 'systemd' {
-          $server_service = versioncmp($version, '7.2.1') ? { 1 => ['Splunkd'], default => ['splunk'] }
-          $forwarder_service = versioncmp($version, '7.2.1') ? { 1 => ['Splunkd'], default => ['splunk'] }
+        if $facts['service_provider'] == 'systemd' and versioncmp($version, '7.2.2') >= 0 {
+          $server_service = ['Splunkd']
+          $forwarder_service = ['Splunkd']
         }
         else {
-          $forwarder_service = ['splunk']
           $server_service = ['splunk']
+          $forwarder_service = ['splunk']
         }
       }
     }
@@ -166,13 +166,13 @@ class splunk::params (
       }
       else {
         # Systemd not supported until Splunk 7.2.2
-        if $facts['service_provider'] == 'systemd' {
-          $server_service = versioncmp($version, '7.2.1') ? { 1 => ['Splunkd'], default => ['splunk'] }
-          $forwarder_service = versioncmp($version, '7.2.1') ? { 1 => ['Splunkd'], default => ['splunk'] }
+        if $facts['service_provider'] == 'systemd' and versioncmp($version, '7.2.2') >= 0 {
+          $server_service = ['Splunkd']
+          $forwarder_service = ['Splunkd']
         }
         else {
-          $forwarder_service = ['splunk']
           $server_service = ['splunk']
+          $forwarder_service = ['splunk']
         }
       }
     }

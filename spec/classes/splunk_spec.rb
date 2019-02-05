@@ -60,6 +60,13 @@ describe 'splunk' do
                     :service_provider => 'systemd',
                   })
                 end
+                let(:pre_condition) {
+                  """
+                  class { 'splunk::params':
+                    version => '6.0.0'
+                  }
+                  """
+                }
                 it { is_expected.to contain_exec('enable_splunk').with(:creates => '/etc/systemd/system/multi-user.target.wants/Splunkd.service' ) }
                 it { is_expected.to_not contain_exec('license_splunk') }
                 it { is_expected.to contain_service('splunk') }
@@ -146,6 +153,15 @@ describe 'splunk' do
                     :service_provider => 'systemd',
                   })
                 end
+                let(:pre_condition) {
+                  """
+                  class { 'splunk::params':
+                    version => '6.0.0',
+                    legacy_mode => false,
+                    boot_start => false
+                  }
+                  """
+                }
                 it { is_expected.to_not contain_service('Splunkd') }
                 it { is_expected.to_not contain_service('splunkd') }
                 it { is_expected.to_not contain_service('splunkweb') }
@@ -196,7 +212,7 @@ describe 'splunk' do
                 }
               end
 
-              context 'splunk::version > 7.2.2 with service_provider systemd' do
+              context 'splunk::version >= 7.2.2 with service_provider systemd' do
                 let(:facts) do
                   facts.merge({
                     :service_provider => 'systemd',
@@ -233,6 +249,15 @@ describe 'splunk' do
                     :service_provider => 'systemd',
                   })
                 end
+                let(:pre_condition) {
+                  """
+                  class { 'splunk::params':
+                    version => '6.0.0',
+                    legacy_mode => true,
+                    boot_start => false
+                  }
+                  """
+                }
                 it { is_expected.to_not contain_service('splunk') }
                 it { is_expected.to_not contain_service('Splunkd') }
                 it { is_expected.to contain_service('splunkd').with({
