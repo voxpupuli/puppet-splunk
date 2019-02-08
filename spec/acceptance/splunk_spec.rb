@@ -1,7 +1,6 @@
 require 'spec_helper_acceptance'
 
 describe 'splunk class' do
-
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
