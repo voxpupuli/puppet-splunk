@@ -138,16 +138,19 @@ class splunk::params (
       if $legacy_mode {
         $forwarder_service = [ 'splunkd', 'splunkweb' ]
         $server_service = [ 'splunkd', 'splunkweb' ]
+        $service_file = '/etc/init.d/splunk' # safe default
       }
       else {
         # Systemd not supported until Splunk 7.2.2
         if $facts['service_provider'] == 'systemd' and versioncmp($version, '7.2.2') >= 0 {
           $server_service = ['Splunkd']
           $forwarder_service = ['Splunkd']
+          $service_file = '/etc/systemd/system/multi-user.target.wants/Splunkd.service'
         }
         else {
           $server_service = ['splunk']
           $forwarder_service = ['splunk']
+          $service_file = '/etc/init.d/splunk'
         }
       }
     }
@@ -163,16 +166,19 @@ class splunk::params (
       if $legacy_mode {
         $forwarder_service = [ 'splunkd', 'splunkweb' ]
         $server_service = [ 'splunkd', 'splunkweb' ]
+        $service_file = '/etc/init.d/splunk' # safe default
       }
       else {
         # Systemd not supported until Splunk 7.2.2
         if $facts['service_provider'] == 'systemd' and versioncmp($version, '7.2.2') >= 0 {
           $server_service = ['Splunkd']
           $forwarder_service = ['Splunkd']
+          $service_file = '/etc/systemd/system/multi-user.target.wants/Splunkd.service'
         }
         else {
           $server_service = ['splunk']
           $forwarder_service = ['splunk']
+          $service_file = '/etc/init.d/splunk'
         }
       }
     }

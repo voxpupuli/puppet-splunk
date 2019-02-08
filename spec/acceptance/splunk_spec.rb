@@ -2,8 +2,6 @@ require 'spec_helper_acceptance'
 
 describe 'splunk class' do
 
-  splunk_host = only_host_with_role(hosts, 'master')
-
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
@@ -20,15 +18,7 @@ describe 'splunk class' do
       it { is_expected.to be_installed }
     end
 
-    service_provider = fact_on(splunk_host, 'service_provider')
-    case service_provider
-    when /systemd/
-      splunk_service = 'Splunkd'
-    else
-      splunk_service = 'splunk'
-    end
-
-    describe service(splunk_service) do
+    describe service('splunk') do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end

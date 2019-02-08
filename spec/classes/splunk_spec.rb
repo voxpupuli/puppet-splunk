@@ -67,7 +67,7 @@ describe 'splunk' do
                   }
                   """
                 }
-                it { is_expected.to contain_exec('enable_splunk').with(:creates => '/etc/systemd/system/multi-user.target.wants/Splunkd.service' ) }
+                it { is_expected.to contain_exec('enable_splunk').with(:creates => '/etc/init.d/splunk' ) }
                 it { is_expected.to_not contain_exec('license_splunk') }
                 it { is_expected.to contain_service('splunk') }
                 it { is_expected.to_not contain_service('Splunkd') }

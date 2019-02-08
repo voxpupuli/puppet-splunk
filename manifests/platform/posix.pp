@@ -16,24 +16,20 @@
 #
 class splunk::platform::posix (
   $splunkd_port = undef,
-  $splunk_user = $splunk::params::splunk_user,
   $server_service = undef,
+  $splunk_user = $splunk::params::splunk_user,
+  $service_file = $splunk::params::service_file,
 ) inherits splunk::virtual {
 
   include ::splunk::params
   # Many of the resources declared here are virtual. They will be realized by
   # the appropriate including class if required.
 
-  case $facts['service_provider'] {
-    'systemd': { $_service_file = '/etc/systemd/system/multi-user.target.wants/Splunkd.service' }
-    default:   { $_service_file = '/etc/init.d/splunk' }
-  }
-
   # Commands to run to enable the SplunkUniversalForwarder
   if $splunk::params::boot_start {
     @exec { 'enable_splunkforwarder':
       command => "${splunk::params::forwarder_dir}/bin/splunk enable boot-start -user ${splunk_user} --accept-license --answer-yes --no-prompt",
-      creates => $_service_file,
+      creates => $service_file,
       tag     => 'splunk_forwarder',
       notify  => Service[$splunk::params::server_service],
     }
@@ -54,7 +50,7 @@ class splunk::platform::posix (
   if $splunk::params::boot_start {
     @exec { 'enable_splunk':
       command => "${splunk::params::server_dir}/bin/splunk enable boot-start -user ${splunk_user} --accept-license --answer-yes --no-prompt",
-      creates => $_service_file,
+      creates => $service_file,
       tag     => 'splunk_server',
       before  => Service[$splunk::params::server_service],
     }
