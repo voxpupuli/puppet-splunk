@@ -37,11 +37,7 @@ describe 'splunk' do
                   facts.merge(service_provider: 'systemd')
                 end
                 let(:pre_condition) do
-                  ''"
-                  class { 'splunk::params':
-                    version => '7.2.2'
-                  }
-                  "''
+                  "class { 'splunk::params': version => '7.2.2' }"
                 end
 
                 it { is_expected.to contain_exec('enable_splunk').with(creates: '/etc/systemd/system/multi-user.target.wants/Splunkd.service') }
@@ -57,11 +53,7 @@ describe 'splunk' do
                   facts.merge(service_provider: 'systemd')
                 end
                 let(:pre_condition) do
-                  ''"
-                  class { 'splunk::params':
-                    version => '6.0.0'
-                  }
-                  "''
+                  "class { 'splunk::params': version => '6.0.0' }"
                 end
 
                 it { is_expected.to contain_exec('enable_splunk').with(creates: '/etc/init.d/splunk') }
@@ -76,12 +68,7 @@ describe 'splunk' do
 
           context 'splunk class with legacy_mode = true and boot_start = true' do
             let(:pre_condition) do
-              ''"
-              class { 'splunk::params':
-                legacy_mode => true,
-                boot_start => true
-              }
-              "''
+              "class { 'splunk::params': legacy_mode => true, boot_start => true }"
             end
 
             it { expect { is_expected.to contain_class('splunk') }.to raise_error(Puppet::Error, %r{Splunk boot-start mode is enabled, you should not run in legacy mode.}) }
@@ -89,12 +76,7 @@ describe 'splunk' do
 
           context 'splunk class with legacy_mode = false and boot_start = false' do
             let(:pre_condition) do
-              ''"
-              class { 'splunk::params':
-                legacy_mode => false,
-                boot_start => false
-              }
-              "''
+              "class { 'splunk::params': legacy_mode => false, boot_start => false }"
             end
 
             it { is_expected.to compile.with_all_deps }
@@ -124,13 +106,7 @@ describe 'splunk' do
                   facts.merge(service_provider: 'systemd')
                 end
                 let(:pre_condition) do
-                  ''"
-                  class { 'splunk::params':
-                    version => '7.2.2',
-                    legacy_mode => false,
-                    boot_start => false
-                  }
-                  "''
+                  "class { 'splunk::params': version => '7.2.2', legacy_mode => false, boot_start => false }"
                 end
 
                 it { is_expected.not_to contain_service('splunk') }
@@ -149,13 +125,7 @@ describe 'splunk' do
                   facts.merge(service_provider: 'systemd')
                 end
                 let(:pre_condition) do
-                  ''"
-                  class { 'splunk::params':
-                    version => '6.0.0',
-                    legacy_mode => false,
-                    boot_start => false
-                  }
-                  "''
+                  "class { 'splunk::params': version => '6.0.0', legacy_mode => false, boot_start => false }"
                 end
 
                 it { is_expected.not_to contain_service('Splunkd') }
@@ -173,12 +143,7 @@ describe 'splunk' do
 
           context 'splunk class with legacy_mode = true and boot_start = false' do
             let(:pre_condition) do
-              ''"
-              class { 'splunk::params':
-                legacy_mode => true,
-                boot_start => false
-              }
-              "''
+              "class { 'splunk::params': legacy_mode => true, boot_start => false }"
             end
 
             it { is_expected.to compile.with_all_deps }
@@ -213,13 +178,7 @@ describe 'splunk' do
                   facts.merge(service_provider: 'systemd')
                 end
                 let(:pre_condition) do
-                  ''"
-                  class { 'splunk::params':
-                    version => '7.2.2',
-                    legacy_mode => true,
-                    boot_start => false
-                  }
-                  "''
+                  "class { 'splunk::params': version => '7.2.2', legacy_mode => true, boot_start => false }"
                 end
 
                 it { is_expected.not_to contain_service('splunk') }
@@ -243,13 +202,7 @@ describe 'splunk' do
                   facts.merge(service_provider: 'systemd')
                 end
                 let(:pre_condition) do
-                  ''"
-                  class { 'splunk::params':
-                    version => '6.0.0',
-                    legacy_mode => true,
-                    boot_start => false
-                  }
-                  "''
+                  "class { 'splunk::params': version => '6.0.0', legacy_mode => true, boot_start => false }"
                 end
 
                 it { is_expected.not_to contain_service('splunk') }
