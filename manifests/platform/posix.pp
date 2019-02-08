@@ -5,7 +5,18 @@
 # It extends functionality of either splunk, splunk::forwarder, or
 # both.
 #
-# Parameters: none
+# Parameters:
+#
+# [*splunkd_port*]
+#
+# [*server_service*]
+#
+# [*splunk_user*]
+#
+# [*service_file*]
+#   Specifies the splunk service file, created during Exec[enable_splunk] or
+#   Exec[enable_splunkforwarder]
+#
 #
 # Actions:
 #
