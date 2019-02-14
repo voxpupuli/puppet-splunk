@@ -32,30 +32,37 @@
 #   }
 # }
 #
-
 define splunk::addon (
-  $splunk_home                   = '/opt/splunkforwarder',
-  $package_manage                = true,
-  Optional[String] $package_name = undef,
-  $inputs                        = {},
+  Optional[Stdlib::Absolutepath] $splunk_home = undef,
+  Boolean $package_manage                     = true,
+  Optional[String[1]] $package_name           = undef,
+  Hash $inputs                                = {},
 ) {
 
+  include 'splunk::params'
+
+  if $splunk_home {
+    $_splunk_home = $splunk_home
+  }
+  else {
+    $_splunk_home = $splunk::params::forwarder_homedir
+  }
 
   if $package_manage {
     package { $package_name:
       ensure => installed,
-      before => File["${splunk_home}/etc/apps/${name}/local"],
+      before => File["${_splunk_home}/etc/apps/${name}/local"],
     }
   }
 
-  file { "${splunk_home}/etc/apps/${name}/local":
+  file { "${_splunk_home}/etc/apps/${name}/local":
     ensure => directory,
   }
 
   if $inputs {
     concat { "splunk::addon::inputs_${name}":
-      path    => "${splunk_home}/etc/apps/${name}/local/inputs.conf",
-      require => File["${splunk_home}/etc/apps/${name}/local"],
+      path    => "${_splunk_home}/etc/apps/${name}/local/inputs.conf",
+      require => File["${_splunk_home}/etc/apps/${name}/local"],
     }
 
     create_resources('splunk::addon::input', $inputs, {'addon' =>  $name })

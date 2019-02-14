@@ -1,11 +1,11 @@
 require 'spec_helper_acceptance'
 
-describe 'splunk class' do
+describe 'splunk enterprise class' do
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
       pp = <<-EOS
-      class { '::splunk': }
+      class { '::splunk::enterprise': }
       EOS
 
       # Run it twice and test for idempotency
@@ -17,7 +17,14 @@ describe 'splunk class' do
       it { is_expected.to be_installed }
     end
 
-    describe service('splunk') do
+    init = shell('/bin/readlink /sbin/init', acceptable_exit_codes: [0, 1]).stdout
+    service_name = if init.include? 'systemd'
+                     'Splunkd'
+                   else
+                     'splunk'
+                   end
+
+    describe service(service_name) do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end

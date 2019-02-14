@@ -1,4 +1,4 @@
-# Splunk module for Puppet
+# Puppet Module For Splunk
 
 [![Build Status](https://travis-ci.org/voxpupuli/puppet-splunk.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-splunk)
 [![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-splunk/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-splunk)
@@ -24,10 +24,10 @@
 
 ## Overview
 
-This module provides a method to deploy Splunk Server or Splunk Universal Forwarder
-with common configurations and ensure the services maintain a running
-state. It provides types/providers to interact with the various Splunk/Forwarder
-configuration files.
+This module provides a method to deploy Splunk Enterprise or Splunk Universal
+Forwarder with common configurations and ensure the services maintain a running
+state. It provides types/providers to interact with the various
+Splunk/Forwarder configuration files.
 
 ## Module Description
 
@@ -44,8 +44,10 @@ or apt to install these components if they're self-hosted.
 
 * Installs the Splunk/Forwarder package and manages their config files. It does
   not purge them by default.
-* The module will set up both Splunk and Splunkforwarder to run as the 'root'
-  user on POSIX platforms.
+* The module will set up both Splunk Enterprise and Splunk Forwarder to run as
+  the 'root' user on POSIX platforms.
+* By default, enables Splunk Enterprise and Splunk Forwarder boot-start, and
+  uses the vendor-generated service file to manage the splunk service.
 
 ### Setup Requirements
 
@@ -125,11 +127,12 @@ Puppet Server in the modulepath the module is ready to deploy.
 
 ## Usage
 
-If a user is installing Splunk with packages provided from their modulepath,
-this is the most basic way of installing Splunk Server with default settings:
+If a user is installing Splunk Enterprise with packages provided from their
+modulepath, this is the most basic way of installing Splunk Server with default
+settings:
 
 ```puppet
-include ::splunk
+include ::splunk::enterprise
 ```
 
 This is the most basic way of installing the Splunk Universal Forwarder with
@@ -143,8 +146,8 @@ class { '::splunk::params':
 include ::splunk::forwarder
 ```
 
-Once both Splunk and Splunk Universal Forwarder have been deployed on their
-respective nodes, the Forwarder is ready to start sending logs.
+Once both Splunk Enterprise and Splunk Universal Forwarder have been deployed
+on their respective nodes, the Forwarder is ready to start sending logs.
 
 In order to start sending some log data, users can take advantage of the
 `Splunkforwarder_input` type. Here is a basic example of adding an input to
@@ -163,9 +166,11 @@ This virtual resource will get collected by the `::splunk::forwarder` class if
 it is tagged with `splunk_forwarder` and will add the appropriate setting to
 the inputs.conf file and refresh the service.
 
-### Upgrade splunk/splunkforwarder packages
+### Upgrade splunk and splunkforwarder packages
 
 This module has the ability to install *and* upgrade the splunk and splunkforwarder packages. All you have to do is declare `package_ensure => 'latest'` when calling the `::splunk` or `::splunk::forwarder` classes.
+
+Upgrades from 7.0.X to >= 7.0.X are not tested.
 
 #### Upgrade Example
 
@@ -200,7 +205,7 @@ class { '::splunk::forwarder':
 
 ### Types
 
-* `splunk_config`: This is a meta resource used to configur defaults for all the
+* `splunk_config`: This is a meta resource used to configure defaults for all the
   splunkforwarder and splunk types. This type should not be declared directly as
   it is declared in `splunk::params` and used internally by the types and providers.
 
@@ -274,7 +279,8 @@ title and should explicitly declare it with the `section` attribute.
 
 #### `version`
 
-*Optional* Specifies the version of Splunk Enterprise that the module should install.
+*Optional* Specifies the version of Splunk Enterprise and Splunk Forwarder that
+the module should install.
 
 #### `build`
 
@@ -299,15 +305,24 @@ both splunk and splunk::forwarder.
 *Optional* The fqdn or IP address of the Splunk server. Used for setting up the
 default TCP output and input.
 
-### Class: ::splunk Parameters
+#### `forwarder_installdir`
 
-#### `package_source`
+*Optional* Directory in which to install and manage Splunk Forwarder
 
-The source URL for the splunk installation media (typically an RPM, MSI,
-etc). If a $src_root parameter is set in splunk::params, this will be
-automatically supplied. Otherwise it is required. The URL can be of any
-protocol supported by the nanliu/staging module. On Windows, this can be
-a UNC path to the MSI.
+#### `enterprise_installdir`
+
+*Optional* Directory in which to install and mange Splunk Enterprise
+
+#### `boot_start`
+
+*Optional* Enable splunk boot-start mode.  Provision a service file.
+
+### Class: ::splunk::enterprise Parameters
+
+#### `version`
+
+Specifies the version of Splunk Enterprise the module should install and
+manage.  Defaults to the value set in splunk::params.
 
 #### `package_name`
 
@@ -316,177 +331,370 @@ The name of the package(s) Puppet will use to install Splunk.
 #### `package_ensure`
 
 Ensure parameter which will get passed to the Splunk package resource.
-Default to the value in splunk::params
+Defaults to the value in splunk::params.
 
-#### `logging_port`
+#### `staging_dir`
 
-The port to receive TCP logs on. Default to the port specified in
+Root of the archive path to host the Splunk package.  Defaults to the value in
 splunk::params.
 
-#### `splunk_user`
+#### `enterprise_package_src`
 
-The user to run Splunk as. Default to the value set in splunk::params.
+The source URL for the splunk installation media (typically an RPM, MSI,
+etc). If a `$src_root` parameter is set in splunk::params, this will be
+automatically supplied. Otherwise it is required. The URL can be of any
+protocol supported by the nanliu/staging module. On Windows, this can be
+a UNC path to the MSI. Defaults to the value in splunk::params.
 
-#### `splunkd_port`
+#### `package_provider`
 
-The management port for Splunk. Default to the value set in splunk::params.
+The package management system used to host the Splunk packages.  Defaults to the
+value in splunk::params.
 
-#### `web_port`
+#### `manage_package_source`
 
-The port on which to service the Splunk Web interface. Default to 8000.
-
-#### `purge_inputs`
-
-*Optional* If set to true, inputs.conf will be purged of configuration that is
-no longer managed by the splunk_input type. Default to false.
-
-#### `purge_outputs`
-
-*Optional* If set to true, outputs.conf will be purged of configuration that is
-no longer managed by the splunk_output type. Default to false.
-
-#### `purge_authentication`
-
-*Optional* If set to true, authentication.conf will be purged of configuration
-that is no longer managed by the splunk_authentication type. Default to false.
-
-#### `purge_authorize`
-
-*Optional* If set to true, authorize.conf will be purged of configuration that
-is no longer managed by the splunk_authorize type. Default to false.
-
-#### `purge_distsearch`
-
-*Optional* If set to true, distsearch.conf will be purged of configuration that
-is no longer managed by the splunk_distsearch type. Default to false.
-
-#### `purge_indexes`
-
-*Optional* If set to true, indexes.conf will be purged of configuration that is
-no longer managed by the splunk_indexes type. Default to false.
-
-#### `purge_limits`
-
-*Optional* If set to true, limits.conf will be purged of configuration that is
-no longer managed by the splunk_limits type. Default to false.
-
-#### `purge_props`
-
-*Optional* If set to true, props.conf will be purged of configuration that is
-no longer managed by the splunk_props type. Default to false.
-
-#### `purge_server`
-
-*Optional* If set to true, server.conf will be purged of configuration that is
-no longer managed by the splunk_server type. Default to false.
-
-#### `purge_transforms`
-
-*Optional* If set to true, transforms.conf will be purged of configuration that
-is no longer managed by the splunk_transforms type. Default to false.
-
-#### `purge_web`
-
-*Optional* If set to true, web.conf will be purged of configuration that is no
-longer managed by the splunk_web type. Default to false.
-
-### Class ::splunk::forwarder Parameters
-
-#### `server`
-
-*Optional* The fqdn or IP address of the Splunk server. Default to the value in ::splunk::params.
+Whether or not to use the supplied `enterprise_package_src` param.  Defaults to
+true.
 
 #### `package_source`
 
-The source URL for the splunk installation media (typically an RPM, MSI,
-etc). If a $src_root parameter is set in splunk::params, this will be
-automatically supplied. Otherwise it is required. The URL can be of any
-protocol supported by the nanliu/staging module. On Windows, this can be
-a UNC path to the MSI.
-
-#### `package_name`
-
-The name of the package(s) Puppet will use to install Splunk Universal Forwarder.
-
-#### `package_ensure`
-
-Ensure parameter which will get passed to the Splunk package resource.
-Default to the value in ::splunk::params
-
-#### `logging_port`
-
-*Optional* The port on which to send and listen for logs. Default to the value
-in ::splunk::params.
-
-#### `splunkd_port`
-
-The management port for Splunk. Default to the value set in splunk::params.
+*Optional* The source URL for the splunk installation media (typically an RPM,
+MSI, etc). If `enterprise_package_src` parameter is set in splunk::params and
+`manage_package_source` is true, this will be automatically supplied. Otherwise
+it is required. The URL can be of any protocol supported by the nanliu/staging
+module. On Windows, this can be a UNC path to the MSI.  Defaults to undef.
 
 #### `install_options`
 
 This variable is passed to the package resources' *install_options* parameter.
-Default to the value in ::splunk::params.
+Defaults to the value in ::splunk::params.
 
 #### `splunk_user`
 
-The user to run Splunk as. Default to the value set in splunk::params.
+The user to run Splunk as. Defaults to the value set in splunk::params.
+
+#### `enterprise_homedir`
+
+Specifies the Splunk Enterprise home directory.  Defaults to the value set in
+splunk::params.
+
+#### `enterprise_confdir`
+
+Specifies the Splunk Enterprise configuration directory.  Defaults to the value
+set in splunk::params.
+
+#### `service_name`
+
+The name of the Splunk Enterprise service.  Defaults to the value set in
+splunk::params.
+
+#### `service_file`
+
+The path to the Splunk Enterprise service file.  Defaults to the value set in
+splunk::params.
+
+#### `boot_start`
+
+Whether or not to enable splunk boot-start, which generates a service file to
+manage the Splunk Enterprise service.  Defaults to the value set in
+splunk::params.
+
+#### `use_default_config`
+
+Whether or not the module should manage a default set of Splunk Enterprise
+configuration parameters.  Defaults to true.
+
+#### `input_default_host`
+
+Part of the default config.  Sets the `splunk_input` default host.  Defaults to
+`facts['fqdn']`.
+
+#### `input_connection_host`
+
+Part of the default config.  Sets the `splunk_input` connection host.  Defaults
+to dns.
 
 #### `splunkd_listen`
 
 The address on which splunkd should listen. Defaults to 127.0.0.1.
 
+#### `logging_port`
+
+The port to receive TCP logs on. Defaults to the port specified in
+splunk::params.
+
+#### `splunkd_port`
+
+The management port for Splunk. Defaults to the value set in splunk::params.
+
+#### `web_port`
+
+The port on which to service the Splunk Web interface. Defaults to 8000.
+
+#### `purge_inputs`
+
+If set to true, inputs.conf will be purged of configuration that is
+no longer managed by the `splunk_input` type. Defaults to false.
+
+#### `purge_outputs`
+
+If set to true, outputs.conf will be purged of configuration that is
+no longer managed by the `splunk_output` type. Defaults to false.
+
+#### `purge_authentication`
+
+If set to true, authentication.conf will be purged of configuration
+that is no longer managed by the `splunk_authentication` type. Defaults to false.
+
+#### `purge_authorize`
+
+If set to true, authorize.conf will be purged of configuration that
+is no longer managed by the `splunk_authorize` type. Defaults to false.
+
+#### `purge_distsearch`
+
+If set to true, distsearch.conf will be purged of configuration that
+is no longer managed by the `splunk_distsearch` type. Defaults to false.
+
+#### `purge_indexes`
+
+If set to true, indexes.conf will be purged of configuration that is
+no longer managed by the `splunk_indexes` type. Defaults to false.
+
+#### `purge_limits`
+
+If set to true, limits.conf will be purged of configuration that is
+no longer managed by the `splunk_limits` type. Defaults to false.
+
+#### `purge_props`
+
+If set to true, props.conf will be purged of configuration that is
+no longer managed by the `splunk_props` type. Defaults to false.
+
+#### `purge_server`
+
+If set to true, server.conf will be purged of configuration that is
+no longer managed by the `splunk_server` type. Defaults to false.
+
+#### `purge_transforms`
+
+If set to true, transforms.conf will be purged of configuration that
+is no longer managed by the `splunk_transforms` type. Defaults to false.
+
+#### `purge_web`
+
+If set to true, web.conf will be purged of configuration that is no
+longer managed by the `splunk_web type`. Defaults to false.
+
+#### `manage_password`
+
+If set to true, Manage the contents of splunk.secret and passwd.  Defaults to
+the value set in splunk::params.
+
+#### `password_config_file`
+
+Which file to put the password in i.e. in linux it would be
+/opt/splunk/etc/passwd.  Defaults to the value set in splunk::params.
+
+#### `password_content`
+
+The hashed password username/details for the user.  Defaults to the value set
+in splunk::params.
+
+#### `secret_file`
+
+Which file we should put the secret in.  Defaults to the value set in
+splunk::params.
+
+#### `secret`
+
+The secret used to salt the splunk password.  Defaults to the value set in
+splunk::params.
+
+### Class ::splunk::forwarder Parameters
+
+#### `server`
+
+The fqdn or IP address of the Splunk server. Defaults to the value in ::splunk::params.
+
+#### `version`
+
+Specifies the version of Splunk Forwarder the module should install and
+manage.  Defaults to the value set in splunk::params.
+
+#### `package_name`
+
+The name of the package(s) Puppet will use to install Splunk Forwarder.
+Defaults to the value set in splunk::params.
+
+#### `package_ensure`
+
+Ensure parameter which will get passed to the Splunk package resource.
+Defaults to the value in ::splunk::params.
+
+#### `staging_subdir`
+
+Root of the archive path to host the Splunk package.  Defaults to the value in
+splunk::params.
+
+#### `path_delimiter`
+
+The path separator used in the archived path of the Splunk package.  Defaults to
+the value in splunk::params.
+
+#### `forwarder_package_src`
+
+The source URL for the splunk installation media (typically an RPM, MSI,
+etc). If a `$src_root` parameter is set in splunk::params, this will be
+automatically supplied. Otherwise it is required. The URL can be of any
+protocol supported by the nanliu/staging module. On Windows, this can be
+a UNC path to the MSI. Defaults to the value in splunk::params.
+
+#### `package_provider`
+
+The package management system used to host the Splunk packages.  Defaults to the
+value in splunk::params.
+
+#### `manage_package_source`
+
+Whether or not to use the supplied `forwarder_package_src` param.  Defaults to
+true.
+
+#### `package_source`
+
+*Optional* The source URL for the splunk installation media (typically an RPM,
+MSI, etc). If `enterprise_package_src` parameter is set in splunk::params and
+`manage_package_source` is true, this will be automatically supplied. Otherwise
+it is required. The URL can be of any protocol supported by the nanliu/staging
+module. On Windows, this can be a UNC path to the MSI.  Defaults to undef.
+
+#### `install_options`
+
+This variable is passed to the package resources' *install_options* parameter.
+Defaults to the value in ::splunk::params.
+
+#### `splunk_user`
+
+The user to run Splunk as. Defaults to the value set in splunk::params.
+
+#### `forwarder_homedir`
+
+Specifies the Splunk Forwarder home directory.  Defaults to the value set in
+splunk::params.
+
+#### `forwarder_confdir`
+
+Specifies the Splunk Forwarder configuration directory.  Defaults to the value
+set in splunk::params.
+
+#### `service_name`
+
+The name of the Splunk Forwarder service.  Defaults to the value set in
+splunk::params.
+
+#### `service_file`
+
+The path to the Splunk Forwarder service file.  Defaults to the value set in
+splunk::params.
+
+#### `boot_start`
+
+Whether or not to enable splunk boot-start, which generates a service file to
+manage the Splunk Forwarder service.  Defaults to the value set in
+splunk::params.
+
+#### `use_default_config`
+
+Whether or not the module should manage a default set of Splunk Forwarder
+configuration parameters.  Defaults to true.
+
+#### `splunkd_listen`
+
+The address on which splunkd should listen. Defaults to 127.0.0.1.
+
+#### `splunkd_port`
+
+The management port for Splunk. Defaults to the value set in splunk::params.
+
+#### `logging_port`
+
+The port on which to send and listen for logs. Defaults to the value
+in splunk::params.
+
 #### `purge_inputs`
 
 *Optional* If set to true, inputs.conf will be purged of configuration that is
-no longer managed by the splunkforwarder_input type. Default to false.
+no longer managed by the `splunkforwarder_input` type. Defaults to false.
 
 #### `purge_outputs`
 
 *Optional* If set to true, outputs.conf will be purged of configuration that is
-no longer managed by the splunk_output type. Default to false.
+no longer managed by the `splunk_output` type. Defaults to false.
 
 #### `purge_props`
 
 *Optional* If set to true, props.conf will be purged of configuration that is
-no longer managed by the splunk_props type. Default to false.
+no longer managed by the `splunk_props` type. Defaults to false.
 
 #### `purge_transforms`
 
 *Optional* If set to true, transforms.conf will be purged of configuration that is
-no longer managed by the splunk_transforms type. Default to false.
+no longer managed by the `splunk_transforms` type. Defaults to false.
 
 #### `purge_web`
 
 *Optional* If set to true, web.conf will be purged of configuration that is
-no longer managed by the splunk_web type. Default to false.
-
-#### `pkg_provider`
-
-*Optional* This will override the default package provider for the package
-resource. Default to undef.
-
-#### `forwarder_confdir`
-
-The root directory where Splunk Universal Forwarder is installed. Default to
-the value in ::splunk::params.
+no longer managed by the `splunk_web` type. Defaults to false.
 
 #### `forwarder_input`
 
-Used to override the default forwarder_input type defined in ::splunk::params.
+Used to override the default `forwarder_input` type defined in splunk::params.
 
 #### `forwarder_output`
 
-Used to override the default forwarder_output type defined in ::splunk::params.
+Used to override the default `forwarder_output` type defined in splunk::params.
 
-#### `create_password`
+#### `manage_password`
 
-Not yet implemented.
+If set to true, Manage the contents of splunk.secret and passwd.  Defaults to
+the value set in splunk::params.
+
+#### `password_config_file`
+
+Which file to put the password in i.e. in linux it would be
+/opt/splunkforwarder/etc/passwd.  Defaults to the value set in splunk::params.
+
+#### `password_content`
+
+The hashed password username/details for the user.  Defaults to the value set
+in splunk::params.
+
+#### `secret_file`
+
+Which file we should put the secret in.  Defaults to the value set in
+splunk::params.
+
+#### `secret`
+
+The secret used to salt the splunk password.  Defaults to the value set in
+splunk::params.
+
+#### `addons`
+
+Manage splunk addons, see `splunk::addons`.  Defaults to an empty Hash.
 
 ## Limitations
 
 - Currently tested manually on Centos 7, but we will eventually add automated
   testing and are targeting compatibility with other platforms.
-- Tested with Puppet 4.x
+- Tested with Puppet 5.x
+- New installations of splunk up to version 7.2.X are supported, but upgrades
+  from  7.0.X to >= 7.0.X are not fully tested
+- Enabling boot-start will fail if the unit file already exists.  Splunk does
+  not remove unit files during uninstallation, so you may be required to
+  manually remove existing unit files before re installing and enabling
+  boot-start.
+
 
 ## Development
 
