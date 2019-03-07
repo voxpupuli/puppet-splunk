@@ -214,7 +214,8 @@ class { '::splunk::forwarder':
 * `splunk_metadata`: Used to manage ini settings in [default.meta][default.meta-docs]
 * `splunk_output`: Used to manage ini settings in [outputs.conf][outputs.conf-docs]
 * `splunk_props`: Used to manage ini settings in [props.conf][props.conf-docs]
-* `splunk_server`: Used to mangage ini settings in [server.conf][server.conf-docs]
+* `splunk_server`: Used to manage ini settings in [server.conf][server.conf-docs]
+* `splunk_serverclass`: Used to manage ini settings in [serverclass.conf][serverclass.conf-docs]
 * `splunk_transforms`: Used to manage ini settings in [transforms.conf][transforms.conf-docs]
 * `splunk_web`: Used to manage ini settings in [web.conf][web.conf-docs]
 
@@ -506,5 +507,6 @@ TBD
 [outputs.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Outputsconf
 [props.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Propsconf
 [server.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Serverconf
+[serverclass.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Serverclassconf
 [transforms.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Transformsconf
 [web.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Webconf
