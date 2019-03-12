@@ -198,7 +198,8 @@ class splunk::forwarder (
     mode  => $facts['kernel'] ? {
       'windows' => undef,
       default   => '0600',
-    }
+    },
+    seluser => 'unconfined_u',
   }
 
   file { "${forwarder_confdir}/system/local/deploymentclient.conf":
