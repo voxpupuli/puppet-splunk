@@ -127,16 +127,34 @@ Puppet::Type.newtype(:splunk_config) do
     end
   end
 
+  # Returns an array of contexts we want to consider when looking for
+  # resources of a particular type to purge
+  def contexts(type_class)
+    contexts = ['system/local'] # Always consider the default context
+    catalog_resources = catalog.resources.select { |r| r.is_a?(type_class) }
+    catalog_resources.each do |res|
+      contexts << res[:context]
+    end
+    contexts.uniq
+  end
+
   def purge_splunk_resources(type_class)
+    contexts(type_class).map do |context|
+      purge_splunk_resources_in_context(type_class, context)
+    end.flatten
+  end
+
+  def purge_splunk_resources_in_context(type_class, context)
     type_name = type_class.name
     purge_resources = []
     puppet_resources = []
 
     # Search the catalog for resource types matching the provided class
-    # type and build an array of puppet resources matching the namevar
-    # as section/setting
+    # type and context.  Then build an array of puppet resources matching
+    # the namevar as section/setting
     #
-    catalog_resources = catalog.resources.select { |r| r.is_a?(type_class) }
+    catalog_resources = catalog.resources.select { |r| r.is_a?(type_class) && r[:context] == context }
+    Puppet.debug "Found #{catalog_resources.size} #{type_class} resources in context #{context}"
     catalog_resources.each do |res|
       puppet_resources << res[:section] + '/' + res[:setting]
     end
@@ -144,12 +162,27 @@ Puppet::Type.newtype(:splunk_config) do
     # Search the configured instances of the class type and purge them if
     # the instance name (setion/setting) isn't found in puppet_resources
     #
-    Puppet::Type.type(type_name).instances.each do |instance|
+
+    # ini_setting's `instances` method will only work if the provider is
+    # configured with the complete file_path (including `context`).
+    # Temporarily update it before calling `instances`
+    #
+    provider = Puppet::Type.type(type_name).provider(:ini_setting)
+
+    save_file_path = provider.file_path
+    provider.file_path = File.join(save_file_path, context, provider.file_name)
+    instances = Puppet::Type.type(type_name).instances
+
+    # Restore the provider's original file_path
+    provider.file_path = save_file_path
+
+    instances.each do |instance|
       next if puppet_resources.include?(instance.name)
       purge_resources << Puppet::Type.type(type_name).new(
-        name: instance.name,
+        name: "Purge #{context} #{instance.name}",
         section: instance[:section],
         setting: instance[:setting],
+        context: context,
         ensure: :absent
       )
     end

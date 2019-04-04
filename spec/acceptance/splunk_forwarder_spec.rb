@@ -42,4 +42,48 @@ describe 'splunk::forwarder class' do
       it { is_expected.to be_running }
     end
   end
+  context 'purging' do
+    context 'purge_outputs => false' do
+      it 'works idempotently with no errors' do
+        pp = <<-eos
+      class { 'splunk::params':
+      }
+      class { 'splunk::forwarder':
+        splunkd_port  => 8090,
+        purge_outputs => false,
+      }
+        eos
+
+        # run it twice and test for idempotency
+        apply_manifest(pp, catch_failures: true)
+        apply_manifest(pp, catch_changes: true)
+      end
+
+      describe file('/opt/splunkforwarder/etc/system/local/outputs.conf') do
+        it { is_expected.to be_file }
+        its(:content) { is_expected.to match %r{^sslPassword} }
+      end
+    end
+    context 'purge_outputs => true' do
+      it 'works idempotently with no errors' do
+        pp = <<-eos
+      class { 'splunk::params':
+      }
+      class { 'splunk::forwarder':
+        splunkd_port  => 8090,
+        purge_outputs => true,
+      }
+        eos
+
+        # run it twice and test for idempotency
+        apply_manifest(pp, catch_failures: true)
+        apply_manifest(pp, catch_changes: true)
+      end
+
+      describe file('/opt/splunkforwarder/etc/system/local/outputs.conf') do
+        it { is_expected.to be_file }
+        its(:content) { is_expected.not_to match %r{^sslPassword} }
+      end
+    end
+  end
 end
