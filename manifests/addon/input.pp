@@ -1,5 +1,5 @@
-# Private defined type callled by splunk::addon
-
+# Private defined type called by splunk::addon
+#
 define splunk::addon::input (
   $addon,
   $attributes={},

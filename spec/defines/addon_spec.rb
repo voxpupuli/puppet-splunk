@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'splunk' do
+describe 'splunk::addon' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       if os.start_with?('windows')
@@ -10,11 +10,10 @@ describe 'splunk' do
           let(:facts) do
             facts
           end
+          let(:title) { 'someaddon' }
+          let(:params) { { 'package_name' => 'foo' } }
 
-          context 'splunk class without any parameters' do
-            it { is_expected.to compile.with_all_deps }
-            it { is_expected.to contain_class('splunk') }
-          end
+          it { is_expected.to compile.with_all_deps }
         end
       end
     end
