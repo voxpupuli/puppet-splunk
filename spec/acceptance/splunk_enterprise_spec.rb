@@ -1,6 +1,13 @@
 require 'spec_helper_acceptance'
 
 describe 'splunk enterprise class' do
+  init = shell('/bin/readlink /sbin/init', acceptable_exit_codes: [0, 1]).stdout
+  service_name = if init.include? 'systemd'
+                   'Splunkd'
+                 else
+                   'splunk'
+                 end
+
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
@@ -17,13 +24,6 @@ describe 'splunk enterprise class' do
       it { is_expected.to be_installed }
     end
 
-    init = shell('/bin/readlink /sbin/init', acceptable_exit_codes: [0, 1]).stdout
-    service_name = if init.include? 'systemd'
-                     'Splunkd'
-                   else
-                     'splunk'
-                   end
-
     describe service(service_name) do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
@@ -37,6 +37,22 @@ describe 'splunk enterprise class' do
         it { is_expected.to be_mode 600 }
         it { is_expected.to be_owned_by 'root' }
         it { is_expected.to be_grouped_into 'root' }
+      end
+    end
+
+    # Uninstall so that splunkforwarder tests aren't affected by this set of tests
+    context 'uninstalling splunk' do
+      it do
+        pp = <<-EOS
+        service { '#{service_name}': ensure => stopped }
+        package { 'splunk': ensure => purged }
+        file { '/opt/splunk': ensure => absent, force => true, require => Package['splunk'] }
+        file { '/etc/init.d/splunk': ensure => absent, require => Package['splunk'] }
+        EOS
+        apply_manifest(pp, catch_failures: true)
+      end
+      describe package('splunk') do
+        it { is_expected.not_to be_installed }
       end
     end
   end
