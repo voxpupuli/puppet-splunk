@@ -5,16 +5,25 @@ describe 'splunk::forwarder class' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
       pp = <<-EOS
-      class { '::splunk::params':
+      class { 'splunk::params':
       }
-      class { '::splunk::forwarder':
+      class { 'splunk::forwarder':
         splunkd_port => 8090,
+      }
+      splunkforwarder_output { 'tcpout:splunkcloud/sslPassword':
+        value => 'super_secure_password',
       }
       EOS
 
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
+    end
+
+    describe file('/opt/splunkforwarder/etc/system/local/outputs.conf') do
+      it { is_expected.to be_file }
+      its(:content) { is_expected.to match %r{^sslPassword} }
+      its(:content) { is_expected.to match %r{^sslPassword = \$7\$} }
     end
 
     describe package('splunkforwarder') do
