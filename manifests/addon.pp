@@ -1,36 +1,39 @@
+# @summary Defined type for deploying Splunk Add-ons and Apps from either OS packages or via splunkbase compatible archives
 #
-# Defined type: splunk::addon
-#
-# This define sets up a TA (Technology Addon) for Splunk.  It (optionally)
-# installed a package, and configures input forwarders in
-# $SPLUNK_HOME/etc/apps/<app name>/local/inputs.conf
-#
-# Examples
-#
-# splunk::addon { 'search':
-#   package_manage => false,
-# }
-#
-# splunk::addon::input { 'monitor:///var/log/messages':
-#   attributes => {
-#     'index' => 'server_t',
-#   },
-# }
-#
-# Alternatively you can feed inputs directly into splunk::addon using the
-# inputs parameter (useful if you are configuring from Hiera)
-#
-#
-# splunk::addon { 'search':
-#   package_manage => false,
-#   inputs          => {
-#     'monitor:///var/log/messages' => {
-#       'attributes' => {
-#         'index' => 'server_t',
+# @example Basic usage
+#   splunk::addon { 'Splunk_TA_nix':
+#     splunkbase_source => 'puppet:///modules/splunk_qd/addons/splunk-add-on-for-unix-and-linux_602.tgz',
+#     inputs            => {
+#       'monitor:///var/log'       => {
+#        'whitelist' => '(\.log|log$|messages|secure|auth|mesg$|cron$|acpid$|\.out)',
+#        'blacklist' => '(lastlog|anaconda\.syslog)',
+#        'disabled'  => 'false'
+#       },
+#       'script://./bin/uptime.sh' =>  {
+#         'disabled' => 'false',
+#         'interval' => '86400',
+#         'source' => 'Unix:Uptime',
+#         'sourcetype' => 'Unix:Uptime'
 #       }
 #     }
 #   }
-# }
+#
+# @see https://docs.splunk.com/Documentation/AddOns/released/Overview/AboutSplunkadd-ons
+#
+# @param splunk_home
+#   Overrides the default Splunk installation target values from Class[splunk::params]
+#
+# @param package_manage
+#   If a package should be installed as part of declaring a new instance of Splunk::Addon
+#
+# @param splunkbase_source
+#   When set the add-on will be installed from a splunkbase compatible archive instead of OS packages
+#
+# @param package_name
+#  The OS package to install if you are not installing via splunk compatible archive
+#
+# @param inputs
+#  A hash of inputs to be configured as part of add-on installation, alterntively you can also define splunk_input or splunkforwarder_input resouces seperately
 #
 define splunk::addon (
   Optional[Stdlib::Absolutepath] $splunk_home = undef,
