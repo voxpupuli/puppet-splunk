@@ -10,8 +10,8 @@ describe 'splunk::addon' do
           let(:facts) do
             facts
           end
-          let(:title) { 'someaddon' }
-          let(:params) { { 'package_name' => 'foo' } }
+          let(:title) { 'Splunk_TA' }
+          let(:params) { { 'splunkbase_source' => 'puppet:///modules/profiles/splunk-add-on.tgz' } }
 
           it { is_expected.to compile.with_all_deps }
         end
