@@ -58,6 +58,7 @@ define splunk::addon (
     case $mode {
       'forwarder':  { $_splunk_home = $splunk::params::forwarder_homedir }
       'enterprise': { $_splunk_home = $splunk::params::enterprise_homedir }
+      default:      { fail('Instances of Splunk::Addon require the declaration of one of either Class[splunk::enterprise] or Class[splunk::forwarder]') }
     }
   }
 
@@ -105,6 +106,7 @@ define splunk::addon (
               require => File["${_splunk_home}/etc/apps/${name}/local"],
             }
           }
+          default: { fail('Instances of Splunk::Addon require the declaration of one of either Class[splunk::enterprise] or Class[splunk::forwarder]') }
         }
       }
     }
