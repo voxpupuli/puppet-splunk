@@ -43,18 +43,18 @@ define splunk::addon (
   Hash $inputs                                = {},
 ) {
 
-  include splunk::params
-
   if defined(Class['splunk::forwarder']) {
     $mode = 'forwarder'
-  } else {
+  } elsif defined(Class['splunk::enterprise']) {
     $mode = 'enterprise'
+  } else {
+    fail('Instances of Splunk::Addon require the declaration of one of either Class[splunk::enterprise] or Class[splunk::forwarder]')
   }
+
 
   if $splunk_home {
     $_splunk_home = $splunk_home
-  }
-  else {
+  } else {
     case $mode {
       'forwarder':  { $_splunk_home = $splunk::params::forwarder_homedir }
       'enterprise': { $_splunk_home = $splunk::params::enterprise_homedir }
@@ -84,30 +84,28 @@ define splunk::addon (
 
   file { "${_splunk_home}/etc/apps/${name}/local": ensure => directory }
 
-  unless $inputs.empty {
-    $inputs.each |$section, $attributes| {
-      $attributes.each |$setting, $value| {
-        case $mode {
-          'forwarder': {
-            splunkforwarder_input { "${name}_${section}_${setting}":
-              section => $section,
-              setting => $setting,
-              value   => $value,
-              context => "apps/${name}/local",
-              require => File["${_splunk_home}/etc/apps/${name}/local"],
-            }
+  $inputs.each |$section, $attributes| {
+    $attributes.each |$setting, $value| {
+      case $mode {
+        'forwarder': {
+          splunkforwarder_input { "${name}_${section}_${setting}":
+            section => $section,
+            setting => $setting,
+            value   => $value,
+            context => "apps/${name}/local",
+            require => File["${_splunk_home}/etc/apps/${name}/local"],
           }
-          'enterprise': {
-            splunk_input { "${name}_${section}_${setting}":
-              section => $section,
-              setting => $setting,
-              value   => $value,
-              context => "apps/${name}/local",
-              require => File["${_splunk_home}/etc/apps/${name}/local"],
-            }
-          }
-          default: { fail('Instances of Splunk::Addon require the declaration of one of either Class[splunk::enterprise] or Class[splunk::forwarder]') }
         }
+        'enterprise': {
+          splunk_input { "${name}_${section}_${setting}":
+            section => $section,
+            setting => $setting,
+            value   => $value,
+            context => "apps/${name}/local",
+            require => File["${_splunk_home}/etc/apps/${name}/local"],
+          }
+        }
+        default: { fail('Instances of Splunk::Addon require the declaration of one of either Class[splunk::enterprise] or Class[splunk::forwarder]') }
       }
     }
   }
