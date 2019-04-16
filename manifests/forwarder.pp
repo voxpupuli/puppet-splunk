@@ -1,175 +1,137 @@
-# Class splunk::forwarder
+# @summary
+#   Install and configure an instance of Splunk Universal Forwarder
+#
+# @example Basic usage
+#   include splunk::forwarder
+#
+# @example Install specific version and build with admin passord management
+#    class { 'splunk::params':
+#      version => '7.2.5',
+#      build   => '088f49762779',
+#    }
+#    class { 'splunk::forwarder':
+#      package_ensure => latest,
+#      manage_password => true,
+#    }
 #
 # @param server
-#
-# The fqdn or IP address of the Splunk server. Defaults to the value in ::splunk::params.
+#   The fqdn or IP address of the Splunk server.
 #
 # @param version`
-#
-# Specifies the version of Splunk Forwarder the module should install and
-# manage.  Defaults to the value set in splunk::params.
+#   Specifies the version of Splunk Forwarder the module should install and
+#   manage.
 #
 # @param package_name
-#
-# The name of the package(s) Puppet will use to install Splunk Forwarder.
-# Defaults to the value set in splunk::params.
+#   The name of the package(s) Puppet will use to install Splunk Forwarder.
 #
 # @param package_ensure
-#
-# Ensure parameter which will get passed to the Splunk package resource.
-# Defaults to the value in ::splunk::params.
+#   Ensure parameter which will get passed to the Splunk package resource.
 #
 # @param staging_dir
-#
-# Root of the archive path to host the Splunk package.  Defaults to the value in
-# splunk::params.
+#   Root of the archive path to host the Splunk package.
 #
 # @param path_delimiter
-#
-# The path separator used in the archived path of the Splunk package.  Defaults to
-# the value in splunk::params.
+#   The path separator used in the archived path of the Splunk package.
 #
 # @param forwarder_package_src
-#
-# The source URL for the splunk installation media (typically an RPM, MSI,
-# etc). If a `$src_root` parameter is set in splunk::params, this will be
-# automatically supplied. Otherwise it is required. The URL can be of any
-# protocol supported by the nanliu/staging module. On Windows, this can be
-# a UNC path to the MSI. Defaults to the value in splunk::params.
+#   The source URL for the splunk installation media (typically an RPM, MSI,
+#   etc). If a `$src_root` parameter is set in splunk::params, this will be
+#   automatically supplied. Otherwise it is required. The URL can be of any
+#   protocol supported by the puppet/archive module. On Windows, this can be
+#   a UNC path to the MSI.
 #
 # @param package_provider
-#
-# The package management system used to host the Splunk packages.  Defaults to the
-# value in splunk::params.
+#   The package management system used to host the Splunk packages.
 #
 # @param manage_package_source
-#
-# Whether or not to use the supplied `forwarder_package_src` param.  Defaults to
-# true.
+#   Whether or not to use the supplied `forwarder_package_src` param.
 #
 # @param package_source
-#
-# *Optional* The source URL for the splunk installation media (typically an RPM,
-# MSI, etc). If `enterprise_package_src` parameter is set in splunk::params and
-# `manage_package_source` is true, this will be automatically supplied. Otherwise
-# it is required. The URL can be of any protocol supported by the nanliu/staging
-# module. On Windows, this can be a UNC path to the MSI.  Defaults to undef.
+#   *Optional* The source URL for the splunk installation media (typically an RPM,
+#   MSI, etc). If `enterprise_package_src` parameter is set in splunk::params and
+#   `manage_package_source` is true, this will be automatically supplied. Otherwise
+#   it is required. The URL can be of any protocol supported by the puppet/archive
+#   module. On Windows, this can be a UNC path to the MSI.
 #
 # @param install_options
-#
-# This variable is passed to the package resources' *install_options* parameter.
-# Defaults to the value in ::splunk::params.
+#   This variable is passed to the package resources' *install_options* parameter.
 #
 # @param splunk_user
-#
-# The user to run Splunk as. Defaults to the value set in splunk::params.
+#   The user to run Splunk as.
 #
 # @param forwarder_homedir
-#
-# Specifies the Splunk Forwarder home directory.  Defaults to the value set in
-# splunk::params.
+#   Specifies the Splunk Forwarder home directory.
 #
 # @param forwarder_confdir
-#
-# Specifies the Splunk Forwarder configuration directory.  Defaults to the value
-# set in splunk::params.
+#   Specifies the Splunk Forwarder configuration directory.
 #
 # @param service_name
-#
-# The name of the Splunk Forwarder service.  Defaults to the value set in
-# splunk::params.
+#   The name of the Splunk Forwarder service.
 #
 # @param service_file
-#
-# The path to the Splunk Forwarder service file.  Defaults to the value set in
-# splunk::params.
+#   The path to the Splunk Forwarder service file.
 #
 # @param boot_start
-#
-# Whether or not to enable splunk boot-start, which generates a service file to
-# manage the Splunk Forwarder service.  Defaults to the value set in
-# splunk::params.
+#   Whether or not to enable splunk boot-start, which generates a service file to
+#   manage the Splunk Forwarder service.
 #
 # @param use_default_config
-#
-# Whether or not the module should manage a default set of Splunk Forwarder
-# configuration parameters.  Defaults to true.
+#   Whether or not the module should manage a default set of Splunk Forwarder
+#   configuration parameters.
 #
 # @param splunkd_listen
-#
-# The address on which splunkd should listen. Defaults to 127.0.0.1.
+#   The address on which splunkd should listen.
 #
 # @param splunkd_port
-#
-# The management port for Splunk. Defaults to the value set in splunk::params.
+#   The management port for Splunk.
 #
 # @param logging_port
-#
-# The port on which to send and listen for logs. Defaults to the value
-# in splunk::params.
+#   The port on which to send and listen for logs.
 #
 # @param purge_inputs
-#
-# *Optional* If set to true, inputs.conf will be purged of configuration that is
-# no longer managed by the `splunkforwarder_input` type. Defaults to false.
+#   *Optional* If set to true, inputs.conf will be purged of configuration that is
+#   no longer managed by the `splunkforwarder_input` type.
 #
 # @param purge_outputs
-#
-# *Optional* If set to true, outputs.conf will be purged of configuration that is
-# no longer managed by the `splunk_output` type. Defaults to false.
+#   *Optional* If set to true, outputs.conf will be purged of configuration that is
+#   no longer managed by the `splunk_output` type.
 #
 # @param purge_props
-#
-# *Optional* If set to true, props.conf will be purged of configuration that is
-# no longer managed by the `splunk_props` type. Defaults to false.
+#   *Optional* If set to true, props.conf will be purged of configuration that is
+#   no longer managed by the `splunk_props` type.
 #
 # @param purge_transforms
-#
-# *Optional* If set to true, transforms.conf will be purged of configuration that is
-# no longer managed by the `splunk_transforms` type. Defaults to false.
+#   *Optional* If set to true, transforms.conf will be purged of configuration that is
+#   no longer managed by the `splunk_transforms` type.
 #
 # @param purge_web
-#
-# *Optional* If set to true, web.conf will be purged of configuration that is
-# no longer managed by the `splunk_web` type. Defaults to false.
+#   *Optional* If set to true, web.conf will be purged of configuration that is
+#   no longer managed by the `splunk_web` type.
 #
 # @param forwarder_input
-#
-# Used to override the default `forwarder_input` type defined in splunk::params.
+#   Used to override the default `forwarder_input` type defined in splunk::params.
 #
 # @param forwarder_output
-#
-# Used to override the default `forwarder_output` type defined in splunk::params.
+#   Used to override the default `forwarder_output` type defined in splunk::params.
 #
 # @param manage_password
-#
-# If set to true, Manage the contents of splunk.secret and passwd.  Defaults to
-# the value set in splunk::params.
+#   If set to true, Manage the contents of splunk.secret and passwd.
 #
 # @param password_config_file
-#
-# Which file to put the password in i.e. in linux it would be
-# /opt/splunkforwarder/etc/passwd.  Defaults to the value set in splunk::params.
+#   Which file to put the password in i.e. in linux it would be
+#   `/opt/splunkforwarder/etc/passwd`.
 #
 # @param password_content
-#
-# The hashed password username/details for the user.  Defaults to the value set
-# in splunk::params.
+#   The hashed password username/details for the user.
 #
 # @param secret_file
-#
-# Which file we should put the secret in.  Defaults to the value set in
-# splunk::params.
+#   Which file we should put the secret in.
 #
 # @param secret
-#
-# The secret used to salt the splunk password.  Defaults to the value set in
-# splunk::params.
+#   The secret used to salt the splunk password.
 #
 # @param addons
-#
-# Manage a splunk addons, see `splunk::addons`.  Defaults to an empty Hash.
-#
+#   Manage a splunk addons, see `splunk::addons`.
 #
 class splunk::forwarder(
   String[1] $server                          = $splunk::params::server,

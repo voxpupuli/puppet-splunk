@@ -1,202 +1,158 @@
-# Class splunk::enterprise
+# @summary
+#   Install and configure an instance of Splunk Enterprise
+#
+# @example Basic usage
+#   include splunk::enterprise
+#
+# @example Install specific version and build with admin passord management
+#    class { 'splunk::params':
+#      version => '7.2.5',
+#      build   => '088f49762779',
+#    }
+#    class { 'splunk::enterprise':
+#      package_ensure => latest,
+#      manage_password => true,
+#    }
 #
 # @param version
-#
-# Specifies the version of Splunk Enterprise the module should install and
-# manage.  Defaults to the value set in splunk::params.
+#   Specifies the version of Splunk Enterprise the module should install and
+#   manage.
 #
 # @param package_name
-#
-# The name of the package(s) Puppet will use to install Splunk.
+#   The name of the package(s) Puppet will use to install Splunk.
 #
 # @param package_ensure
-#
-# Ensure parameter which will get passed to the Splunk package resource.
-# Defaults to the value in splunk::params.
+#   Ensure parameter which will get passed to the Splunk package resource.
 #
 # @param staging_dir
-#
-# Root of the archive path to host the Splunk package.  Defaults to the value in
-# splunk::params.
+#   Root of the archive path to host the Splunk package.
 #
 # @param path_delimiter
-#
-# The path separator used in the archived path of the Splunk package.  Defaults to
-# the value in splunk::params.
+#   The path separator used in the archived path of the Splunk package.
 #
 # @param enterprise_package_src
-#
-# The source URL for the splunk installation media (typically an RPM, MSI,
-# etc). If a `$src_root` parameter is set in splunk::params, this will be
-# automatically supplied. Otherwise it is required. The URL can be of any
-# protocol supported by the nanliu/staging module. On Windows, this can be
-# a UNC path to the MSI. Defaults to the value in splunk::params.
+#   The source URL for the splunk installation media (typically an RPM, MSI,
+#   etc). If a `$src_root` parameter is set in splunk::params, this will be
+#   automatically supplied. Otherwise it is required. The URL can be of any
+#   protocol supported by the pupept/archive module. On Windows, this can be
+#   a UNC path to the MSI.
 #
 # @param package_provider
-#
-# The package management system used to host the Splunk packages.  Defaults to the
-# value in splunk::params.
+#   The package management system used to host the Splunk packages.
 #
 # @param manage_package_source
-#
-# Whether or not to use the supplied `enterprise_package_src` param.  Defaults to
-# true.
+#   Whether or not to use the supplied `enterprise_package_src` param.
 #
 # @param package_source
-#
-# *Optional* The source URL for the splunk installation media (typically an RPM,
-# MSI, etc). If `enterprise_package_src` parameter is set in splunk::params and
-# `manage_package_source` is true, this will be automatically supplied. Otherwise
-# it is required. The URL can be of any protocol supported by the nanliu/staging
-# module. On Windows, this can be a UNC path to the MSI.  Defaults to undef.
+#   *Optional* The source URL for the splunk installation media (typically an RPM,
+#   MSI, etc). If `enterprise_package_src` parameter is set in splunk::params and
+#   `manage_package_source` is true, this will be automatically supplied. Otherwise
+#   it is required. The URL can be of any protocol supported by the puppet/archive
+#   module. On Windows, this can be a UNC path to the MSI.
 #
 # @param install_options
-#
-# This variable is passed to the package resources' *install_options* parameter.
-# Defaults to the value in ::splunk::params.
+#   This variable is passed to the package resources' *install_options* parameter.
 #
 # @param splunk_user
-#
-# The user to run Splunk as. Defaults to the value set in splunk::params.
+#   The user to run Splunk as.
 #
 # @param enterprise_homedir
-#
-# Specifies the Splunk Enterprise home directory.  Defaults to the value set in
-# splunk::params.
+#   Specifies the Splunk Enterprise home directory.
 #
 # @param enterprise_confdir
-#
-# Specifies the Splunk Enterprise configuration directory.  Defaults to the value
-# set in splunk::params.
+#   Specifies the Splunk Enterprise configuration directory.
 #
 # @param service_name
-#
-# The name of the Splunk Enterprise service.  Defaults to the value set in
-# splunk::params.
+#   The name of the Splunk Enterprise service.
 #
 # @param service_file
-#
-# The path to the Splunk Enterprise service file.  Defaults to the value set in
-# splunk::params.
+#   The path to the Splunk Enterprise service file.
 #
 # @param boot_start
-#
-# Whether or not to enable splunk boot-start, which generates a service file to
-# manage the Splunk Enterprise service.  Defaults to the value set in
-# splunk::params.
+#   Whether or not to enable splunk boot-start, which generates a service file to
+#   manage the Splunk Enterprise service.
 #
 # @param use_default_config
-#
-# Whether or not the module should manage a default set of Splunk Enterprise
-# configuration parameters.  Defaults to true.
+#   Whether or not the module should manage a default set of Splunk Enterprise
+#   configuration parameters.
 #
 # @param input_default_host
-#
-# Part of the default config.  Sets the `splunk_input` default host.  Defaults to
-# `facts['fqdn']`.
+#   Part of the default config. Sets the `splunk_input` default host.
 #
 # @param input_connection_host
-#
-# Part of the default config.  Sets the `splunk_input` connection host.  Defaults
-# to dns.
+#   Part of the default config. Sets the `splunk_input` connection host.
 #
 # @param splunkd_listen
-#
-# The address on which splunkd should listen. Defaults to 127.0.0.1.
+#   The address on which splunkd should listen.
 #
 # @param logging_port
-#
-# The port to receive TCP logs on. Defaults to the port specified in
-# splunk::params.
+#   The port to receive TCP logs on.
 #
 # @param splunkd_port
-#
-# The management port for Splunk. Defaults to the value set in splunk::params.
+#   The management port for Splunk.
 #
 # @param web_port
-#
-# The port on which to service the Splunk Web interface. Defaults to 8000.
+#   The port on which to service the Splunk Web interface.
 #
 # @param purge_inputs
-#
-# If set to true, inputs.conf will be purged of configuration that is
-# no longer managed by the `splunk_input` type. Defaults to false.
+#   If set to true, inputs.conf will be purged of configuration that is
+#   no longer managed by the `splunk_input` type.
 #
 # @param purge_outputs
-#
-# If set to true, outputs.conf will be purged of configuration that is
-# no longer managed by the `splunk_output` type. Defaults to false.
+#   If set to true, outputs.conf will be purged of configuration that is
+#   no longer managed by the `splunk_output` type.
 #
 # @param purge_authentication
-#
-# If set to true, authentication.conf will be purged of configuration
-# that is no longer managed by the `splunk_authentication` type. Defaults to false.
+#   If set to true, authentication.conf will be purged of configuration
+#   that is no longer managed by the `splunk_authentication` type.
 #
 # @param purge_authorize
-#
-# If set to true, authorize.conf will be purged of configuration that
-# is no longer managed by the `splunk_authorize` type. Defaults to false.
+#   If set to true, authorize.conf will be purged of configuration that
+#   is no longer managed by the `splunk_authorize` type.
 #
 # @param purge_distsearch
-#
-# If set to true, distsearch.conf will be purged of configuration that
-# is no longer managed by the `splunk_distsearch` type. Defaults to false.
+#   If set to true, distsearch.conf will be purged of configuration that
+#   is no longer managed by the `splunk_distsearch` type.
 #
 # @param purge_indexes
-#
-# If set to true, indexes.conf will be purged of configuration that is
-# no longer managed by the `splunk_indexes` type. Defaults to false.
+#   If set to true, indexes.conf will be purged of configuration that is
+#   no longer managed by the `splunk_indexes` type.
 #
 # @param purge_limits
-#
-# If set to true, limits.conf will be purged of configuration that is
-# no longer managed by the `splunk_limits` type. Defaults to false.
+#   If set to true, limits.conf will be purged of configuration that is
+#   no longer managed by the `splunk_limits` type.
 #
 # @param purge_props
-#
-# If set to true, props.conf will be purged of configuration that is
-# no longer managed by the `splunk_props` type. Defaults to false.
+#   If set to true, props.conf will be purged of configuration that is
+#   no longer managed by the `splunk_props` type.
 #
 # @param purge_server
-#
-# If set to true, server.conf will be purged of configuration that is
-# no longer managed by the `splunk_server` type. Defaults to false.
+#   If set to true, server.conf will be purged of configuration that is
+#   no longer managed by the `splunk_server` type.
 #
 # @param purge_transforms
-#
-# If set to true, transforms.conf will be purged of configuration that
-# is no longer managed by the `splunk_transforms` type. Defaults to false.
+#   If set to true, transforms.conf will be purged of configuration that
+#   is no longer managed by the `splunk_transforms` type.
 #
 # @param purge_web
-#
-# If set to true, web.conf will be purged of configuration that is no
-# longer managed by the `splunk_web type`. Defaults to false.
+#   If set to true, web.conf will be purged of configuration that is no
+#   longer managed by the `splunk_web type`.
 #
 # @param manage_password
-#
-# If set to true, Manage the contents of splunk.secret and passwd.  Defaults to
-# the value set in splunk::params.
+#   If set to true, Manage the contents of splunk.secret and passwd.
 #
 # @param password_config_file
-#
-# Which file to put the password in i.e. in linux it would be
-# /opt/splunk/etc/passwd.  Defaults to the value set in splunk::params.
+#   Which file to put the password in i.e. in linux it would be
+#   `/opt/splunk/etc/passwd`.
 #
 # @param password_content
-#
-# The hashed password username/details for the user.  Defaults to the value set
-# in splunk::params.
+#   The hashed password username/details for the user.
 #
 # @param secret_file
-#
-# Which file we should put the secret in.  Defaults to the value set in
-# splunk::params.
+#   Which file we should put the secret in.
 #
 # @param secret
-#
-# The secret used to salt the splunk password.  Defaults to the value set in
-# splunk::params.
-#
+#   The secret used to salt the splunk password.
 #
 class splunk::enterprise (
   String[1] $version                         = $splunk::params::version,
@@ -242,7 +198,6 @@ class splunk::enterprise (
   String[1] $password_content                = $splunk::params::password_content,
   Stdlib::Absolutepath $secret_file          = $splunk::params::enterprise_secret_file,
   String[1] $secret                          = $splunk::params::secret,
-
 ) inherits splunk {
 
   if (defined(Class['splunk::forwarder'])) {

@@ -1,4 +1,6 @@
-# Class splunk::enterprise::service::nix
+# @summary
+#   Private class declared by Class[splunk::enterprise::service] to provide
+#   platform specific service management on Linux or Unix type systems.
 #
 class splunk::enterprise::service::nix inherits splunk::enterprise::service {
 

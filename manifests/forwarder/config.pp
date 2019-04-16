@@ -1,4 +1,7 @@
-# Class splunk::forwarder::config
+# @summary
+#   Private class declared by Class[splunk::forwarder] to contain all the
+#   configuration needed for a base install of the Splunk Universal
+#   Forwarder
 #
 class splunk::forwarder::config {
 

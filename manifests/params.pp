@@ -1,10 +1,9 @@
-# Class: splunk::params
-#
-# This class takes a small number of arguments (can be set through Hiera) and
-# generates sane default values installation media names and locations. Default
-# ports can also be specified here. This is a parameters class, and contributes
-# no resources to the graph. Rather, it only sets values for parameters to be
-# consumed by child classes.
+# @summary
+#   This class takes a small number of arguments (can be set through Hiera) and
+#   generates sane default values installation media names and locations.
+#   Default ports can also be specified here. This is a parameters class, and
+#   contributes no resources to the graph. Rather, it only sets values for
+#   parameters to be consumed by child classes.
 #
 # @param version
 #   The version of Splunk to install. This will be in the form x.y.z; e.g.
@@ -18,11 +17,10 @@
 #   e.g. "123586".
 #
 # @param splunkd_port
-#   The splunkd port. Used as a default for both splunk and splunk::forwarder.
+#   The splunkd port.
 #
 # @param logging_port
-#   The port on which to send logs, and listen for logs. Used as a default for
-#   splunk and splunk::forwarder.
+#   The port on which to send logs, and listen for logs.
 #
 # @param server
 #   Optional fqdn or IP of the Splunk Enterprise server.  Used for setting up
@@ -36,64 +34,60 @@
 #   assumes that the packages are located under this URL in the same way that
 #   they are placed on download.splunk.com. The URL can be any protocol that
 #   the puppet/archive module supports. This includes both puppet:// and
-#   http://.  The expected directory structure is:
+#   http://.
 #
+#   The expected directory structure is:
 #
-#     $root_url/
-#     └── products/
-#         ├── universalforwarder/
-#         │   └── releases/
-#         |       └── $version/
-#         |           └── $platform/
-#         |               └── splunkforwarder-${version}-${build}-${additl}
-#         └── splunk/
-#             └── releases/
-#                 └── $version/
-#                     └── $platform/
-#                         └── splunk-${version}-${build}-${additl}
+#   ```
+#   $root_url/
+#   └── products/
+#       ├── universalforwarder/
+#       │   └── releases/
+#       |       └── $version/
+#       |           └── $platform/
+#       |               └── splunkforwarder-${version}-${build}-${additl}
+#       └── splunk/
+#           └── releases/
+#               └── $version/
+#                   └── $platform/
+#                       └── splunk-${version}-${build}-${additl}
+#   ```
 #
+#   A semi-populated example of `src_root` contains:
 #
-#   A semi-populated example src_root then contain:
-#
-#     $root_url/
-#     └── products/
-#         ├── universalforwarder/
-#         │   └── releases/
-#         |       └── 7.2.4.2/
-#         |           ├── linux/
-#         |           |   ├── splunkforwarder-7.2.4.2-fb30470262e3-linux-2.6-amd64.deb
-#         |           |   ├── splunkforwarder-7.2.4.2-fb30470262e3-linux-2.6-intel.deb
-#         |           |   └── splunkforwarder-7.2.4.2-fb30470262e3-linux-2.6-x86_64.rpm
-#         |           ├── solaris/
-#         |           └── windows/
-#         |               └── splunkforwarder-7.2.4.2-fb30470262e3-x64-release.msi
-#         └── splunk/
-#             └── releases/
-#                 └── 7.2.4.2/
-#                     └── linux/
-#                         ├── splunk-7.2.4.2-fb30470262e3-linux-2.6-amd64.deb
-#                         ├── splunk-7.2.4.2-fb30470262e3-linux-2.6-intel.deb
-#                         └── splunk-7.2.4.2-fb30470262e3-linux-2.6-x86_64.rpm
+#   ```
+#   $root_url/
+#   └── products/
+#       ├── universalforwarder/
+#       │   └── releases/
+#       |       └── 7.2.4.2/
+#       |           ├── linux/
+#       |           |   ├── splunkforwarder-7.2.4.2-fb30470262e3-linux-2.6-amd64.deb
+#       |           |   ├── splunkforwarder-7.2.4.2-fb30470262e3-linux-2.6-intel.deb
+#       |           |   └── splunkforwarder-7.2.4.2-fb30470262e3-linux-2.6-x86_64.rpm
+#       |           ├── solaris/
+#       |           └── windows/
+#       |               └── splunkforwarder-7.2.4.2-fb30470262e3-x64-release.msi
+#       └── splunk/
+#           └── releases/
+#               └── 7.2.4.2/
+#                   └── linux/
+#                       ├── splunk-7.2.4.2-fb30470262e3-linux-2.6-amd64.deb
+#                       ├── splunk-7.2.4.2-fb30470262e3-linux-2.6-intel.deb
+#                       └── splunk-7.2.4.2-fb30470262e3-linux-2.6-x86_64.rpm
+#   ```
 #
 # @param boot_start
 #   Enable Splunk to start at boot, create a system service file.
 #
-#   WARNING: Toggling boot_start `false` to `true` will cause a restart of the
-#   splunk Enterprise and Forwarder services.
-#
-#   Defaults to true
+#   WARNING: Toggling `boot_start` from `false` to `true` will cause a restart of
+#   Splunk Enterprise and Forwarder services.
 #
 # @param forwarder_installdir
 #   Optional directory in which to install and manage Splunk Forwarder
 #
 # @param enterprise_installdir
 #   Optional directory in which to install and manage Splunk Enterprise
-#
-# Actions:
-#
-#   Declares parameters to be consumed by other classes in the splunk module.
-#
-# Requires: nothing
 #
 class splunk::params (
   String[1] $version                         = '7.2.4.2',
