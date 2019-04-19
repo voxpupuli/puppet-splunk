@@ -64,4 +64,16 @@ class splunk::forwarder::install {
     install_options => $splunk::forwarder::install_options,
   }
 
+  if $splunk::forwarder::manage_splunk_user {
+    group { $splunk::forwarder::splunk_user:
+      ensure  => 'present',
+      require => Package[$splunk::forwarder::forwarder_package_name],
+    }
+    user { $splunk::forwarder::splunk_user:
+      ensure  => 'present',
+      home    => $splunk::forwarder::forwarder_homedir,
+      require => Group[$splunk::forwarder::splunk_user],
+    }
+  }
+
 }

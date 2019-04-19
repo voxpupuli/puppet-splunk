@@ -41,4 +41,16 @@ class splunk::enterprise::install {
     install_options => $splunk::enterprise::install_options,
   }
 
+  if $splunk::enterprise::manage_splunk_user {
+    group { $splunk::enterprise::splunk_user:
+      ensure  => 'present',
+      require => Package[$splunk::enterprise::enterprise_package_name],
+    }
+    user { $splunk::enterprise::splunk_user:
+      ensure  => 'present',
+      home    => $splunk::enterprise::enterprise_homedir,
+      require => Group[$splunk::enterprise::splunk_user],
+    }
+  }
+
 }

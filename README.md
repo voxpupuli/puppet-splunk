@@ -369,6 +369,10 @@ module. On Windows, this can be a UNC path to the MSI.  Defaults to undef.
 This variable is passed to the package resources' *install_options* parameter.
 Defaults to the value in ::splunk::params.
 
+#### `manage_splunk_user`
+
+Whether or not to manage the user splunk runuser.  Defaults to false.
+
 #### `splunk_user`
 
 The user to run Splunk as. Defaults to the value set in splunk::params.
@@ -572,6 +576,10 @@ module. On Windows, this can be a UNC path to the MSI.  Defaults to undef.
 
 This variable is passed to the package resources' *install_options* parameter.
 Defaults to the value in ::splunk::params.
+
+#### `manage_splunk_user`
+
+Whether or not to manage the user splunk runuser.  Defaults to false.
 
 #### `splunk_user`
 

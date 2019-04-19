@@ -60,6 +60,10 @@
 # This variable is passed to the package resources' *install_options* parameter.
 # Defaults to the value in ::splunk::params.
 #
+# @param manage_splunk_user
+#
+# Whether or not to manage the splunk runuser.
+#
 # @param splunk_user
 #
 # The user to run Splunk as. Defaults to the value set in splunk::params.
@@ -183,6 +187,7 @@ class splunk::forwarder(
   Boolean $manage_package_source             = true,
   Optional[String[1]] $package_source        = undef,
   Array[String[1]] $install_options          = $splunk::params::forwarder_install_options,
+  Boolean $manage_splunk_user                = $splunk::params::manage_splunk_user,
   String[1] $splunk_user                     = $splunk::params::splunk_user,
   Stdlib::Absolutepath $forwarder_homedir    = $splunk::params::forwarder_homedir,
   Stdlib::Absolutepath $forwarder_confdir    = $splunk::params::forwarder_confdir,

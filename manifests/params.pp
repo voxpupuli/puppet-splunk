@@ -28,6 +28,11 @@
 #   Optional fqdn or IP of the Splunk Enterprise server.  Used for setting up
 #   the default TCP output and input.
 #
+# @param manage_splunk_user
+#   Whether or not to manage the splunk runuser.
+#
+#   Defaults to false.
+#
 # @param splunk_user
 #   The user that splunk runs as.
 #
@@ -105,6 +110,7 @@ class splunk::params (
   Optional[String[1]] $forwarder_installdir  = undef,
   Optional[String[1]] $enterprise_installdir = undef,
   Boolean $boot_start                        = true,
+  Boolean $manage_splunk_user                = false,
   String[1] $splunk_user                     = $facts['os']['family'] ? {
     'Windows' => 'Administrator',
     default => 'root'

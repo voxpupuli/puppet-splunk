@@ -47,7 +47,12 @@ describe 'splunk enterprise class' do
         service { '#{service_name}': ensure => stopped }
         package { 'splunk': ensure => purged }
         file { '/opt/splunk': ensure => absent, force => true, require => Package['splunk'] }
-        file { '/etc/init.d/splunk': ensure => absent, require => Package['splunk'] }
+        file { ['/etc/init.d/splunk',
+                '/etc/systemd/system/Splunkd.service',
+                '/etc/systemd/system/multi-user.target.wants/Splunkd.service']:
+          ensure => absent,
+          require => Package['splunk']
+        }
         EOS
         apply_manifest(pp, catch_failures: true)
       end

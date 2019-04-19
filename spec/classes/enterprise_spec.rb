@@ -12,6 +12,8 @@ shared_examples_for 'splunk enterprise nix defaults' do
   it { is_expected.to contain_class('splunk::enterprise::service::nix') }
   it { is_expected.to contain_splunk_config('splunk') }
   it { is_expected.to contain_package('splunk').with(ensure: 'installed') }
+  it { is_expected.not_to contain_user('root') }
+  it { is_expected.not_to contain_group('root') }
   it { is_expected.to contain_file('/opt/splunk/etc/system/local/alert_actions.conf') }
   it { is_expected.to contain_file('/opt/splunk/etc/system/local/authentication.conf') }
   it { is_expected.to contain_file('/opt/splunk/etc/system/local/authorize.conf') }
@@ -71,6 +73,14 @@ describe 'splunk::enterprise' do
 
               it { is_expected.to contain_package('splunk').with(provider: 'yum') }
             end
+          end
+
+          context 'when manage_splunk_user = true' do
+            let(:params) { { 'manage_splunk_user' => true, 'splunk_user' => 'splunk' } }
+
+            it { is_expected.to compile.with_all_deps }
+            it { is_expected.to contain_user('splunk') }
+            it { is_expected.to contain_group('splunk') }
           end
 
           context 'with $boot_start = true (defaults)' do
