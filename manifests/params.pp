@@ -257,7 +257,14 @@ class splunk::params (
   $forwarder_pkg_src = "${src_root}/products/universalforwarder/releases/${version}/${forwarder_src_subdir}/${forwarder_src_pkg}"
   $create_password   = true
 
-  $forwarder_pkg_ensure = 'installed'
+  case $::osfamily {
+    'RedHat': {
+      $forwarder_pkg_ensure = $version
+    }
+    default: {
+      $forwarder_pkg_ensure = 'installed'
+    }
+  }
 
   # A meta resource so providers know where splunk is installed:
   splunk_config { 'splunk':
