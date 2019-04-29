@@ -124,7 +124,7 @@ class splunk::params (
 
   if $::osfamily == 'windows' {
     $staging_dir        = "${facts['archive_windir']}\\splunk"
-    $enterprise_homedir = pick($enterprise_installdir, 'C:/Program Files/Splunk')
+    $enterprise_homedir = pick($enterprise_installdir, 'C:\\Program Files\\Splunk')
     $forwarder_homedir  = pick($forwarder_installdir, 'C:\\Program Files\\SplunkUniversalForwarder')
   } else {
     $staging_dir        = '/opt/staging/splunk'
@@ -135,17 +135,17 @@ class splunk::params (
   # Settings common to a kernel
   case $::kernel {
     'Linux': {
-      $path_delimiter                      = '/'
-      $forwarder_src_subdir                = 'linux'
-      $forwarder_password_config_file      = "${forwarder_homedir}/etc/passwd"
-      $enterprise_password_config_file     = "${enterprise_homedir}/etc/passwd"
-      $forwarder_secret_file               = "${forwarder_homedir}/etc/splunk.secret"
-      $enterprise_secret_file              = "${enterprise_homedir}/etc/splunk.secret"
-      $forwarder_confdir                   = "${forwarder_homedir}/etc"
-      $enterprise_src_subdir               = 'linux'
-      $enterprise_confdir                  = "${enterprise_homedir}/etc"
-      $forwarder_install_options           = []
-      $enterprise_install_options           = []
+      $path_delimiter                  = '/'
+      $forwarder_src_subdir            = 'linux'
+      $forwarder_password_config_file  = "${forwarder_homedir}/etc/passwd"
+      $enterprise_password_config_file = "${enterprise_homedir}/etc/passwd"
+      $forwarder_secret_file           = "${forwarder_homedir}/etc/splunk.secret"
+      $enterprise_secret_file          = "${enterprise_homedir}/etc/splunk.secret"
+      $forwarder_confdir               = "${forwarder_homedir}/etc"
+      $enterprise_src_subdir           = 'linux'
+      $enterprise_confdir              = "${enterprise_homedir}/etc"
+      $forwarder_install_options       = []
+      $enterprise_install_options      = []
       # Systemd not supported until Splunk 7.2.2
       if $facts['service_provider'] == 'systemd' and versioncmp($version, '7.2.2') >= 0 {
         $enterprise_service      = 'Splunkd'
@@ -161,15 +161,17 @@ class splunk::params (
       }
     }
     'SunOS': {
-      $path_delimiter        = '/'
-      $forwarder_src_subdir  = 'solaris'
-      $password_config_file  = "${forwarder_homedir}/etc/passwd"
-      $secret_file           = "${forwarder_homedir}/etc/splunk.secret"
-      $forwarder_confdir     = "${forwarder_homedir}/etc"
-      $enterprise_src_subdir = 'solaris'
-      $enterprise_confdir    = "${enterprise_homedir}/etc"
-      $forwarder_install_options = []
-      $enterprise_install_options = []
+      $path_delimiter                  = '/'
+      $forwarder_src_subdir            = 'solaris'
+      $forwarder_password_config_file  = "${forwarder_homedir}/etc/passwd"
+      $enterprise_password_config_file = "${enterprise_homedir}/etc/passwd"
+      $forwarder_secret_file           = "${forwarder_homedir}/etc/splunk.secret"
+      $enterprise_secret_file          = "${enterprise_homedir}/etc/splunk.secret"
+      $forwarder_confdir               = "${forwarder_homedir}/etc"
+      $enterprise_src_subdir           = 'solaris'
+      $enterprise_confdir              = "${enterprise_homedir}/etc"
+      $forwarder_install_options       = []
+      $enterprise_install_options      = []
       # Systemd not supported until Splunk 7.2.2
       if $facts['service_provider'] == 'systemd' and versioncmp($version, '7.2.2') >= 0 {
         $enterprise_service      = 'Splunkd'
@@ -185,17 +187,19 @@ class splunk::params (
       }
     }
     'windows': {
-      $path_delimiter            = '\\'
-      $forwarder_src_subdir      = 'windows'
-      $password_config_file      = 'C:/Program Files/SplunkUniversalForwarder/etc/passwd'
-      $secret_file               = 'C:/Program Files/SplunkUniversalForwarder/etc/splunk.secret'
-      $forwarder_service         = 'SplunkForwarder' # UNKNOWN
-      $forwarder_service_file    = '' # Not used in Windows, but attribute must be defined
-      $forwarder_confdir         = "${forwarder_homedir}/etc"
-      $enterprise_src_subdir     = 'windows'
-      $enterprise_service        = 'splunkd' # UNKNOWN
-      $enterprise_confdir        = "${enterprise_homedir}/etc"
-      $forwarder_install_options = [
+      $path_delimiter                  = '\\'
+      $forwarder_src_subdir            = 'windows'
+      $forwarder_password_config_file  = "${forwarder_homedir}\\etc\\passwd"
+      $enterprise_password_config_file = "${enterprise_homedir}/etc/passwd"
+      $forwarder_secret_file           = "${forwarder_homedir}\\etc\\splunk.secret"
+      $enterprise_secret_file          = "${enterprise_homedir}/etc/splunk.secret"
+      $forwarder_service               = 'SplunkForwarder' # UNKNOWN
+      $forwarder_service_file          = "${forwarder_homedir}\\dummy" # Not used in Windows, but attribute must be defined with a valid path
+      $forwarder_confdir               = "${forwarder_homedir}/etc"
+      $enterprise_src_subdir           = 'windows'
+      $enterprise_service              = 'splunkd' # UNKNOWN
+      $enterprise_confdir              = "${enterprise_homedir}/etc"
+      $forwarder_install_options       = [
         'AGREETOLICENSE=Yes',
         'LAUNCHSPLUNK=0',
         'SERVICESTARTTYPE=auto',
@@ -207,7 +211,7 @@ class splunk::params (
         'ENABLEADMON=1',
         "INSTALLDIR=${forwarder_homedir}",
       ]
-      $enterprise_install_options = [
+      $enterprise_install_options     = [
         'LAUNCHSPLUNK=1',
         'WINEVENTLOG_APP_ENABLE=1',
         'WINEVENTLOG_SEC_ENABLE=1',
