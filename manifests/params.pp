@@ -106,7 +106,7 @@ class splunk::params (
   Optional[String[1]] $enterprise_installdir = undef,
   Boolean $boot_start                        = true,
   String[1] $splunk_user                     = $facts['os']['family'] ? {
-    'Windows' => 'Administrator',
+    'windows' => 'Administrator',
     default => 'root'
   },
 ) {
@@ -122,7 +122,7 @@ class splunk::params (
   $secret           = 'hhy9DOGqli4.aZWCuGvz8stcqT2/OSJUZuyWHKc4wnJtQ6IZu2bfjeElgYmGHN9RWIT3zs5hRJcX1wGerpMNObWhFue78jZMALs3c3Mzc6CzM98/yGYdfcvWMo1HRdKn82LVeBJI5dNznlZWfzg6xdywWbeUVQZcOZtODi10hdxSJ4I3wmCv0nmkSWMVOEKHxti6QLgjfuj/MOoh8.2pM0/CqF5u6ORAzqFZ8Qf3c27uVEahy7ShxSv2K4K41z'
   $password_content = ':admin:$6$pIE/xAyP9mvBaewv$4GYFxC0SqonT6/x8qGcZXVCRLUVKODj9drDjdu/JJQ/Iw0Gg.aTkFzCjNAbaK4zcCHbphFz1g1HK18Z2bI92M0::Administrator:admin:changeme@example.com::'
 
-  if $::osfamily == 'Windows' {
+  if $::osfamily == 'windows' {
     $staging_dir        = "${facts['archive_windir']}\\splunk"
     $enterprise_homedir = pick($enterprise_installdir, 'C:/Program Files/Splunk')
     $forwarder_homedir  = pick($forwarder_installdir, 'C:\\Program Files\\SplunkUniversalForwarder')
@@ -184,7 +184,7 @@ class splunk::params (
         $forwarder_service_file  = '/etc/init.d/splunk'
       }
     }
-    'Windows': {
+    'windows': {
       $path_delimiter        = '\\'
       $forwarder_src_subdir  = 'windows'
       $password_config_file  = 'C:/Program Files/SplunkUniversalForwarder/etc/passwd'
