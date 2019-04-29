@@ -185,15 +185,16 @@ class splunk::params (
       }
     }
     'windows': {
-      $path_delimiter        = '\\'
-      $forwarder_src_subdir  = 'windows'
-      $password_config_file  = 'C:/Program Files/SplunkUniversalForwarder/etc/passwd'
-      $secret_file           =  'C:/Program Files/SplunkUniversalForwarder/etc/splunk.secret'
-      $forwarder_service     = 'SplunkForwarder' # UNKNOWN
-      $forwarder_confdir     = "${forwarder_homedir}/etc"
-      $enterprise_src_subdir = 'windows'
-      $enterprise_service    = 'splunkd' # UNKNOWN
-      $enterprise_confdir    = "${enterprise_homedir}/etc"
+      $path_delimiter            = '\\'
+      $forwarder_src_subdir      = 'windows'
+      $password_config_file      = 'C:/Program Files/SplunkUniversalForwarder/etc/passwd'
+      $secret_file               = 'C:/Program Files/SplunkUniversalForwarder/etc/splunk.secret'
+      $forwarder_service         = 'SplunkForwarder' # UNKNOWN
+      $forwarder_service_file    = '' # Not used in Windows, but attribute must be defined
+      $forwarder_confdir         = "${forwarder_homedir}/etc"
+      $enterprise_src_subdir     = 'windows'
+      $enterprise_service        = 'splunkd' # UNKNOWN
+      $enterprise_confdir        = "${enterprise_homedir}/etc"
       $forwarder_install_options = [
         'AGREETOLICENSE=Yes',
         'LAUNCHSPLUNK=0',
@@ -204,7 +205,7 @@ class splunk::params (
         'WINEVENTLOG_FWD_ENABLE=1',
         'WINEVENTLOG_SET_ENABLE=1',
         'ENABLEADMON=1',
-        { 'INSTALLDIR' => $forwarder_homedir },
+        "INSTALLDIR=${forwarder_homedir}",
       ]
       $enterprise_install_options = [
         'LAUNCHSPLUNK=1',
