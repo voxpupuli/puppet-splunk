@@ -215,7 +215,7 @@ class splunk::forwarder(
   }
 
   if ($::osfamily == 'windows') and ($package_ensure == 'latest') {
-    fail('This module does not currently support continuously upgrading the Splunk Universal Forwarder on Windows. Please do not set ''package_ensure'' to ''latest'' on Windows.')
+    fail('This module does not currently support continuously upgrading the Splunk Universal Forwarder on Windows. Please do not set "package_ensure" to "latest" on Windows.')
   }
 
   contain 'splunk::forwarder::install'
