@@ -51,6 +51,14 @@ class splunk::forwarder::install {
       content => "BASEDIR=/opt\n",
     }
 
+    # Required for splunk 7.2.4.2
+    if ($facts['kernel'] == 'Linux' or $facts['kernel'] == 'SunOS') and (versioncmp($splunk::enterprise::version, '7.2.4.2') >= 0) {
+      ensure_packages(['net-tools'], {
+        'ensure' => 'present',
+        before   => Package[$splunk::forwarder::package_name]
+      })
+    }
+
     # Collect any Splunk packages and give them an admin and response file.
     Package {
       adminfile    => $_adminfile,
