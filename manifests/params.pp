@@ -251,6 +251,7 @@ class splunk::params (
     'RedHat':  { $package_provider = 'rpm'  }
     'Debian':  { $package_provider = 'dpkg' }
     'Solaris': { $package_provider = 'sun'  }
+    'windows': { $package_provider = 'windows' }
     default:   { $package_provider = undef  } # Don't define a $package_provider
   }
 
