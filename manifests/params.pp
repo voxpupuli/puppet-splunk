@@ -199,7 +199,7 @@ class splunk::params (
       $enterprise_src_subdir           = 'windows'
       $enterprise_service              = 'splunkd' # UNKNOWN
       $enterprise_confdir              = "${enterprise_homedir}/etc"
-      $forwarder_install_options       = Array[
+      $forwarder_install_options       = [
         'AGREETOLICENSE=Yes',
         'LAUNCHSPLUNK=0',
         'SERVICESTARTTYPE=auto',

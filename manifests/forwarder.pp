@@ -182,7 +182,7 @@ class splunk::forwarder(
   Optional[String[1]] $package_provider      = $splunk::params::package_provider,
   Boolean $manage_package_source             = true,
   Optional[String[1]] $package_source        = undef,
-  Array[String[1]] $install_options          = $splunk::params::forwarder_install_options,
+  $install_options                           = $splunk::params::forwarder_install_options, # Not strongly typed because can be Hash or Array
   String[1] $splunk_user                     = $splunk::params::splunk_user,
   Stdlib::Absolutepath $forwarder_homedir    = $splunk::params::forwarder_homedir,
   Stdlib::Absolutepath $forwarder_confdir    = $splunk::params::forwarder_confdir,
