@@ -250,6 +250,10 @@ class splunk::enterprise (
     )
   }
 
+  if ($::osfamily == 'windows') and ($package_ensure == 'latest') {
+    fail('This module does not currently support continuously upgrading Splunk Enterprise on Windows. Please do not set "package_ensure" to "latest" on Windows.')
+  }
+
   contain 'splunk::enterprise::install'
   contain 'splunk::enterprise::config'
   contain 'splunk::enterprise::service'
