@@ -193,11 +193,11 @@ class splunk::params (
       $enterprise_password_config_file = "${enterprise_homedir}/etc/passwd"
       $forwarder_secret_file           = "${forwarder_homedir}\\etc\\splunk.secret"
       $enterprise_secret_file          = "${enterprise_homedir}/etc/splunk.secret"
-      $forwarder_service               = 'SplunkForwarder' # UNKNOWN
+      $forwarder_service               = 'SplunkForwarder'
       $forwarder_service_file          = "${forwarder_homedir}\\dummy" # Not used in Windows, but attribute must be defined with a valid path
       $forwarder_confdir               = "${forwarder_homedir}/etc"
       $enterprise_src_subdir           = 'windows'
-      $enterprise_service              = 'splunkd' # UNKNOWN
+      $enterprise_service              = 'splunkd' # Not validated
       $enterprise_confdir              = "${enterprise_homedir}/etc"
       $forwarder_install_options       = [
         'AGREETOLICENSE=Yes',
