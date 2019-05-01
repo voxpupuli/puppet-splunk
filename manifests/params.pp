@@ -209,7 +209,7 @@ class splunk::params (
         'WINEVENTLOG_SYS_ENABLE=1',
         'WINEVENTLOG_FWD_ENABLE=1',
         'WINEVENTLOG_SET_ENABLE=1',
-        'ENABLEADMON=1'
+        'ENABLEADMON=1',
         ]
       $enterprise_install_options     = [
         'LAUNCHSPLUNK=1',
