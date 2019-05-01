@@ -1,0 +1,5 @@
+--no-documentation-check
+--no-140chars-check
+--no-autoloader_layout-check
+--no-class_inherits_from_params_class-check
+--no-only_variable_string
