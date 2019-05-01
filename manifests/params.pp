@@ -279,12 +279,12 @@ class splunk::params (
     /^(W|w)indows (x86|i386)$/: {
       $package_suffix          = "${version}-${build}-x86-release.msi"
       $forwarder_package_name  = 'UniversalForwarder'
-      $enterprise_package_name = 'Splunk'
+      $enterprise_package_name = 'Splunk Enterprise'
     }
     /^(W|w)indows (x64|x86_64)$/: {
       $package_suffix          = "${version}-${build}-x64-release.msi"
       $forwarder_package_name  = 'UniversalForwarder'
-      $enterprise_package_name = 'Splunk'
+      $enterprise_package_name = 'Splunk Enterprise'
     }
     'Solaris i86pc': {
       $package_suffix          = "${version}-${build}-solaris-10-intel.pkg"

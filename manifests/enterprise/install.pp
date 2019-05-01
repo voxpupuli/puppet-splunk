@@ -19,7 +19,7 @@ class splunk::enterprise::install {
     archive { $_staged_package:
       source  => $_package_source,
       extract => false,
-      before  => Package[$splunk::enterprise::enterprise_package_name],
+      before  => Package[$splunk::enterprise::package_name],
     }
   } else {
     $_staged_package = undef
@@ -35,7 +35,7 @@ class splunk::enterprise::install {
     },
   }
 
-  package { $splunk::enterprise::enterprise_package_name:
+  package { $splunk::enterprise::package_name:
     ensure          => $splunk::enterprise::package_ensure,
     provider        => $splunk::enterprise::package_provider,
     install_options => $splunk::enterprise::install_options,
