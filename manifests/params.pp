@@ -200,6 +200,7 @@ class splunk::params (
       $enterprise_service              = 'splunkd' # Not validated
       $enterprise_confdir              = "${enterprise_homedir}/etc"
       $forwarder_install_options       = [
+        { 'INSTALLDIR' => $forwarder_homedir },
         'AGREETOLICENSE=Yes',
         'LAUNCHSPLUNK=0',
         'SERVICESTARTTYPE=auto',
@@ -208,9 +209,8 @@ class splunk::params (
         'WINEVENTLOG_SYS_ENABLE=1',
         'WINEVENTLOG_FWD_ENABLE=1',
         'WINEVENTLOG_SET_ENABLE=1',
-        'ENABLEADMON=1',
-        { 'INSTALLDIR' => $forwarder_homedir },
-      ]
+        'ENABLEADMON=1'
+        ]
       $enterprise_install_options     = [
         'LAUNCHSPLUNK=1',
         'WINEVENTLOG_APP_ENABLE=1',
