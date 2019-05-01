@@ -36,7 +36,7 @@ class splunk::enterprise::install {
   }
 
   package { $splunk::enterprise::enterprise_package_name:
-    ensure          => $splunk::enterprise::enterprise_package_ensure,
+    ensure          => $splunk::enterprise::package_ensure,
     provider        => $splunk::enterprise::package_provider,
     install_options => $splunk::enterprise::install_options,
   }

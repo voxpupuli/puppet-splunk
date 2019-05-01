@@ -198,6 +198,7 @@ class splunk::params (
       $forwarder_confdir               = "${forwarder_homedir}/etc"
       $enterprise_src_subdir           = 'windows'
       $enterprise_service              = 'splunkd' # Not validated
+      $forwarder_service_file          = "${enterprise_homedir}\\dummy" # Not used in Windows, but attribute must be defined with a valid path
       $enterprise_confdir              = "${enterprise_homedir}/etc"
       $forwarder_install_options       = [
         { 'INSTALLDIR' => $forwarder_homedir },
