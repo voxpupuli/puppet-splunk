@@ -214,7 +214,7 @@ class splunk::params (
       ]
       $enterprise_install_options     = [
         { 'INSTALLDIR' => $enterprise_homedir },
-        { 'SPLUNKD_PORT' => "${splunkd_port}" },
+        { 'SPLUNKD_PORT' => String($splunkd_port) },
         'AGREETOLICENSE=Yes',
         'LAUNCHSPLUNK=0',
       ]
