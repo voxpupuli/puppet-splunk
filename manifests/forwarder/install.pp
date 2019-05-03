@@ -58,8 +58,16 @@ class splunk::forwarder::install {
     }
   }
 
-  package { $splunk::forwarder::forwarder_package_name:
-    ensure          => $splunk::forwarder::forwarder_package_ensure,
+  # Required for splunk 7.2.4.2
+  if ($facts['kernel'] == 'Linux' or $facts['kernel'] == 'SunOS') and (versioncmp($splunk::forwarder::version, '7.2.4.2') >= 0) {
+    ensure_packages(['net-tools'], {
+      'ensure' => 'present',
+      before   => Package[$splunk::forwarder::package_name]
+    })
+  }
+
+  package { $splunk::forwarder::package_name:
+    ensure          => $splunk::forwarder::package_ensure,
     provider        => $splunk::forwarder::package_provider,
     install_options => $splunk::forwarder::install_options,
   }

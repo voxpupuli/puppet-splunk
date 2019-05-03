@@ -182,7 +182,7 @@ class splunk::forwarder(
   Optional[String[1]] $package_provider      = $splunk::params::package_provider,
   Boolean $manage_package_source             = true,
   Optional[String[1]] $package_source        = undef,
-  Array[String[1]] $install_options          = $splunk::params::forwarder_install_options,
+  Splunk::Fwdinstalloptions $install_options = $splunk::params::forwarder_install_options,
   String[1] $splunk_user                     = $splunk::params::splunk_user,
   Stdlib::Absolutepath $forwarder_homedir    = $splunk::params::forwarder_homedir,
   Stdlib::Absolutepath $forwarder_confdir    = $splunk::params::forwarder_confdir,
@@ -212,6 +212,10 @@ class splunk::forwarder(
   if (defined(Class['splunk::enterprise'])) {
     fail('Splunk Universal Forwarder provides a subset of Splunk Enterprise capabilities, and has potentially conflicting resources when included with Splunk Enterprise on the same node.  Do not include splunk::forwarder on the same node as splunk::enterprise.  Configure Splunk Enterprise to meet your forwarding needs.'
     )
+  }
+
+  if ($facts['os']['family'] == 'windows') and ($package_ensure == 'latest') {
+    fail('This module does not currently support continuously upgrading the Splunk Universal Forwarder on Windows. Please do not set "package_ensure" to "latest" on Windows.')
   }
 
   contain 'splunk::forwarder::install'
