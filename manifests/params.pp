@@ -122,7 +122,7 @@ class splunk::params (
   $secret           = 'hhy9DOGqli4.aZWCuGvz8stcqT2/OSJUZuyWHKc4wnJtQ6IZu2bfjeElgYmGHN9RWIT3zs5hRJcX1wGerpMNObWhFue78jZMALs3c3Mzc6CzM98/yGYdfcvWMo1HRdKn82LVeBJI5dNznlZWfzg6xdywWbeUVQZcOZtODi10hdxSJ4I3wmCv0nmkSWMVOEKHxti6QLgjfuj/MOoh8.2pM0/CqF5u6ORAzqFZ8Qf3c27uVEahy7ShxSv2K4K41z'
   $password_content = ':admin:$6$pIE/xAyP9mvBaewv$4GYFxC0SqonT6/x8qGcZXVCRLUVKODj9drDjdu/JJQ/Iw0Gg.aTkFzCjNAbaK4zcCHbphFz1g1HK18Z2bI92M0::Administrator:admin:changeme@example.com::'
 
-  if $::osfamily == 'windows' {
+  if $facts['os']['family'] == 'windows' {
     $staging_dir        = "${facts['archive_windir']}\\splunk"
     $enterprise_homedir = pick($enterprise_installdir, 'C:\\Program Files\\Splunk')
     $forwarder_homedir  = pick($forwarder_installdir, 'C:\\Program Files\\SplunkUniversalForwarder')
@@ -133,7 +133,7 @@ class splunk::params (
   }
 
   # Settings common to a kernel
-  case $::kernel {
+  case $facts['kernel'] {
     'Linux': {
       $path_delimiter                  = '/'
       $forwarder_src_subdir            = 'linux'
@@ -219,16 +219,16 @@ class splunk::params (
         'LAUNCHSPLUNK=0',
       ]
     }
-    default: { fail("splunk module does not support kernel ${::kernel}") }
+    default: { fail("splunk module does not support kernel ${facts['kernel']}") }
   }
   # default splunk agent settings in a hash so that the cya be easily parsed to other classes
 
   $forwarder_output = {
-    'tcpout_defaultgroup'          => {
-      section                      => 'default',
-      setting                      => 'defaultGroup',
-      value                        => "${server}_${logging_port}",
-      tag                          => 'splunk_forwarder',
+    'tcpout_defaultgroup' => {
+      section             => 'default',
+      setting             => 'defaultGroup',
+      value               => "${server}_${logging_port}",
+      tag                 => 'splunk_forwarder',
     },
     'defaultgroup_server' => {
       section             => "tcpout:${server}_${logging_port}",
@@ -241,12 +241,12 @@ class splunk::params (
     'default_host' => {
       section      => 'default',
       setting      => 'host',
-      value        => $::clientcert,
+      value        => $facts['clientcert'],
       tag          => 'splunk_forwarder',
     },
   }
   # Settings common to an OS family
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat':  { $package_provider = 'rpm'  }
     'Debian':  { $package_provider = 'dpkg' }
     'Solaris': { $package_provider = 'sun'  }
@@ -255,7 +255,7 @@ class splunk::params (
   }
 
   # Settings specific to an architecture as well as an OS family
-  case "${::osfamily} ${::architecture}" {
+  case "${facts['os']['family']} ${facts['architecture']}" {
     'RedHat i386': {
       $package_suffix          = "${version}-${build}.i386.rpm"
       $forwarder_package_name  = 'splunkforwarder'
@@ -296,7 +296,7 @@ class splunk::params (
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
-    default: { fail("unsupported osfamily/arch ${::osfamily}/${::architecture}") }
+    default: { fail("unsupported osfamily/arch ${facts['os']['family']}/${facts['architecture']}") }
   }
 
   $forwarder_src_package  = "splunkforwarder-${package_suffix}"
