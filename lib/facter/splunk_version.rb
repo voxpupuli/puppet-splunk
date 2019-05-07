@@ -3,7 +3,7 @@ Facter.add(:splunk_version) do
     value = nil
     kernel = Facter.value(:kernel)
     case kernel
-    when 'linux'
+    when 'Linux'
       version_file = '/opt/splunk/etc/splunk.version'
     when 'windows'
       version_file = 'C:/Program Files/Splunk/etc/splunk.version'
