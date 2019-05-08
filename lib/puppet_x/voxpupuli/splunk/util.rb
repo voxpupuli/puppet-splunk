@@ -9,6 +9,7 @@ module PuppetX
           return value unless value.start_with?('$7$')
 
           Puppet.debug "Decrypting splunk >= 7.2 data using secret from #{secrets_file}"
+          Puppet.debug "value: #{value}"
           value.slice!(0, 3)
           data = Base64.strict_decode64(value)
           splunk_secret = IO.binread(secrets_file).chomp
