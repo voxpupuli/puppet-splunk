@@ -1,4 +1,7 @@
-# Class splunk::forwarder::install
+# @summary
+#   Private class declared by Class[splunk::forwarder] to contain or define
+#   through additional platform specific sub-class, the required steps
+#   for successfully installing the Splunk Universal Forwarder
 #
 class splunk::forwarder::install {
 

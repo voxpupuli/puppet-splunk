@@ -1,4 +1,6 @@
-# @summary Defined type for deploying Splunk Add-ons and Apps from either OS packages or via splunkbase compatible archives
+# @summary
+#   Defined type for deploying Splunk Add-ons and Apps from either OS packages
+#   or via splunkbase compatible archives
 #
 # @example Basic usage
 #   splunk::addon { 'Splunk_TA_nix':

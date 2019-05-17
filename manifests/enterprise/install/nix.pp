@@ -1,4 +1,6 @@
-# Class splunk::enterprise::install::nix
+# @summary
+#   Private class declared by Class[splunk::enterprise::install] to provide
+#   platform specific installation steps on Linux or Unix type systems.
 #
 class splunk::enterprise::install::nix inherits splunk::enterprise::install {
 

@@ -1,4 +1,6 @@
-# Class splunk::forwarder::service::nix
+# @summary
+#   Private class declared by Class[splunk::forwarder::service] to provide
+#   platform specific service management on Linux or Unix type systems.
 #
 class splunk::forwarder::service::nix inherits splunk::forwarder::service {
 

@@ -1,7 +1,8 @@
-# Class splunk::enterprise::config
+# @summary
+#   Private class declared by Class[splunk::enterprise] to contain all the
+#   configuration needed for a base install of Splunk Enterprise
 #
-class splunk::enterprise::config(
-){
+class splunk::enterprise::config() {
 
   if $splunk::enterprise::manage_password {
     file { $splunk::enterprise::password_config_file:
