@@ -34,6 +34,9 @@
 # @param package_name
 #  The OS package to install if you are not installing via splunk compatible archive
 #
+# @param owner
+#  The user that files are owned by when they are created as part of add-on installation
+#
 # @param inputs
 #  A hash of inputs to be configured as part of add-on installation, alterntively you can also define splunk_input or splunkforwarder_input resouces seperately
 #
@@ -42,6 +45,7 @@ define splunk::addon (
   Boolean $package_manage                     = true,
   Optional[String[1]] $splunkbase_source      = undef,
   Optional[String[1]] $package_name           = undef,
+  String[1] $owner                            = 'splunk',
   Hash $inputs                                = {},
 ) {
 
@@ -69,6 +73,8 @@ define splunk::addon (
       $archive_name = $splunkbase_source.split('/')[-1]
       archive { $name:
         path         => "${splunk::params::staging_dir}/${archive_name}",
+        user         => $owner,
+        group        => $owner,
         source       => $splunkbase_source,
         extract      => true,
         extract_path => "${_splunk_home}/etc/apps",
@@ -84,7 +90,11 @@ define splunk::addon (
     }
   }
 
-  file { "${_splunk_home}/etc/apps/${name}/local": ensure => directory }
+  file { "${_splunk_home}/etc/apps/${name}/local":
+    ensure => directory,
+    owner  => $owner,
+    group  => $owner,
+  }
 
   $inputs.each |$section, $attributes| {
     $attributes.each |$setting, $value| {
