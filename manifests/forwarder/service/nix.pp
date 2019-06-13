@@ -13,6 +13,7 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
       user    => $splunk::forwarder::splunk_user,
       creates => $splunk::forwarder::forwarder_service_file,
       timeout => 0,
+      require => Package[$splunk::forwarder::package_name],
       notify  => Exec['enable_splunkforwarder'],
     }
     # This will fail if the unit file already exists.  Splunk does not remove
@@ -22,10 +23,7 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
       command     => "${splunk::forwarder::forwarder_homedir}/bin/splunk enable boot-start -user ${splunk::forwarder::splunk_user} --accept-license --answer-yes --no-prompt",
       tag         => 'splunk_forwarder',
       refreshonly => true,
-      before      => [
-        Package[$splunk::forwarder::package_name],
-        Service[$splunk::forwarder::service_name]
-      ],
+      before      => Service[$splunk::forwarder::service_name],
       require     => Exec['stop_splunkforwarder'],
     }
   }
