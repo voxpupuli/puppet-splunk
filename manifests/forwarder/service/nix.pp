@@ -22,7 +22,10 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
       command     => "${splunk::forwarder::forwarder_homedir}/bin/splunk enable boot-start -user ${splunk::forwarder::splunk_user} --accept-license --answer-yes --no-prompt",
       tag         => 'splunk_forwarder',
       refreshonly => true,
-      before      => Service[$splunk::forwarder::service_name],
+      before      => [
+        Package[$splunk::forwarder::package_name],
+        Service[$splunk::forwarder::service_name]
+      ],
       require     => Exec['stop_splunkforwarder'],
     }
   }
