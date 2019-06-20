@@ -12,7 +12,7 @@ describe 'splunk enterprise class' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
       pp = <<-EOS
-      class { '::splunk::enterprise': }
+      class { 'splunk::enterprise': }
       EOS
 
       # Run it twice and test for idempotency
@@ -37,6 +37,39 @@ describe 'splunk enterprise class' do
         it { is_expected.to be_mode 600 }
         it { is_expected.to be_owned_by 'root' }
         it { is_expected.to be_grouped_into 'root' }
+      end
+    end
+
+    context 'seed admin password' do
+      # Using puppet_apply as a helper
+      it 'works with no errors' do
+        pp = <<-EOS
+        class { 'splunk::enterprise':
+          seed_password         => true,
+          reset_seeded_password => true,
+          password_hash         => '$6$not4r3alh45h',
+        }
+        EOS
+
+        apply_manifest(pp, catch_failures: true)
+      end
+
+      it 'works idempotently with no errors' do
+        pp = <<-EOS
+        class { 'splunk::enterprise':
+          seed_password         => true,
+          password_hash         => '$6$not4r3alh45h',
+        }
+        EOS
+
+        # Run it twice and test for idempotency
+        apply_manifest(pp, catch_failures: true)
+        apply_manifest(pp, catch_changes: true)
+      end
+
+      describe file('/opt/splunk/etc/passwd') do
+        it { is_expected.to be_file }
+        its(:content) { is_expected.to match %r{\$6\$not4r3alh45h} }
       end
     end
 
