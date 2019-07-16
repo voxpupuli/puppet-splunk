@@ -13,7 +13,7 @@ class splunk::forwarder::service {
   }
 
   service { $splunk::forwarder::service_name:
-    ensure     => running,
+    ensure     => $splunk::forwarder::service_ensure,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,

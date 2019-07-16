@@ -300,6 +300,7 @@ class splunk::params (
   $enterprise_package_src    = "${src_root}/products/splunk/releases/${version}/${enterprise_src_subdir}/${enterprise_src_package}"
   $forwarder_package_ensure = 'installed'
   $forwarder_package_src = "${src_root}/products/universalforwarder/releases/${version}/${forwarder_src_subdir}/${forwarder_src_package}"
+  $forwarder_service_ensure = 'running'
 
 
   # A meta resource so providers know where splunk is installed:
