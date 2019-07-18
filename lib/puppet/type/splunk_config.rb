@@ -33,7 +33,7 @@ Puppet::Type.newtype(:splunk_config) do
     :purge_limits,
     :purge_metadata,
     :purge_props,
-    :purge_savedsearches
+    :purge_savedsearches,
     :purge_server,
     :purge_serverclass,
     :purge_transforms,
