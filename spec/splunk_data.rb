@@ -11,7 +11,7 @@ SPLUNK_SERVER_TYPES = {
   splunk_metadata: 'local.meta',
   splunk_output: 'outputs.conf',
   splunk_props: 'props.conf',
-  splunk_savedsearches: 'server.conf',
+  splunk_savedsearches: 'savedsearches.conf',
   splunk_server: 'server.conf',
   splunk_serverclass: 'serverclass.conf',
   splunk_transforms: 'transforms.conf',
