@@ -5,19 +5,28 @@
 #
 class splunk::forwarder::config {
 
-  if $splunk::forwarder::manage_password {
-    file { $splunk::forwarder::password_config_file:
-      ensure  => file,
-      owner   => $splunk::forwarder::splunk_user,
-      group   => $splunk::forwarder::splunk_user,
-      content => $splunk::forwarder::password_content,
+  if $splunk::forwarder::seed_password {
+    class { 'splunk::forwarder::password::seed':
+      reset_seeded_password => $splunk::forwarder::reset_seeded_password,
+      password_config_file  => $splunk::forwarder::password_config_file,
+      seed_config_file      => $splunk::forwarder::seed_config_file,
+      password_hash         => $splunk::forwarder::password_hash,
+      secret_file           => $splunk::forwarder::secret_file,
+      secret                => $splunk::forwarder::secret,
+      splunk_user           => $splunk::forwarder::splunk_user,
+      mode                  => 'agent',
     }
+  }
 
-    file { $splunk::forwarder::secret_file:
-      ensure  => file,
-      owner   => $splunk::forwarder::splunk_user,
-      group   => $splunk::forwarder::splunk_user,
-      content => $splunk::forwarder::secret,
+  if $splunk::forwarder::manage_password {
+    class { 'splunk::forwarder::password::manage':
+      manage_password      => $splunk::forwarder::manage_password,
+      password_config_file => $splunk::forwarder::password_config_file,
+      password_content     => $splunk::forwarder::password_content,
+      secret_file          => $splunk::forwarder::secret_file,
+      secret               => $splunk::forwarder::secret,
+      splunk_user          => $splunk::forwarder::splunk_user,
+      mode                 => 'agent',
     }
   }
 

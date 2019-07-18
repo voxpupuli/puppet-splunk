@@ -112,9 +112,12 @@ class splunk::params (
   # forwarder, then distribute the contents of the splunk.secret and passwd
   # files accross all nodes.
   # By default the parameters provided are for admin/changeme password.
-  $manage_password  = false
-  $secret           = 'hhy9DOGqli4.aZWCuGvz8stcqT2/OSJUZuyWHKc4wnJtQ6IZu2bfjeElgYmGHN9RWIT3zs5hRJcX1wGerpMNObWhFue78jZMALs3c3Mzc6CzM98/yGYdfcvWMo1HRdKn82LVeBJI5dNznlZWfzg6xdywWbeUVQZcOZtODi10hdxSJ4I3wmCv0nmkSWMVOEKHxti6QLgjfuj/MOoh8.2pM0/CqF5u6ORAzqFZ8Qf3c27uVEahy7ShxSv2K4K41z'
-  $password_content = ':admin:$6$pIE/xAyP9mvBaewv$4GYFxC0SqonT6/x8qGcZXVCRLUVKODj9drDjdu/JJQ/Iw0Gg.aTkFzCjNAbaK4zcCHbphFz1g1HK18Z2bI92M0::Administrator:admin:changeme@example.com::'
+  $manage_password       = false
+  $seed_password         = false
+  $reset_seeded_password = false
+  $secret                = 'hhy9DOGqli4.aZWCuGvz8stcqT2/OSJUZuyWHKc4wnJtQ6IZu2bfjeElgYmGHN9RWIT3zs5hRJcX1wGerpMNObWhFue78jZMALs3c3Mzc6CzM98/yGYdfcvWMo1HRdKn82LVeBJI5dNznlZWfzg6xdywWbeUVQZcOZtODi10hdxSJ4I3wmCv0nmkSWMVOEKHxti6QLgjfuj/MOoh8.2pM0/CqF5u6ORAzqFZ8Qf3c27uVEahy7ShxSv2K4K41z'
+  $password_hash         = '$6$pIE/xAyP9mvBaewv$4GYFxC0SqonT6/x8qGcZXVCRLUVKODj9drDjdu/JJQ/Iw0Gg.aTkFzCjNAbaK4zcCHbphFz1g1HK18Z2bI92M0'
+  $password_content      = ":admin:${password_hash}::Administrator:admin:changeme@example.com::"
 
   if $facts['os']['family'] == 'windows' {
     $staging_dir        = "${facts['archive_windir']}\\splunk"
@@ -131,6 +134,8 @@ class splunk::params (
     'Linux': {
       $path_delimiter                  = '/'
       $forwarder_src_subdir            = 'linux'
+      $forwarder_seed_config_file      = "${forwarder_homedir}/etc/system/local/user-seed.conf"
+      $enterprise_seed_config_file     = "${enterprise_homedir}/etc/system/local/user-seed.conf"
       $forwarder_password_config_file  = "${forwarder_homedir}/etc/passwd"
       $enterprise_password_config_file = "${enterprise_homedir}/etc/passwd"
       $forwarder_secret_file           = "${forwarder_homedir}/etc/splunk.secret"
@@ -157,6 +162,8 @@ class splunk::params (
     'SunOS': {
       $path_delimiter                  = '/'
       $forwarder_src_subdir            = 'solaris'
+      $forwarder_seed_config_file      = "${forwarder_homedir}/etc/system/local/user-seed.conf"
+      $enterprise_seed_config_file     = "${enterprise_homedir}/etc/system/local/user-seed.conf"
       $forwarder_password_config_file  = "${forwarder_homedir}/etc/passwd"
       $enterprise_password_config_file = "${enterprise_homedir}/etc/passwd"
       $forwarder_secret_file           = "${forwarder_homedir}/etc/splunk.secret"
@@ -183,10 +190,10 @@ class splunk::params (
     'windows': {
       $path_delimiter                  = '\\'
       $forwarder_src_subdir            = 'windows'
+      $forwarder_seed_config_file      = "${forwarder_homedir}\\etc\\system\\local\\user-seed.conf"
+      $enterprise_seed_config_file     = "${enterprise_homedir}\\etc\\system\\local\\user-seed.conf"
       $forwarder_password_config_file  = "${forwarder_homedir}\\etc\\passwd"
       $enterprise_password_config_file = "${enterprise_homedir}\\etc\\passwd"
-      $forwarder_secret_file           = "${forwarder_homedir}\\etc\\splunk.secret"
-      $enterprise_secret_file          = "${enterprise_homedir}\\etc\\splunk.secret"
       $forwarder_service               = 'SplunkForwarder'
       $forwarder_service_file          = "${forwarder_homedir}\\dummy" # Not used in Windows, but attribute must be defined with a valid path
       $forwarder_confdir               = "${forwarder_homedir}\\etc"

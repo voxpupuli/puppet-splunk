@@ -1,0 +1,4 @@
+<%- | String $hash | -%>
+[user_info]
+USERNAME=admin
+HASHED_PASSWORD=<%= $hash %>

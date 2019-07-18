@@ -4,19 +4,28 @@
 #
 class splunk::enterprise::config() {
 
-  if $splunk::enterprise::manage_password {
-    file { $splunk::enterprise::password_config_file:
-      ensure  => file,
-      owner   => $splunk::enterprise::splunk_user,
-      group   => $splunk::enterprise::splunk_user,
-      content => $splunk::enterprise::password_content,
+  if $splunk::enterprise::seed_password {
+    class { 'splunk::enterprise::password::seed':
+      reset_seeded_password => $splunk::enterprise::reset_seeded_password,
+      password_config_file  => $splunk::enterprise::password_config_file,
+      seed_config_file      => $splunk::enterprise::seed_config_file,
+      password_hash         => $splunk::enterprise::password_hash,
+      secret_file           => $splunk::enterprise::secret_file,
+      secret                => $splunk::enterprise::secret,
+      splunk_user           => $splunk::enterprise::splunk_user,
+      mode                  => 'agent',
     }
+  }
 
-    file { $splunk::enterprise::secret_file:
-      ensure  => file,
-      owner   => $splunk::enterprise::splunk_user,
-      group   => $splunk::enterprise::splunk_user,
-      content => $splunk::enterprise::secret,
+  if $splunk::enterprise::manage_password {
+    class { 'splunk::enterprise::password::manage':
+      manage_password      => $splunk::enterprise::manage_password,
+      password_config_file => $splunk::enterprise::password_config_file,
+      password_content     => $splunk::enterprise::password_content,
+      secret_file          => $splunk::enterprise::secret_file,
+      secret               => $splunk::enterprise::secret,
+      splunk_user          => $splunk::enterprise::splunk_user,
+      mode                 => 'agent',
     }
   }
 

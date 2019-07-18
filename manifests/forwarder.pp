@@ -117,12 +117,26 @@
 # @param manage_password
 #   If set to true, Manage the contents of splunk.secret and passwd.
 #
+# @param seed_password
+#   If set to true, Manage the contents of splunk.secret and user-seed.conf.
+#
+# @param reset_seed_password
+#   If set to true, deletes `password_config_file` to trigger Splunk's password
+#   import process on restart of the Splunk services.
+#
 # @param password_config_file
 #   Which file to put the password in i.e. in linux it would be
 #   `/opt/splunkforwarder/etc/passwd`.
 #
+# @param seed_config_file
+#   Which file to place the admin password hash in so its imported by Splunk on
+#   restart.
+#
 # @param password_content
 #   The hashed password username/details for the user.
+#
+# @param password_hash
+#   The hashed password for the admin user.
 #
 # @param secret_file
 #   Which file we should put the secret in.
@@ -164,8 +178,12 @@ class splunk::forwarder(
   Hash $forwarder_output                     = $splunk::params::forwarder_output,
   Hash $forwarder_input                      = $splunk::params::forwarder_input,
   Boolean $manage_password                   = $splunk::params::manage_password,
+  Boolean $seed_password                     = $splunk::params::seed_password,
+  Boolean $reset_seeded_password             = $splunk::params::reset_seeded_password,
   Stdlib::Absolutepath $password_config_file = $splunk::params::forwarder_password_config_file,
+  Stdlib::Absolutepath $seed_config_file     = $splunk::params::forwarder_seed_config_file,
   String[1] $password_content                = $splunk::params::password_content,
+  String[1] $password_hash                   = $splunk::params::password_hash,
   Stdlib::Absolutepath $secret_file          = $splunk::params::forwarder_secret_file,
   String[1] $secret                          = $splunk::params::secret,
   Hash $addons                               = {},
@@ -178,6 +196,18 @@ class splunk::forwarder(
 
   if ($facts['os']['family'] == 'windows') and ($package_ensure == 'latest') {
     fail('This module does not currently support continuously upgrading the Splunk Universal Forwarder on Windows. Please do not set "package_ensure" to "latest" on Windows.')
+  }
+
+  if $manage_password and $seed_password {
+    fail('The setting "manage_password" and "seed_password" are in conflict with one another; they are two ways of accomplishing the same goal, "seed_password" is preferred according to Splunk documentation. If you need to reset the admin user password after initially installation then set "reset_seeded_password" temporarily.')
+  }
+
+  if $manage_password {
+    info("The setting \"manage_password\" will manage the contents of ${password_config_file} which Splunk changes on restart, this results in Puppet initiating a corrective change event on every run and will trigger a resart of all Splunk services")
+  }
+
+  if $reset_seeded_password {
+    info("The setting \"reset_seeded_password\" will delete ${password_config_file} on each run of Puppet and generate a corrective change event, the file must be absent for Splunk's admin password seeding process to be triggered so this setting should only be used temporarily as it'll also cause a resart of the Splunk service")
   }
 
   contain 'splunk::forwarder::install'
