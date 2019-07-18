@@ -56,12 +56,12 @@ class splunk::enterprise::config() {
           "${splunk::enterprise::enterprise_homedir}/etc/system/local/limits.conf",
           "${splunk::enterprise::enterprise_homedir}/etc/system/local/outputs.conf",
           "${splunk::enterprise::enterprise_homedir}/etc/system/local/props.conf",
+          "${splunk::enterprise::enterprise_homedir}/etc/system/local/savedsearches.conf",
           "${splunk::enterprise::enterprise_homedir}/etc/system/local/server.conf",
           "${splunk::enterprise::enterprise_homedir}/etc/system/local/serverclass.conf",
           "${splunk::enterprise::enterprise_homedir}/etc/system/local/transforms.conf",
           "${splunk::enterprise::enterprise_homedir}/etc/system/local/ui-prefs.conf",
           "${splunk::enterprise::enterprise_homedir}/etc/system/local/web.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/savedsearches.conf",
           "${splunk::enterprise::enterprise_homedir}/etc/system/metadata/local.meta"]:
     ensure => file,
     tag    => 'splunk_enterprise',
@@ -107,11 +107,11 @@ class splunk::enterprise::config() {
   File <| tag == 'splunk_enterprise' |> -> Splunk_limits<||>           ~> Class['splunk::enterprise::service']
   File <| tag == 'splunk_enterprise' |> -> Splunk_output<||>           ~> Class['splunk::enterprise::service']
   File <| tag == 'splunk_enterprise' |> -> Splunk_props<||>            ~> Class['splunk::enterprise::service']
+  File <| tag == 'splunk_enterprise' |> -> Splunk_savedsearches<||>    ~> Class['splunk::enterprise::service']
   File <| tag == 'splunk_enterprise' |> -> Splunk_server<||>           ~> Class['splunk::enterprise::service']
   File <| tag == 'splunk_enterprise' |> -> Splunk_serverclass<||>      ~> Class['splunk::enterprise::service']
   File <| tag == 'splunk_enterprise' |> -> Splunk_transforms<||>       ~> Class['splunk::enterprise::service']
   File <| tag == 'splunk_enterprise' |> -> Splunk_uiprefs<||>          ~> Class['splunk::enterprise::service']
   File <| tag == 'splunk_enterprise' |> -> Splunk_web<||>              ~> Class['splunk::enterprise::service']
-  File <| tag == 'splunk_enterprise' |> -> Splunk_savedsearches<||>              ~> Class['splunk::enterprise::service']
 
 }

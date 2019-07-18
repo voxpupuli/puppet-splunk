@@ -22,6 +22,7 @@ shared_examples_for 'splunk enterprise nix defaults' do
   it { is_expected.to contain_file('/opt/splunk/etc/system/local/limits.conf') }
   it { is_expected.to contain_file('/opt/splunk/etc/system/local/outputs.conf') }
   it { is_expected.to contain_file('/opt/splunk/etc/system/local/props.conf') }
+  it { is_expected.to contain_file('/opt/splunk/etc/system/local/savedsearches.conf') }
   it { is_expected.to contain_file('/opt/splunk/etc/system/local/server.conf') }
   it { is_expected.to contain_file('/opt/splunk/etc/system/local/serverclass.conf') }
   it { is_expected.to contain_file('/opt/splunk/etc/system/local/transforms.conf') }
