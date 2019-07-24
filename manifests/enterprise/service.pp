@@ -4,6 +4,7 @@
 #   sub-classes
 #
 class splunk::enterprise::service {
+  assert_private()
 
   # This is a module that supports multiple platforms. For some platforms
   # there is non-generic configuration that needs to be declared in addition
@@ -12,8 +13,8 @@ class splunk::enterprise::service {
     include splunk::enterprise::service::nix
   }
 
-  service { $splunk::enterprise::service_name:
-    ensure     => running,
+  service { $splunk::enterprise::_service_name:
+    ensure     => $splunk::enterprise::service_ensure,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,

@@ -1,0 +1,5 @@
+---
+
+splunk::enterprise::package_provider: 'dpkg'
+
+splunk::forwarder::package_provider: 'dpkg'

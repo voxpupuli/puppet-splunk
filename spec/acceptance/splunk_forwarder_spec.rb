@@ -5,9 +5,8 @@ describe 'splunk::forwarder class' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
       pp = <<-EOS
-      class { 'splunk::params':
-      }
       class { 'splunk::forwarder':
+        release      => '7.2.4.2-fb30470262e3',
         splunkd_port => 8090,
       }
       splunkforwarder_output { 'tcpout:splunkcloud/sslPassword':
@@ -46,12 +45,11 @@ describe 'splunk::forwarder class' do
     context 'purge_outputs => false' do
       it 'works idempotently with no errors' do
         pp = <<-eos
-      class { 'splunk::params':
-      }
-      class { 'splunk::forwarder':
-        splunkd_port  => 8090,
-        purge_outputs => false,
-      }
+        class { 'splunk::forwarder':
+          release       => '7.2.4.2-fb30470262e3',
+          splunkd_port  => 8090,
+          purge_outputs => false,
+        }
         eos
 
         # run it twice and test for idempotency
@@ -67,12 +65,11 @@ describe 'splunk::forwarder class' do
     context 'purge_outputs => true' do
       it 'works idempotently with no errors' do
         pp = <<-eos
-      class { 'splunk::params':
-      }
-      class { 'splunk::forwarder':
-        splunkd_port  => 8090,
-        purge_outputs => true,
-      }
+        class { 'splunk::forwarder':
+          release       => '7.2.4.2-fb30470262e3',
+          splunkd_port  => 8090,
+          purge_outputs => true,
+        }
         eos
 
         # run it twice and test for idempotency

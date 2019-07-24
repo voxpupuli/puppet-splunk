@@ -3,6 +3,7 @@
 #   platform specific service management on Linux or Unix type systems.
 #
 class splunk::forwarder::service::nix inherits splunk::forwarder::service {
+  assert_private()
 
   if $splunk::forwarder::boot_start {
     # Ensure splunk services *not* managed by the system service file are
@@ -11,9 +12,9 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
     # will no longer be able to control the binary-managed services
     # (start/stop/restart).
     exec { 'stop_splunkforwarder':
-      command => "${splunk::forwarder::forwarder_homedir}/bin/splunk stop",
+      command => "${splunk::forwarder::homedir}/bin/splunk stop",
       user    => $splunk::forwarder::splunk_user,
-      creates => $splunk::forwarder::forwarder_service_file,
+      creates => $splunk::forwarder::_service_file,
       timeout => 0,
       notify  => Exec['enable_splunkforwarder'],
     }
@@ -21,10 +22,10 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
     # unit files during uninstallation, so you may be required to manually
     # remove existing unit files before re-installing and enabling boot-start.
     exec { 'enable_splunkforwarder':
-      command     => "${splunk::forwarder::forwarder_homedir}/bin/splunk enable boot-start -user ${splunk::forwarder::splunk_user} --accept-license --answer-yes --no-prompt",
+      command     => "${splunk::forwarder::homedir}/bin/splunk enable boot-start -user ${splunk::forwarder::splunk_user} --accept-license --answer-yes --no-prompt",
       tag         => 'splunk_forwarder',
       refreshonly => true,
-      before      => Service[$splunk::forwarder::service_name],
+      before      => Service[$splunk::forwarder::_service_name],
       require     => Exec['stop_splunkforwarder'],
     }
   }
@@ -35,34 +36,34 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
     # present before installing splunk.  The splunk package does not remove the
     # service files when uninstalled.
     exec { 'disable_splunkforwarder':
-      command => "${splunk::forwarder::forwarder_homedir}/bin/splunk disable boot-start -user ${splunk::forwarder::splunk_user} --accept-license --answer-yes --no-prompt",
-      onlyif  => "/usr/bin/test -f ${splunk::forwarder::forwarder_service_file}",
+      command => "${splunk::forwarder::homedir}/bin/splunk disable boot-start -user ${splunk::forwarder::splunk_user} --accept-license --answer-yes --no-prompt",
+      onlyif  => "/usr/bin/test -f ${splunk::forwarder::_service_file}",
     }
     exec { 'license_splunkforwarder':
-      command => "${splunk::forwarder::forwarder_homedir}/bin/splunk ftr --accept-license --answer-yes --no-prompt",
+      command => "${splunk::forwarder::homedir}/bin/splunk ftr --accept-license --answer-yes --no-prompt",
       user    => $splunk::forwarder::splunk_user,
-      onlyif  => "/usr/bin/test -f ${splunk::forwarder::forwarder_homedir}/ftr",
+      onlyif  => "/usr/bin/test -f ${splunk::forwarder::homedir}/ftr",
       timeout => 0,
-      before  => Service[$splunk::forwarder::service_name],
+      before  => Service[$splunk::forwarder::_service_name],
       require => Exec['disable_splunkforwarder'],
     }
 
     if $facts['kernel'] == 'Linux' {
-      Service[$splunk::forwarder::service_name] {
+      Service[$splunk::forwarder::_service_name] {
         provider => 'base',
       }
     }
     else {
-      Service[$splunk::forwarder::service_name] {
+      Service[$splunk::forwarder::_service_name] {
         provider => 'init',
       }
     }
 
-    Service[$splunk::forwarder::service_name] {
-      restart  => "/usr/sbin/runuser -l ${splunk::forwarder::splunk_user} -c '${splunk::forwarder::forwarder_homedir}/bin/splunk restart'",
-      start    => "/usr/sbin/runuser -l ${splunk::forwarder::splunk_user} -c '${splunk::forwarder::forwarder_homedir}/bin/splunk start'",
-      stop     => "/usr/sbin/runuser -l ${splunk::forwarder::splunk_user} -c '${splunk::forwarder::forwarder_homedir}/bin/splunk stop'",
-      status   => "/usr/sbin/runuser -l ${splunk::forwarder::splunk_user} -c '${splunk::forwarder::forwarder_homedir}/bin/splunk status'",
+    Service[$splunk::forwarder::_service_name] {
+      restart  => "/usr/sbin/runuser -l ${splunk::forwarder::splunk_user} -c '${splunk::forwarder::homedir}/bin/splunk restart'",
+      start    => "/usr/sbin/runuser -l ${splunk::forwarder::splunk_user} -c '${splunk::forwarder::homedir}/bin/splunk start'",
+      stop     => "/usr/sbin/runuser -l ${splunk::forwarder::splunk_user} -c '${splunk::forwarder::homedir}/bin/splunk stop'",
+      status   => "/usr/sbin/runuser -l ${splunk::forwarder::splunk_user} -c '${splunk::forwarder::homedir}/bin/splunk status'",
       pattern  => "splunkd -p ${splunk::forwarder::splunkd_port} (restart|start)",
     }
   }

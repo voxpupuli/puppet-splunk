@@ -1,0 +1,25 @@
+---
+
+splunk::enterprise::package_name: 'splunk'
+splunk::enterprise::splunk_user: 'root'
+splunk::enterprise::staging_dir: '/opt/staging/splunk'
+splunk::enterprise::homedir: '/opt/splunk'
+splunk::enterprise::path_delimiter: '/'
+splunk::enterprise::seed_config_file: "%{lookup('splunk::enterprise::homedir')}/etc/system/local/user-seed.conf"
+splunk::enterprise::password_config_file: "%{lookup('splunk::enterprise::homedir')}/etc/passwd"
+splunk::enterprise::secret_file: "%{lookup('splunk::enterprise::homedir')}/etc/splunk.secret"
+splunk::enterprise::confdir: "%{lookup('splunk::enterprise::homedir')}/etc"
+splunk::enterprise::src_subdir: 'solaris'
+splunk::enterprise::install_options: []
+
+splunk::forwarder::package_name: 'splunkforwarder'
+splunk::forwarder::staging_dir: '/opt/staging/splunk'
+splunk::forwarder::path_delimiter: '/'
+splunk::forwarder::homedir: '/opt/splunkforwarder'
+splunk::forwarder::confdir: "%{lookup('splunk::forwarder::homedir')}/etc"
+splunk::forwarder::src_subdir: 'solaris'
+splunk::forwarder::install_options: []
+splunk::forwarder::splunk_user: 'root'
+splunk::forwarder::password_config_file: "%{lookup('splunk::forwarder::homedir')}/etc/passwd"
+splunk::forwarder::seed_config_file: "%{lookup('splunk::forwarder::homedir')}/etc/system/local/user-seed.conf"
+splunk::forwarder::secret_file: "%{lookup('splunk::forwarder::homedir')}/etc/splunk.secret"

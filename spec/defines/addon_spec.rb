@@ -21,7 +21,7 @@ describe 'splunk::addon' do
 
   context 'supported operating systems' do
     let(:pre_condition) do
-      'include splunk::forwarder'
+      "class { 'splunk::forwarder': release => '7.2.4.2-abcdefg', }"
     end
 
     on_supported_os.each do |os, facts|

@@ -1,0 +1,5 @@
+---
+
+splunk::enterprise::package_provider: 'rpm'
+
+splunk::forwarder::package_provider: 'rpm'

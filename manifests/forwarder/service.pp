@@ -4,6 +4,7 @@
 #   sub-classes
 #
 class splunk::forwarder::service {
+  assert_private()
 
   # This is a module that supports multiple platforms. For some platforms
   # there is non-generic configuration that needs to be declared in addition
@@ -12,8 +13,8 @@ class splunk::forwarder::service {
     include splunk::forwarder::service::nix
   }
 
-  service { $splunk::forwarder::service_name:
-    ensure     => running,
+  service { $splunk::forwarder::_service_name:
+    ensure     => $splunk::forwarder::service_ensure,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,

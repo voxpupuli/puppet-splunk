@@ -41,38 +41,42 @@
 #  A hash of inputs to be configured as part of add-on installation, alterntively you can also define splunk_input or splunkforwarder_input resouces seperately
 #
 define splunk::addon (
-  Optional[Stdlib::Absolutepath] $splunk_home = undef,
-  Boolean $package_manage                     = true,
-  Optional[String[1]] $splunkbase_source      = undef,
-  Optional[String[1]] $package_name           = undef,
-  String[1] $owner                            = 'splunk',
-  Hash $inputs                                = {},
+  Hash                           $inputs             = {},
+  String[1]                      $owner              = 'splunk',
+  Boolean                        $package_manage     = true,
+  Optional[String[1]]            $splunkbase_source  = undef,
+  Optional[Stdlib::Absolutepath] $splunk_home        = undef,
+  Optional[String[1]]            $package_name       = undef,
 ) {
 
   if defined(Class['splunk::forwarder']) {
     $mode = 'forwarder'
-  } elsif defined(Class['splunk::enterprise']) {
+  }
+  elsif defined(Class['splunk::enterprise']) {
     $mode = 'enterprise'
-  } else {
+  }
+  else {
     fail('Instances of Splunk::Addon require the declaration of one of either Class[splunk::enterprise] or Class[splunk::forwarder]')
   }
 
-
-  if $splunk_home {
-    $_splunk_home = $splunk_home
-  } else {
-    case $mode {
-      'forwarder':  { $_splunk_home = $splunk::params::forwarder_homedir }
-      'enterprise': { $_splunk_home = $splunk::params::enterprise_homedir }
-      default:      { fail('Instances of Splunk::Addon require the declaration of one of either Class[splunk::enterprise] or Class[splunk::forwarder]') }
+  case $mode {
+    'forwarder' : {
+      $_splunk_home = pick($splunk_home, $splunk::forwarder::homedir)
+      $_staging_dir = $splunk::forwarder::staging_dir
     }
+    'enterprise': {
+      $_splunk_home = pick($splunk_home, $splunk::enterprise::homedir)
+      $_staging_dir = $splunk::enterprise::staging_dir
+    }
+    default     : {
+      fail('Instances of Splunk::Addon require the declaration of one of either Class[splunk::enterprise] or Class[splunk::forwarder]') }
   }
 
   if $package_manage {
     if $splunkbase_source {
       $archive_name = $splunkbase_source.split('/')[-1]
       archive { $name:
-        path         => "${splunk::params::staging_dir}/${archive_name}",
+        path         => "${_staging_dir}/${archive_name}",
         user         => $owner,
         group        => $owner,
         source       => $splunkbase_source,

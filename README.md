@@ -42,14 +42,16 @@ or apt to install these components if they're self-hosted.
 
 ### What splunk affects
 
-* Installs the Splunk/Forwarder package and manages their config files. It does
-  not purge them by default.
+* Installs the splunk or splunkforwarder package and manages their config
+  files. It does not purge them by default.
 * The module will set up both Splunk Enterprise and Splunk Forwarder to run as
   the 'root' user on POSIX platforms.
 * By default, enables Splunk Enterprise and Splunk Forwarder boot-start, and
   uses the vendor-generated service file to manage the splunk service.
 
 ### Setup Requirements
+
+#### Module Installation
 
 To begin using this module, use the Puppet Module Tool (PMT) from the command
 line to install this module:
@@ -62,19 +64,26 @@ the --target-dir directive.
 You can also use r10k or code-manager to deploy the module so ensure that you
 have the correct entry in your Puppetfile.
 
-Once the module is in place, there is just a little setup needed.
+#### Package Dependencies
 
-First, you will need to place your downloaded splunk installers into the files
+Once the module is in place, you will need to ensure the splunk package(s) are
+available.
+
+If your environment has the splunk package(s) available, and the supplied
+`package_provider` supports it, it is not required for you to manage the splunk
+packages.
+
+Otherwise, you will need to place your downloaded splunk installers into the files
 directory, `<module_path>/splunk/files/`. If you're using r10k or code-manager
-you'll need to override the `splunk::params::src_root` parameter to point at a
-modulepath outside of the Splunk module because each deploy will overwrite the
-files.
+you'll need to override the `splunk::enterprise::src_root` or
+`splunk::forwarder::src_root` parameter to point at a modulepath outside of the
+Splunk module because each deploy will overwrite the files.
 
 The files must be placed according to directory structure example given below.
 
 The expected directory structure is:
 
-     $root_url/
+     $src_root/
      └── products/
          ├── universalforwarder/
          │   └── releases/
@@ -89,7 +98,7 @@ The expected directory structure is:
 
 A semi-populated example files directory might then contain:
 
-    $root_url/
+    $src_root/
     └── products/
         ├── universalforwarder/
         │   └── releases/
@@ -109,17 +118,6 @@ A semi-populated example files directory might then contain:
                         ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
                         └── splunk-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
 
-Second, you will need to supply the `splunk::params` class with three critical
-pieces of information.
-
-* The version of Splunk you are using
-* The build of Splunk you are using
-* The root URL to use to retrieve the packages
-
-In the example given above, the version is 7.0.0, the build is c8a78efdd40f,
-and the root URL is puppet:///modules/splunk. See the splunk::params class
-documentation for more information.
-
 ### Beginning with splunk
 
 Once the Splunk packages are hosted in the users repository or hosted by the
@@ -127,24 +125,61 @@ Puppet Server in the modulepath the module is ready to deploy.
 
 ## Usage
 
-If a user is installing Splunk Enterprise with packages provided from their
-modulepath, this is the most basic way of installing Splunk Server with default
-settings:
+### Splunk Enterprise
+
+If splunk is already installed on the target node, the splunk `version` and
+`build` will be determined by the `splunkenterprise` fact.  You can simply
+include the module on your node:
 
 ```puppet
-include ::splunk::enterprise
+include splunk::enterprise
 ```
 
-This is the most basic way of installing the Splunk Universal Forwarder with
-default settings:
+Otherwise, if splunk is not installed, you will need to follow the instructions
+in Setup Requirements.  You may need to specify `src_root` if the defaults are
+not suitable for your environment.  You will also need to specify `release`,
+in the format `version-build` as follows:
+
+```yaml
+---
+splunk::enterprise::release: '7.0.0-c8a78efdd40f'
+```
 
 ```puppet
-class { '::splunk::params':
-    server => $my_splunk_server,
-}
+include splunk::enterprise
+```
 
+### Splunk Forwarder
+
+If splunkforwarder is already installed on the target node, the splunk
+`version` and `build` will be determined by the `splunkforwarder` fact.  You
+will only need to specify a `server`:
+
+```yaml
+---
+splunk::forwarder::server: <your.servers.ip.addr>
+```
+
+```puppet
 include ::splunk::forwarder
 ```
+
+Otherwise, if splunkforwarder is not installed, you will need to follow the
+instructions in Setup Requirements.  You may need to specify `src_root` if the
+defaults are not suitable for your environment.  You will also need to specify
+`release`, in the format `version-build` as follows:
+
+```yaml
+---
+splunk::forwarder::release: '7.0.0-c8a78efdd40f'
+splunk::forwarder::server: <your.servers.ip.addr>
+```
+
+```puppet
+include ::splunk::forwarder
+```
+
+### Splunk Types
 
 Once both Splunk Enterprise and Splunk Universal Forwarder have been deployed
 on their respective nodes, the Forwarder is ready to start sending logs.
@@ -181,47 +216,14 @@ Alternatively the the `splunk::enterprise::password::seed` class can be used ind
 
 ### Upgrade splunk and splunkforwarder packages
 
-This module has the ability to install *and* upgrade the splunk and splunkforwarder packages. All you have to do is declare `package_ensure => 'latest'` when calling the `::splunk` or `::splunk::forwarder` classes.
+Upgrades have not been tested with this module.
 
-Upgrades from 7.0.X to >= 7.0.X are not tested.
-
-#### Upgrade Example
-
-The following code will install the 6.6.8 version of the splunk forwarder. Then
-comment out the 6.6.8 version and build values and uncomment the 7.1.2 version
-and build values. Running puppet again will perform the following:
-
-1. splunk forwarder package is upgraded
-    1. splunk service is stopped as part of the package upgrade process
-1. new license agreement is automatically accepted
-    1. license agreement must be accepted or the splunk service will fail to start
-1. splunk service is started
-
-```puppet
-# Tell the module to get packages directly from Splunk.
-class { '::splunk::params':
-  version  => '6.6.8',
-  build    => '6c27a8439c1e',
-  #version  => '7.1.2',
-  #build    => 'a0c72a66db66',
-  src_root => 'https://download.splunk.com',
-}
-
-# Specifying package_ensure => 'latest' will ensure that the splunk and
-# splunkforwarder packages will be upgraded when you specify newer values for
-# version and build.
-class { '::splunk::forwarder':
-  package_ensure => 'latest',
-}
-```
 ## Reference
 
 See in file [REFERENCE.md](REFERENCE.md).
 
 ## Limitations
 
-- Currently tested manually on Centos 7, but we will eventually add automated
-  testing and are targeting compatibility with other platforms.
 - Tested with Puppet 5.x
 - New installations of splunk up to version 7.2.X are supported, but upgrades
   from  7.0.X to >= 7.0.X are not fully tested

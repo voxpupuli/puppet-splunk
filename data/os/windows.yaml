@@ -1,0 +1,5 @@
+---
+
+splunk::enterprise::package_provider: 'windows'
+
+splunk::forwarder::package_provider: 'windows'

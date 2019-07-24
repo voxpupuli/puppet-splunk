@@ -21,11 +21,11 @@
 # @param secret
 #   The secret used to salt the splunk password.
 #
-# @params service
+# @param service
 #   Name of the Splunk Enterprise service that needs to be restarted after files
 #   are updated, not applicable when running in agent mode.
 #
-# @params mode
+# @param mode
 #   The class is designed to work in two ways, as a helper that is called by
 #   Class[splunk::forwarder::config] or leveraged independently from with in a
 #   Bolt Plan. The value defaults to "bolt" implicitly assuming that anytime it
@@ -33,15 +33,19 @@
 #   Bolt
 #
 class splunk::forwarder::password::manage(
-  Boolean $manage_password                   = $splunk::params::manage_password,
-  Stdlib::Absolutepath $password_config_file = $splunk::params::enterprise_password_config_file,
-  String[1] $password_content                = $splunk::params::password_content,
-  Stdlib::Absolutepath $secret_file          = $splunk::params::enterprise_secret_file,
-  String[1] $secret                          = $splunk::params::secret,
-  String[1] $splunk_user                     = $splunk::params::splunk_user,
-  String[1] $service                         = $splunk::params::forwarder_service,
+  Boolean $manage_password                   = lookup($splunk::forwarder::manage_password),
+  Stdlib::Absolutepath $password_config_file = lookup($splunk::forwarder::password_config_file),
+  String[1] $password_content                = lookup($splunk::forwarder::password_content),
+  Stdlib::Absolutepath $secret_file          = lookup($splunk::forwarder::secret_file),
+  String[1] $secret                          = lookup($splunk::forwarder::secret),
+  String[1] $splunk_user                     = lookup($splunk::forwarder::splunk_user),
   Enum['agent', 'bolt'] $mode                = 'bolt',
-) inherits splunk::params {
+  Optional[String[1]] $service               = undef,
+) {
+
+  if $mode == 'bolt' and !$service {
+    fail('You must specify `$splunk::forwarder::password::manage::service` for Bolt')
+  }
 
   file { $secret_file:
     ensure  => file,
