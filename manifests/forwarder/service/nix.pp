@@ -18,6 +18,7 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
       creates => $splunk::forwarder::forwarder_service_file,
       timeout => 0,
       notify  => Exec['enable_splunkforwarder'],
+      require => Package[$splunk::forwarder::package_name],
     }
     if $splunk::params::supports_systemd and $splunk::forwarder::splunk_user == 'root' {
       $user_args = ''
@@ -46,6 +47,7 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
     exec { 'disable_splunkforwarder':
       command => "${splunk::forwarder::forwarder_homedir}/bin/splunk disable boot-start -user ${splunk::forwarder::splunk_user} --accept-license --answer-yes --no-prompt",
       onlyif  => "/usr/bin/test -f ${splunk::forwarder::forwarder_service_file}",
+      require => Package[$splunk::forwarder::package_name],
     }
     exec { 'license_splunkforwarder':
       command => "${splunk::forwarder::forwarder_homedir}/bin/splunk ftr --accept-license --answer-yes --no-prompt",

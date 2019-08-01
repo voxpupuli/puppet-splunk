@@ -88,7 +88,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.to contain_package('net-tools').with(ensure: 'present') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop', require: 'Package[splunk]') }
                 it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
                 it { is_expected.not_to contain_exec('disable_splunk') }
                 it { is_expected.not_to contain_exec('license_splunk') }
@@ -107,7 +107,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.not_to contain_package('net-tools').with(ensure: 'present') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop', require: 'Package[splunk]') }
                 it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
                 it { is_expected.not_to contain_exec('disable_splunk') }
                 it { is_expected.not_to contain_exec('license_splunk') }
@@ -126,7 +126,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.to contain_package('net-tools').with(ensure: 'present') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
                 it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop', require: 'Package[splunk]') }
                 it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start  -systemd-managed 1 --accept-license --answer-yes --no-prompt') }
                 it { is_expected.not_to contain_exec('disable_splunk') }
                 it { is_expected.not_to contain_exec('license_splunk') }
@@ -157,7 +157,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.not_to contain_package('net-tools').with(ensure: 'present') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop', require: 'Package[splunk]') }
                 it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
                 it { is_expected.not_to contain_exec('disable_splunk') }
                 it { is_expected.not_to contain_exec('license_splunk') }
@@ -184,7 +184,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.not_to contain_exec('stop_splunk') }
                 it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt', require: 'Package[splunk]') }
                 it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
                 it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
               end
@@ -203,7 +203,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.not_to contain_exec('stop_splunk') }
                 it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt', require: 'Package[splunk]') }
                 it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
                 it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
               end
@@ -222,7 +222,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.not_to contain_exec('stop_splunk') }
                 it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt', require: 'Package[splunk]') }
                 it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
                 it { is_expected.to contain_service('Splunkd').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
               end
@@ -241,7 +241,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.not_to contain_exec('stop_splunk') }
                 it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt', require: 'Package[splunk]') }
                 it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
                 it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
               end
