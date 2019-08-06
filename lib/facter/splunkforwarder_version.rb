@@ -1,4 +1,4 @@
-Facter.add(:splunk_version) do
+Facter.add(:splunkforwarder_version) do
   setcode do
     value = nil
     kernel = Facter.value(:kernel)
