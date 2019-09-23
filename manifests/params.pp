@@ -194,6 +194,8 @@ class splunk::params (
       $enterprise_seed_config_file     = "${enterprise_homedir}\\etc\\system\\local\\user-seed.conf"
       $forwarder_password_config_file  = "${forwarder_homedir}\\etc\\passwd"
       $enterprise_password_config_file = "${enterprise_homedir}\\etc\\passwd"
+      $forwarder_secret_file           = "${forwarder_homedir}\\etc\\splunk.secret"
+      $enterprise_secret_file          = "${enterprise_homedir}\\etc\\splunk.secret"
       $forwarder_service               = 'SplunkForwarder'
       $forwarder_service_file          = "${forwarder_homedir}\\dummy" # Not used in Windows, but attribute must be defined with a valid path
       $forwarder_confdir               = "${forwarder_homedir}\\etc"
