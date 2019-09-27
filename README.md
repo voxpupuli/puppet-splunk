@@ -109,7 +109,7 @@ A semi-populated example files directory might then contain:
                         └── linux/
                             ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
                             ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
-                            yep sure└── splunk-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
+                            └── splunk-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
 
 Second, you will need to supply the `splunk::params` class with three critical
 pieces of information.
