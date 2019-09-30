@@ -75,7 +75,7 @@ The files must be placed according to directory structure example given below.
 The expected directory structure is:
 
     $root_url/
-      └── files/         
+      └── files/
           └── products/
             ├── universalforwarder/
             │   └── releases/
