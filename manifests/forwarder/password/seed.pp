@@ -27,11 +27,11 @@
 # @param secret
 #   The secret used to salt the splunk password.
 #
-# @params service
+# @param service
 #   Name of the Splunk Forwarder service that needs to be restarted after files
 #   are updated, not applicable when running in agent mode.
 #
-# @params mode
+# @param mode
 #   The class is designed to work in two ways, as a helper that is called by
 #   Class[splunk::forwarder::config] or leveraged independently from with in a
 #   Bolt Plan. The value defaults to "bolt" implicitly assuming that anytime it
@@ -39,16 +39,20 @@
 #   Bolt
 #
 class splunk::forwarder::password::seed(
-  Boolean $reset_seeded_password             = $splunk::params::reset_seeded_password,
-  Stdlib::Absolutepath $password_config_file = $splunk::params::forwarder_password_config_file,
-  Stdlib::Absolutepath $seed_config_file     = $splunk::params::forwarder_seed_config_file,
-  String[1] $password_hash                   = $splunk::params::password_hash,
-  Stdlib::Absolutepath $secret_file          = $splunk::params::forwarder_secret_file,
-  String[1] $secret                          = $splunk::params::secret,
-  String[1] $splunk_user                     = $splunk::params::splunk_user,
-  String[1] $service                         = $splunk::params::forwarder_service,
+  Boolean $reset_seeded_password             = lookup($splunk::forwarder::reset_seeded_password),
+  Stdlib::Absolutepath $password_config_file = lookup($splunk::forwarder::forwarder_password_config_file),
+  Stdlib::Absolutepath $seed_config_file     = lookup($splunk::forwarder::forwarder_seed_config_file),
+  String[1] $password_hash                   = lookup($splunk::forwarder::password_hash),
+  Stdlib::Absolutepath $secret_file          = lookup($splunk::forwarder::forwarder_secret_file),
+  String[1] $secret                          = lookup($splunk::forwarder::secret),
+  String[1] $splunk_user                     = lookup($splunk::forwarder::splunk_user),
   Enum['agent', 'bolt'] $mode                = 'bolt',
-) inherits splunk::params {
+  Optional[String[1]] $service               = undef,
+) {
+
+  if $mode == 'bolt' and !$service {
+    fail('You must specify `$splunk::forwarder::password::seed::service` for Bolt')
+  }
 
   file { $secret_file:
     ensure  => file,
@@ -57,7 +61,7 @@ class splunk::forwarder::password::seed(
     content => $secret,
   }
 
-  if $reset_seeded_password or $facts['splunk_version'].empty {
+  if $reset_seeded_password or $facts['splunkforwarder']['version'].empty {
     file { $password_config_file:
       ensure => absent,
       before => File[$seed_config_file],

@@ -8,11 +8,13 @@ describe 'splunk enterprise class' do
                    'splunk'
                  end
 
-  context 'default parameters' do
+  context 'specifying a release' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
       pp = <<-EOS
-      class { 'splunk::enterprise': }
+      class { 'splunk::enterprise':
+        release => '7.2.4.2-fb30470262e3',
+      }
       EOS
 
       # Run it twice and test for idempotency
@@ -45,6 +47,7 @@ describe 'splunk enterprise class' do
       it 'works with no errors' do
         pp = <<-EOS
         class { 'splunk::enterprise':
+          release               => '7.2.4.2-fb30470262e3',
           seed_password         => true,
           reset_seeded_password => true,
           password_hash         => '$6$not4r3alh45h',
@@ -57,6 +60,7 @@ describe 'splunk enterprise class' do
       it 'works idempotently with no errors' do
         pp = <<-EOS
         class { 'splunk::enterprise':
+          release               => '7.2.4.2-fb30470262e3',
           seed_password         => true,
           password_hash         => '$6$not4r3alh45h',
         }

@@ -1,0 +1,37 @@
+---
+
+splunk::enterprise::package_name: 'Splunk Enterpirse'
+splunk::enterprise::splunk_user: 'Administrator'
+splunk::enterprise::staging_dir: "%{facts.archive_windir}\\splunk"
+splunk::enterprise::homedir: 'C:\\Program Files\\Splunk'
+splunk::enterprise::path_delimiter: '\\'
+splunk::enterprise::seed_config_file: "%{lookup('splunk::enterprise::homedir')}\\etc\\system\\local\\user-seed.conf"
+splunk::enterprise::password_config_file: "%{lookup('splunk::enterprise::homedir')}\\etc\\passwd"
+splunk::enterprise::confdir: "%{lookup('splunk::enterprise::homedir')}\\etc"
+splunk::enterprise::src_subdir: 'windows'
+splunk::enterprise::install_options: [
+  {INSTALLDIR: "%{lookup('splunk::enterprise::homedir')}"},
+  {SPLUNKD_PORT: "%{lookup('splunk::enterprise::splunkd_port')}"},
+  'ARGEETOLICENSE=Yes',
+  'LAUNCHSPLUNK=0']
+
+splunk::forwarder::splunk_user: 'Administrator'
+splunk::forwarder::package_name: 'UniversalForwarder'
+splunk::forwarder::staging_dir: "%{facts.archive_windir}\\splunk"
+splunk::forwarder::homedir: 'C:\\Program Files\\SplunkUniversalForwarder'
+splunk::forwarder::confdir: "%{lookup('splunk::forwarder::homedir')}\\etc"
+splunk::forwarder::src_subdir: 'windows'
+splunk::forwarder::path_delimiter: '\\'
+splunk::forwarder::password_config_file: "%{lookup('splunk::forwarder::homedir')}\\etc\\passwd"
+splunk::forwarder::seed_config_file: "%{lookup('splunk::forwarder::homedir')}\\etc\\system\\local\\user-seed.conf"
+splunk::forwarder::install_options: [
+  {INSTALLDIR: "%{lookup('splunk::forwarder::homedir')}"},
+  'AGREETOLICENSE=Yes',
+  'LAUNCHSPLUNK=0',
+  'SERVICESTARTTYPE=auto',
+  'WINEVENTLOG_APP_ENABLE=1',
+  'WINEVENTLOG_SEC_ENABLE=1',
+  'WINEVENTLOG_SYS_ENABLE=1',
+  'WINEVENTLOG_FWD_ENABLE=1',
+  'WINEVENTLOG_SET_ENABLE=1',
+  'ENABLEADMON=1']

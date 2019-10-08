@@ -2,7 +2,8 @@
 #   Private class declared by Class[splunk::enterprise] to contain all the
 #   configuration needed for a base install of Splunk Enterprise
 #
-class splunk::enterprise::config() {
+class splunk::enterprise::config {
+  assert_private()
 
   if $splunk::enterprise::seed_password {
     class { 'splunk::enterprise::password::seed':
@@ -30,7 +31,7 @@ class splunk::enterprise::config() {
   }
 
   # Remove init.d file if the service provider is systemd
-  if $facts['service_provider'] == 'systemd' and versioncmp($splunk::enterprise::version, '7.2.2') >= 0 {
+  if $facts['service_provider'] == 'systemd' and versioncmp($splunk::enterprise::_version, '7.2.2') >= 0 {
     file { '/etc/init.d/splunk':
       ensure => 'absent',
     }
@@ -42,26 +43,26 @@ class splunk::enterprise::config() {
       section => '',
       setting => 'OPTIMISTIC_ABOUT_FILE_LOCKING',
       value   => '1',
-      path    => "${splunk::enterprise::enterprise_homedir}/etc/splunk-launch.conf",
+      path    => "${splunk::enterprise::homedir}/etc/splunk-launch.conf",
     }
   }
 
-  file { ["${splunk::enterprise::enterprise_homedir}/etc/system/local/alert_actions.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/authentication.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/authorize.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/deploymentclient.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/distsearch.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/indexes.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/inputs.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/limits.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/outputs.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/props.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/server.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/serverclass.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/transforms.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/ui-prefs.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/web.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/metadata/local.meta"]:
+  file { ["${splunk::enterprise::homedir}/etc/system/local/alert_actions.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/authentication.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/authorize.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/deploymentclient.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/distsearch.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/indexes.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/inputs.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/limits.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/outputs.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/props.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/server.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/serverclass.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/transforms.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/ui-prefs.conf",
+          "${splunk::enterprise::homedir}/etc/system/local/web.conf",
+          "${splunk::enterprise::homedir}/etc/system/metadata/local.meta"]:
     ensure => file,
     tag    => 'splunk_enterprise',
     owner  => $splunk::enterprise::splunk_user,

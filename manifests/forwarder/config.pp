@@ -4,6 +4,7 @@
 #   Forwarder
 #
 class splunk::forwarder::config {
+  assert_private()
 
   if $splunk::forwarder::seed_password {
     class { 'splunk::forwarder::password::seed':
@@ -31,26 +32,25 @@ class splunk::forwarder::config {
   }
 
   # Remove init.d file if the service provider is systemd
-  if $facts['service_provider'] == 'systemd' and versioncmp($splunk::forwarder::version, '7.2.2') >= 0 {
+  if $facts['service_provider'] == 'systemd' and versioncmp($splunk::forwarder::_version, '7.2.2') >= 0 {
     file { '/etc/init.d/splunk':
       ensure => 'absent',
     }
   }
-
 
   $_forwarder_file_mode = $facts['kernel'] ? {
     'windows' => undef,
     default   => '0600',
   }
 
-  file { ["${splunk::forwarder::forwarder_homedir}/etc/system/local/deploymentclient.conf",
-          "${splunk::forwarder::forwarder_homedir}/etc/system/local/outputs.conf",
-          "${splunk::forwarder::forwarder_homedir}/etc/system/local/inputs.conf",
-          "${splunk::forwarder::forwarder_homedir}/etc/system/local/props.conf",
-          "${splunk::forwarder::forwarder_homedir}/etc/system/local/transforms.conf",
-          "${splunk::forwarder::forwarder_homedir}/etc/system/local/web.conf",
-          "${splunk::forwarder::forwarder_homedir}/etc/system/local/limits.conf",
-          "${splunk::forwarder::forwarder_homedir}/etc/system/local/server.conf"]:
+  file { ["${splunk::forwarder::homedir}/etc/system/local/deploymentclient.conf",
+          "${splunk::forwarder::homedir}/etc/system/local/outputs.conf",
+          "${splunk::forwarder::homedir}/etc/system/local/inputs.conf",
+          "${splunk::forwarder::homedir}/etc/system/local/props.conf",
+          "${splunk::forwarder::homedir}/etc/system/local/transforms.conf",
+          "${splunk::forwarder::homedir}/etc/system/local/web.conf",
+          "${splunk::forwarder::homedir}/etc/system/local/limits.conf",
+          "${splunk::forwarder::homedir}/etc/system/local/server.conf"]:
     ensure => file,
     tag    => 'splunk_forwarder',
     owner  => $splunk::forwarder::splunk_user,
@@ -66,21 +66,25 @@ class splunk::forwarder::config {
       tag     => 'splunk_forwarder',
     }
 
-    $splunk::forwarder::forwarder_input.each | String $name, Hash $options| {
-      splunkforwarder_input { $name:
-        section => $options['section'],
-        setting => $options['setting'],
-        value   => $options['value'],
-        tag     => 'splunk_forwarder',
-      }
+    splunkforwarder_output { 'tcpout_defaultgroup':
+      section => 'default',
+      setting => 'defaultGroup',
+      value   => "${splunk::forwarder::server}_${splunk::forwarder::logging_port}",
+      tag     => 'splunk_forwarder',
     }
-    $splunk::forwarder::forwarder_output.each | String $name, Hash $options| {
-      splunkforwarder_output { $name:
-        section => $options['section'],
-        setting => $options['setting'],
-        value   => $options['value'],
-        tag     => 'splunk_forwarder',
-      }
+
+    splunkforwarder_output { 'defaultgroup_server':
+      section => "tcpout:${splunk::forwarder::server}_${splunk::forwarder::logging_port}",
+      setting => 'server',
+      value   => "${splunk::forwarder::server}:${splunk::forwarder::logging_port}",
+      tag     => 'splunk_forwarder',
+    }
+
+    splunkforwarder_input { 'default_host':
+      section => 'default',
+      setting => 'host',
+      value   => $facts['clientcert'],
+      tag     => 'splunk_forwarder',
     }
   }
 
