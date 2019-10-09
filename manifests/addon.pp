@@ -42,6 +42,7 @@
 #
 define splunk::addon (
   Optional[Stdlib::Absolutepath] $splunk_home = undef,
+  Optional[String[1]] $version                = undef,
   Boolean $package_manage                     = true,
   Optional[String[1]] $splunkbase_source      = undef,
   Optional[String[1]] $package_name           = undef,
@@ -70,6 +71,12 @@ define splunk::addon (
 
   if $package_manage {
     if $splunkbase_source {
+
+      if $version {
+        $addon_creates = "${_splunk_home}/etc/apps/${name}/manifest-${version}"
+      } else {
+        $addon_creates = "${_splunk_home}/etc/apps/${name}"
+      }
       $archive_name = $splunkbase_source.split('/')[-1]
       archive { $name:
         path         => "${splunk::params::staging_dir}/${archive_name}",
@@ -78,7 +85,7 @@ define splunk::addon (
         source       => $splunkbase_source,
         extract      => true,
         extract_path => "${_splunk_home}/etc/apps",
-        creates      => "${_splunk_home}/etc/apps/${name}",
+        creates      => "${addon_creates}",
         cleanup      => true,
         before       => File["${_splunk_home}/etc/apps/${name}/local"],
       }
@@ -122,4 +129,3 @@ define splunk::addon (
     }
   }
 }
-
