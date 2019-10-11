@@ -92,10 +92,18 @@ define splunk::addon (
         ensure => present,
         owner  => $owner,
         group  => $owner,
-      } ~> exec { "chown -R ${owner}:${owner} ${_splunk_home}/etc/apps/${name}":
-        cwd => "${_splunk_home}",
-      } ~> exec { "chmod u+rw,g+rw -R ${_splunk_home}/etc/apps/${name}":
-        cwd => "${_splunk_home}",
+      }
+      exec { "chown -R ${owner}:${owner} ${_splunk_home}/etc/apps/${name}":
+        subscribe => [
+          File["${addon_creates}"]
+        ],
+        refreshonly => true,
+      }
+      exec { "chmod u+rw,g+rw -R ${_splunk_home}/etc/apps/${name}":
+        subscribe => [
+          File["${addon_creates}"]
+        ],
+        refreshonly => true,
       }
     } else {
       package { $package_name:
