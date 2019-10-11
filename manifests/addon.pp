@@ -90,6 +90,8 @@ define splunk::addon (
         before       => File["${_splunk_home}/etc/apps/${name}/local"],
       } -> file { "${addon_creates}":
         ensure => present,
+        owner  => $owner,
+        group  => $owner,
       } -> exec { "chown -R ${owner}:${owner} ${_splunk_home}/etc/apps/${name}":
         cwd => "${_splunk_home}",
       } -> exec { "chmod u+rw,g+rw -R ${_splunk_home}/etc/apps/${name}":
