@@ -88,6 +88,8 @@ define splunk::addon (
         creates      => "${addon_creates}",
         cleanup      => true,
         before       => File["${_splunk_home}/etc/apps/${name}/local"],
+      } -> file { "${addon_creates}":
+        ensure => present,
       }
     } else {
       package { $package_name:
