@@ -14,6 +14,7 @@ class splunk::enterprise::config() {
       secret                => $splunk::enterprise::secret,
       splunk_user           => $splunk::enterprise::splunk_user,
       mode                  => 'agent',
+      notify                => Class['splunk::enterprise::service'],
     }
   }
 
@@ -26,6 +27,7 @@ class splunk::enterprise::config() {
       secret               => $splunk::enterprise::secret,
       splunk_user          => $splunk::enterprise::splunk_user,
       mode                 => 'agent',
+      notify               => Class['splunk::enterprise::service'],
     }
   }
 
