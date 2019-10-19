@@ -5,8 +5,6 @@ require 'beaker/module_install_helper'
 require 'splunk_data.rb'
 
 run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
-install_module
-install_module_dependencies
 
 RSpec.configure do |c|
   # Readable test descriptions
@@ -14,6 +12,9 @@ RSpec.configure do |c|
 
   # Configure all nodes in nodeset
   c.before :suite do
+    install_module
+    install_module_dependencies
+
     # Need to stage the Splunk/Splunkforwarder packages here.
 
     # The splunk unit file assumes certain cgroups are present, which is not
