@@ -9,7 +9,7 @@ class splunk::forwarder::service {
   # there is non-generic configuration that needs to be declared in addition
   # to the agnostic resources declared here.
   if $facts['kernel'] in ['Linux', 'SunOS'] {
-    include splunk::forwarder::service::nix
+    contain 'splunk::forwarder::service::nix'
   }
 
   service { $splunk::forwarder::service_name:
