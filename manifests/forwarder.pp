@@ -218,6 +218,16 @@ class splunk::forwarder(
   -> Class['splunk::forwarder::config']
   ~> Class['splunk::forwarder::service']
 
+  # This is a module that supports multiple platforms. For some platforms
+  # there is non-generic configuration that needs to be declared in addition
+  # to the agnostic resources declared here.
+  if $facts['kernel'] in ['Linux', 'SunOS'] {
+    contain 'splunk::forwarder::service::nix'
+    Class['splunk::forwarder::config']
+    -> Class['splunk::forwarder::service::nix']
+    -> Class['splunk::forwarder::service']
+  }
+
   Splunk_config['splunk'] {
     forwarder_confdir                => $forwarder_confdir,
     purge_forwarder_deploymentclient => $purge_deploymentclient,

@@ -151,12 +151,16 @@ class splunk::params (
         $forwarder_service       = 'SplunkForwarder'
         $enterprise_service_file = '/etc/systemd/system/multi-user.target.wants/Splunkd.service'
         $forwarder_service_file  = '/etc/systemd/system/multi-user.target.wants/SplunkForwarder.service'
+        $boot_start_args         = '-systemd-managed 1'
+        $supports_systemd        = true
       }
       else {
         $enterprise_service      = 'splunk'
         $forwarder_service       = 'splunk'
         $enterprise_service_file = '/etc/init.d/splunk'
         $forwarder_service_file  = '/etc/init.d/splunk'
+        $boot_start_args         = ''
+        $supports_systemd        = false
       }
     }
     'SunOS': {
@@ -179,12 +183,16 @@ class splunk::params (
         $forwarder_service       = 'SplunkForwarder'
         $enterprise_service_file = '/etc/systemd/system/multi-user.target.wants/Splunkd.service'
         $forwarder_service_file  = '/etc/systemd/system/multi-user.target.wants/SplunkForwarder.service'
+        $boot_start_args         = '-systemd-managed 1'
+        $supports_systemd        = true
       }
       else {
         $enterprise_service      = 'splunk'
         $forwarder_service       = 'splunk'
         $enterprise_service_file = '/etc/init.d/splunk'
         $forwarder_service_file  = '/etc/init.d/splunk'
+        $boot_start_args         = ''
+        $supports_systemd        = false
       }
     }
     'windows': {
