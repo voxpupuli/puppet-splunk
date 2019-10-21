@@ -247,6 +247,16 @@ class splunk::enterprise (
   -> Class['splunk::enterprise::config']
   ~> Class['splunk::enterprise::service']
 
+  # This is a module that supports multiple platforms. For some platforms
+  # there is non-generic configuration that needs to be declared in addition
+  # to the agnostic resources declared here.
+  if $facts['kernel'] in ['Linux','SunOS'] {
+    contain 'splunk::enterprise::service::nix'
+    Class['splunk::enterprise::config']
+    -> Class['splunk::enterprise::service::nix']
+    -> Class['splunk::enterprise::service']
+  }
+
   # Purge resources if option set
   Splunk_config['splunk'] {
     purge_alert_actions    => $purge_alert_actions,
