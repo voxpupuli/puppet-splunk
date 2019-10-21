@@ -89,7 +89,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root --accept-license --answer-yes --no-prompt') }
+                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
                 it { is_expected.not_to contain_exec('disable_splunk') }
                 it { is_expected.not_to contain_exec('license_splunk') }
                 it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
@@ -108,7 +108,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root --accept-license --answer-yes --no-prompt') }
+                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
                 it { is_expected.not_to contain_exec('disable_splunk') }
                 it { is_expected.not_to contain_exec('license_splunk') }
                 it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
@@ -127,10 +127,22 @@ describe 'splunk::enterprise' do
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
                 it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root --accept-license --answer-yes --no-prompt') }
+                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start  -systemd-managed 1 --accept-license --answer-yes --no-prompt') }
                 it { is_expected.not_to contain_exec('disable_splunk') }
                 it { is_expected.not_to contain_exec('license_splunk') }
                 it { is_expected.to contain_service('Splunkd').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
+              end
+
+              context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2 and user != root' do
+                let(:facts) do
+                  facts.merge(service_provider: 'systemd')
+                end
+                let(:pre_condition) do
+                  "class { 'splunk::params': version => '7.2.4.2' }"
+                end
+                let(:params) { { splunk_user: 'splunk' } }
+
+                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user splunk -systemd-managed 1 --accept-license --answer-yes --no-prompt') }
               end
 
               context 'with $facts[service_provider] == systemd and $splunk::params::version < 7.2.2' do
@@ -146,7 +158,7 @@ describe 'splunk::enterprise' do
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root --accept-license --answer-yes --no-prompt') }
+                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
                 it { is_expected.not_to contain_exec('disable_splunk') }
                 it { is_expected.not_to contain_exec('license_splunk') }
                 it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
