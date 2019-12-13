@@ -186,7 +186,7 @@ class splunk::enterprise (
   Stdlib::Absolutepath $service_file         = $splunk::params::enterprise_service_file,
   Boolean $boot_start                        = $splunk::params::boot_start,
   Boolean $use_default_config                = true,
-  String[1] $input_default_host              = $facts['fqdn'],
+  String[1] $input_default_host              = $facts['networking']['fqdn'],
   String[1] $input_connection_host           = 'dns',
   Stdlib::IP::Address $splunkd_listen        = '127.0.0.1',
   Stdlib::Port $splunkd_port                 = $splunk::params::splunkd_port,
