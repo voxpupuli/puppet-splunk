@@ -266,7 +266,7 @@ class splunk::params (
   }
 
   # Settings specific to an architecture as well as an OS family
-  case "${facts['os']['family']} ${facts['architecture']}" {
+  case "${facts['os']['family']} ${facts['os']['architecture']}" {
     'RedHat i386': {
       $package_suffix          = "${version}-${build}.i386.rpm"
       $forwarder_package_name  = 'splunkforwarder'
@@ -307,7 +307,7 @@ class splunk::params (
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
-    default: { fail("unsupported osfamily/arch ${facts['os']['family']}/${facts['architecture']}") }
+    default: { fail("unsupported osfamily/arch ${facts['os']['family']}/${facts['os']['architecture']}") }
   }
 
   $forwarder_src_package  = "splunkforwarder-${package_suffix}"
