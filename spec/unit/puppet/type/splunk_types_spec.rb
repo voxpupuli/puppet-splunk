@@ -5,7 +5,7 @@ require 'spec_helper'
 SPLUNK_TYPES.each do |type, file_name|
   describe Puppet::Type.type(type) do
     context 'attributes' do
-      [:name, :setting, :section, :context].each do |parameter|
+      %i[name setting section context].each do |parameter|
         describe parameter.to_s do
           it 'has a name attribute' do
             expect(described_class.attrclass(parameter)).not_to be_nil
@@ -26,7 +26,7 @@ SPLUNK_TYPES.each do |type, file_name|
       end
 
       it 'has name, context, setting and section as namevars' do
-        expect(described_class.key_attributes.sort).to eq([:context, :name, :section, :setting])
+        expect(described_class.key_attributes.sort).to eq(%i[context name section setting])
       end
     end
 
