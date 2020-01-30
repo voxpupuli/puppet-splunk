@@ -5,6 +5,8 @@
 class splunk::forwarder::service::nix inherits splunk::forwarder::service {
 
   if $splunk::forwarder::boot_start {
+    $accept_tos_user = 'root'
+    $accept_tos_require = Exec['enable_splunkforwarder']
     # Ensure splunk services *not* managed by the system service file are
     # gracefully shut down prior to enabling boot-start. Should the service
     # file be enabled while binary-managed splunk services are running, you
@@ -36,6 +38,8 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
   # Commands to license and disable the SplunkUniversalForwarder
   #
   else {
+    $accept_tos_user = $splunk::forwarder::splunk_user
+    $accept_tos_require = Exec['license_splunkforwarder']
     # Accept the license when disabling splunk in case system service files are
     # present before installing splunk.  The splunk package does not remove the
     # service files when uninstalled.
@@ -70,6 +74,26 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
       status   => "/usr/sbin/runuser -l ${splunk::forwarder::splunk_user} -c '${splunk::forwarder::forwarder_homedir}/bin/splunk status'",
       pattern  => "splunkd -p ${splunk::forwarder::splunkd_port} (restart|start)",
     }
+  }
+
+  # If forwarder is already installed, refresh from package changes
+  if $facts['splunkforwarder_version'] {
+    $accept_tos_subscribe = Package[$splunk::forwarder::package_name]
+  } else {
+    $accept_tos_subscribe = undef
+  }
+  $accept_tos_command = [
+    "${splunk::forwarder::forwarder_homedir}/bin/splunk stop &&",
+    "${splunk::forwarder::forwarder_homedir}/bin/splunk start --accept-license --answer-yes &&",
+    "${splunk::forwarder::forwarder_homedir}/bin/splunk stop",
+  ]
+  exec { 'splunk-forwarder-accept-tos':
+    command     => join($accept_tos_command, ' '),
+    user        => $accept_tos_user,
+    before      => Service[$splunk::forwarder::service_name],
+    subscribe   => $accept_tos_subscribe,
+    require     => $accept_tos_require,
+    refreshonly => true,
   }
 
 }
