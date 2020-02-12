@@ -21,30 +21,30 @@ Puppet::Type.newtype(:splunk_config) do
   end
 
   ## Generate purge parameters for the splunk_config type
-  %i[
-    purge_inputs
-    purge_outputs
-    purge_alert_actions
-    purge_authentication
-    purge_authorize
-    purge_deploymentclient
-    purge_distsearch
-    purge_indexes
-    purge_limits
-    purge_metadata
-    purge_props
-    purge_server
-    purge_serverclass
-    purge_transforms
-    purge_web
-    purge_uiprefs
-    purge_forwarder_deploymentclient
-    purge_forwarder_inputs
-    purge_forwarder_outputs
-    purge_forwarder_props
-    purge_forwarder_transforms
-    purge_forwarder_web
-    purge_forwarder_server
+  [
+    :purge_inputs,
+    :purge_outputs,
+    :purge_alert_actions,
+    :purge_authentication,
+    :purge_authorize,
+    :purge_deploymentclient,
+    :purge_distsearch,
+    :purge_indexes,
+    :purge_limits,
+    :purge_metadata,
+    :purge_props,
+    :purge_server,
+    :purge_serverclass,
+    :purge_transforms,
+    :purge_web,
+    :purge_uiprefs,
+    :purge_forwarder_deploymentclient,
+    :purge_forwarder_inputs,
+    :purge_forwarder_outputs,
+    :purge_forwarder_props,
+    :purge_forwarder_transforms,
+    :purge_forwarder_web,
+    :purge_forwarder_server
   ].each do |p|
     newparam(p) do
       newvalues(:true, :false)
@@ -91,36 +91,36 @@ Puppet::Type.newtype(:splunk_config) do
   end
 
   def set_provider_paths
-    %i[
-      splunk_alert_actions
-      splunk_authentication
-      splunk_authorize
-      splunk_deploymentclient
-      splunk_distsearch
-      splunk_indexes
-      splunk_limits
-      splunk_input
-      splunk_output
-      splunk_metadata
-      splunk_props
-      splunk_server
-      splunk_serverclass
-      splunk_transforms
-      splunk_web
-      splunk_uiprefs
+    [
+      :splunk_alert_actions,
+      :splunk_authentication,
+      :splunk_authorize,
+      :splunk_deploymentclient,
+      :splunk_distsearch,
+      :splunk_indexes,
+      :splunk_limits,
+      :splunk_input,
+      :splunk_output,
+      :splunk_metadata,
+      :splunk_props,
+      :splunk_server,
+      :splunk_serverclass,
+      :splunk_transforms,
+      :splunk_web,
+      :splunk_uiprefs
     ].each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:ini_setting)
       provider_class.file_path = self[:server_confdir]
     end
-    %i[
-      splunkforwarder_deploymentclient
-      splunkforwarder_input
-      splunkforwarder_output
-      splunkforwarder_props
-      splunkforwarder_transforms
-      splunkforwarder_web
-      splunkforwarder_server
-      splunkforwarder_limits
+    [
+      :splunkforwarder_deploymentclient,
+      :splunkforwarder_input,
+      :splunkforwarder_output,
+      :splunkforwarder_props,
+      :splunkforwarder_transforms,
+      :splunkforwarder_web,
+      :splunkforwarder_server,
+      :splunkforwarder_limits
     ].each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:ini_setting)
       provider_class.file_path = self[:forwarder_confdir]
