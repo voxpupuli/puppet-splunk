@@ -4,6 +4,63 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v8.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v8.0.0) (2020-02-12)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v7.3.0...v8.0.0)
+
+**Breaking changes:**
+
+- drop Ubuntu 14.04 support [\#267](https://github.com/voxpupuli/puppet-splunk/pull/267) ([bastelfreak](https://github.com/bastelfreak))
+- Add 7.2 support and refactor module [\#215](https://github.com/voxpupuli/puppet-splunk/pull/215) ([nick-markowski](https://github.com/nick-markowski))
+- modulesync 2.5.1 and drop puppet 4 [\#211](https://github.com/voxpupuli/puppet-splunk/pull/211) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Support upgrading splunk forwarding and accepting ToS [\#269](https://github.com/voxpupuli/puppet-splunk/pull/269) ([treydock](https://github.com/treydock))
+- Setup admin account through user-seed.conf [\#242](https://github.com/voxpupuli/puppet-splunk/pull/242) ([ody](https://github.com/ody))
+- Set user and group for addon installation [\#241](https://github.com/voxpupuli/puppet-splunk/pull/241) ([ody](https://github.com/ody))
+- Refactor defined type Splunk::Addon [\#224](https://github.com/voxpupuli/puppet-splunk/pull/224) ([ody](https://github.com/ody))
+- Compare decrypted values to see if they are insync [\#221](https://github.com/voxpupuli/puppet-splunk/pull/221) ([alexjfisher](https://github.com/alexjfisher))
+- Add the ability to override package\_source [\#209](https://github.com/voxpupuli/puppet-splunk/pull/209) ([beezly](https://github.com/beezly))
+
+**Fixed bugs:**
+
+- Purging of inputs and outputs don't work on forwarder [\#157](https://github.com/voxpupuli/puppet-splunk/issues/157)
+- Fix flaky acceptance tests [\#260](https://github.com/voxpupuli/puppet-splunk/pull/260) ([ody](https://github.com/ody))
+- Windows fixes [\#234](https://github.com/voxpupuli/puppet-splunk/pull/234) ([kreeuwijk](https://github.com/kreeuwijk))
+- Fix purging of resources [\#220](https://github.com/voxpupuli/puppet-splunk/pull/220) ([alexjfisher](https://github.com/alexjfisher))
+
+**Closed issues:**
+
+- Install package updates happen before service changes [\#263](https://github.com/voxpupuli/puppet-splunk/issues/263)
+- Install of systemd unit file doesn't actually work [\#262](https://github.com/voxpupuli/puppet-splunk/issues/262)
+- How to point splunk forwarder to a deploymentserver which listening on 8089?  [\#248](https://github.com/voxpupuli/puppet-splunk/issues/248)
+- Error with ini\_file autoload [\#239](https://github.com/voxpupuli/puppet-splunk/issues/239)
+- I think $service\_name is missing under params.pp. I think we need to add $service\_name = \[ 'splunk', 'splunkd', 'splunkweb' \] [\#229](https://github.com/voxpupuli/puppet-splunk/issues/229)
+- Setting up splunk admin could be easier [\#226](https://github.com/voxpupuli/puppet-splunk/issues/226)
+- Optionally manage splunk user/group [\#223](https://github.com/voxpupuli/puppet-splunk/issues/223)
+- Splunk\_serverclass exists but is not documented [\#218](https://github.com/voxpupuli/puppet-splunk/issues/218)
+- Module does not work with Splunk 7.1.x or 7.2.x [\#213](https://github.com/voxpupuli/puppet-splunk/issues/213)
+- Unable to create symlink [\#212](https://github.com/voxpupuli/puppet-splunk/issues/212)
+- Unable to set user for forwarder service [\#210](https://github.com/voxpupuli/puppet-splunk/issues/210)
+- Strange issues during unit tests with Puppet 5.3.2 [\#156](https://github.com/voxpupuli/puppet-splunk/issues/156)
+
+**Merged pull requests:**
+
+- allow puppetlabs/inifile 4.x [\#268](https://github.com/voxpupuli/puppet-splunk/pull/268) ([bastelfreak](https://github.com/bastelfreak))
+- Fix systemd support and service subclass ordering [\#265](https://github.com/voxpupuli/puppet-splunk/pull/265) ([treydock](https://github.com/treydock))
+- Clean up acceptance spec helper [\#261](https://github.com/voxpupuli/puppet-splunk/pull/261) ([ekohl](https://github.com/ekohl))
+- add secret\_file parameter to Windows [\#254](https://github.com/voxpupuli/puppet-splunk/pull/254) ([kreeuwijk](https://github.com/kreeuwijk))
+- Allow puppetlabs/concat 6.x and puppet/archive 4.x [\#240](https://github.com/voxpupuli/puppet-splunk/pull/240) ([alexjfisher](https://github.com/alexjfisher))
+- Allow `puppetlabs/stdlib` 6.x [\#236](https://github.com/voxpupuli/puppet-splunk/pull/236) ([alexjfisher](https://github.com/alexjfisher))
+- fix osfamily = 'windows' and kernel = 'windows' in lowercase [\#233](https://github.com/voxpupuli/puppet-splunk/pull/233) ([kreeuwijk](https://github.com/kreeuwijk))
+- Allow puppetlabs/inifile 3.x [\#231](https://github.com/voxpupuli/puppet-splunk/pull/231) ([dhoppe](https://github.com/dhoppe))
+- Documentation style updates [\#227](https://github.com/voxpupuli/puppet-splunk/pull/227) ([ody](https://github.com/ody))
+- Address post-merge comments on PR \#224 [\#225](https://github.com/voxpupuli/puppet-splunk/pull/225) ([ody](https://github.com/ody))
+- Add splunk\_serverclass documentation to README [\#219](https://github.com/voxpupuli/puppet-splunk/pull/219) ([rbclark](https://github.com/rbclark))
+- Add documentation for two file types. [\#207](https://github.com/voxpupuli/puppet-splunk/pull/207) ([dafydd2277](https://github.com/dafydd2277))
+- Add splunkforwarder\_version fact [\#206](https://github.com/voxpupuli/puppet-splunk/pull/206) ([treydock](https://github.com/treydock))
+
 ## [v7.3.0](https://github.com/voxpupuli/puppet-splunk/tree/v7.3.0) (2018-10-19)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v7.2.1...v7.3.0)
@@ -80,7 +137,7 @@ These should not affect the functionality of the module.
 - Agent run fails: no parameter named 'purge\_forwarder\_deploymentclient'  [\#158](https://github.com/voxpupuli/puppet-splunk/issues/158)
 - Allow /opt/splunkforwarder/var/run/splunk splunkd.pid to run as splunk [\#154](https://github.com/voxpupuli/puppet-splunk/issues/154)
 - Erro deploying Splunk both Server and Forwarder [\#76](https://github.com/voxpupuli/puppet-splunk/issues/76)
-- Need a `splunkforwarder\_input` defined resource type [\#75](https://github.com/voxpupuli/puppet-splunk/issues/75)
+- Need a `splunkforwarder_input` defined resource type [\#75](https://github.com/voxpupuli/puppet-splunk/issues/75)
 
 **Merged pull requests:**
 
@@ -190,7 +247,7 @@ These should not affect the functionality of the module.
 - Fix typo in extension filename [\#117](https://github.com/voxpupuli/puppet-splunk/pull/117) ([gregoirefra](https://github.com/gregoirefra))
 - This commit adds the pkg\_provider 'chocolatey' to the module [\#108](https://github.com/voxpupuli/puppet-splunk/pull/108) ([ralfbosz](https://github.com/ralfbosz))
 - Ability to configure ui-prefs.conf [\#104](https://github.com/voxpupuli/puppet-splunk/pull/104) ([TraGicCode](https://github.com/TraGicCode))
-- Set `forwarder\_install\_options` to be `undef` for OS other than Windows. [\#99](https://github.com/voxpupuli/puppet-splunk/pull/99) ([shadow999](https://github.com/shadow999))
+- Set `forwarder_install_options` to be `undef` for OS other than Windows. [\#99](https://github.com/voxpupuli/puppet-splunk/pull/99) ([shadow999](https://github.com/shadow999))
 
 ## [v6.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.0.0) (2017-05-25)
 
