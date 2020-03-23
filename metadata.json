@@ -49,6 +49,12 @@
       ]
     },
     {
+      "operatingsystem": "FreeBSD",
+      "operatingsystemrelease": [
+        "12"
+      ]
+    },
+    {
       "operatingsystem": "Windows",
       "operatingsystemrelease": [
         "2008",
