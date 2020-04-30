@@ -24,7 +24,7 @@ class splunk::forwarder::install {
     $_staged_package = undef
   }
 
-  Package  {
+  Package[$splunk::forwarder::package_name]  {
     source         => $splunk::forwarder::package_provider ? {
       'chocolatey' => undef,
       default      => $splunk::forwarder::manage_package_source ? {
