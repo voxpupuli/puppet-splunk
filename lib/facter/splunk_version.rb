@@ -1,16 +1,17 @@
 Facter.add(:splunk_version) do
   setcode do
     value = nil
-    cmd = if File.exist?('C:/Program Files/Splunk/bin/splunk.exe')
-            '"C:/Program Files/Splunk/bin/splunk.exe" --version'
-          elsif File.exist?('/opt/splunk/bin/splunk')
-            '/opt/splunk/bin/splunk --version'
-          end
-    if cmd
-      output = Facter::Util::Resolution.exec(cmd)
-      if output =~ %r{^Splunk ([0-9\.]+) \(} # rubocop:disable Style/IfUnlessModifier
-        value = Regexp.last_match(1)
-      end
+    kernel = Facter.value(:kernel)
+    version_file = case kernel
+                   when 'Linux'
+                     '/opt/splunk/etc/splunk.version'
+                   when 'windows'
+                     'C:/Program Files/Splunk/etc/splunk.version'
+                   end
+
+    if File.exist?(version_file)
+      splunk_version = File.open(version_file).read
+      value = Regexp.last_match(1) if splunk_version =~ %r{^VERSION=([0-9.]+)}
     end
     value
   end
