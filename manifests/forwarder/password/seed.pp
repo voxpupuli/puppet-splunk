@@ -57,7 +57,7 @@ class splunk::forwarder::password::seed(
     content => $secret,
   }
 
-  if $reset_seeded_password or $facts['splunk_version'].empty {
+  if $reset_seeded_password or $facts['splunkforwarder_version'].empty {
     file { $password_config_file:
       ensure => absent,
       before => File[$seed_config_file],
