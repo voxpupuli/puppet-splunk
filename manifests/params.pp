@@ -277,6 +277,11 @@ class splunk::params (
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
+    'RedHat ppc64le': {
+      $package_suffix          = "${version}-${build}-linux-2.6-ppc64le.rpm"
+      $forwarder_package_name  = 'splunkforwarder'
+      $enterprise_package_name = 'splunk'
+    }
     'Debian i386': {
       $package_suffix          = "${version}-${build}-linux-2.6-intel.deb"
       $forwarder_package_name  = 'splunkforwarder'
