@@ -38,7 +38,7 @@
 #   is used outside of Class[splunk::enterprise::config], it is being used by
 #   Bolt
 #
-class splunk::enterprise::password::seed(
+class splunk::enterprise::password::seed (
   Boolean $reset_seeded_password             = $splunk::params::reset_seeded_password,
   Stdlib::Absolutepath $password_config_file = $splunk::params::enterprise_password_config_file,
   Stdlib::Absolutepath $seed_config_file     = $splunk::params::enterprise_seed_config_file,
@@ -49,7 +49,6 @@ class splunk::enterprise::password::seed(
   String[1] $service                         = $splunk::params::enterprise_service,
   Enum['agent', 'bolt'] $mode                = 'bolt',
 ) inherits splunk::params {
-
   file { $secret_file:
     ensure  => file,
     owner   => $splunk_user,
@@ -66,7 +65,7 @@ class splunk::enterprise::password::seed(
       ensure  => file,
       owner   => $splunk_user,
       group   => $splunk_user,
-      content => epp('splunk/user-seed.conf.epp', { 'hash' => $password_hash}),
+      content => epp('splunk/user-seed.conf.epp', { 'hash' => $password_hash }),
       require => File[$secret_file],
     }
 

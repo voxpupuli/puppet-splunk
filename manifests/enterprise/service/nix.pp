@@ -3,7 +3,6 @@
 #   platform specific service management on Linux or Unix type systems.
 #
 class splunk::enterprise::service::nix inherits splunk::enterprise::service {
-
   if $splunk::enterprise::boot_start {
     # Ensure splunk services *not* managed by the system service file are
     # gracefully shut down prior to enabling boot-start. Should the service
@@ -71,5 +70,4 @@ class splunk::enterprise::service::nix inherits splunk::enterprise::service {
       pattern  => "splunkd -p ${splunk::enterprise::splunkd_port} (restart|start)",
     }
   }
-
 }

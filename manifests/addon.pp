@@ -48,7 +48,6 @@ define splunk::addon (
   String[1] $owner                            = 'splunk',
   Hash $inputs                                = {},
 ) {
-
   if defined(Class['splunk::forwarder']) {
     $mode = 'forwarder'
   } elsif defined(Class['splunk::enterprise']) {
@@ -56,7 +55,6 @@ define splunk::addon (
   } else {
     fail('Instances of Splunk::Addon require the declaration of one of either Class[splunk::enterprise] or Class[splunk::forwarder]')
   }
-
 
   if $splunk_home {
     $_splunk_home = $splunk_home
@@ -122,4 +120,3 @@ define splunk::addon (
     }
   }
 }
-

@@ -217,7 +217,6 @@ class splunk::enterprise (
   Stdlib::Absolutepath $secret_file          = $splunk::params::enterprise_secret_file,
   String[1] $secret                          = $splunk::params::secret,
 ) inherits splunk {
-
   if (defined(Class['splunk::forwarder'])) {
     fail('Splunk Universal Forwarder provides a subset of Splunk Enterprise capabilities, and has potentially conflicting resources when included with Splunk Enterprise on the same node.  Do not include splunk::forwarder on the same node as splunk::enterprise.  Configure Splunk Enterprise to meet your forwarding needs.'
     )
@@ -275,5 +274,4 @@ class splunk::enterprise (
     purge_uiprefs          => $purge_uiprefs,
     purge_web              => $purge_web
   }
-
 }

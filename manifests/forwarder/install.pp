@@ -4,7 +4,6 @@
 #   for successfully installing the Splunk Universal Forwarder
 #
 class splunk::forwarder::install {
-
   $_package_source = $splunk::forwarder::manage_package_source ? {
     true  => $splunk::forwarder::forwarder_package_src,
     false => $splunk::forwarder::package_source
@@ -24,7 +23,7 @@ class splunk::forwarder::install {
     $_staged_package = undef
   }
 
-  Package  {
+  Package {
     source         => $splunk::forwarder::package_provider ? {
       'chocolatey' => undef,
       default      => $splunk::forwarder::manage_package_source ? {
@@ -64,8 +63,8 @@ class splunk::forwarder::install {
   # Required for splunk 7.2.4.2
   if ($facts['kernel'] == 'Linux' or $facts['kernel'] == 'SunOS') and (versioncmp($splunk::forwarder::version, '7.2.4.2') >= 0) {
     ensure_packages(['net-tools'], {
-      'ensure' => 'present',
-      before   => Package[$splunk::forwarder::package_name]
+        'ensure' => 'present',
+        before   => Package[$splunk::forwarder::package_name]
     })
   }
 
@@ -74,5 +73,4 @@ class splunk::forwarder::install {
     provider        => $splunk::forwarder::package_provider,
     install_options => $splunk::forwarder::install_options,
   }
-
 }

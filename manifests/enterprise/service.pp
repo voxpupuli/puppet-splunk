@@ -4,12 +4,10 @@
 #   sub-classes
 #
 class splunk::enterprise::service {
-
   service { $splunk::enterprise::service_name:
     ensure     => running,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
   }
-
 }

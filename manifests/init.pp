@@ -6,4 +6,4 @@
 #   If you were expecting this class to setup an instance of Splunk
 #   Enterprise then please look to Class[splunk::enterprise].
 #
-class splunk() inherits splunk::params { }
+class splunk () inherits splunk::params {}

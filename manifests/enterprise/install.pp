@@ -4,7 +4,6 @@
 #   for successfully installing Splunk Enterprise
 #
 class splunk::enterprise::install {
-
   if $facts['kernel'] == 'Linux' or $facts['kernel'] == 'SunOS' {
     include splunk::enterprise::install::nix
   }
@@ -28,7 +27,7 @@ class splunk::enterprise::install {
     $_staged_package = undef
   }
 
-  Package  {
+  Package {
     source         => $splunk::enterprise::package_provider ? {
       'chocolatey' => undef,
       default      => $splunk::enterprise::manage_package_source ? {
@@ -43,5 +42,4 @@ class splunk::enterprise::install {
     provider        => $splunk::enterprise::package_provider,
     install_options => $splunk::enterprise::install_options,
   }
-
 }

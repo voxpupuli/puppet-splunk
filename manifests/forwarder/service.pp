@@ -4,12 +4,10 @@
 #   sub-classes
 #
 class splunk::forwarder::service {
-
   service { $splunk::forwarder::service_name:
     ensure     => running,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
   }
-
 }
