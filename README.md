@@ -233,11 +233,11 @@ See in file [REFERENCE.md](REFERENCE.md).
 
 ## Development
 
-TBD
+Learn how to get involved in this and other Vox Pupuli module development on [our docs site](https://voxpupuli.org/docs/).
 
 ## Release Notes/Contributors/Etc
 
-TBD
+See the [CHANGELOG.md](CHANGELOG.md) or list of [contributors](https://github.com/voxpupuli/puppet-splunk/graphs/contributors).
 
 [authentication.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Authenticationconf
 [authorize.conf-docs]: http://docs.splunk.com/Documentation/Splunk/latest/Admin/Authenticationconf
