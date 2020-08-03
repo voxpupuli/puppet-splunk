@@ -209,6 +209,14 @@ module. On Windows, this can be a UNC path to the MSI.
 
 Default value: `undef`
 
+##### `manage_dependencies`
+
+Data type: `Boolean`
+
+Whether or not to manage packages dependencies.
+
+Default value: `true`
+
 ##### `install_options`
 
 Data type: `Splunk::Entinstalloptions`
@@ -848,6 +856,14 @@ it is required. The URL can be of any protocol supported by the puppet/archive
 module. On Windows, this can be a UNC path to the MSI.
 
 Default value: `undef`
+
+##### `manage_dependencies`
+
+Data type: `Boolean`
+
+Whether or not to manage packages dependencies.
+
+Default value: `true`
 
 ##### `install_options`
 
