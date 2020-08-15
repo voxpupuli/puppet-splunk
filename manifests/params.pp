@@ -104,7 +104,6 @@ class splunk::params (
     default => 'root'
   },
 ) {
-
   # Based on the small number of inputs above, we can construct sane defaults
   # for pretty much everything else.
 
@@ -258,11 +257,11 @@ class splunk::params (
   }
   # Settings common to an OS family
   case $facts['os']['family'] {
-    'RedHat':  { $package_provider = 'rpm'  }
+    'RedHat':  { $package_provider = 'rpm' }
     'Debian':  { $package_provider = 'dpkg' }
-    'Solaris': { $package_provider = 'sun'  }
+    'Solaris': { $package_provider = 'sun' }
     'windows': { $package_provider = 'windows' }
-    default:   { $package_provider = undef  } # Don't define a $package_provider
+    default:   { $package_provider = undef } # Don't define a $package_provider
   }
 
   # Settings specific to an architecture as well as an OS family
@@ -322,7 +321,6 @@ class splunk::params (
   $enterprise_package_src    = "${src_root}/products/splunk/releases/${version}/${enterprise_src_subdir}/${enterprise_src_package}"
   $forwarder_package_ensure = 'installed'
   $forwarder_package_src = "${src_root}/products/universalforwarder/releases/${version}/${forwarder_src_subdir}/${forwarder_src_package}"
-
 
   # A meta resource so providers know where splunk is installed:
   splunk_config { 'splunk':

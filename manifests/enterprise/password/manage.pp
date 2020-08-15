@@ -32,7 +32,7 @@
 #   is used outside of Class[splunk::enterprise::config], it is being used by
 #   Bolt
 #
-class splunk::enterprise::password::manage(
+class splunk::enterprise::password::manage (
   Boolean $manage_password                   = $splunk::params::manage_password,
   Stdlib::Absolutepath $password_config_file = $splunk::params::forwarder_password_config_file,
   String[1] $password_content                = $splunk::params::password_content,
@@ -42,7 +42,6 @@ class splunk::enterprise::password::manage(
   String[1] $service                         = $splunk::params::enterprise_service,
   Enum['agent', 'bolt'] $mode                = 'bolt',
 ) inherits splunk::params {
-
   file { $secret_file:
     ensure  => file,
     owner   => $splunk_user,

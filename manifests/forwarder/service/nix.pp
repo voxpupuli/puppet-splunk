@@ -3,7 +3,6 @@
 #   platform specific service management on Linux or Unix type systems.
 #
 class splunk::forwarder::service::nix inherits splunk::forwarder::service {
-
   if $splunk::forwarder::boot_start {
     $accept_tos_user = 'root'
     $accept_tos_require = Exec['enable_splunkforwarder']
@@ -95,5 +94,4 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
     require     => $accept_tos_require,
     refreshonly => true,
   }
-
 }

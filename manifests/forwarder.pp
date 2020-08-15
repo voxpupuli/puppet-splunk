@@ -147,7 +147,7 @@
 # @param addons
 #   Manage a splunk addons, see `splunk::addons`.
 #
-class splunk::forwarder(
+class splunk::forwarder (
   String[1] $server                          = $splunk::params::server,
   String[1] $version                         = $splunk::params::version,
   String[1] $package_name                    = $splunk::params::forwarder_package_name,
@@ -188,7 +188,6 @@ class splunk::forwarder(
   String[1] $secret                          = $splunk::params::secret,
   Hash $addons                               = {},
 ) inherits splunk {
-
   if (defined(Class['splunk::enterprise'])) {
     fail('Splunk Universal Forwarder provides a subset of Splunk Enterprise capabilities, and has potentially conflicting resources when included with Splunk Enterprise on the same node.  Do not include splunk::forwarder on the same node as splunk::enterprise.  Configure Splunk Enterprise to meet your forwarding needs.'
     )
@@ -237,5 +236,4 @@ class splunk::forwarder(
     purge_forwarder_transforms       => $purge_transforms,
     purge_forwarder_web              => $purge_web,
   }
-
 }

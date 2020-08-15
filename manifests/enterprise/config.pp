@@ -2,8 +2,7 @@
 #   Private class declared by Class[splunk::enterprise] to contain all the
 #   configuration needed for a base install of Splunk Enterprise
 #
-class splunk::enterprise::config() {
-
+class splunk::enterprise::config () {
   if $splunk::enterprise::seed_password {
     class { 'splunk::enterprise::password::seed':
       reset_seeded_password => $splunk::enterprise::reset_seeded_password,
@@ -49,26 +48,26 @@ class splunk::enterprise::config() {
   }
 
   file { ["${splunk::enterprise::enterprise_homedir}/etc/system/local/alert_actions.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/authentication.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/authorize.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/deploymentclient.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/distsearch.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/indexes.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/inputs.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/limits.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/outputs.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/props.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/server.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/serverclass.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/transforms.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/ui-prefs.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/local/web.conf",
-          "${splunk::enterprise::enterprise_homedir}/etc/system/metadata/local.meta"]:
-    ensure => file,
-    tag    => 'splunk_enterprise',
-    owner  => $splunk::enterprise::splunk_user,
-    group  => $splunk::enterprise::splunk_user,
-    mode   => '0600',
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/authentication.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/authorize.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/deploymentclient.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/distsearch.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/indexes.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/inputs.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/limits.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/outputs.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/props.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/server.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/serverclass.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/transforms.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/ui-prefs.conf",
+      "${splunk::enterprise::enterprise_homedir}/etc/system/local/web.conf",
+    "${splunk::enterprise::enterprise_homedir}/etc/system/metadata/local.meta"]:
+      ensure => file,
+      tag    => 'splunk_enterprise',
+      owner  => $splunk::enterprise::splunk_user,
+      group  => $splunk::enterprise::splunk_user,
+      mode   => '0600',
   }
 
   if $splunk::enterprise::use_default_config {
@@ -113,5 +112,4 @@ class splunk::enterprise::config() {
   File <| tag == 'splunk_enterprise' |> -> Splunk_transforms<||>       ~> Class['splunk::enterprise::service']
   File <| tag == 'splunk_enterprise' |> -> Splunk_uiprefs<||>          ~> Class['splunk::enterprise::service']
   File <| tag == 'splunk_enterprise' |> -> Splunk_web<||>              ~> Class['splunk::enterprise::service']
-
 }
