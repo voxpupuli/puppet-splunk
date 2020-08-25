@@ -35,6 +35,12 @@
       ]
     },
     {
+      "operatingsystem": "OpenSUSE",
+      "operatingsystemrelease": [
+        "15"
+      ]
+    },
+    {
       "operatingsystem": "Solaris",
       "operatingsystemrelease": [
         "10",
