@@ -91,7 +91,7 @@
 # @param splunkd_port
 #   The management port for Splunk.
 #
-# @param web_port
+# @param web_httpport
 #   The port on which to service the Splunk Web interface.
 #
 # @param purge_inputs
