@@ -13,7 +13,7 @@ describe 'splunk::addon' do
           let(:title) { 'Splunk_TA' }
           let(:params) { { 'splunkbase_source' => 'puppet:///modules/profiles/splunk-add-on.tgz' } }
 
-          it { is_expected.to raise_error(Puppet::Error) }
+          it { is_expected.to compile.and_raise_error(%r{Error while evaluating a Function Call}) }
         end
       end
     end
