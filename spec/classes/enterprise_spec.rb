@@ -52,7 +52,7 @@ describe 'splunk::enterprise' do
               'include splunk::forwarder'
             end
 
-            it { expect { is_expected.to contain_class('splunk::enterprise') }.to raise_error(Puppet::Error, %r{Do not include splunk::forwarder on the same node as splunk::enterprise}) }
+            it { is_expected.to compile.and_raise_error(%r{Do not include splunk::forwarder on the same node as splunk::enterprise}) }
           end
 
           context 'when manage_password = true' do
