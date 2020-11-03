@@ -21,11 +21,11 @@
 # @param secret
 #   The secret used to salt the splunk password.
 #
-# @params service
+# @param service
 #   Name of the Splunk Enterprise service that needs to be restarted after files
 #   are updated, not applicable when running in agent mode.
 #
-# @params mode
+# @param mode
 #   The class is designed to work in two ways, as a helper that is called by
 #   Class[splunk::forwarder::config] or leveraged independently from with in a
 #   Bolt Plan. The value defaults to "bolt" implicitly assuming that anytime it

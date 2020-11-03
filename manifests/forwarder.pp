@@ -17,7 +17,7 @@
 # @param server
 #   The fqdn or IP address of the Splunk server.
 #
-# @param version`
+# @param version
 #   Specifies the version of Splunk Forwarder the module should install and
 #   manage.
 #
@@ -120,7 +120,7 @@
 # @param seed_password
 #   If set to true, Manage the contents of splunk.secret and user-seed.conf.
 #
-# @param reset_seed_password
+# @param reset_seeded_password
 #   If set to true, deletes `password_config_file` to trigger Splunk's password
 #   import process on restart of the Splunk services.
 #
