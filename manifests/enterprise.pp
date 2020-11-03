@@ -50,6 +50,9 @@
 #   it is required. The URL can be of any protocol supported by the puppet/archive
 #   module. On Windows, this can be a UNC path to the MSI.
 #
+# @param manage_dependencies
+#   Whether or not to manage packages dependencies
+#
 # @param install_options
 #   This variable is passed to the package resources' *install_options* parameter.
 #
@@ -178,6 +181,7 @@ class splunk::enterprise (
   Optional[String[1]] $package_provider      = $splunk::params::package_provider,
   Boolean $manage_package_source             = true,
   Optional[String[1]] $package_source        = undef,
+  Boolean $manage_dependencies               = true,
   Splunk::Entinstalloptions $install_options = $splunk::params::enterprise_install_options,
   String[1] $splunk_user                     = $splunk::params::splunk_user,
   Stdlib::Absolutepath $enterprise_homedir   = $splunk::params::enterprise_homedir,
