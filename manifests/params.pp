@@ -194,6 +194,27 @@ class splunk::params (
         $supports_systemd        = false
       }
     }
+    'FreeBSD': {
+      $path_delimiter                  = '/'
+      $forwarder_src_subdir            = 'freebsd'
+      $forwarder_seed_config_file      = "${forwarder_homedir}/etc/system/local/user-seed.conf"
+      $enterprise_seed_config_file     = "${enterprise_homedir}/etc/system/local/user-seed.conf"
+      $forwarder_password_config_file  = "${forwarder_homedir}/etc/passwd"
+      $enterprise_password_config_file = "${enterprise_homedir}/etc/passwd"
+      $forwarder_secret_file           = "${forwarder_homedir}/etc/splunk.secret"
+      $enterprise_secret_file          = "${enterprise_homedir}/etc/splunk.secret"
+      $forwarder_confdir               = "${forwarder_homedir}/etc"
+      $enterprise_src_subdir           = 'freebsd'
+      $enterprise_confdir              = "${enterprise_homedir}/etc"
+      $forwarder_install_options       = ['-f'] # ignore the wrong os major version specified in the package
+      $enterprise_install_options      = []
+      $enterprise_service              = 'splunk'
+      $forwarder_service               = 'splunk'
+      $enterprise_service_file         = '/etc/rc.d/splunk'
+      $forwarder_service_file          = '/etc/rc.d/splunk'
+      $boot_start_args                 = ''
+      $supports_systemd                = false
+    }
     'windows': {
       $path_delimiter                  = '\\'
       $forwarder_src_subdir            = 'windows'
@@ -261,6 +282,7 @@ class splunk::params (
     'Debian':  { $package_provider = 'dpkg' }
     'Solaris': { $package_provider = 'sun' }
     'Suse':    { $package_provider = 'rpm' }
+    'FreeBSD': { $package_provider = 'pkgng' }
     'windows': { $package_provider = 'windows' }
     default:   { $package_provider = undef } # Don't define a $package_provider
   }
@@ -314,6 +336,11 @@ class splunk::params (
     }
     'Suse x86_64': {
       $package_suffix          = "${version}-${build}-linux-2.6-x86_64.rpm"
+      $forwarder_package_name  = 'splunkforwarder'
+      $enterprise_package_name = 'splunk'
+    }
+    'FreeBSD amd64': {
+      $package_suffix          = "${version}-${build}-freebsd-11.1-amd64.txz"
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }

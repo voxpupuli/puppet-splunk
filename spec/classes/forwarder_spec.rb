@@ -231,7 +231,7 @@ describe 'splunk::forwarder' do
 
           context 'when forwarder not already installed' do
             let(:facts) do
-              facts.merge(splunkforwarder_version: nil, service_provider: 'systemd')
+              facts.merge(splunkforwarder_version: nil, service_provider: facts[:kernel] == 'FreeBSD' ? 'freebsd' : 'systemd')
             end
             let(:pre_condition) do
               "class { 'splunk::params': version => '7.2.2' }"
@@ -239,13 +239,16 @@ describe 'splunk::forwarder' do
             let(:accept_tos_command) do
               '/opt/splunkforwarder/bin/splunk stop && /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes && /opt/splunkforwarder/bin/splunk stop'
             end
+            let(:service_name) do
+              facts[:kernel] == 'FreeBSD' ? 'splunk' : 'SplunkForwarder'
+            end
 
             it_behaves_like 'splunk forwarder'
             it do
               is_expected.to contain_exec('splunk-forwarder-accept-tos').with(
                 command: accept_tos_command,
                 user: 'root',
-                before: 'Service[SplunkForwarder]',
+                before: "Service[#{service_name}]",
                 subscribe: nil,
                 require: 'Exec[enable_splunkforwarder]',
                 refreshonly: 'true'
@@ -255,7 +258,7 @@ describe 'splunk::forwarder' do
 
           context 'when forwarder already installed' do
             let(:facts) do
-              facts.merge(splunkforwarder_version: '7.3.3', service_provider: 'systemd')
+              facts.merge(splunkforwarder_version: '7.3.3', service_provider: facts[:kernel] == 'FreeBSD' ? 'freebsd' : 'systemd')
             end
             let(:pre_condition) do
               "class { 'splunk::params': version => '7.2.2' }"
@@ -263,13 +266,16 @@ describe 'splunk::forwarder' do
             let(:accept_tos_command) do
               '/opt/splunkforwarder/bin/splunk stop && /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes && /opt/splunkforwarder/bin/splunk stop'
             end
+            let(:service_name) do
+              facts[:kernel] == 'FreeBSD' ? 'splunk' : 'SplunkForwarder'
+            end
 
             it_behaves_like 'splunk forwarder'
             it do
               is_expected.to contain_exec('splunk-forwarder-accept-tos').with(
                 command: accept_tos_command,
                 user: 'root',
-                before: 'Service[SplunkForwarder]',
+                before: "Service[#{service_name}]",
                 subscribe: 'Package[splunkforwarder]',
                 require: 'Exec[enable_splunkforwarder]',
                 refreshonly: 'true'
