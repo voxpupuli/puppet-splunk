@@ -148,8 +148,8 @@ class splunk::params (
       if $facts['service_provider'] == 'systemd' and versioncmp($version, '7.2.2') >= 0 {
         $enterprise_service      = 'Splunkd'
         $forwarder_service       = 'SplunkForwarder'
-        $enterprise_service_file = '/etc/systemd/system/multi-user.target.wants/Splunkd.service'
-        $forwarder_service_file  = '/etc/systemd/system/multi-user.target.wants/SplunkForwarder.service'
+        $enterprise_service_file = '/etc/systemd/system/Splunkd.service'
+        $forwarder_service_file  = '/etc/systemd/system/SplunkForwarder.service'
         $boot_start_args         = '-systemd-managed 1'
         $supports_systemd        = true
       }
