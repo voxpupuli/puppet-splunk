@@ -103,6 +103,7 @@ class splunk::params (
     'windows' => 'Administrator',
     default => 'root'
   },
+  Optional[String[1]] $default_host          = $facts['clientcert'],
 ) {
   # Based on the small number of inputs above, we can construct sane defaults
   # for pretty much everything else.
@@ -272,7 +273,7 @@ class splunk::params (
     'default_host' => {
       section      => 'default',
       setting      => 'host',
-      value        => $facts['clientcert'],
+      value        => $default_host,
       tag          => 'splunk_forwarder',
     },
   }
