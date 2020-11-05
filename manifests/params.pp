@@ -89,6 +89,9 @@
 # @param enterprise_installdir
 #   Optional directory in which to install and manage Splunk Enterprise
 #
+# @param default_host
+#   The host property in inputs.conf. Defaults to the server's hostname.
+#
 class splunk::params (
   String[1] $version                         = '7.2.4.2',
   String[1] $build                           = 'fb30470262e3',
