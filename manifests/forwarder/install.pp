@@ -61,7 +61,7 @@ class splunk::forwarder::install {
   }
 
   # Required for splunk 7.2.4.2
-  if ($facts['kernel'] == 'Linux' or $facts['kernel'] == 'SunOS') and (versioncmp($splunk::forwarder::version, '7.2.4.2') >= 0) {
+  if $splunk::params::manage_net_tools and ($facts['kernel'] == 'Linux' or $facts['kernel'] == 'SunOS') and (versioncmp($splunk::forwarder::version, '7.2.4.2') >= 0) {
     ensure_packages(['net-tools'], {
         'ensure' => 'present',
     })

@@ -107,6 +107,7 @@ class splunk::params (
     default => 'root'
   },
   String[1] $default_host                    = $facts['clientcert'],
+  Boolean $manage_net_tools                  = true,
 ) {
   # Based on the small number of inputs above, we can construct sane defaults
   # for pretty much everything else.

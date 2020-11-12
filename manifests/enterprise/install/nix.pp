@@ -31,7 +31,7 @@ class splunk::enterprise::install::nix inherits splunk::enterprise::install {
   }
 
   # Required for splunk 7.2.4.2
-  if versioncmp($splunk::enterprise::version, '7.2.4.2') >= 0 {
+  if $splunk::params::manage_net_tools and versioncmp($splunk::enterprise::version, '7.2.4.2') >= 0 {
     ensure_packages(['net-tools'], {
         'ensure' => 'present',
     })
