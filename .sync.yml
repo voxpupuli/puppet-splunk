@@ -1,10 +1,4 @@
 ---
-.travis.yml:
-  secure: "RrAmWtM6eTjZZzD954AIgR179Pqp14lzHhd/C9cpKbTPynLncuim08CEvjmq+7pgAy9XDg1d02x3udfZt4btR1sBdyNRpNN3yUhWptmGU61HRJdiZq+nSLQkIYsqXanhk+O3NndFojO58WRD01dkWEc6HRHjlivuYNxDXmMkg9k="
-  docker_sets:
-  - set: centos7-64
-  - set: debian8-64
-  - set: ubuntu1604-64
 spec/spec_helper.rb:
   spec_overrides:
   - "require 'splunk_data.rb'"
