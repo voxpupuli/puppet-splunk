@@ -144,7 +144,7 @@
 # @param seed_password
 #   If set to true, Manage the contents of splunk.secret and user-seed.conf.
 #
-# @param reset_seed_password
+# @param reset_seeded_password
 #   If set to true, deletes `password_config_file` to trigger Splunk's password
 #   import process on restart of the Splunk services.
 #

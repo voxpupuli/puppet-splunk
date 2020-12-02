@@ -3,10 +3,7 @@
 #   so it can be used outside of regular management of the whole stack to
 #   facilitate admin password resets through Bolt Plans
 #
-# @param seed_password
-#   If set to true, Manage the contents of splunk.secret and user-seed.conf.
-#
-# @param reset_seed_password
+# @param reset_seeded_password
 #   If set to true, deletes `password_config_file` to trigger Splunk's password
 #   import process on restart of the Splunk services.
 #
@@ -27,11 +24,11 @@
 # @param secret
 #   The secret used to salt the splunk password.
 #
-# @params service
+# @param service
 #   Name of the Splunk Enterprise service that needs to be restarted after files
 #   are updated, not applicable when running in agent mode.
 #
-# @params mode
+# @param mode
 #   The class is designed to work in two ways, as a helper that is called by
 #   Class[splunk::enterprise::config] or leveraged independently from with in a
 #   Bolt Plan. The value defaults to "bolt" implicitly assuming that anytime it
