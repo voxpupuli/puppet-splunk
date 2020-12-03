@@ -266,6 +266,18 @@ manage the Splunk Enterprise service.
 
 Default value: $splunk::params::boot_start
 
+##### `manage_net_tools`
+
+Data type: `Boolean`
+
+Whether or not to declare the resource Package[net-tools].
+
+The package `net-tools` is required by Splunk 7.2.2+ to be installed on the system.
+By default this module manages the resource Package[net-tools], if this resource is
+already declared on your code base, you can set this flag to `false`.
+
+Default value: $splunk::params::manage_net_tools
+
 ##### `use_default_config`
 
 Data type: `Boolean`
@@ -906,6 +918,18 @@ manage the Splunk Forwarder service.
 
 Default value: $splunk::params::boot_start
 
+##### `manage_net_tools`
+
+Data type: `Boolean`
+
+Whether or not to declare the resource Package[net-tools].
+
+The package `net-tools` is required by Splunk 7.2.2+ to be installed on the system.
+By default this module manages the resource Package[net-tools], if this resource is
+already declared on your code base, you can set this flag to `false`.
+
+Default value: $splunk::params::manage_net_tools
+
 ##### `use_default_config`
 
 Data type: `Boolean`
@@ -1424,6 +1448,18 @@ Enable Splunk to start at boot, create a system service file.
 
 WARNING: Toggling `boot_start` from `false` to `true` will cause a restart of
 Splunk Enterprise and Forwarder services.
+
+Default value: `true`
+
+##### `manage_net_tools`
+
+Data type: `Boolean`
+
+Whether or not to declare the resource Package[net-tools].
+
+The package `net-tools` is required by Splunk 7.2.2+ to be installed on the system.
+By default this module manages the resource Package[net-tools], if this resource is
+already declared on your code base, you can set this flag to `false`.
 
 Default value: `true`
 

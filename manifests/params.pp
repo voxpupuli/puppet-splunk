@@ -92,6 +92,11 @@
 # @param default_host
 #   The host property in inputs.conf. Defaults to the server's hostname.
 #
+# @param manage_net_tools
+#   From Splunk 7.2.2+ the package `net-tools` is required to be installed on the system.
+#   By default this module manages the resource Package[net-tools], if this resource is
+#   already declared on your code base, you can disable this flag.
+#
 class splunk::params (
   String[1] $version                         = '7.2.4.2',
   String[1] $build                           = 'fb30470262e3',
@@ -107,6 +112,7 @@ class splunk::params (
     default => 'root'
   },
   String[1] $default_host                    = $facts['clientcert'],
+  Boolean $manage_net_tools                  = true,
 ) {
   # Based on the small number of inputs above, we can construct sane defaults
   # for pretty much everything else.
