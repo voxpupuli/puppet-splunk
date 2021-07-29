@@ -12,7 +12,7 @@ group :development do
 end
 
 group :system_tests do
-  gem 'puppet_metadata', '~> 0.3.0',  :require => false
+  gem 'puppet_metadata', git: 'https://github.com/smortex/puppet_metadata.git', branch: 'known-good'
   gem 'voxpupuli-acceptance',         :require => false
 end
 
