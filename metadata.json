@@ -23,6 +23,7 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
+        "8",
         "9",
         "10"
       ]
@@ -72,7 +73,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 6.1.0 < 8.0.0"
+      "version_requirement": ">= 5.5.8 < 7.0.0"
     }
   ],
   "dependencies": [
@@ -90,7 +91,7 @@
     },
     {
       "name": "puppet-archive",
-      "version_requirement": ">= 2.0.0 < 6.0.0"
+      "version_requirement": ">= 2.0.0 < 5.0.0"
     }
   ]
 }
