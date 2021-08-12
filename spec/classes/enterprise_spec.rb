@@ -85,7 +85,7 @@ describe 'splunk::enterprise' do
                 end
 
                 it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.to contain_package('net-tools').with(ensure: 'present') }
+                it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
@@ -123,7 +123,7 @@ describe 'splunk::enterprise' do
                 end
 
                 it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools').with(ensure: 'present') }
+                it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
@@ -161,7 +161,7 @@ describe 'splunk::enterprise' do
                 end
 
                 it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.to contain_package('net-tools').with(ensure: 'present') }
+                it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
                 it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
@@ -211,7 +211,7 @@ describe 'splunk::enterprise' do
                 end
 
                 it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools').with(ensure: 'present') }
+                it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
@@ -255,7 +255,7 @@ describe 'splunk::enterprise' do
                 end
 
                 it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.to contain_package('net-tools').with(ensure: 'present') }
+                it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.not_to contain_exec('stop_splunk') }
@@ -293,7 +293,7 @@ describe 'splunk::enterprise' do
                 end
 
                 it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools').with(ensure: 'present') }
+                it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.not_to contain_exec('stop_splunk') }
@@ -331,7 +331,7 @@ describe 'splunk::enterprise' do
                 end
 
                 it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.to contain_package('net-tools').with(ensure: 'present') }
+                it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
                 it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.not_to contain_exec('stop_splunk') }
@@ -369,7 +369,7 @@ describe 'splunk::enterprise' do
                 end
 
                 it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools').with(ensure: 'present') }
+                it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
                 it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
                 it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
                 it { is_expected.not_to contain_exec('stop_splunk') }

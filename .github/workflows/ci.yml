@@ -64,6 +64,10 @@ jobs:
         include: ${{fromJson(needs.setup_matrix.outputs.github_action_test_matrix)}}
     name: ${{ matrix.puppet.name }} - ${{ matrix.setfile.name }}
     steps:
+      - name: Enable IPv6 on docker
+        run: |
+          echo '{"ipv6":true,"fixed-cidr-v6":"2001:db8:1::/64"}' | sudo tee /etc/docker/daemon.json
+          sudo service docker restart
       - uses: actions/checkout@v2
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
