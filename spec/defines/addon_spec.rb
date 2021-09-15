@@ -43,11 +43,13 @@ describe 'splunk::addon' do
 
           context 'addon requiring extract_command' do
             let(:title) { 'Splunk_TA' }
-            let(:params) { { 'splunkbase_source' => 'puppet:///modules/profiles/splunk-add-on.spl',
-                             'extract_command' => 'tar zxf %s', } }
+            let(:params) do
+              { 'splunkbase_source' => 'puppet:///modules/profiles/splunk-add-on.spl',
+                'extract_command' => 'tar zxf %s' }
+            end
 
             it { is_expected.to compile.with_all_deps }
-            it { is_expected.to contain_archive('Splunk_TA').with(source: 'puppet:///modules/profiles/splunk-add-on.spl', extract_command: 'tar zxf %s', ) }
+            it { is_expected.to contain_archive('Splunk_TA').with(source: 'puppet:///modules/profiles/splunk-add-on.spl', extract_command: 'tar zxf %s') }
           end
         end
       end
