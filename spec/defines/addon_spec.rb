@@ -32,10 +32,23 @@ describe 'splunk::addon' do
           let(:facts) do
             facts
           end
-          let(:title) { 'Splunk_TA' }
-          let(:params) { { 'splunkbase_source' => 'puppet:///modules/profiles/splunk-add-on.tgz' } }
 
-          it { is_expected.to compile.with_all_deps }
+          context 'basic addon' do
+            let(:title) { 'Splunk_TA' }
+            let(:params) { { 'splunkbase_source' => 'puppet:///modules/profiles/splunk-add-on.tgz' } }
+
+            it { is_expected.to compile.with_all_deps }
+            it { is_expected.to contain_archive('Splunk_TA').with(source: 'puppet:///modules/profiles/splunk-add-on.tgz') }
+          end
+
+          context 'addon requiring extract_command' do
+            let(:title) { 'Splunk_TA' }
+            let(:params) { { 'splunkbase_source' => 'puppet:///modules/profiles/splunk-add-on.spl',
+                             'extract_command' => 'tar zxf %s', } }
+
+            it { is_expected.to compile.with_all_deps }
+            it { is_expected.to contain_archive('Splunk_TA').with(source: 'puppet:///modules/profiles/splunk-add-on.spl', extract_command: 'tar zxf %s', ) }
+          end
         end
       end
     end
