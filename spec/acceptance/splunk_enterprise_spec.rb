@@ -18,6 +18,8 @@ describe 'splunk enterprise class' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
+      # give splunk some time to start
+      sleep(10)
     end
 
     describe package('splunk') do
@@ -52,6 +54,8 @@ describe 'splunk enterprise class' do
         EOS
 
         apply_manifest(pp, catch_failures: true)
+        # give splunk some time to start
+        sleep(10)
       end
 
       it 'works idempotently with no errors' do
