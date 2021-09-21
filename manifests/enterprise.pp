@@ -156,6 +156,9 @@
 #   Which file to place the admin password hash in so its imported by Splunk on
 #   restart.
 #
+# @param seed_user
+#   The local user (usually 'admin') imported by Splunk.
+#
 # @param password_content
 #   The hashed password username/details for the user.
 #
@@ -214,6 +217,7 @@ class splunk::enterprise (
   Stdlib::Absolutepath $seed_config_file     = $splunk::params::enterprise_seed_config_file,
   String[1] $password_content                = $splunk::params::password_content,
   String[1] $password_hash                   = $splunk::params::password_hash,
+  String[1] $seed_user                       = $splunk::params::seed_user,
   Stdlib::Absolutepath $secret_file          = $splunk::params::enterprise_secret_file,
   String[1] $secret                          = $splunk::params::secret,
 ) inherits splunk {
