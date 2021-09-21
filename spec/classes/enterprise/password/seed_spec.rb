@@ -12,6 +12,7 @@ describe 'splunk::enterprise::password::seed' do
 
           context 'when passed no parameters' do
             let(:facts) { facts }
+
             it { is_expected.to compile.with_all_deps }
           end
 
@@ -20,9 +21,9 @@ describe 'splunk::enterprise::password::seed' do
             let(:params) do
               { 'secret_file' => '/some/secretfilepath',
                 'splunk_user' => 'someuser',
-                'secret'      => 'hunter2',
-              }
+                'secret'      => 'hunter2', }
             end
+
             it { is_expected.to compile.with_all_deps }
             it { is_expected.to contain_file('/some/secretfilepath').with(ensure: 'file', owner: 'someuser', group: 'someuser', content: 'hunter2') }
             # That owner/group thing is kinda awful.  Someone who cares should fix that.
@@ -31,20 +32,20 @@ describe 'splunk::enterprise::password::seed' do
           context 'do not maintain seed_config_file if we are not resetting' do
             # splunk_version fact means we installed previously
             let(:facts) do
-              facts.merge( { 'splunk_version' => '1.2.3' } )
+              facts.merge({ 'splunk_version' => '1.2.3' })
             end
             let(:params) do
               { 'seed_config_file'      => '/some/seedfile1',
-                'reset_seeded_password' => false,
-              }
+                'reset_seeded_password' => false, }
             end
+
             it { is_expected.to compile.with_all_deps }
             it { is_expected.not_to contain_file('/some/seedfile1') }
           end
 
           context 'do maintain seed_config_file if we are told to reset' do
             let(:facts) do
-              facts.merge( { 'splunk_version' => '1.2.3' } )
+              facts.merge({ 'splunk_version' => '1.2.3' })
             end
             let(:params) do
               { 'reset_seeded_password' => true,
@@ -54,9 +55,9 @@ describe 'splunk::enterprise::password::seed' do
                 'password_hash'         => 'abcdefghijklmnop',
                 'splunk_user'           => 'someuser',
                 'service'               => 'theforwarderservice',
-                'mode'                  => 'agent',
-              }
+                'mode'                  => 'agent', }
             end
+
             it { is_expected.to compile.with_all_deps }
             it { is_expected.to contain_file('/some/conffile').with(ensure: 'absent') }
             it { is_expected.to contain_file('/some/seedfile').with(ensure: 'file', owner: 'someuser', group: 'someuser') }
@@ -76,9 +77,9 @@ describe 'splunk::enterprise::password::seed' do
                 'password_hash'         => 'abcdefghijklmnop',
                 'splunk_user'           => 'someuser',
                 'service'               => 'theforwarderservice',
-                'mode'                  => 'agent',
-              }
+                'mode'                  => 'agent', }
             end
+
             it { is_expected.to compile.with_all_deps }
             it { is_expected.to contain_file('/some/conffile').with(ensure: 'absent') }
             it { is_expected.to contain_file('/some/seedfile').with(ensure: 'file', owner: 'someuser', group: 'someuser') }
@@ -98,9 +99,9 @@ describe 'splunk::enterprise::password::seed' do
                 'password_hash'         => 'abcdefghijklmnop',
                 'splunk_user'           => 'someuser',
                 'service'               => 'theforwarderservice',
-                'mode'                  => 'bolt',
-              }
+                'mode'                  => 'bolt', }
             end
+
             it { is_expected.to compile.with_all_deps }
             it { is_expected.to contain_file('/some/conffile').with(ensure: 'absent') }
             it { is_expected.to contain_file('/some/seedfile').with(ensure: 'file', owner: 'someuser', group: 'someuser') }
@@ -114,4 +115,3 @@ describe 'splunk::enterprise::password::seed' do
     end
   end
 end
-
