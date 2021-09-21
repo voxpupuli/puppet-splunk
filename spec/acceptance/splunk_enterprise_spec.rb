@@ -58,7 +58,6 @@ describe 'splunk enterprise class' do
         pp = <<-EOS
         class { 'splunk::enterprise':
           seed_password         => true,
-          seed_user             => 's0me0ne',
           password_hash         => '$6$not4r3alh45h',
         }
         EOS
@@ -70,7 +69,6 @@ describe 'splunk enterprise class' do
 
       describe file('/opt/splunk/etc/passwd') do
         it { is_expected.to be_file }
-        its(:content) { is_expected.to match %r{s0me0ne} }
         its(:content) { is_expected.to match %r{\$6\$not4r3alh45h} }
       end
     end
