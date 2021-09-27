@@ -15,6 +15,9 @@
 #   Which file to place the admin password hash in so its imported by Splunk on
 #   restart.
 #
+# @param seed_user
+#   The local user (usually 'admin') imported by Splunk.
+#
 # @param password_hash
 #   The hashed password for the admin user.
 #
@@ -39,6 +42,7 @@ class splunk::forwarder::password::seed (
   Boolean $reset_seeded_password             = $splunk::params::reset_seeded_password,
   Stdlib::Absolutepath $password_config_file = $splunk::params::forwarder_password_config_file,
   Stdlib::Absolutepath $seed_config_file     = $splunk::params::forwarder_seed_config_file,
+  String[1] $seed_user                       = $splunk::params::seed_user,
   String[1] $password_hash                   = $splunk::params::password_hash,
   Stdlib::Absolutepath $secret_file          = $splunk::params::forwarder_secret_file,
   String[1] $secret                          = $splunk::params::secret,
@@ -62,7 +66,7 @@ class splunk::forwarder::password::seed (
       ensure  => file,
       owner   => $splunk_user,
       group   => $splunk_user,
-      content => epp('splunk/user-seed.conf.epp', { 'hash' => $password_hash }),
+      content => epp('splunk/user-seed.conf.epp', { 'user' => $seed_user, 'hash' => $password_hash }),
       require => File[$secret_file],
     }
 

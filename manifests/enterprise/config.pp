@@ -8,6 +8,7 @@ class splunk::enterprise::config () {
       reset_seeded_password => $splunk::enterprise::reset_seeded_password,
       password_config_file  => $splunk::enterprise::password_config_file,
       seed_config_file      => $splunk::enterprise::seed_config_file,
+      seed_user             => $splunk::enterprise::seed_user,
       password_hash         => $splunk::enterprise::password_hash,
       secret_file           => $splunk::enterprise::secret_file,
       secret                => $splunk::enterprise::secret,

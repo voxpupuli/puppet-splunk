@@ -9,6 +9,7 @@ class splunk::forwarder::config {
       reset_seeded_password => $splunk::forwarder::reset_seeded_password,
       password_config_file  => $splunk::forwarder::password_config_file,
       seed_config_file      => $splunk::forwarder::seed_config_file,
+      seed_user             => $splunk::forwarder::seed_user,
       password_hash         => $splunk::forwarder::password_hash,
       secret_file           => $splunk::forwarder::secret_file,
       secret                => $splunk::forwarder::secret,
