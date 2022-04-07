@@ -89,6 +89,12 @@
 # @param enterprise_installdir
 #   Optional directory in which to install and manage Splunk Enterprise
 #
+# @param install_proxy
+#   Optional proxy server URL for installing packages.
+#
+# @param install_proxy_type
+#   Optional proxy type (none|http|https|ftp).
+#
 # @param default_host
 #   The host property in inputs.conf. Defaults to the server's hostname.
 #
@@ -106,6 +112,8 @@ class splunk::params (
   String[1] $server                          = 'splunk',
   Optional[String[1]] $forwarder_installdir  = undef,
   Optional[String[1]] $enterprise_installdir = undef,
+  Optional[String[1]] $install_proxy         = undef,
+  Optional[String[1]] $install_proxy_type    = undef,
   Boolean $boot_start                        = true,
   String[1] $splunk_user                     = $facts['os']['family'] ? {
     'windows' => 'Administrator',
