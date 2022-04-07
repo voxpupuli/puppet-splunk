@@ -20,7 +20,6 @@ class splunk::forwarder::install {
       before       => Package[$splunk::forwarder::forwarder_package_name],
       proxy_server => $splunk::forwarder::install_proxy,
       proxy_type   => $splunk::forwarder::install_proxy_type,
-
     }
   } else {
     $_staged_package = undef
