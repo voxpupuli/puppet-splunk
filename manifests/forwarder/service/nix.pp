@@ -20,6 +20,8 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
     }
     if $splunk::params::supports_systemd {
       $user_args = "-user ${splunk::forwarder::splunk_user}"
+    } else {
+      $user_args = ''
     }
 
     if $facts['kernel'] == 'SunOS' {
