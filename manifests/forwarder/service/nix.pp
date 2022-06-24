@@ -21,6 +21,12 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
 
     $user_args = "-user ${splunk::forwarder::splunk_user}"
 
+    if $facts['kernel'] == 'SunOS' {
+      Service[$splunk::forwarder::service_name] {
+        provider => 'init',
+      }
+    }
+
     # This will fail if the unit file already exists.  Splunk does not remove
     # unit files during uninstallation, so you may be required to manually
     # remove existing unit files before re-installing and enabling boot-start.
