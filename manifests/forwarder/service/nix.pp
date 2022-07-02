@@ -18,11 +18,9 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
       timeout => 0,
       notify  => Exec['enable_splunkforwarder'],
     }
-    if $splunk::params::supports_systemd and $splunk::forwarder::splunk_user == 'root' {
-      $user_args = ''
-    } else {
-      $user_args = "-user ${splunk::forwarder::splunk_user}"
-    }
+
+    $user_args = "-user ${splunk::forwarder::splunk_user}"
+
     # This will fail if the unit file already exists.  Splunk does not remove
     # unit files during uninstallation, so you may be required to manually
     # remove existing unit files before re-installing and enabling boot-start.
