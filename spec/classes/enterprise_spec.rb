@@ -41,366 +41,364 @@ end
 describe 'splunk::enterprise' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
-      if os.start_with?('windows')
-        # Splunk Server not used supported on windows
-      else
-        context "on #{os}" do
-          let(:facts) do
-            facts
+      next if facts[:os]['name'] == 'windows' # Splunk Server not used supported on windows
+
+      context "on #{os}" do
+        let(:facts) do
+          facts
+        end
+
+        context 'splunk when including forwarder and enterprise' do
+          let(:pre_condition) do
+            'include splunk::forwarder'
           end
 
-          context 'splunk when including forwarder and enterprise' do
-            let(:pre_condition) do
-              'include splunk::forwarder'
-            end
+          it { is_expected.to compile.and_raise_error(%r{Do not include splunk::forwarder on the same node as splunk::enterprise}) }
+        end
 
-            it { is_expected.to compile.and_raise_error(%r{Do not include splunk::forwarder on the same node as splunk::enterprise}) }
+        context 'when manage_password = true' do
+          if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+            let(:params) { { 'manage_password' => true } }
+
+            it { is_expected.to compile.with_all_deps }
+            it { is_expected.to contain_file('/opt/splunk/etc/splunk.secret') }
+            it { is_expected.to contain_file('/opt/splunk/etc/passwd') }
           end
+        end
 
-          context 'when manage_password = true' do
-            if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
-              let(:params) { { 'manage_password' => true } }
+        context 'when package_provider = yum' do
+          if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+            let(:params) { { 'package_provider' => 'yum' } }
 
-              it { is_expected.to compile.with_all_deps }
-              it { is_expected.to contain_file('/opt/splunk/etc/splunk.secret') }
-              it { is_expected.to contain_file('/opt/splunk/etc/passwd') }
-            end
+            it { is_expected.to contain_package('splunk').with(provider: 'yum') }
           end
+        end
 
-          context 'when package_provider = yum' do
-            if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
-              let(:params) { { 'package_provider' => 'yum' } }
+        context 'with $boot_start = true (defaults)' do
+          if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
 
-              it { is_expected.to contain_package('splunk').with(provider: 'yum') }
+            context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2' do
+              let(:facts) do
+                facts.merge(service_provider: 'init')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '7.2.4.2' }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+              it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
+              it { is_expected.not_to contain_exec('disable_splunk') }
+              it { is_expected.not_to contain_exec('license_splunk') }
+              it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
             end
+
+            context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2 and manage_net_tools == false' do
+              let(:facts) do
+                facts.merge(service_provider: 'init')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '7.2.4.2', manage_net_tools => false }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+              it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
+              it { is_expected.not_to contain_exec('disable_splunk') }
+              it { is_expected.not_to contain_exec('license_splunk') }
+              it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
+            end
+
+            context 'with $facts[service_provider] == init and $splunk::params::version < 7.2.2' do
+              let(:facts) do
+                facts.merge(service_provider: 'init')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '6.0.0' }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+              it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
+              it { is_expected.not_to contain_exec('disable_splunk') }
+              it { is_expected.not_to contain_exec('license_splunk') }
+              it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
+            end
+
+            context 'with $facts[service_provider] == init and $splunk::params::version < 7.2.2 and manage_net_tools == false' do
+              let(:facts) do
+                facts.merge(service_provider: 'init')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '6.0.0', manage_net_tools => false }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+              it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
+              it { is_expected.not_to contain_exec('disable_splunk') }
+              it { is_expected.not_to contain_exec('license_splunk') }
+              it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
+            end
+
+            context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2' do
+              let(:facts) do
+                facts.merge(service_provider: 'systemd')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '7.2.4.2' }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
+              it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+              it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start  -systemd-managed 1 --accept-license --answer-yes --no-prompt') }
+              it { is_expected.not_to contain_exec('disable_splunk') }
+              it { is_expected.not_to contain_exec('license_splunk') }
+              it { is_expected.to contain_service('Splunkd').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
+            end
+
+            context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2 and manage_net_tools == false' do
+              let(:facts) do
+                facts.merge(service_provider: 'systemd')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '7.2.4.2', manage_net_tools => false }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
+              it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+              it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start  -systemd-managed 1 --accept-license --answer-yes --no-prompt') }
+              it { is_expected.not_to contain_exec('disable_splunk') }
+              it { is_expected.not_to contain_exec('license_splunk') }
+              it { is_expected.to contain_service('Splunkd').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
+            end
+
+            context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2 and user != root' do
+              let(:facts) do
+                facts.merge(service_provider: 'systemd')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '7.2.4.2' }"
+              end
+              let(:params) { { splunk_user: 'splunk' } }
+
+              it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user splunk -systemd-managed 1 --accept-license --answer-yes --no-prompt') }
+            end
+
+            context 'with $facts[service_provider] == systemd and $splunk::params::version < 7.2.2' do
+              let(:facts) do
+                facts.merge(service_provider: 'systemd')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '6.0.0' }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+              it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
+              it { is_expected.not_to contain_exec('disable_splunk') }
+              it { is_expected.not_to contain_exec('license_splunk') }
+              it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
+            end
+
+            context 'with $facts[service_provider] == systemd and $splunk::params::version < 7.2.2 and manage_net_tools == false' do
+              let(:facts) do
+                facts.merge(service_provider: 'systemd')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '6.0.0', manage_net_tools => false }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
+              it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
+              it { is_expected.not_to contain_exec('disable_splunk') }
+              it { is_expected.not_to contain_exec('license_splunk') }
+              it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
+            end
+
           end
+        end
 
-          context 'with $boot_start = true (defaults)' do
-            if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+        context 'with $boot_start = false' do
+          if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
 
-              context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2' do
-                let(:facts) do
-                  facts.merge(service_provider: 'init')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '7.2.4.2' }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
-                it { is_expected.not_to contain_exec('disable_splunk') }
-                it { is_expected.not_to contain_exec('license_splunk') }
-                it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
+            context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2' do
+              let(:facts) do
+                facts.merge(service_provider: 'init')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '7.2.4.2', boot_start => false }"
               end
 
-              context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2 and manage_net_tools == false' do
-                let(:facts) do
-                  facts.merge(service_provider: 'init')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '7.2.4.2', manage_net_tools => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
-                it { is_expected.not_to contain_exec('disable_splunk') }
-                it { is_expected.not_to contain_exec('license_splunk') }
-                it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
-              end
-
-              context 'with $facts[service_provider] == init and $splunk::params::version < 7.2.2' do
-                let(:facts) do
-                  facts.merge(service_provider: 'init')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '6.0.0' }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
-                it { is_expected.not_to contain_exec('disable_splunk') }
-                it { is_expected.not_to contain_exec('license_splunk') }
-                it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
-              end
-
-              context 'with $facts[service_provider] == init and $splunk::params::version < 7.2.2 and manage_net_tools == false' do
-                let(:facts) do
-                  facts.merge(service_provider: 'init')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '6.0.0', manage_net_tools => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
-                it { is_expected.not_to contain_exec('disable_splunk') }
-                it { is_expected.not_to contain_exec('license_splunk') }
-                it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
-              end
-
-              context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2' do
-                let(:facts) do
-                  facts.merge(service_provider: 'systemd')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '7.2.4.2' }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
-                it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start  -systemd-managed 1 --accept-license --answer-yes --no-prompt') }
-                it { is_expected.not_to contain_exec('disable_splunk') }
-                it { is_expected.not_to contain_exec('license_splunk') }
-                it { is_expected.to contain_service('Splunkd').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
-              end
-
-              context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2 and manage_net_tools == false' do
-                let(:facts) do
-                  facts.merge(service_provider: 'systemd')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '7.2.4.2', manage_net_tools => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
-                it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start  -systemd-managed 1 --accept-license --answer-yes --no-prompt') }
-                it { is_expected.not_to contain_exec('disable_splunk') }
-                it { is_expected.not_to contain_exec('license_splunk') }
-                it { is_expected.to contain_service('Splunkd').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
-              end
-
-              context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2 and user != root' do
-                let(:facts) do
-                  facts.merge(service_provider: 'systemd')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '7.2.4.2' }"
-                end
-                let(:params) { { splunk_user: 'splunk' } }
-
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user splunk -systemd-managed 1 --accept-license --answer-yes --no-prompt') }
-              end
-
-              context 'with $facts[service_provider] == systemd and $splunk::params::version < 7.2.2' do
-                let(:facts) do
-                  facts.merge(service_provider: 'systemd')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '6.0.0' }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
-                it { is_expected.not_to contain_exec('disable_splunk') }
-                it { is_expected.not_to contain_exec('license_splunk') }
-                it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
-              end
-
-              context 'with $facts[service_provider] == systemd and $splunk::params::version < 7.2.2 and manage_net_tools == false' do
-                let(:facts) do
-                  facts.merge(service_provider: 'systemd')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '6.0.0', manage_net_tools => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.to contain_exec('stop_splunk').with(command: '/opt/splunk/bin/splunk stop') }
-                it { is_expected.to contain_exec('enable_splunk').with(command: '/opt/splunk/bin/splunk enable boot-start -user root  --accept-license --answer-yes --no-prompt') }
-                it { is_expected.not_to contain_exec('disable_splunk') }
-                it { is_expected.not_to contain_exec('license_splunk') }
-                it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: true, status: nil, restart: nil, start: nil, stop: nil) }
-              end
-
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.not_to contain_exec('stop_splunk') }
+              it { is_expected.not_to contain_exec('enable_splunk') }
+              it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
             end
-          end
 
-          context 'with $boot_start = false' do
-            if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
-
-              context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2' do
-                let(:facts) do
-                  facts.merge(service_provider: 'init')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '7.2.4.2', boot_start => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.not_to contain_exec('stop_splunk') }
-                it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
+            context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2 and manage_net_tools == false' do
+              let(:facts) do
+                facts.merge(service_provider: 'init')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '7.2.4.2', boot_start => false, manage_net_tools => false }"
               end
 
-              context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2 and manage_net_tools == false' do
-                let(:facts) do
-                  facts.merge(service_provider: 'init')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '7.2.4.2', boot_start => false, manage_net_tools => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.not_to contain_exec('stop_splunk') }
-                it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
-              end
-
-              context 'with $facts[service_provider] == init and $splunk::params::version < 7.2.2' do
-                let(:facts) do
-                  facts.merge(service_provider: 'init')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '6.0.0', boot_start => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.not_to contain_exec('stop_splunk') }
-                it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
-              end
-
-              context 'with $facts[service_provider] == init and $splunk::params::version < 7.2.2 and manage_net_tools == false' do
-                let(:facts) do
-                  facts.merge(service_provider: 'init')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '6.0.0', boot_start => false, manage_net_tools => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.not_to contain_exec('stop_splunk') }
-                it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
-              end
-
-              context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2' do
-                let(:facts) do
-                  facts.merge(service_provider: 'systemd')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '7.2.4.2', boot_start => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
-                it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.not_to contain_exec('stop_splunk') }
-                it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_service('Splunkd').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
-              end
-
-              context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2 and manage_net_tools == false' do
-                let(:facts) do
-                  facts.merge(service_provider: 'systemd')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '7.2.4.2', boot_start => false, manage_net_tools => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
-                it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.not_to contain_exec('stop_splunk') }
-                it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_service('Splunkd').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
-              end
-
-              context 'with $facts[service_provider] == systemd and $splunk::params::version < 7.2.2' do
-                let(:facts) do
-                  facts.merge(service_provider: 'systemd')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '6.0.0', boot_start => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.not_to contain_exec('stop_splunk') }
-                it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
-              end
-
-              context 'with $facts[service_provider] == systemd and $splunk::params::version < 7.2.2 and manage_net_tools == false' do
-                let(:facts) do
-                  facts.merge(service_provider: 'systemd')
-                end
-                let(:pre_condition) do
-                  "class { 'splunk::params': version => '6.0.0', boot_start => false, manage_net_tools => false }"
-                end
-
-                it_behaves_like 'splunk enterprise nix defaults'
-                it { is_expected.not_to contain_package('net-tools') }
-                it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
-                it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
-                it { is_expected.not_to contain_exec('stop_splunk') }
-                it { is_expected.not_to contain_exec('enable_splunk') }
-                it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
-                it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
-              end
-
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.not_to contain_exec('stop_splunk') }
+              it { is_expected.not_to contain_exec('enable_splunk') }
+              it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
             end
+
+            context 'with $facts[service_provider] == init and $splunk::params::version < 7.2.2' do
+              let(:facts) do
+                facts.merge(service_provider: 'init')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '6.0.0', boot_start => false }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.not_to contain_exec('stop_splunk') }
+              it { is_expected.not_to contain_exec('enable_splunk') }
+              it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
+            end
+
+            context 'with $facts[service_provider] == init and $splunk::params::version < 7.2.2 and manage_net_tools == false' do
+              let(:facts) do
+                facts.merge(service_provider: 'init')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '6.0.0', boot_start => false, manage_net_tools => false }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.not_to contain_exec('stop_splunk') }
+              it { is_expected.not_to contain_exec('enable_splunk') }
+              it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
+            end
+
+            context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2' do
+              let(:facts) do
+                facts.merge(service_provider: 'systemd')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '7.2.4.2', boot_start => false }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.to contain_package('net-tools').with(ensure: 'installed') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
+              it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.not_to contain_exec('stop_splunk') }
+              it { is_expected.not_to contain_exec('enable_splunk') }
+              it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_service('Splunkd').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
+            end
+
+            context 'with $facts[service_provider] == systemd and $splunk::params::version >= 7.2.2 and manage_net_tools == false' do
+              let(:facts) do
+                facts.merge(service_provider: 'systemd')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '7.2.4.2', boot_start => false, manage_net_tools => false }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'Splunkd') }
+              it { is_expected.to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.not_to contain_exec('stop_splunk') }
+              it { is_expected.not_to contain_exec('enable_splunk') }
+              it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_service('Splunkd').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
+            end
+
+            context 'with $facts[service_provider] == systemd and $splunk::params::version < 7.2.2' do
+              let(:facts) do
+                facts.merge(service_provider: 'systemd')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '6.0.0', boot_start => false }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools').with(ensure: 'installed') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.not_to contain_exec('stop_splunk') }
+              it { is_expected.not_to contain_exec('enable_splunk') }
+              it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
+            end
+
+            context 'with $facts[service_provider] == systemd and $splunk::params::version < 7.2.2 and manage_net_tools == false' do
+              let(:facts) do
+                facts.merge(service_provider: 'systemd')
+              end
+              let(:pre_condition) do
+                "class { 'splunk::params': version => '6.0.0', boot_start => false, manage_net_tools => false }"
+              end
+
+              it_behaves_like 'splunk enterprise nix defaults'
+              it { is_expected.not_to contain_package('net-tools') }
+              it { is_expected.to contain_class('splunk::enterprise').with(service_name: 'splunk') }
+              it { is_expected.not_to contain_file('/etc/init.d/splunk').with(ensure: 'absent') }
+              it { is_expected.not_to contain_exec('stop_splunk') }
+              it { is_expected.not_to contain_exec('enable_splunk') }
+              it { is_expected.to contain_exec('disable_splunk').with(command: '/opt/splunk/bin/splunk disable boot-start -user root --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_exec('license_splunk').with(command: '/opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt') }
+              it { is_expected.to contain_service('splunk').with(restart: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk restart'", start: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk start'", stop: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk stop'", status: "/usr/sbin/runuser -l root -c '/opt/splunk/bin/splunk status'") }
+            end
+
           end
         end
       end

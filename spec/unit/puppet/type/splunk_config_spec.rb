@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Puppet::Type.type(:splunk_config) do
-  let(:subject) do
+  let(:subject) do # rubocop:disable RSpec/SubjectDeclaration
     described_class.new(
       name: 'config',
       server_confdir: '/opt/splunk/etc',

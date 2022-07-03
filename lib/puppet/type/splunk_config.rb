@@ -10,6 +10,7 @@ Puppet::Type.newtype(:splunk_config) do
     desc 'splunk config'
   end
 
+  # rubocop:disable Lint/EmptyBlock
   newparam(:forwarder_installdir) do
   end
 
@@ -21,6 +22,7 @@ Puppet::Type.newtype(:splunk_config) do
 
   newparam(:server_confdir) do
   end
+  # rubocop:enable Lint/EmptyBlock
 
   ## Generate purge parameters for the splunk_config type
   %i[
