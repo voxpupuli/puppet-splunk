@@ -17,8 +17,8 @@ module PuppetX
           tag        = data.bytes[-16..-1].pack('c*')
           ciphertext = data.bytes[16..-17].pack('c*')
 
-          decipher = OpenSSL::Cipher::AES.new(256, :GCM).decrypt
-          decipher.key = OpenSSL::PKCS5.pbkdf2_hmac(splunk_secret, 'disk-encryption', 1, 32, OpenSSL::Digest::SHA256.new)
+          decipher = OpenSSL::Cipher.new('aes-256-gcm').decrypt
+          decipher.key = OpenSSL::PKCS5.pbkdf2_hmac(splunk_secret, 'disk-encryption', 1, 32, OpenSSL::Digest.new('SHA256'))
           decipher.iv_len = 16
           decipher.iv = iv
           decipher.auth_tag = tag

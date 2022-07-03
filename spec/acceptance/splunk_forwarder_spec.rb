@@ -42,17 +42,18 @@ describe 'splunk::forwarder class' do
       it { is_expected.to be_running }
     end
   end
+
   context 'purging' do
     context 'purge_outputs => false' do
       it 'works idempotently with no errors' do
-        pp = <<-eos
+        pp = <<-EOS
       class { 'splunk::params':
       }
       class { 'splunk::forwarder':
         splunkd_port  => 8090,
         purge_outputs => false,
       }
-        eos
+        EOS
 
         # run it twice and test for idempotency
         apply_manifest(pp, catch_failures: true)
@@ -64,16 +65,17 @@ describe 'splunk::forwarder class' do
         its(:content) { is_expected.to match %r{^sslPassword} }
       end
     end
+
     context 'purge_outputs => true' do
       it 'works idempotently with no errors' do
-        pp = <<-eos
+        pp = <<-EOS
       class { 'splunk::params':
       }
       class { 'splunk::forwarder':
         splunkd_port  => 8090,
         purge_outputs => true,
       }
-        eos
+        EOS
 
         # run it twice and test for idempotency
         apply_manifest(pp, catch_failures: true)

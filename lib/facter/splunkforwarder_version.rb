@@ -8,9 +8,7 @@ Facter.add(:splunkforwarder_version) do
           end
     if cmd
       output = Facter::Util::Resolution.exec(cmd)
-      if output =~ %r{^Splunk Universal Forwarder ([0-9\.]+) \(}
-        value = Regexp.last_match(1)
-      end
+      value = Regexp.last_match(1) if output =~ %r{^Splunk Universal Forwarder ([0-9.]+) \(}
     end
     value
   end

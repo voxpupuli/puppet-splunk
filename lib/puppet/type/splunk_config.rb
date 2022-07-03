@@ -21,30 +21,30 @@ Puppet::Type.newtype(:splunk_config) do
   end
 
   ## Generate purge parameters for the splunk_config type
-  [
-    :purge_inputs,
-    :purge_outputs,
-    :purge_alert_actions,
-    :purge_authentication,
-    :purge_authorize,
-    :purge_deploymentclient,
-    :purge_distsearch,
-    :purge_indexes,
-    :purge_limits,
-    :purge_metadata,
-    :purge_props,
-    :purge_server,
-    :purge_serverclass,
-    :purge_transforms,
-    :purge_web,
-    :purge_uiprefs,
-    :purge_forwarder_deploymentclient,
-    :purge_forwarder_inputs,
-    :purge_forwarder_outputs,
-    :purge_forwarder_props,
-    :purge_forwarder_transforms,
-    :purge_forwarder_web,
-    :purge_forwarder_server
+  %i[
+    purge_inputs
+    purge_outputs
+    purge_alert_actions
+    purge_authentication
+    purge_authorize
+    purge_deploymentclient
+    purge_distsearch
+    purge_indexes
+    purge_limits
+    purge_metadata
+    purge_props
+    purge_server
+    purge_serverclass
+    purge_transforms
+    purge_web
+    purge_uiprefs
+    purge_forwarder_deploymentclient
+    purge_forwarder_inputs
+    purge_forwarder_outputs
+    purge_forwarder_props
+    purge_forwarder_transforms
+    purge_forwarder_web
+    purge_forwarder_server
   ].each do |p|
     newparam(p) do
       newvalues(:true, :false)
@@ -91,36 +91,36 @@ Puppet::Type.newtype(:splunk_config) do
   end
 
   def set_provider_paths
-    [
-      :splunk_alert_actions,
-      :splunk_authentication,
-      :splunk_authorize,
-      :splunk_deploymentclient,
-      :splunk_distsearch,
-      :splunk_indexes,
-      :splunk_limits,
-      :splunk_input,
-      :splunk_output,
-      :splunk_metadata,
-      :splunk_props,
-      :splunk_server,
-      :splunk_serverclass,
-      :splunk_transforms,
-      :splunk_web,
-      :splunk_uiprefs
+    %i[
+      splunk_alert_actions
+      splunk_authentication
+      splunk_authorize
+      splunk_deploymentclient
+      splunk_distsearch
+      splunk_indexes
+      splunk_limits
+      splunk_input
+      splunk_output
+      splunk_metadata
+      splunk_props
+      splunk_server
+      splunk_serverclass
+      splunk_transforms
+      splunk_web
+      splunk_uiprefs
     ].each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:ini_setting)
       provider_class.file_path = self[:server_confdir]
     end
-    [
-      :splunkforwarder_deploymentclient,
-      :splunkforwarder_input,
-      :splunkforwarder_output,
-      :splunkforwarder_props,
-      :splunkforwarder_transforms,
-      :splunkforwarder_web,
-      :splunkforwarder_server,
-      :splunkforwarder_limits
+    %i[
+      splunkforwarder_deploymentclient
+      splunkforwarder_input
+      splunkforwarder_output
+      splunkforwarder_props
+      splunkforwarder_transforms
+      splunkforwarder_web
+      splunkforwarder_server
+      splunkforwarder_limits
     ].each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:ini_setting)
       provider_class.file_path = self[:forwarder_confdir]
@@ -156,7 +156,7 @@ Puppet::Type.newtype(:splunk_config) do
     catalog_resources = catalog.resources.select { |r| r.is_a?(type_class) && r[:context] == context }
     Puppet.debug "Found #{catalog_resources.size} #{type_class} resources in context #{context}"
     catalog_resources.each do |res|
-      puppet_resources << res[:section] + '/' + res[:setting]
+      puppet_resources << (res[:section] + '/' + res[:setting])
     end
 
     # Search the configured instances of the class type and purge them if
@@ -178,6 +178,7 @@ Puppet::Type.newtype(:splunk_config) do
 
     instances.each do |instance|
       next if puppet_resources.include?(instance.name)
+
       purge_resources << Puppet::Type.type(type_name).new(
         name: "Purge #{context} #{instance.name}",
         section: instance[:section],

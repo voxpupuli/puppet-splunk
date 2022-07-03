@@ -88,6 +88,7 @@ describe 'splunk enterprise class' do
         EOS
         apply_manifest(pp, catch_failures: true)
       end
+
       describe package('splunk') do
         it { is_expected.not_to be_installed }
       end
