@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 #  The majority of splunk and splunkforwarder types are identical and inherit
 #  the same functionality off ini_file, so we don't need individual tests for them

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.type(:ini_setting).provide(
   :splunk,
   parent: Puppet::Type.type(:ini_setting).provider(:ruby)

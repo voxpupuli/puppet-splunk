@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'puppet/util/ini_file'
 
 class SectionNoGlobal < Puppet::Util::IniFile::Section
@@ -44,7 +46,7 @@ Puppet::Type.type(:splunk_metadata).provide(
     # {app/foo,system}/{default,local} -> {app/foo,system}/metadata/{default,local}.meta
     ctxelem = File.split(context)
     if %w[local default].include?(ctxelem[-1])
-      file_name = ctxelem[-1] + '.meta'
+      file_name = "#{ctxelem[-1]}.meta"
       context = File.join(ctxelem[0..-2], 'metadata')
     end
 

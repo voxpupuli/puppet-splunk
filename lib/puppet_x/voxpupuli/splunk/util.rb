@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'openssl'
 require 'base64'
 
@@ -11,7 +13,7 @@ module PuppetX
           Puppet.debug "Decrypting splunk >= 7.2 data using secret from #{secrets_file}"
           value.slice!(0, 3)
           data = Base64.strict_decode64(value)
-          splunk_secret = IO.binread(secrets_file).chomp
+          splunk_secret = File.binread(secrets_file).chomp
 
           iv         = data.bytes[0, 16].pack('c*')
           tag        = data.bytes[-16..-1].pack('c*')

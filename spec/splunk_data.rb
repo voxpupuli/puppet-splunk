@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 SPLUNK_SERVER_TYPES = {
   splunk_alert_actions: 'alert_actions.conf',
   splunk_authentication: 'authentication.conf',

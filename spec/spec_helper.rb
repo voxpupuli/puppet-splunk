@@ -18,4 +18,4 @@ end
 
 require 'splunk_data'
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + '/fixtures/modules/inifile/lib'
+$LOAD_PATH.unshift "#{File.dirname(__FILE__)}/fixtures/modules/inifile/lib"

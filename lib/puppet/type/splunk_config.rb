@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # Require all of our types so the class names are resolvable for purging
-Dir[File.dirname(__FILE__) + '/splunk*.rb'].each do |file|
+Dir["#{File.dirname(__FILE__)}/splunk*.rb"].sort.each do |file|
   require file unless file == __FILE__
 end
 
@@ -156,7 +158,7 @@ Puppet::Type.newtype(:splunk_config) do
     catalog_resources = catalog.resources.select { |r| r.is_a?(type_class) && r[:context] == context }
     Puppet.debug "Found #{catalog_resources.size} #{type_class} resources in context #{context}"
     catalog_resources.each do |res|
-      puppet_resources << (res[:section] + '/' + res[:setting])
+      puppet_resources << ("#{res[:section]}/#{res[:setting]}")
     end
 
     # Search the configured instances of the class type and purge them if

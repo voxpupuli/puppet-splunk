@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Facter.add(:splunk_version) do
   setcode do
     value = nil
