@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v9.1.0](https://github.com/voxpupuli/puppet-splunk/tree/v9.1.0) (2022-07-12)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v9.0.0...v9.1.0)
+
+**Implemented enhancements:**
+
+- Allow user-seed.conf to set a username besides 'admin' [\#323](https://github.com/voxpupuli/puppet-splunk/pull/323) ([gcoxmoz](https://github.com/gcoxmoz))
+- Add extract\_command as a parameter to splunk::addon [\#321](https://github.com/voxpupuli/puppet-splunk/pull/321) ([gcoxmoz](https://github.com/gcoxmoz))
+
+**Fixed bugs:**
+
+- Forwarder service won't start due to incorrect permissions [\#310](https://github.com/voxpupuli/puppet-splunk/issues/310)
+- Use init provider on solaris when managing service [\#336](https://github.com/voxpupuli/puppet-splunk/pull/336) ([davemcdonnell](https://github.com/davemcdonnell))
+- Explicitly set user on call to 'splunk enable boot-start' [\#334](https://github.com/voxpupuli/puppet-splunk/pull/334) ([davemcdonnell](https://github.com/davemcdonnell))
+- Ensure facter doesn't stuck in interactive session while retrieving splunk forwarder version [\#320](https://github.com/voxpupuli/puppet-splunk/pull/320) ([mvandegarde](https://github.com/mvandegarde))
+
+**Closed issues:**
+
+- Warning: Secrets file NOT found [\#330](https://github.com/voxpupuli/puppet-splunk/issues/330)
+- Facter splunk version [\#280](https://github.com/voxpupuli/puppet-splunk/issues/280)
+- Splunk enterprise fact hangs partial install [\#238](https://github.com/voxpupuli/puppet-splunk/issues/238)
+
+**Merged pull requests:**
+
+- Allow up-to-date dependencies [\#318](https://github.com/voxpupuli/puppet-splunk/pull/318) ([smortex](https://github.com/smortex))
+
 ## [v9.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v9.0.0) (2021-08-09)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v8.0.0...v9.0.0)
@@ -292,7 +318,7 @@ These should not affect the functionality of the module.
 - Fix typo in extension filename [\#117](https://github.com/voxpupuli/puppet-splunk/pull/117) ([gregoirefra](https://github.com/gregoirefra))
 - This commit adds the pkg\_provider 'chocolatey' to the module [\#108](https://github.com/voxpupuli/puppet-splunk/pull/108) ([ralfbosz](https://github.com/ralfbosz))
 - Ability to configure ui-prefs.conf [\#104](https://github.com/voxpupuli/puppet-splunk/pull/104) ([TraGicCode](https://github.com/TraGicCode))
-- Set `forwarder_install_options` to be `undef` for OS other than Windows. [\#99](https://github.com/voxpupuli/puppet-splunk/pull/99) ([shadow999](https://github.com/shadow999))
+- Set `forwarder_install_options` to be `undef` for OS other than Windows. [\#99](https://github.com/voxpupuli/puppet-splunk/pull/99) ([alexqyle](https://github.com/alexqyle))
 
 ## [v6.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v6.0.0) (2017-05-25)
 
@@ -313,8 +339,8 @@ These should not affect the functionality of the module.
 - Add LICENSE file [\#109](https://github.com/voxpupuli/puppet-splunk/pull/109) ([alexjfisher](https://github.com/alexjfisher))
 - This commit sets the splunk\_user for Windows to 'administrator' [\#107](https://github.com/voxpupuli/puppet-splunk/pull/107) ([ralfbosz](https://github.com/ralfbosz))
 - Lint fixes [\#101](https://github.com/voxpupuli/puppet-splunk/pull/101) ([treydock](https://github.com/treydock))
-- types: Fix purging when section contains '//' [\#96](https://github.com/voxpupuli/puppet-splunk/pull/96) ([iamjamestl](https://github.com/iamjamestl))
-- splunk\_config: Only load other splunk types [\#95](https://github.com/voxpupuli/puppet-splunk/pull/95) ([iamjamestl](https://github.com/iamjamestl))
+- types: Fix purging when section contains '//' [\#96](https://github.com/voxpupuli/puppet-splunk/pull/96) ([jameslikeslinux](https://github.com/jameslikeslinux))
+- splunk\_config: Only load other splunk types [\#95](https://github.com/voxpupuli/puppet-splunk/pull/95) ([jameslikeslinux](https://github.com/jameslikeslinux))
 - Remove unneded blank lines [\#93](https://github.com/voxpupuli/puppet-splunk/pull/93) ([roidelapluie](https://github.com/roidelapluie))
 - Allow splunk server services to be overridden [\#90](https://github.com/voxpupuli/puppet-splunk/pull/90) ([treydock](https://github.com/treydock))
 - Ensure /etc/init.d/splunk is created before splunk services [\#89](https://github.com/voxpupuli/puppet-splunk/pull/89) ([treydock](https://github.com/treydock))
