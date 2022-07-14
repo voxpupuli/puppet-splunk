@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v9.1.1](https://github.com/voxpupuli/puppet-splunk/tree/v9.1.1) (2022-07-14)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v9.1.0...v9.1.1)
+
+**Fixed bugs:**
+
+- Don't install net-tools on Solaris [\#335](https://github.com/voxpupuli/puppet-splunk/pull/335) ([davemcdonnell](https://github.com/davemcdonnell))
+
 ## [v9.1.0](https://github.com/voxpupuli/puppet-splunk/tree/v9.1.0) (2022-07-12)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v9.0.0...v9.1.0)
