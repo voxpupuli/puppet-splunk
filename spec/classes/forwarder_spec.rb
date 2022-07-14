@@ -282,6 +282,20 @@ describe 'splunk::forwarder' do
               )
             end
           end
+
+          context 'when $splunk::params::manage_net_tools == false' do
+            let(:pre_condition) do
+              "class { 'splunk::params': manage_net_tools => false }"
+            end
+
+            it { is_expected.not_to contain_package('net-tools') }
+          end
+
+          if os.start_with?('solaris')
+            context 'when running on solaris' do
+              it { is_expected.not_to contain_package('net-tools') }
+            end
+          end
         end
       end
     end
