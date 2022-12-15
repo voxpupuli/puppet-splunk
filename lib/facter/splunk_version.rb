@@ -4,7 +4,7 @@ Facter.add(:splunk_version) do
     cmd = if File.exist?('C:/Program Files/Splunk/bin/splunk.exe')
             '"C:/Program Files/Splunk/bin/splunk.exe" --version'
           elsif File.exist?('/opt/splunk/bin/splunk')
-            '/opt/splunk/bin/splunk --version'
+            '/opt/splunk/bin/splunk --version --accept-license --answer-yes --no-prompt'
           end
     if cmd
       output = Facter::Util::Resolution.exec(cmd)
