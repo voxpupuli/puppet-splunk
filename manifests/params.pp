@@ -97,6 +97,9 @@
 #   By default this module manages the resource Package[net-tools], if this resource is
 #   already declared on your code base, you can disable this flag.
 #
+# @param allow_insecure
+#   Disable certificate verification when connecting to SSL hosts to download packages.
+#
 class splunk::params (
   String[1] $version                         = '7.2.4.2',
   String[1] $build                           = 'fb30470262e3',
@@ -113,6 +116,7 @@ class splunk::params (
   },
   String[1] $default_host                    = $facts['clientcert'],
   Boolean $manage_net_tools                  = true,
+  Boolean $allow_insecure                    = false,
 ) {
   # Based on the small number of inputs above, we can construct sane defaults
   # for pretty much everything else.

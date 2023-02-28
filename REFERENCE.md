@@ -888,6 +888,7 @@ The following parameters are available in the `splunk::forwarder` class:
 * [`secret_file`](#-splunk--forwarder--secret_file)
 * [`secret`](#-splunk--forwarder--secret)
 * [`addons`](#-splunk--forwarder--addons)
+* [`allow_insecure`](#-splunk--forwarder--allow_insecure)
 * [`purge_deploymentclient`](#-splunk--forwarder--purge_deploymentclient)
 
 ##### <a name="-splunk--forwarder--server"></a>`server`
@@ -1221,6 +1222,14 @@ Manage a splunk addons, see `splunk::addons`.
 
 Default value: `{}`
 
+##### <a name="-splunk--forwarder--allow_insecure"></a>`allow_insecure`
+
+Data type: `Boolean`
+
+Disable certificate verification when connecting to SSL hosts to download packages.
+
+Default value: `$splunk::params::allow_insecure`
+
 ##### <a name="-splunk--forwarder--purge_deploymentclient"></a>`purge_deploymentclient`
 
 Data type: `Boolean`
@@ -1477,6 +1486,7 @@ The following parameters are available in the `splunk::params` class:
 * [`enterprise_installdir`](#-splunk--params--enterprise_installdir)
 * [`default_host`](#-splunk--params--default_host)
 * [`manage_net_tools`](#-splunk--params--manage_net_tools)
+* [`allow_insecure`](#-splunk--params--allow_insecure)
 
 ##### <a name="-splunk--params--version"></a>`version`
 
@@ -1635,6 +1645,14 @@ By default this module manages the resource Package[net-tools], if this resource
 already declared on your code base, you can disable this flag.
 
 Default value: `true`
+
+##### <a name="-splunk--params--allow_insecure"></a>`allow_insecure`
+
+Data type: `Boolean`
+
+Disable certificate verification when connecting to SSL hosts to download packages.
+
+Default value: `false`
 
 ## Defined types
 
