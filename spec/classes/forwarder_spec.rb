@@ -283,6 +283,33 @@ describe 'splunk::forwarder' do
             end
           end
 
+          context 'when forwarder already installed for version 9' do
+            let(:facts) do
+              facts.merge(splunkforwarder_version: '8.0.4', service_provider: facts[:kernel] == 'FreeBSD' ? 'freebsd' : 'systemd')
+            end
+            let(:pre_condition) do
+              "class { 'splunk::params': version => '9.0.4' }"
+            end
+            let(:accept_tos_command) do
+              '/opt/splunkforwarder/bin/splunk stop && /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes'
+            end
+            let(:service_name) do
+              facts[:kernel] == 'FreeBSD' ? 'splunk' : 'SplunkForwarder'
+            end
+
+            it_behaves_like 'splunk forwarder'
+            it do
+              is_expected.to contain_exec('splunk-forwarder-accept-tos').with(
+                command: accept_tos_command,
+                user: 'root',
+                before: "Service[#{service_name}]",
+                subscribe: 'Package[splunkforwarder]',
+                require: 'Exec[enable_splunkforwarder]',
+                refreshonly: 'true'
+              )
+            end
+          end
+
           context 'when $splunk::params::manage_net_tools == false' do
             let(:pre_condition) do
               "class { 'splunk::params': manage_net_tools => false }"
