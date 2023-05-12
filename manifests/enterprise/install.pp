@@ -19,9 +19,11 @@ class splunk::enterprise::install {
     $_staged_package       = join($_package_path_parts, $splunk::enterprise::path_delimiter)
 
     archive { $_staged_package:
-      source  => $_package_source,
-      extract => false,
-      before  => Package[$splunk::enterprise::package_name],
+      source       => $_package_source,
+      extract      => false,
+      before       => Package[$splunk::enterprise::package_name],
+      proxy_server => $splunk::enterprise::install_proxy,
+      proxy_type   => $splunk::enterprise::install_proxy_type,
     }
   } else {
     $_staged_package = undef
