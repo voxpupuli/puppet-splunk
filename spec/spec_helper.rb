@@ -18,6 +18,6 @@ if File.exist?(File.join(__dir__, 'default_module_facts.yml'))
   end
 end
 
-require 'splunk_data.rb'
+require 'splunk_data'
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + '/fixtures/modules/inifile/lib'
+$LOAD_PATH.unshift "#{File.dirname(__FILE__)}/fixtures/modules/inifile/lib"
