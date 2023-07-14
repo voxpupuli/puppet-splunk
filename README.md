@@ -74,40 +74,42 @@ The files must be placed according to directory structure example given below.
 
 The expected directory structure is:
 
-     $root_url/
-     └── products/
-         ├── universalforwarder/
-         │   └── releases/
-         |       └── $version/
-         |           └── $platform/
-         |               └── splunkforwarder-${version}-${build}-${additl}
-         └── splunk/
-             └── releases/
-                 └── $version/
-                     └── $platform/
-                         └── splunk-${version}-${build}-${additl}
+    $root_url/
+      └── files/
+          └── products/
+            ├── universalforwarder/
+            │   └── releases/
+            |       └── $version/
+            |           └── $platform/
+            |               └── splunkforwarder-${version}-${build}-${additl}
+            └── splunk/
+                 └── releases/
+                     └── $version/
+                         └── $platform/
+                             └── splunk-${version}-${build}-${additl}
 
 A semi-populated example files directory might then contain:
 
     $root_url/
-    └── products/
-        ├── universalforwarder/
-        │   └── releases/
-        |       └── 7.0.0/
-        |           ├── linux/
-        |           |   ├── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
-        |           |   ├── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
-        |           |   └── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
-        |           ├── solaris/
-        |           └── windows/
-        |               └── splunkforwarder-7.0.0-c8a78efdd40f-x64-release.msi
-        └── splunk/
-            └── releases/
-                └── 7.0.0/
-                    └── linux/
-                        ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
-                        ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
-                        └── splunk-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
+     └── files/
+         └── products/
+            ├── universalforwarder/
+            │    └── releases/
+            |       └── 7.0.0/
+            |           ├── linux/
+            |           |   ├── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
+            |           |   ├── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
+            |           |   └── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
+            |           ├── solaris/
+            |           └── windows/
+            |               └── splunkforwarder-7.0.0-c8a78efdd40f-x64-release.msi
+            └── splunk/
+                └── releases/
+                    └── 7.0.0/
+                        └── linux/
+                            ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
+                            ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
+                            └── splunk-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
 
 Second, you will need to supply the `splunk::params` class with three critical
 pieces of information.
