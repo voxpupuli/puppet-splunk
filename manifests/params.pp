@@ -302,6 +302,13 @@ class splunk::params (
     default:   { $package_provider = undef } # Don't define a $package_provider
   }
 
+  # Download URLs changed starting from 8.2.11 and 9.0.5 for RPMs.
+  # Splunk no longer includes "-linux-2.6-".
+  $linux_prefix = (versioncmp($version, '9.0.5') >= 0 or (versioncmp($version, '8.2.11') >= 0 and versioncmp($version, '9.0.0') == -1)) ? {
+    true  => '.',
+    false => '-linux-2.6-',
+  }
+
   # Settings specific to an architecture as well as an OS family
   case "${facts['os']['family']} ${facts['os']['architecture']}" {
     'RedHat i386': {
@@ -310,12 +317,12 @@ class splunk::params (
       $enterprise_package_name = 'splunk'
     }
     'RedHat x86_64': {
-      $package_suffix          = "${version}-${build}-linux-2.6-x86_64.rpm"
+      $package_suffix          = "${version}-${build}${linux_prefix}x86_64.rpm"
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
     'RedHat ppc64le': {
-      $package_suffix          = "${version}-${build}-linux-2.6-ppc64le.rpm"
+      $package_suffix          = "${version}-${build}${linux_prefix}ppc64le.rpm"
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
@@ -350,7 +357,7 @@ class splunk::params (
       $enterprise_package_name = 'splunk'
     }
     'Suse x86_64': {
-      $package_suffix          = "${version}-${build}-linux-2.6-x86_64.rpm"
+      $package_suffix          = "${version}-${build}${linux_prefix}x86_64.rpm"
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }

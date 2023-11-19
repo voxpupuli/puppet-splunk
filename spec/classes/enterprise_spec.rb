@@ -39,7 +39,66 @@ shared_examples_for 'splunk enterprise nix defaults' do
 end
 
 describe 'splunk::enterprise' do
-  context 'supported operating systems' do
+  context 'correct download URL' do
+    test_on = {
+      hardwaremodels: ['x86_64'],
+      supported_os: [
+        {
+          'operatingsystem'        => 'RedHat',
+          'operatingsystemrelease' => ['9'],
+        },
+      ],
+    }
+    on_supported_os(test_on).each do |os, facts|
+      context "on #{os}" do
+        let(:facts) { facts }
+
+        context 'when version is higher than 8.2.11' do
+          let(:pre_condition) do
+            "class { 'splunk::params': version => '8.2.12', build => 'build' }"
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_class('splunk::enterprise').with(enterprise_package_src: 'https://download.splunk.com/products/splunk/releases/8.2.12/linux/splunk-8.2.12-build.x86_64.rpm')
+          }
+        end
+
+        context 'when version is lower than 9.0.5' do
+          let(:pre_condition) do
+            "class { 'splunk::params': version => '9.0.0', build => 'build' }"
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_class('splunk::enterprise').with(enterprise_package_src: 'https://download.splunk.com/products/splunk/releases/9.0.0/linux/splunk-9.0.0-build-linux-2.6-x86_64.rpm')
+          }
+        end
+
+        context 'when version is 9.0.5' do
+          let(:pre_condition) do
+            "class { 'splunk::params': version => '9.0.5', build => 'build' }"
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_class('splunk::enterprise').with(enterprise_package_src: 'https://download.splunk.com/products/splunk/releases/9.0.5/linux/splunk-9.0.5-build.x86_64.rpm')
+          }
+        end
+
+        context 'when version is higher than 9.0.5' do
+          let(:pre_condition) do
+            "class { 'splunk::params': version => '9.1.0', build => 'build' }"
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_class('splunk::enterprise').with(enterprise_package_src: 'https://download.splunk.com/products/splunk/releases/9.1.0/linux/splunk-9.1.0-build.x86_64.rpm')
+          }
+        end
+      end
+    end
+
     on_supported_os.each do |os, facts|
       next if facts[:os]['name'] == 'windows' # Splunk Server not used supported on windows
 
