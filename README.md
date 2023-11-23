@@ -132,18 +132,18 @@ modulepath, this is the most basic way of installing Splunk Server with default
 settings:
 
 ```puppet
-include ::splunk::enterprise
+include splunk::enterprise
 ```
 
 This is the most basic way of installing the Splunk Universal Forwarder with
 default settings:
 
 ```puppet
-class { '::splunk::params':
+class { 'splunk::params':
     server => $my_splunk_server,
 }
 
-include ::splunk::forwarder
+include splunk::forwarder
 ```
 
 Once both Splunk Enterprise and Splunk Universal Forwarder have been deployed
@@ -199,7 +199,7 @@ and build values. Running puppet again will perform the following:
 
 ```puppet
 # Tell the module to get packages directly from Splunk.
-class { '::splunk::params':
+class { 'splunk::params':
   version  => '6.6.8',
   build    => '6c27a8439c1e',
   #version  => '7.1.2',
@@ -210,7 +210,7 @@ class { '::splunk::params':
 # Specifying package_ensure => 'latest' will ensure that the splunk and
 # splunkforwarder packages will be upgraded when you specify newer values for
 # version and build.
-class { '::splunk::forwarder':
+class { 'splunk::forwarder':
   package_ensure => 'latest',
 }
 ```
