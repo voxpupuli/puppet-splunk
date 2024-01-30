@@ -253,6 +253,7 @@ class splunk::params (
         'WINEVENTLOG_FWD_ENABLE=1',
         'WINEVENTLOG_SET_ENABLE=1',
         'ENABLEADMON=1',
+        'USE_LOCAL_SYSTEM=1',
       ]
       $enterprise_install_options     = [
         { 'INSTALLDIR' => $enterprise_homedir },
