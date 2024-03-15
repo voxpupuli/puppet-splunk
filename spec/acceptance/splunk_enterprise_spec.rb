@@ -15,6 +15,13 @@ describe 'splunk enterprise class' do
     it 'works idempotently with no errors' do
       pp = <<-EOS
       class { 'splunk::enterprise': }
+
+      # See https://community.splunk.com/t5/Installation/Why-am-I-getting-an-error-to-start-a-fresh-Splunk-instance-in-my/m-p/336938
+      file_line { 'file_locking':
+        path => '/opt/splunk/etc/splunk-launch.conf',
+        line => 'OPTIMISTIC_ABOUT_FILE_LOCKING=1',
+        require => Class['splunk::enterprise'],
+      }
       EOS
 
       # Run it twice and test for idempotency
