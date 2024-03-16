@@ -63,7 +63,7 @@ class splunk::forwarder::install {
 
   # Required for splunk 7.2.4.2
   if $splunk::params::manage_net_tools and $facts['kernel'] == 'Linux' and (versioncmp($splunk::forwarder::version, '7.2.4.2') >= 0) {
-    ensure_packages(['net-tools'], {
+    stdlib::ensure_packages(['net-tools'], {
         'ensure' => 'present',
     })
     Package['net-tools'] -> Package[$splunk::forwarder::package_name]
