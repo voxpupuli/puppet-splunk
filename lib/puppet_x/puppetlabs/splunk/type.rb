@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), '..', '..', 'voxpupuli/splunk/util')
 
 module PuppetX
@@ -9,14 +11,14 @@ module PuppetX
 
           type.define_singleton_method(:title_patterns) do
             [
-              [%r{^([^\/]*)$}, [[:section]]],   # matches section titles without slashes, like 'tcpout:indexers'
-              [%r{^(.*\/\/.*)\/(.*)$},          # matches section titles containing '//' and a setting,
-               [                                # like: 'monitor:///var/log/messages/index'
+              [%r{^([^/]*)$}, [[:section]]], # matches section titles without slashes, like 'tcpout:indexers'
+              [%r{^(.*//.*)/(.*)$}, # matches section titles containing '//' and a setting,
+               [ # like: 'monitor:///var/log/messages/index'
                  [:section],       # where 'monitor:///var/log/messages' is the section
                  [:setting]        # and 'index' is the setting.
                ]],
-              [%r{^(.*\/\/.*)$}, [[:section]]], # matches section titles containing '//', like 'tcp://127.0.0.1:19500'
-              [%r{^(.*)\/(.*)$},                # matches plain 'section/setting' titles, like: 'tcpout:indexers/server'
+              [%r{^(.*//.*)$}, [[:section]]], # matches section titles containing '//', like 'tcp://127.0.0.1:19500'
+              [%r{^(.*)/(.*)$}, # matches plain 'section/setting' titles, like: 'tcpout:indexers/server'
                [
                  [:section],
                  [:setting]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 #  The majority of splunk and splunkforwarder types are identical and inherit
 #  the same functionality off ini_file, so we don't need individual tests for them
@@ -5,7 +7,7 @@ require 'spec_helper'
 SPLUNK_TYPES.each do |type, file_name|
   describe Puppet::Type.type(type) do
     context 'attributes' do
-      [:name, :setting, :section, :context].each do |parameter|
+      %i[name setting section context].each do |parameter|
         describe parameter.to_s do
           it 'has a name attribute' do
             expect(described_class.attrclass(parameter)).not_to be_nil
@@ -26,7 +28,7 @@ SPLUNK_TYPES.each do |type, file_name|
       end
 
       it 'has name, context, setting and section as namevars' do
-        expect(described_class.key_attributes.sort).to eq([:context, :name, :section, :setting])
+        expect(described_class.key_attributes.sort).to eq(%i[context name section setting])
       end
     end
 
@@ -60,6 +62,7 @@ SPLUNK_TYPES.each do |type, file_name|
         type = described_class.new(title: 'foo/bar', setting: 'tango', section: 'delta')
         expect(type[:section]).to eq('delta')
       end
+
       it 'ignores title when setting is declared' do
         type = described_class.new(title: 'foo/bar', setting: 'tango', section: 'delta')
         expect(type[:setting]).to eq('tango')
@@ -76,6 +79,7 @@ SPLUNK_TYPES.each do |type, file_name|
       it 'has a value property' do
         expect(described_class.attrtype(:value)).to eq(:property)
       end
+
       context 'when testing value is insync' do
         let(:resource) { described_class.new(title: 'foo/bar', value: 'value') }
         let(:property) { resource.property(:value) }
@@ -92,6 +96,7 @@ SPLUNK_TYPES.each do |type, file_name|
           property.should = 'value'
           expect(property).to be_safe_insync('value')
         end
+
         it 'is insync if encrypted `is` value matches `should` value after being decrypted' do
           property.should = 'temp1234'
           allow(File).to receive(:file?).with(%r{/opt/splunk(forwarder)?/etc/auth/splunk\.secret$}).and_return(true)

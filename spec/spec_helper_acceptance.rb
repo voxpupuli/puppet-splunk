@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require 'voxpupuli/acceptance/spec_helper_acceptance'
-require 'splunk_data.rb'
+require 'splunk_data'
 
 configure_beaker do |host|
   # Need to stage the Splunk/Splunkforwarder packages here.

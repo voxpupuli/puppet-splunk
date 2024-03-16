@@ -8,50 +8,50 @@
 
 * [`splunk`](#splunk): This class is unused and doesn't do anything but make default data
 accessible
-* [`splunk::enterprise`](#splunkenterprise): Install and configure an instance of Splunk Enterprise
-* [`splunk::enterprise::config`](#splunkenterpriseconfig): Private class declared by Class[splunk::enterprise] to contain all the
+* [`splunk::enterprise`](#splunk--enterprise): Install and configure an instance of Splunk Enterprise
+* [`splunk::enterprise::config`](#splunk--enterprise--config): Private class declared by Class[splunk::enterprise] to contain all the
 configuration needed for a base install of Splunk Enterprise
-* [`splunk::enterprise::install`](#splunkenterpriseinstall): Private class declared by Class[splunk::enterprise] to contain or define
+* [`splunk::enterprise::install`](#splunk--enterprise--install): Private class declared by Class[splunk::enterprise] to contain or define
 through additional platform specific sub-class, the required steps
 for successfully installing Splunk Enterprise
-* [`splunk::enterprise::install::nix`](#splunkenterpriseinstallnix): Private class declared by Class[splunk::enterprise::install] to provide
+* [`splunk::enterprise::install::nix`](#splunk--enterprise--install--nix): Private class declared by Class[splunk::enterprise::install] to provide
 platform specific installation steps on Linux or Unix type systems.
-* [`splunk::enterprise::password::manage`](#splunkenterprisepasswordmanage): Implements the direct management of the Splunk Enterprise admin password
+* [`splunk::enterprise::password::manage`](#splunk--enterprise--password--manage): Implements the direct management of the Splunk Enterprise admin password
 so it can be used outside of regular management of the whole stack to
 facilitate admin password resets through Bolt Plans.
 
 Note: Entirely done to make this implementation consistent with the method
 used to manage admin password seeding.
-* [`splunk::enterprise::password::seed`](#splunkenterprisepasswordseed): Implements the seeding and reseeding of the Splunk Enterprise admin password
+* [`splunk::enterprise::password::seed`](#splunk--enterprise--password--seed): Implements the seeding and reseeding of the Splunk Enterprise admin password
 so it can be used outside of regular management of the whole stack to
 facilitate admin password resets through Bolt Plans
-* [`splunk::enterprise::service`](#splunkenterpriseservice): Private class declared by Class[splunk::enterprise] to define a service
+* [`splunk::enterprise::service`](#splunk--enterprise--service): Private class declared by Class[splunk::enterprise] to define a service
 as its understood by Puppet using a dynamic set of data or platform specific
 sub-classes
-* [`splunk::enterprise::service::nix`](#splunkenterpriseservicenix): Private class declared by Class[splunk::enterprise::service] to provide
+* [`splunk::enterprise::service::nix`](#splunk--enterprise--service--nix): Private class declared by Class[splunk::enterprise::service] to provide
 platform specific service management on Linux or Unix type systems.
-* [`splunk::forwarder`](#splunkforwarder): Install and configure an instance of Splunk Universal Forwarder
-* [`splunk::forwarder::config`](#splunkforwarderconfig): Private class declared by Class[splunk::forwarder] to contain all the
+* [`splunk::forwarder`](#splunk--forwarder): Install and configure an instance of Splunk Universal Forwarder
+* [`splunk::forwarder::config`](#splunk--forwarder--config): Private class declared by Class[splunk::forwarder] to contain all the
 configuration needed for a base install of the Splunk Universal
 Forwarder
-* [`splunk::forwarder::install`](#splunkforwarderinstall): Private class declared by Class[splunk::forwarder] to contain or define
+* [`splunk::forwarder::install`](#splunk--forwarder--install): Private class declared by Class[splunk::forwarder] to contain or define
 through additional platform specific sub-class, the required steps
 for successfully installing the Splunk Universal Forwarder
-* [`splunk::forwarder::password::manage`](#splunkforwarderpasswordmanage): Implements the direct management of the Splunk Forwarder admin password
+* [`splunk::forwarder::password::manage`](#splunk--forwarder--password--manage): Implements the direct management of the Splunk Forwarder admin password
 so it can be used outside of regular management of the whole stack to
 facilitate admin password resets through Bolt Plans.
 
 Note: Entirely done to make this implementation consistent with the method
 used to manage admin password seeding.
-* [`splunk::forwarder::password::seed`](#splunkforwarderpasswordseed): Implements the seeding and reseeding of the Splunk Forwarder admin password
+* [`splunk::forwarder::password::seed`](#splunk--forwarder--password--seed): Implements the seeding and reseeding of the Splunk Forwarder admin password
 so it can be used outside of regular management of the whole stack to
 facilitate admin password resets through Bolt Plans
-* [`splunk::forwarder::service`](#splunkforwarderservice): Private class declared by Class[splunk::forwarder] to define a service as
+* [`splunk::forwarder::service`](#splunk--forwarder--service): Private class declared by Class[splunk::forwarder] to define a service as
 its understood by Puppet using a dynamic set of data or platform specific
 sub-classes
-* [`splunk::forwarder::service::nix`](#splunkforwarderservicenix): Private class declared by Class[splunk::forwarder::service] to provide
+* [`splunk::forwarder::service::nix`](#splunk--forwarder--service--nix): Private class declared by Class[splunk::forwarder::service] to provide
 platform specific service management on Linux or Unix type systems.
-* [`splunk::params`](#splunkparams): This class takes a small number of arguments (can be set through Hiera) and
+* [`splunk::params`](#splunk--params): This class takes a small number of arguments (can be set through Hiera) and
 generates sane default values installation media names and locations.
 Default ports can also be specified here. This is a parameters class, and
 contributes no resources to the graph. Rather, it only sets values for
@@ -59,7 +59,7 @@ parameters to be consumed by child classes.
 
 ### Defined types
 
-* [`splunk::addon`](#splunkaddon): Defined type for deploying Splunk Add-ons and Apps from either OS packages
+* [`splunk::addon`](#splunk--addon): Defined type for deploying Splunk Add-ons and Apps from either OS packages
 or via splunkbase compatible archives
 
 ### Resource types
@@ -92,8 +92,8 @@ or via splunkbase compatible archives
 
 ### Data types
 
-* [`Splunk::Entinstalloptions`](#splunkentinstalloptions)
-* [`Splunk::Fwdinstalloptions`](#splunkfwdinstalloptions)
+* [`Splunk::Entinstalloptions`](#Splunk--Entinstalloptions)
+* [`Splunk::Fwdinstalloptions`](#Splunk--Fwdinstalloptions)
 
 ## Classes
 
@@ -105,7 +105,7 @@ accessible
 * **Note** If you were expecting this class to setup an instance of Splunk
 Enterprise then please look to Class[splunk::enterprise].
 
-### <a name="splunkenterprise"></a>`splunk::enterprise`
+### <a name="splunk--enterprise"></a>`splunk::enterprise`
 
 Install and configure an instance of Splunk Enterprise
 
@@ -134,56 +134,56 @@ class { 'splunk::enterprise':
 
 The following parameters are available in the `splunk::enterprise` class:
 
-* [`version`](#version)
-* [`package_name`](#package_name)
-* [`package_ensure`](#package_ensure)
-* [`staging_dir`](#staging_dir)
-* [`path_delimiter`](#path_delimiter)
-* [`enterprise_package_src`](#enterprise_package_src)
-* [`package_provider`](#package_provider)
-* [`manage_package_source`](#manage_package_source)
-* [`package_source`](#package_source)
-* [`install_options`](#install_options)
-* [`splunk_user`](#splunk_user)
-* [`enterprise_homedir`](#enterprise_homedir)
-* [`enterprise_confdir`](#enterprise_confdir)
-* [`service_name`](#service_name)
-* [`service_file`](#service_file)
-* [`boot_start`](#boot_start)
-* [`use_default_config`](#use_default_config)
-* [`input_default_host`](#input_default_host)
-* [`input_connection_host`](#input_connection_host)
-* [`splunkd_listen`](#splunkd_listen)
-* [`logging_port`](#logging_port)
-* [`splunkd_port`](#splunkd_port)
-* [`web_httpport`](#web_httpport)
-* [`purge_inputs`](#purge_inputs)
-* [`purge_outputs`](#purge_outputs)
-* [`purge_authentication`](#purge_authentication)
-* [`purge_authorize`](#purge_authorize)
-* [`purge_distsearch`](#purge_distsearch)
-* [`purge_indexes`](#purge_indexes)
-* [`purge_limits`](#purge_limits)
-* [`purge_props`](#purge_props)
-* [`purge_server`](#purge_server)
-* [`purge_transforms`](#purge_transforms)
-* [`purge_web`](#purge_web)
-* [`manage_password`](#manage_password)
-* [`seed_password`](#seed_password)
-* [`reset_seeded_password`](#reset_seeded_password)
-* [`password_config_file`](#password_config_file)
-* [`seed_config_file`](#seed_config_file)
-* [`seed_user`](#seed_user)
-* [`password_content`](#password_content)
-* [`password_hash`](#password_hash)
-* [`secret_file`](#secret_file)
-* [`secret`](#secret)
-* [`purge_alert_actions`](#purge_alert_actions)
-* [`purge_deploymentclient`](#purge_deploymentclient)
-* [`purge_serverclass`](#purge_serverclass)
-* [`purge_uiprefs`](#purge_uiprefs)
+* [`version`](#-splunk--enterprise--version)
+* [`package_name`](#-splunk--enterprise--package_name)
+* [`package_ensure`](#-splunk--enterprise--package_ensure)
+* [`staging_dir`](#-splunk--enterprise--staging_dir)
+* [`path_delimiter`](#-splunk--enterprise--path_delimiter)
+* [`enterprise_package_src`](#-splunk--enterprise--enterprise_package_src)
+* [`package_provider`](#-splunk--enterprise--package_provider)
+* [`manage_package_source`](#-splunk--enterprise--manage_package_source)
+* [`package_source`](#-splunk--enterprise--package_source)
+* [`install_options`](#-splunk--enterprise--install_options)
+* [`splunk_user`](#-splunk--enterprise--splunk_user)
+* [`enterprise_homedir`](#-splunk--enterprise--enterprise_homedir)
+* [`enterprise_confdir`](#-splunk--enterprise--enterprise_confdir)
+* [`service_name`](#-splunk--enterprise--service_name)
+* [`service_file`](#-splunk--enterprise--service_file)
+* [`boot_start`](#-splunk--enterprise--boot_start)
+* [`use_default_config`](#-splunk--enterprise--use_default_config)
+* [`input_default_host`](#-splunk--enterprise--input_default_host)
+* [`input_connection_host`](#-splunk--enterprise--input_connection_host)
+* [`splunkd_listen`](#-splunk--enterprise--splunkd_listen)
+* [`logging_port`](#-splunk--enterprise--logging_port)
+* [`splunkd_port`](#-splunk--enterprise--splunkd_port)
+* [`web_httpport`](#-splunk--enterprise--web_httpport)
+* [`purge_inputs`](#-splunk--enterprise--purge_inputs)
+* [`purge_outputs`](#-splunk--enterprise--purge_outputs)
+* [`purge_authentication`](#-splunk--enterprise--purge_authentication)
+* [`purge_authorize`](#-splunk--enterprise--purge_authorize)
+* [`purge_distsearch`](#-splunk--enterprise--purge_distsearch)
+* [`purge_indexes`](#-splunk--enterprise--purge_indexes)
+* [`purge_limits`](#-splunk--enterprise--purge_limits)
+* [`purge_props`](#-splunk--enterprise--purge_props)
+* [`purge_server`](#-splunk--enterprise--purge_server)
+* [`purge_transforms`](#-splunk--enterprise--purge_transforms)
+* [`purge_web`](#-splunk--enterprise--purge_web)
+* [`manage_password`](#-splunk--enterprise--manage_password)
+* [`seed_password`](#-splunk--enterprise--seed_password)
+* [`reset_seeded_password`](#-splunk--enterprise--reset_seeded_password)
+* [`password_config_file`](#-splunk--enterprise--password_config_file)
+* [`seed_config_file`](#-splunk--enterprise--seed_config_file)
+* [`seed_user`](#-splunk--enterprise--seed_user)
+* [`password_content`](#-splunk--enterprise--password_content)
+* [`password_hash`](#-splunk--enterprise--password_hash)
+* [`secret_file`](#-splunk--enterprise--secret_file)
+* [`secret`](#-splunk--enterprise--secret)
+* [`purge_alert_actions`](#-splunk--enterprise--purge_alert_actions)
+* [`purge_deploymentclient`](#-splunk--enterprise--purge_deploymentclient)
+* [`purge_serverclass`](#-splunk--enterprise--purge_serverclass)
+* [`purge_uiprefs`](#-splunk--enterprise--purge_uiprefs)
 
-##### <a name="version"></a>`version`
+##### <a name="-splunk--enterprise--version"></a>`version`
 
 Data type: `String[1]`
 
@@ -192,7 +192,7 @@ manage.
 
 Default value: `$splunk::params::version`
 
-##### <a name="package_name"></a>`package_name`
+##### <a name="-splunk--enterprise--package_name"></a>`package_name`
 
 Data type: `String[1]`
 
@@ -200,7 +200,7 @@ The name of the package(s) Puppet will use to install Splunk.
 
 Default value: `$splunk::params::enterprise_package_name`
 
-##### <a name="package_ensure"></a>`package_ensure`
+##### <a name="-splunk--enterprise--package_ensure"></a>`package_ensure`
 
 Data type: `String[1]`
 
@@ -208,7 +208,7 @@ Ensure parameter which will get passed to the Splunk package resource.
 
 Default value: `$splunk::params::enterprise_package_ensure`
 
-##### <a name="staging_dir"></a>`staging_dir`
+##### <a name="-splunk--enterprise--staging_dir"></a>`staging_dir`
 
 Data type: `String[1]`
 
@@ -216,7 +216,7 @@ Root of the archive path to host the Splunk package.
 
 Default value: `$splunk::params::staging_dir`
 
-##### <a name="path_delimiter"></a>`path_delimiter`
+##### <a name="-splunk--enterprise--path_delimiter"></a>`path_delimiter`
 
 Data type: `String[1]`
 
@@ -224,7 +224,7 @@ The path separator used in the archived path of the Splunk package.
 
 Default value: `$splunk::params::path_delimiter`
 
-##### <a name="enterprise_package_src"></a>`enterprise_package_src`
+##### <a name="-splunk--enterprise--enterprise_package_src"></a>`enterprise_package_src`
 
 Data type: `String[1]`
 
@@ -236,7 +236,7 @@ a UNC path to the MSI.
 
 Default value: `$splunk::params::enterprise_package_src`
 
-##### <a name="package_provider"></a>`package_provider`
+##### <a name="-splunk--enterprise--package_provider"></a>`package_provider`
 
 Data type: `Optional[String[1]]`
 
@@ -244,15 +244,15 @@ The package management system used to host the Splunk packages.
 
 Default value: `$splunk::params::package_provider`
 
-##### <a name="manage_package_source"></a>`manage_package_source`
+##### <a name="-splunk--enterprise--manage_package_source"></a>`manage_package_source`
 
 Data type: `Boolean`
 
 Whether or not to use the supplied `enterprise_package_src` param.
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="package_source"></a>`package_source`
+##### <a name="-splunk--enterprise--package_source"></a>`package_source`
 
 Data type: `Optional[String[1]]`
 
@@ -262,9 +262,9 @@ MSI, etc). If `enterprise_package_src` parameter is set in splunk::params and
 it is required. The URL can be of any protocol supported by the puppet/archive
 module. On Windows, this can be a UNC path to the MSI.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="install_options"></a>`install_options`
+##### <a name="-splunk--enterprise--install_options"></a>`install_options`
 
 Data type: `Splunk::Entinstalloptions`
 
@@ -272,7 +272,7 @@ This variable is passed to the package resources' *install_options* parameter.
 
 Default value: `$splunk::params::enterprise_install_options`
 
-##### <a name="splunk_user"></a>`splunk_user`
+##### <a name="-splunk--enterprise--splunk_user"></a>`splunk_user`
 
 Data type: `String[1]`
 
@@ -280,7 +280,7 @@ The user to run Splunk as.
 
 Default value: `$splunk::params::splunk_user`
 
-##### <a name="enterprise_homedir"></a>`enterprise_homedir`
+##### <a name="-splunk--enterprise--enterprise_homedir"></a>`enterprise_homedir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -288,7 +288,7 @@ Specifies the Splunk Enterprise home directory.
 
 Default value: `$splunk::params::enterprise_homedir`
 
-##### <a name="enterprise_confdir"></a>`enterprise_confdir`
+##### <a name="-splunk--enterprise--enterprise_confdir"></a>`enterprise_confdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -296,7 +296,7 @@ Specifies the Splunk Enterprise configuration directory.
 
 Default value: `$splunk::params::enterprise_confdir`
 
-##### <a name="service_name"></a>`service_name`
+##### <a name="-splunk--enterprise--service_name"></a>`service_name`
 
 Data type: `String[1]`
 
@@ -304,7 +304,7 @@ The name of the Splunk Enterprise service.
 
 Default value: `$splunk::params::enterprise_service`
 
-##### <a name="service_file"></a>`service_file`
+##### <a name="-splunk--enterprise--service_file"></a>`service_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -312,7 +312,7 @@ The path to the Splunk Enterprise service file.
 
 Default value: `$splunk::params::enterprise_service_file`
 
-##### <a name="boot_start"></a>`boot_start`
+##### <a name="-splunk--enterprise--boot_start"></a>`boot_start`
 
 Data type: `Boolean`
 
@@ -321,16 +321,16 @@ manage the Splunk Enterprise service.
 
 Default value: `$splunk::params::boot_start`
 
-##### <a name="use_default_config"></a>`use_default_config`
+##### <a name="-splunk--enterprise--use_default_config"></a>`use_default_config`
 
 Data type: `Boolean`
 
 Whether or not the module should manage a default set of Splunk Enterprise
 configuration parameters.
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="input_default_host"></a>`input_default_host`
+##### <a name="-splunk--enterprise--input_default_host"></a>`input_default_host`
 
 Data type: `String[1]`
 
@@ -338,7 +338,7 @@ Part of the default config. Sets the `splunk_input` default host.
 
 Default value: `$facts['networking']['fqdn']`
 
-##### <a name="input_connection_host"></a>`input_connection_host`
+##### <a name="-splunk--enterprise--input_connection_host"></a>`input_connection_host`
 
 Data type: `String[1]`
 
@@ -346,7 +346,7 @@ Part of the default config. Sets the `splunk_input` connection host.
 
 Default value: `'dns'`
 
-##### <a name="splunkd_listen"></a>`splunkd_listen`
+##### <a name="-splunk--enterprise--splunkd_listen"></a>`splunkd_listen`
 
 Data type: `Stdlib::IP::Address`
 
@@ -354,7 +354,7 @@ The address on which splunkd should listen.
 
 Default value: `'127.0.0.1'`
 
-##### <a name="logging_port"></a>`logging_port`
+##### <a name="-splunk--enterprise--logging_port"></a>`logging_port`
 
 Data type: `Stdlib::Port`
 
@@ -362,7 +362,7 @@ The port to receive TCP logs on.
 
 Default value: `$splunk::params::logging_port`
 
-##### <a name="splunkd_port"></a>`splunkd_port`
+##### <a name="-splunk--enterprise--splunkd_port"></a>`splunkd_port`
 
 Data type: `Stdlib::Port`
 
@@ -370,7 +370,7 @@ The management port for Splunk.
 
 Default value: `$splunk::params::splunkd_port`
 
-##### <a name="web_httpport"></a>`web_httpport`
+##### <a name="-splunk--enterprise--web_httpport"></a>`web_httpport`
 
 Data type: `Stdlib::Port`
 
@@ -378,106 +378,106 @@ The port on which to service the Splunk Web interface.
 
 Default value: `8000`
 
-##### <a name="purge_inputs"></a>`purge_inputs`
+##### <a name="-splunk--enterprise--purge_inputs"></a>`purge_inputs`
 
 Data type: `Boolean`
 
 If set to true, inputs.conf will be purged of configuration that is
 no longer managed by the `splunk_input` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_outputs"></a>`purge_outputs`
+##### <a name="-splunk--enterprise--purge_outputs"></a>`purge_outputs`
 
 Data type: `Boolean`
 
 If set to true, outputs.conf will be purged of configuration that is
 no longer managed by the `splunk_output` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_authentication"></a>`purge_authentication`
+##### <a name="-splunk--enterprise--purge_authentication"></a>`purge_authentication`
 
 Data type: `Boolean`
 
 If set to true, authentication.conf will be purged of configuration
 that is no longer managed by the `splunk_authentication` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_authorize"></a>`purge_authorize`
+##### <a name="-splunk--enterprise--purge_authorize"></a>`purge_authorize`
 
 Data type: `Boolean`
 
 If set to true, authorize.conf will be purged of configuration that
 is no longer managed by the `splunk_authorize` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_distsearch"></a>`purge_distsearch`
+##### <a name="-splunk--enterprise--purge_distsearch"></a>`purge_distsearch`
 
 Data type: `Boolean`
 
 If set to true, distsearch.conf will be purged of configuration that
 is no longer managed by the `splunk_distsearch` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_indexes"></a>`purge_indexes`
+##### <a name="-splunk--enterprise--purge_indexes"></a>`purge_indexes`
 
 Data type: `Boolean`
 
 If set to true, indexes.conf will be purged of configuration that is
 no longer managed by the `splunk_indexes` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_limits"></a>`purge_limits`
+##### <a name="-splunk--enterprise--purge_limits"></a>`purge_limits`
 
 Data type: `Boolean`
 
 If set to true, limits.conf will be purged of configuration that is
 no longer managed by the `splunk_limits` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_props"></a>`purge_props`
+##### <a name="-splunk--enterprise--purge_props"></a>`purge_props`
 
 Data type: `Boolean`
 
 If set to true, props.conf will be purged of configuration that is
 no longer managed by the `splunk_props` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_server"></a>`purge_server`
+##### <a name="-splunk--enterprise--purge_server"></a>`purge_server`
 
 Data type: `Boolean`
 
 If set to true, server.conf will be purged of configuration that is
 no longer managed by the `splunk_server` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_transforms"></a>`purge_transforms`
+##### <a name="-splunk--enterprise--purge_transforms"></a>`purge_transforms`
 
 Data type: `Boolean`
 
 If set to true, transforms.conf will be purged of configuration that
 is no longer managed by the `splunk_transforms` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_web"></a>`purge_web`
+##### <a name="-splunk--enterprise--purge_web"></a>`purge_web`
 
 Data type: `Boolean`
 
 If set to true, web.conf will be purged of configuration that is no
 longer managed by the `splunk_web type`.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="manage_password"></a>`manage_password`
+##### <a name="-splunk--enterprise--manage_password"></a>`manage_password`
 
 Data type: `Boolean`
 
@@ -485,7 +485,7 @@ If set to true, Manage the contents of splunk.secret and passwd.
 
 Default value: `$splunk::params::manage_password`
 
-##### <a name="seed_password"></a>`seed_password`
+##### <a name="-splunk--enterprise--seed_password"></a>`seed_password`
 
 Data type: `Boolean`
 
@@ -493,7 +493,7 @@ If set to true, Manage the contents of splunk.secret and user-seed.conf.
 
 Default value: `$splunk::params::seed_password`
 
-##### <a name="reset_seeded_password"></a>`reset_seeded_password`
+##### <a name="-splunk--enterprise--reset_seeded_password"></a>`reset_seeded_password`
 
 Data type: `Boolean`
 
@@ -502,7 +502,7 @@ import process on restart of the Splunk services.
 
 Default value: `$splunk::params::reset_seeded_password`
 
-##### <a name="password_config_file"></a>`password_config_file`
+##### <a name="-splunk--enterprise--password_config_file"></a>`password_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -511,7 +511,7 @@ Which file to put the password in i.e. in linux it would be
 
 Default value: `$splunk::params::enterprise_password_config_file`
 
-##### <a name="seed_config_file"></a>`seed_config_file`
+##### <a name="-splunk--enterprise--seed_config_file"></a>`seed_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -520,7 +520,7 @@ restart.
 
 Default value: `$splunk::params::enterprise_seed_config_file`
 
-##### <a name="seed_user"></a>`seed_user`
+##### <a name="-splunk--enterprise--seed_user"></a>`seed_user`
 
 Data type: `String[1]`
 
@@ -528,7 +528,7 @@ The local user (usually 'admin') imported by Splunk.
 
 Default value: `$splunk::params::seed_user`
 
-##### <a name="password_content"></a>`password_content`
+##### <a name="-splunk--enterprise--password_content"></a>`password_content`
 
 Data type: `String[1]`
 
@@ -536,7 +536,7 @@ The hashed password username/details for the user.
 
 Default value: `$splunk::params::password_content`
 
-##### <a name="password_hash"></a>`password_hash`
+##### <a name="-splunk--enterprise--password_hash"></a>`password_hash`
 
 Data type: `String[1]`
 
@@ -544,7 +544,7 @@ The hashed password for the admin user.
 
 Default value: `$splunk::params::password_hash`
 
-##### <a name="secret_file"></a>`secret_file`
+##### <a name="-splunk--enterprise--secret_file"></a>`secret_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -552,7 +552,7 @@ Which file we should put the secret in.
 
 Default value: `$splunk::params::enterprise_secret_file`
 
-##### <a name="secret"></a>`secret`
+##### <a name="-splunk--enterprise--secret"></a>`secret`
 
 Data type: `String[1]`
 
@@ -560,55 +560,55 @@ The secret used to salt the splunk password.
 
 Default value: `$splunk::params::secret`
 
-##### <a name="purge_alert_actions"></a>`purge_alert_actions`
+##### <a name="-splunk--enterprise--purge_alert_actions"></a>`purge_alert_actions`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_deploymentclient"></a>`purge_deploymentclient`
-
-Data type: `Boolean`
-
-
-
-Default value: ``false``
-
-##### <a name="purge_serverclass"></a>`purge_serverclass`
+##### <a name="-splunk--enterprise--purge_deploymentclient"></a>`purge_deploymentclient`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_uiprefs"></a>`purge_uiprefs`
+##### <a name="-splunk--enterprise--purge_serverclass"></a>`purge_serverclass`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-### <a name="splunkenterpriseconfig"></a>`splunk::enterprise::config`
+##### <a name="-splunk--enterprise--purge_uiprefs"></a>`purge_uiprefs`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+### <a name="splunk--enterprise--config"></a>`splunk::enterprise::config`
 
 Private class declared by Class[splunk::enterprise] to contain all the
 configuration needed for a base install of Splunk Enterprise
 
-### <a name="splunkenterpriseinstall"></a>`splunk::enterprise::install`
+### <a name="splunk--enterprise--install"></a>`splunk::enterprise::install`
 
 Private class declared by Class[splunk::enterprise] to contain or define
 through additional platform specific sub-class, the required steps
 for successfully installing Splunk Enterprise
 
-### <a name="splunkenterpriseinstallnix"></a>`splunk::enterprise::install::nix`
+### <a name="splunk--enterprise--install--nix"></a>`splunk::enterprise::install::nix`
 
 Private class declared by Class[splunk::enterprise::install] to provide
 platform specific installation steps on Linux or Unix type systems.
 
-### <a name="splunkenterprisepasswordmanage"></a>`splunk::enterprise::password::manage`
+### <a name="splunk--enterprise--password--manage"></a>`splunk::enterprise::password::manage`
 
 Implements the direct management of the Splunk Enterprise admin password
 so it can be used outside of regular management of the whole stack to
@@ -621,16 +621,16 @@ used to manage admin password seeding.
 
 The following parameters are available in the `splunk::enterprise::password::manage` class:
 
-* [`manage_password`](#manage_password)
-* [`password_config_file`](#password_config_file)
-* [`password_content`](#password_content)
-* [`secret_file`](#secret_file)
-* [`secret`](#secret)
-* [`service`](#service)
-* [`mode`](#mode)
-* [`splunk_user`](#splunk_user)
+* [`manage_password`](#-splunk--enterprise--password--manage--manage_password)
+* [`password_config_file`](#-splunk--enterprise--password--manage--password_config_file)
+* [`password_content`](#-splunk--enterprise--password--manage--password_content)
+* [`secret_file`](#-splunk--enterprise--password--manage--secret_file)
+* [`secret`](#-splunk--enterprise--password--manage--secret)
+* [`service`](#-splunk--enterprise--password--manage--service)
+* [`mode`](#-splunk--enterprise--password--manage--mode)
+* [`splunk_user`](#-splunk--enterprise--password--manage--splunk_user)
 
-##### <a name="manage_password"></a>`manage_password`
+##### <a name="-splunk--enterprise--password--manage--manage_password"></a>`manage_password`
 
 Data type: `Boolean`
 
@@ -638,7 +638,7 @@ If set to true, Manage the contents of splunk.secret and passwd.
 
 Default value: `$splunk::params::manage_password`
 
-##### <a name="password_config_file"></a>`password_config_file`
+##### <a name="-splunk--enterprise--password--manage--password_config_file"></a>`password_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -647,7 +647,7 @@ Which file to put the password in i.e. in linux it would be
 
 Default value: `$splunk::params::forwarder_password_config_file`
 
-##### <a name="password_content"></a>`password_content`
+##### <a name="-splunk--enterprise--password--manage--password_content"></a>`password_content`
 
 Data type: `String[1]`
 
@@ -655,7 +655,7 @@ The hashed password username/details for the user.
 
 Default value: `$splunk::params::password_content`
 
-##### <a name="secret_file"></a>`secret_file`
+##### <a name="-splunk--enterprise--password--manage--secret_file"></a>`secret_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -663,7 +663,7 @@ Which file we should put the secret in.
 
 Default value: `$splunk::params::forwarder_secret_file`
 
-##### <a name="secret"></a>`secret`
+##### <a name="-splunk--enterprise--password--manage--secret"></a>`secret`
 
 Data type: `String[1]`
 
@@ -671,7 +671,7 @@ The secret used to salt the splunk password.
 
 Default value: `$splunk::params::secret`
 
-##### <a name="service"></a>`service`
+##### <a name="-splunk--enterprise--password--manage--service"></a>`service`
 
 Data type: `String[1]`
 
@@ -680,7 +680,7 @@ are updated, not applicable when running in agent mode.
 
 Default value: `$splunk::params::enterprise_service`
 
-##### <a name="mode"></a>`mode`
+##### <a name="-splunk--enterprise--password--manage--mode"></a>`mode`
 
 Data type: `Enum['agent', 'bolt']`
 
@@ -692,7 +692,7 @@ Bolt
 
 Default value: `'bolt'`
 
-##### <a name="splunk_user"></a>`splunk_user`
+##### <a name="-splunk--enterprise--password--manage--splunk_user"></a>`splunk_user`
 
 Data type: `String[1]`
 
@@ -700,7 +700,7 @@ Data type: `String[1]`
 
 Default value: `$splunk::params::splunk_user`
 
-### <a name="splunkenterprisepasswordseed"></a>`splunk::enterprise::password::seed`
+### <a name="splunk--enterprise--password--seed"></a>`splunk::enterprise::password::seed`
 
 Implements the seeding and reseeding of the Splunk Enterprise admin password
 so it can be used outside of regular management of the whole stack to
@@ -710,18 +710,18 @@ facilitate admin password resets through Bolt Plans
 
 The following parameters are available in the `splunk::enterprise::password::seed` class:
 
-* [`reset_seeded_password`](#reset_seeded_password)
-* [`password_config_file`](#password_config_file)
-* [`seed_config_file`](#seed_config_file)
-* [`seed_user`](#seed_user)
-* [`password_hash`](#password_hash)
-* [`secret_file`](#secret_file)
-* [`secret`](#secret)
-* [`service`](#service)
-* [`mode`](#mode)
-* [`splunk_user`](#splunk_user)
+* [`reset_seeded_password`](#-splunk--enterprise--password--seed--reset_seeded_password)
+* [`password_config_file`](#-splunk--enterprise--password--seed--password_config_file)
+* [`seed_config_file`](#-splunk--enterprise--password--seed--seed_config_file)
+* [`seed_user`](#-splunk--enterprise--password--seed--seed_user)
+* [`password_hash`](#-splunk--enterprise--password--seed--password_hash)
+* [`secret_file`](#-splunk--enterprise--password--seed--secret_file)
+* [`secret`](#-splunk--enterprise--password--seed--secret)
+* [`service`](#-splunk--enterprise--password--seed--service)
+* [`mode`](#-splunk--enterprise--password--seed--mode)
+* [`splunk_user`](#-splunk--enterprise--password--seed--splunk_user)
 
-##### <a name="reset_seeded_password"></a>`reset_seeded_password`
+##### <a name="-splunk--enterprise--password--seed--reset_seeded_password"></a>`reset_seeded_password`
 
 Data type: `Boolean`
 
@@ -730,7 +730,7 @@ import process on restart of the Splunk services.
 
 Default value: `$splunk::params::reset_seeded_password`
 
-##### <a name="password_config_file"></a>`password_config_file`
+##### <a name="-splunk--enterprise--password--seed--password_config_file"></a>`password_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -739,7 +739,7 @@ Which file to put the password in i.e. in linux it would be
 
 Default value: `$splunk::params::enterprise_password_config_file`
 
-##### <a name="seed_config_file"></a>`seed_config_file`
+##### <a name="-splunk--enterprise--password--seed--seed_config_file"></a>`seed_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -748,7 +748,7 @@ restart.
 
 Default value: `$splunk::params::enterprise_seed_config_file`
 
-##### <a name="seed_user"></a>`seed_user`
+##### <a name="-splunk--enterprise--password--seed--seed_user"></a>`seed_user`
 
 Data type: `String[1]`
 
@@ -756,7 +756,7 @@ The local user (usually 'admin') imported by Splunk.
 
 Default value: `$splunk::params::seed_user`
 
-##### <a name="password_hash"></a>`password_hash`
+##### <a name="-splunk--enterprise--password--seed--password_hash"></a>`password_hash`
 
 Data type: `String[1]`
 
@@ -764,7 +764,7 @@ The hashed password for the admin user.
 
 Default value: `$splunk::params::password_hash`
 
-##### <a name="secret_file"></a>`secret_file`
+##### <a name="-splunk--enterprise--password--seed--secret_file"></a>`secret_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -772,7 +772,7 @@ Which file we should put the secret in.
 
 Default value: `$splunk::params::enterprise_secret_file`
 
-##### <a name="secret"></a>`secret`
+##### <a name="-splunk--enterprise--password--seed--secret"></a>`secret`
 
 Data type: `String[1]`
 
@@ -780,7 +780,7 @@ The secret used to salt the splunk password.
 
 Default value: `$splunk::params::secret`
 
-##### <a name="service"></a>`service`
+##### <a name="-splunk--enterprise--password--seed--service"></a>`service`
 
 Data type: `String[1]`
 
@@ -789,7 +789,7 @@ are updated, not applicable when running in agent mode.
 
 Default value: `$splunk::params::enterprise_service`
 
-##### <a name="mode"></a>`mode`
+##### <a name="-splunk--enterprise--password--seed--mode"></a>`mode`
 
 Data type: `Enum['agent', 'bolt']`
 
@@ -801,7 +801,7 @@ Bolt
 
 Default value: `'bolt'`
 
-##### <a name="splunk_user"></a>`splunk_user`
+##### <a name="-splunk--enterprise--password--seed--splunk_user"></a>`splunk_user`
 
 Data type: `String[1]`
 
@@ -809,18 +809,18 @@ Data type: `String[1]`
 
 Default value: `$splunk::params::splunk_user`
 
-### <a name="splunkenterpriseservice"></a>`splunk::enterprise::service`
+### <a name="splunk--enterprise--service"></a>`splunk::enterprise::service`
 
 Private class declared by Class[splunk::enterprise] to define a service
 as its understood by Puppet using a dynamic set of data or platform specific
 sub-classes
 
-### <a name="splunkenterpriseservicenix"></a>`splunk::enterprise::service::nix`
+### <a name="splunk--enterprise--service--nix"></a>`splunk::enterprise::service::nix`
 
 Private class declared by Class[splunk::enterprise::service] to provide
 platform specific service management on Linux or Unix type systems.
 
-### <a name="splunkforwarder"></a>`splunk::forwarder`
+### <a name="splunk--forwarder"></a>`splunk::forwarder`
 
 Install and configure an instance of Splunk Universal Forwarder
 
@@ -849,48 +849,48 @@ class { 'splunk::forwarder':
 
 The following parameters are available in the `splunk::forwarder` class:
 
-* [`server`](#server)
-* [`version`](#version)
-* [`package_name`](#package_name)
-* [`package_ensure`](#package_ensure)
-* [`staging_dir`](#staging_dir)
-* [`path_delimiter`](#path_delimiter)
-* [`forwarder_package_src`](#forwarder_package_src)
-* [`package_provider`](#package_provider)
-* [`manage_package_source`](#manage_package_source)
-* [`package_source`](#package_source)
-* [`install_options`](#install_options)
-* [`splunk_user`](#splunk_user)
-* [`forwarder_homedir`](#forwarder_homedir)
-* [`forwarder_confdir`](#forwarder_confdir)
-* [`service_name`](#service_name)
-* [`service_file`](#service_file)
-* [`boot_start`](#boot_start)
-* [`use_default_config`](#use_default_config)
-* [`splunkd_listen`](#splunkd_listen)
-* [`splunkd_port`](#splunkd_port)
-* [`logging_port`](#logging_port)
-* [`purge_inputs`](#purge_inputs)
-* [`purge_outputs`](#purge_outputs)
-* [`purge_props`](#purge_props)
-* [`purge_transforms`](#purge_transforms)
-* [`purge_web`](#purge_web)
-* [`forwarder_input`](#forwarder_input)
-* [`forwarder_output`](#forwarder_output)
-* [`manage_password`](#manage_password)
-* [`seed_password`](#seed_password)
-* [`reset_seeded_password`](#reset_seeded_password)
-* [`password_config_file`](#password_config_file)
-* [`seed_config_file`](#seed_config_file)
-* [`seed_user`](#seed_user)
-* [`password_content`](#password_content)
-* [`password_hash`](#password_hash)
-* [`secret_file`](#secret_file)
-* [`secret`](#secret)
-* [`addons`](#addons)
-* [`purge_deploymentclient`](#purge_deploymentclient)
+* [`server`](#-splunk--forwarder--server)
+* [`version`](#-splunk--forwarder--version)
+* [`package_name`](#-splunk--forwarder--package_name)
+* [`package_ensure`](#-splunk--forwarder--package_ensure)
+* [`staging_dir`](#-splunk--forwarder--staging_dir)
+* [`path_delimiter`](#-splunk--forwarder--path_delimiter)
+* [`forwarder_package_src`](#-splunk--forwarder--forwarder_package_src)
+* [`package_provider`](#-splunk--forwarder--package_provider)
+* [`manage_package_source`](#-splunk--forwarder--manage_package_source)
+* [`package_source`](#-splunk--forwarder--package_source)
+* [`install_options`](#-splunk--forwarder--install_options)
+* [`splunk_user`](#-splunk--forwarder--splunk_user)
+* [`forwarder_homedir`](#-splunk--forwarder--forwarder_homedir)
+* [`forwarder_confdir`](#-splunk--forwarder--forwarder_confdir)
+* [`service_name`](#-splunk--forwarder--service_name)
+* [`service_file`](#-splunk--forwarder--service_file)
+* [`boot_start`](#-splunk--forwarder--boot_start)
+* [`use_default_config`](#-splunk--forwarder--use_default_config)
+* [`splunkd_listen`](#-splunk--forwarder--splunkd_listen)
+* [`splunkd_port`](#-splunk--forwarder--splunkd_port)
+* [`logging_port`](#-splunk--forwarder--logging_port)
+* [`purge_inputs`](#-splunk--forwarder--purge_inputs)
+* [`purge_outputs`](#-splunk--forwarder--purge_outputs)
+* [`purge_props`](#-splunk--forwarder--purge_props)
+* [`purge_transforms`](#-splunk--forwarder--purge_transforms)
+* [`purge_web`](#-splunk--forwarder--purge_web)
+* [`forwarder_input`](#-splunk--forwarder--forwarder_input)
+* [`forwarder_output`](#-splunk--forwarder--forwarder_output)
+* [`manage_password`](#-splunk--forwarder--manage_password)
+* [`seed_password`](#-splunk--forwarder--seed_password)
+* [`reset_seeded_password`](#-splunk--forwarder--reset_seeded_password)
+* [`password_config_file`](#-splunk--forwarder--password_config_file)
+* [`seed_config_file`](#-splunk--forwarder--seed_config_file)
+* [`seed_user`](#-splunk--forwarder--seed_user)
+* [`password_content`](#-splunk--forwarder--password_content)
+* [`password_hash`](#-splunk--forwarder--password_hash)
+* [`secret_file`](#-splunk--forwarder--secret_file)
+* [`secret`](#-splunk--forwarder--secret)
+* [`addons`](#-splunk--forwarder--addons)
+* [`purge_deploymentclient`](#-splunk--forwarder--purge_deploymentclient)
 
-##### <a name="server"></a>`server`
+##### <a name="-splunk--forwarder--server"></a>`server`
 
 Data type: `String[1]`
 
@@ -898,7 +898,7 @@ The fqdn or IP address of the Splunk server.
 
 Default value: `$splunk::params::server`
 
-##### <a name="version"></a>`version`
+##### <a name="-splunk--forwarder--version"></a>`version`
 
 Data type: `String[1]`
 
@@ -907,7 +907,7 @@ manage.
 
 Default value: `$splunk::params::version`
 
-##### <a name="package_name"></a>`package_name`
+##### <a name="-splunk--forwarder--package_name"></a>`package_name`
 
 Data type: `String[1]`
 
@@ -915,7 +915,7 @@ The name of the package(s) Puppet will use to install Splunk Forwarder.
 
 Default value: `$splunk::params::forwarder_package_name`
 
-##### <a name="package_ensure"></a>`package_ensure`
+##### <a name="-splunk--forwarder--package_ensure"></a>`package_ensure`
 
 Data type: `String[1]`
 
@@ -923,7 +923,7 @@ Ensure parameter which will get passed to the Splunk package resource.
 
 Default value: `$splunk::params::forwarder_package_ensure`
 
-##### <a name="staging_dir"></a>`staging_dir`
+##### <a name="-splunk--forwarder--staging_dir"></a>`staging_dir`
 
 Data type: `String[1]`
 
@@ -931,7 +931,7 @@ Root of the archive path to host the Splunk package.
 
 Default value: `$splunk::params::staging_dir`
 
-##### <a name="path_delimiter"></a>`path_delimiter`
+##### <a name="-splunk--forwarder--path_delimiter"></a>`path_delimiter`
 
 Data type: `String[1]`
 
@@ -939,7 +939,7 @@ The path separator used in the archived path of the Splunk package.
 
 Default value: `$splunk::params::path_delimiter`
 
-##### <a name="forwarder_package_src"></a>`forwarder_package_src`
+##### <a name="-splunk--forwarder--forwarder_package_src"></a>`forwarder_package_src`
 
 Data type: `String[1]`
 
@@ -951,7 +951,7 @@ a UNC path to the MSI.
 
 Default value: `$splunk::params::forwarder_package_src`
 
-##### <a name="package_provider"></a>`package_provider`
+##### <a name="-splunk--forwarder--package_provider"></a>`package_provider`
 
 Data type: `Optional[String[1]]`
 
@@ -959,15 +959,15 @@ The package management system used to host the Splunk packages.
 
 Default value: `$splunk::params::package_provider`
 
-##### <a name="manage_package_source"></a>`manage_package_source`
+##### <a name="-splunk--forwarder--manage_package_source"></a>`manage_package_source`
 
 Data type: `Boolean`
 
 Whether or not to use the supplied `forwarder_package_src` param.
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="package_source"></a>`package_source`
+##### <a name="-splunk--forwarder--package_source"></a>`package_source`
 
 Data type: `Optional[String[1]]`
 
@@ -977,9 +977,9 @@ MSI, etc). If `enterprise_package_src` parameter is set in splunk::params and
 it is required. The URL can be of any protocol supported by the puppet/archive
 module. On Windows, this can be a UNC path to the MSI.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="install_options"></a>`install_options`
+##### <a name="-splunk--forwarder--install_options"></a>`install_options`
 
 Data type: `Splunk::Fwdinstalloptions`
 
@@ -987,7 +987,7 @@ This variable is passed to the package resources' *install_options* parameter.
 
 Default value: `$splunk::params::forwarder_install_options`
 
-##### <a name="splunk_user"></a>`splunk_user`
+##### <a name="-splunk--forwarder--splunk_user"></a>`splunk_user`
 
 Data type: `String[1]`
 
@@ -995,7 +995,7 @@ The user to run Splunk as.
 
 Default value: `$splunk::params::splunk_user`
 
-##### <a name="forwarder_homedir"></a>`forwarder_homedir`
+##### <a name="-splunk--forwarder--forwarder_homedir"></a>`forwarder_homedir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1003,7 +1003,7 @@ Specifies the Splunk Forwarder home directory.
 
 Default value: `$splunk::params::forwarder_homedir`
 
-##### <a name="forwarder_confdir"></a>`forwarder_confdir`
+##### <a name="-splunk--forwarder--forwarder_confdir"></a>`forwarder_confdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1011,7 +1011,7 @@ Specifies the Splunk Forwarder configuration directory.
 
 Default value: `$splunk::params::forwarder_confdir`
 
-##### <a name="service_name"></a>`service_name`
+##### <a name="-splunk--forwarder--service_name"></a>`service_name`
 
 Data type: `String[1]`
 
@@ -1019,7 +1019,7 @@ The name of the Splunk Forwarder service.
 
 Default value: `$splunk::params::forwarder_service`
 
-##### <a name="service_file"></a>`service_file`
+##### <a name="-splunk--forwarder--service_file"></a>`service_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1027,7 +1027,7 @@ The path to the Splunk Forwarder service file.
 
 Default value: `$splunk::params::forwarder_service_file`
 
-##### <a name="boot_start"></a>`boot_start`
+##### <a name="-splunk--forwarder--boot_start"></a>`boot_start`
 
 Data type: `Boolean`
 
@@ -1036,16 +1036,16 @@ manage the Splunk Forwarder service.
 
 Default value: `$splunk::params::boot_start`
 
-##### <a name="use_default_config"></a>`use_default_config`
+##### <a name="-splunk--forwarder--use_default_config"></a>`use_default_config`
 
 Data type: `Boolean`
 
 Whether or not the module should manage a default set of Splunk Forwarder
 configuration parameters.
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="splunkd_listen"></a>`splunkd_listen`
+##### <a name="-splunk--forwarder--splunkd_listen"></a>`splunkd_listen`
 
 Data type: `Stdlib::IP::Address`
 
@@ -1053,7 +1053,7 @@ The address on which splunkd should listen.
 
 Default value: `'127.0.0.1'`
 
-##### <a name="splunkd_port"></a>`splunkd_port`
+##### <a name="-splunk--forwarder--splunkd_port"></a>`splunkd_port`
 
 Data type: `Stdlib::Port`
 
@@ -1061,7 +1061,7 @@ The management port for Splunk.
 
 Default value: `$splunk::params::splunkd_port`
 
-##### <a name="logging_port"></a>`logging_port`
+##### <a name="-splunk--forwarder--logging_port"></a>`logging_port`
 
 Data type: `Stdlib::Port`
 
@@ -1069,52 +1069,52 @@ The port on which to send and listen for logs.
 
 Default value: `$splunk::params::logging_port`
 
-##### <a name="purge_inputs"></a>`purge_inputs`
+##### <a name="-splunk--forwarder--purge_inputs"></a>`purge_inputs`
 
 Data type: `Boolean`
 
 *Optional* If set to true, inputs.conf will be purged of configuration that is
 no longer managed by the `splunkforwarder_input` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_outputs"></a>`purge_outputs`
+##### <a name="-splunk--forwarder--purge_outputs"></a>`purge_outputs`
 
 Data type: `Boolean`
 
 *Optional* If set to true, outputs.conf will be purged of configuration that is
 no longer managed by the `splunk_output` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_props"></a>`purge_props`
+##### <a name="-splunk--forwarder--purge_props"></a>`purge_props`
 
 Data type: `Boolean`
 
 *Optional* If set to true, props.conf will be purged of configuration that is
 no longer managed by the `splunk_props` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_transforms"></a>`purge_transforms`
+##### <a name="-splunk--forwarder--purge_transforms"></a>`purge_transforms`
 
 Data type: `Boolean`
 
 *Optional* If set to true, transforms.conf will be purged of configuration that is
 no longer managed by the `splunk_transforms` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="purge_web"></a>`purge_web`
+##### <a name="-splunk--forwarder--purge_web"></a>`purge_web`
 
 Data type: `Boolean`
 
 *Optional* If set to true, web.conf will be purged of configuration that is
 no longer managed by the `splunk_web` type.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="forwarder_input"></a>`forwarder_input`
+##### <a name="-splunk--forwarder--forwarder_input"></a>`forwarder_input`
 
 Data type: `Hash`
 
@@ -1122,7 +1122,7 @@ Used to override the default `forwarder_input` type defined in splunk::params.
 
 Default value: `$splunk::params::forwarder_input`
 
-##### <a name="forwarder_output"></a>`forwarder_output`
+##### <a name="-splunk--forwarder--forwarder_output"></a>`forwarder_output`
 
 Data type: `Hash`
 
@@ -1130,7 +1130,7 @@ Used to override the default `forwarder_output` type defined in splunk::params.
 
 Default value: `$splunk::params::forwarder_output`
 
-##### <a name="manage_password"></a>`manage_password`
+##### <a name="-splunk--forwarder--manage_password"></a>`manage_password`
 
 Data type: `Boolean`
 
@@ -1138,7 +1138,7 @@ If set to true, Manage the contents of splunk.secret and passwd.
 
 Default value: `$splunk::params::manage_password`
 
-##### <a name="seed_password"></a>`seed_password`
+##### <a name="-splunk--forwarder--seed_password"></a>`seed_password`
 
 Data type: `Boolean`
 
@@ -1146,7 +1146,7 @@ If set to true, Manage the contents of splunk.secret and user-seed.conf.
 
 Default value: `$splunk::params::seed_password`
 
-##### <a name="reset_seeded_password"></a>`reset_seeded_password`
+##### <a name="-splunk--forwarder--reset_seeded_password"></a>`reset_seeded_password`
 
 Data type: `Boolean`
 
@@ -1155,7 +1155,7 @@ import process on restart of the Splunk services.
 
 Default value: `$splunk::params::reset_seeded_password`
 
-##### <a name="password_config_file"></a>`password_config_file`
+##### <a name="-splunk--forwarder--password_config_file"></a>`password_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1164,7 +1164,7 @@ Which file to put the password in i.e. in linux it would be
 
 Default value: `$splunk::params::forwarder_password_config_file`
 
-##### <a name="seed_config_file"></a>`seed_config_file`
+##### <a name="-splunk--forwarder--seed_config_file"></a>`seed_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1173,7 +1173,7 @@ restart.
 
 Default value: `$splunk::params::forwarder_seed_config_file`
 
-##### <a name="seed_user"></a>`seed_user`
+##### <a name="-splunk--forwarder--seed_user"></a>`seed_user`
 
 Data type: `String[1]`
 
@@ -1181,7 +1181,7 @@ The local user (usually 'admin') imported by Splunk.
 
 Default value: `$splunk::params::seed_user`
 
-##### <a name="password_content"></a>`password_content`
+##### <a name="-splunk--forwarder--password_content"></a>`password_content`
 
 Data type: `String[1]`
 
@@ -1189,7 +1189,7 @@ The hashed password username/details for the user.
 
 Default value: `$splunk::params::password_content`
 
-##### <a name="password_hash"></a>`password_hash`
+##### <a name="-splunk--forwarder--password_hash"></a>`password_hash`
 
 Data type: `String[1]`
 
@@ -1197,7 +1197,7 @@ The hashed password for the admin user.
 
 Default value: `$splunk::params::password_hash`
 
-##### <a name="secret_file"></a>`secret_file`
+##### <a name="-splunk--forwarder--secret_file"></a>`secret_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1205,7 +1205,7 @@ Which file we should put the secret in.
 
 Default value: `$splunk::params::forwarder_secret_file`
 
-##### <a name="secret"></a>`secret`
+##### <a name="-splunk--forwarder--secret"></a>`secret`
 
 Data type: `String[1]`
 
@@ -1213,7 +1213,7 @@ The secret used to salt the splunk password.
 
 Default value: `$splunk::params::secret`
 
-##### <a name="addons"></a>`addons`
+##### <a name="-splunk--forwarder--addons"></a>`addons`
 
 Data type: `Hash`
 
@@ -1221,27 +1221,27 @@ Manage a splunk addons, see `splunk::addons`.
 
 Default value: `{}`
 
-##### <a name="purge_deploymentclient"></a>`purge_deploymentclient`
+##### <a name="-splunk--forwarder--purge_deploymentclient"></a>`purge_deploymentclient`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-### <a name="splunkforwarderconfig"></a>`splunk::forwarder::config`
+### <a name="splunk--forwarder--config"></a>`splunk::forwarder::config`
 
 Private class declared by Class[splunk::forwarder] to contain all the
 configuration needed for a base install of the Splunk Universal
 Forwarder
 
-### <a name="splunkforwarderinstall"></a>`splunk::forwarder::install`
+### <a name="splunk--forwarder--install"></a>`splunk::forwarder::install`
 
 Private class declared by Class[splunk::forwarder] to contain or define
 through additional platform specific sub-class, the required steps
 for successfully installing the Splunk Universal Forwarder
 
-### <a name="splunkforwarderpasswordmanage"></a>`splunk::forwarder::password::manage`
+### <a name="splunk--forwarder--password--manage"></a>`splunk::forwarder::password::manage`
 
 Implements the direct management of the Splunk Forwarder admin password
 so it can be used outside of regular management of the whole stack to
@@ -1254,16 +1254,16 @@ used to manage admin password seeding.
 
 The following parameters are available in the `splunk::forwarder::password::manage` class:
 
-* [`manage_password`](#manage_password)
-* [`password_config_file`](#password_config_file)
-* [`password_content`](#password_content)
-* [`secret_file`](#secret_file)
-* [`secret`](#secret)
-* [`service`](#service)
-* [`mode`](#mode)
-* [`splunk_user`](#splunk_user)
+* [`manage_password`](#-splunk--forwarder--password--manage--manage_password)
+* [`password_config_file`](#-splunk--forwarder--password--manage--password_config_file)
+* [`password_content`](#-splunk--forwarder--password--manage--password_content)
+* [`secret_file`](#-splunk--forwarder--password--manage--secret_file)
+* [`secret`](#-splunk--forwarder--password--manage--secret)
+* [`service`](#-splunk--forwarder--password--manage--service)
+* [`mode`](#-splunk--forwarder--password--manage--mode)
+* [`splunk_user`](#-splunk--forwarder--password--manage--splunk_user)
 
-##### <a name="manage_password"></a>`manage_password`
+##### <a name="-splunk--forwarder--password--manage--manage_password"></a>`manage_password`
 
 Data type: `Boolean`
 
@@ -1271,7 +1271,7 @@ If set to true, Manage the contents of splunk.secret and passwd.
 
 Default value: `$splunk::params::manage_password`
 
-##### <a name="password_config_file"></a>`password_config_file`
+##### <a name="-splunk--forwarder--password--manage--password_config_file"></a>`password_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1280,7 +1280,7 @@ Which file to put the password in i.e. in linux it would be
 
 Default value: `$splunk::params::enterprise_password_config_file`
 
-##### <a name="password_content"></a>`password_content`
+##### <a name="-splunk--forwarder--password--manage--password_content"></a>`password_content`
 
 Data type: `String[1]`
 
@@ -1288,7 +1288,7 @@ The hashed password username/details for the user.
 
 Default value: `$splunk::params::password_content`
 
-##### <a name="secret_file"></a>`secret_file`
+##### <a name="-splunk--forwarder--password--manage--secret_file"></a>`secret_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1296,7 +1296,7 @@ Which file we should put the secret in.
 
 Default value: `$splunk::params::enterprise_secret_file`
 
-##### <a name="secret"></a>`secret`
+##### <a name="-splunk--forwarder--password--manage--secret"></a>`secret`
 
 Data type: `String[1]`
 
@@ -1304,7 +1304,7 @@ The secret used to salt the splunk password.
 
 Default value: `$splunk::params::secret`
 
-##### <a name="service"></a>`service`
+##### <a name="-splunk--forwarder--password--manage--service"></a>`service`
 
 Data type: `String[1]`
 
@@ -1313,7 +1313,7 @@ are updated, not applicable when running in agent mode.
 
 Default value: `$splunk::params::forwarder_service`
 
-##### <a name="mode"></a>`mode`
+##### <a name="-splunk--forwarder--password--manage--mode"></a>`mode`
 
 Data type: `Enum['agent', 'bolt']`
 
@@ -1325,7 +1325,7 @@ Bolt
 
 Default value: `'bolt'`
 
-##### <a name="splunk_user"></a>`splunk_user`
+##### <a name="-splunk--forwarder--password--manage--splunk_user"></a>`splunk_user`
 
 Data type: `String[1]`
 
@@ -1333,7 +1333,7 @@ Data type: `String[1]`
 
 Default value: `$splunk::params::splunk_user`
 
-### <a name="splunkforwarderpasswordseed"></a>`splunk::forwarder::password::seed`
+### <a name="splunk--forwarder--password--seed"></a>`splunk::forwarder::password::seed`
 
 Implements the seeding and reseeding of the Splunk Forwarder admin password
 so it can be used outside of regular management of the whole stack to
@@ -1343,18 +1343,18 @@ facilitate admin password resets through Bolt Plans
 
 The following parameters are available in the `splunk::forwarder::password::seed` class:
 
-* [`reset_seeded_password`](#reset_seeded_password)
-* [`password_config_file`](#password_config_file)
-* [`seed_config_file`](#seed_config_file)
-* [`seed_user`](#seed_user)
-* [`password_hash`](#password_hash)
-* [`secret_file`](#secret_file)
-* [`secret`](#secret)
-* [`service`](#service)
-* [`mode`](#mode)
-* [`splunk_user`](#splunk_user)
+* [`reset_seeded_password`](#-splunk--forwarder--password--seed--reset_seeded_password)
+* [`password_config_file`](#-splunk--forwarder--password--seed--password_config_file)
+* [`seed_config_file`](#-splunk--forwarder--password--seed--seed_config_file)
+* [`seed_user`](#-splunk--forwarder--password--seed--seed_user)
+* [`password_hash`](#-splunk--forwarder--password--seed--password_hash)
+* [`secret_file`](#-splunk--forwarder--password--seed--secret_file)
+* [`secret`](#-splunk--forwarder--password--seed--secret)
+* [`service`](#-splunk--forwarder--password--seed--service)
+* [`mode`](#-splunk--forwarder--password--seed--mode)
+* [`splunk_user`](#-splunk--forwarder--password--seed--splunk_user)
 
-##### <a name="reset_seeded_password"></a>`reset_seeded_password`
+##### <a name="-splunk--forwarder--password--seed--reset_seeded_password"></a>`reset_seeded_password`
 
 Data type: `Boolean`
 
@@ -1363,7 +1363,7 @@ import process on restart of the Splunk services.
 
 Default value: `$splunk::params::reset_seeded_password`
 
-##### <a name="password_config_file"></a>`password_config_file`
+##### <a name="-splunk--forwarder--password--seed--password_config_file"></a>`password_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1372,7 +1372,7 @@ Which file to put the password in i.e. in linux it would be
 
 Default value: `$splunk::params::forwarder_password_config_file`
 
-##### <a name="seed_config_file"></a>`seed_config_file`
+##### <a name="-splunk--forwarder--password--seed--seed_config_file"></a>`seed_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1381,7 +1381,7 @@ restart.
 
 Default value: `$splunk::params::forwarder_seed_config_file`
 
-##### <a name="seed_user"></a>`seed_user`
+##### <a name="-splunk--forwarder--password--seed--seed_user"></a>`seed_user`
 
 Data type: `String[1]`
 
@@ -1389,7 +1389,7 @@ The local user (usually 'admin') imported by Splunk.
 
 Default value: `$splunk::params::seed_user`
 
-##### <a name="password_hash"></a>`password_hash`
+##### <a name="-splunk--forwarder--password--seed--password_hash"></a>`password_hash`
 
 Data type: `String[1]`
 
@@ -1397,7 +1397,7 @@ The hashed password for the admin user.
 
 Default value: `$splunk::params::password_hash`
 
-##### <a name="secret_file"></a>`secret_file`
+##### <a name="-splunk--forwarder--password--seed--secret_file"></a>`secret_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1405,7 +1405,7 @@ Which file we should put the secret in.
 
 Default value: `$splunk::params::forwarder_secret_file`
 
-##### <a name="secret"></a>`secret`
+##### <a name="-splunk--forwarder--password--seed--secret"></a>`secret`
 
 Data type: `String[1]`
 
@@ -1413,7 +1413,7 @@ The secret used to salt the splunk password.
 
 Default value: `$splunk::params::secret`
 
-##### <a name="service"></a>`service`
+##### <a name="-splunk--forwarder--password--seed--service"></a>`service`
 
 Data type: `String[1]`
 
@@ -1422,7 +1422,7 @@ are updated, not applicable when running in agent mode.
 
 Default value: `$splunk::params::forwarder_service`
 
-##### <a name="mode"></a>`mode`
+##### <a name="-splunk--forwarder--password--seed--mode"></a>`mode`
 
 Data type: `Enum['agent', 'bolt']`
 
@@ -1434,7 +1434,7 @@ Bolt
 
 Default value: `'bolt'`
 
-##### <a name="splunk_user"></a>`splunk_user`
+##### <a name="-splunk--forwarder--password--seed--splunk_user"></a>`splunk_user`
 
 Data type: `String[1]`
 
@@ -1442,18 +1442,18 @@ Data type: `String[1]`
 
 Default value: `$splunk::params::splunk_user`
 
-### <a name="splunkforwarderservice"></a>`splunk::forwarder::service`
+### <a name="splunk--forwarder--service"></a>`splunk::forwarder::service`
 
 Private class declared by Class[splunk::forwarder] to define a service as
 its understood by Puppet using a dynamic set of data or platform specific
 sub-classes
 
-### <a name="splunkforwarderservicenix"></a>`splunk::forwarder::service::nix`
+### <a name="splunk--forwarder--service--nix"></a>`splunk::forwarder::service::nix`
 
 Private class declared by Class[splunk::forwarder::service] to provide
 platform specific service management on Linux or Unix type systems.
 
-### <a name="splunkparams"></a>`splunk::params`
+### <a name="splunk--params"></a>`splunk::params`
 
 This class takes a small number of arguments (can be set through Hiera) and
 generates sane default values installation media names and locations.
@@ -1465,20 +1465,20 @@ parameters to be consumed by child classes.
 
 The following parameters are available in the `splunk::params` class:
 
-* [`version`](#version)
-* [`build`](#build)
-* [`splunkd_port`](#splunkd_port)
-* [`logging_port`](#logging_port)
-* [`server`](#server)
-* [`splunk_user`](#splunk_user)
-* [`src_root`](#src_root)
-* [`boot_start`](#boot_start)
-* [`forwarder_installdir`](#forwarder_installdir)
-* [`enterprise_installdir`](#enterprise_installdir)
-* [`default_host`](#default_host)
-* [`manage_net_tools`](#manage_net_tools)
+* [`version`](#-splunk--params--version)
+* [`build`](#-splunk--params--build)
+* [`splunkd_port`](#-splunk--params--splunkd_port)
+* [`logging_port`](#-splunk--params--logging_port)
+* [`server`](#-splunk--params--server)
+* [`splunk_user`](#-splunk--params--splunk_user)
+* [`src_root`](#-splunk--params--src_root)
+* [`boot_start`](#-splunk--params--boot_start)
+* [`forwarder_installdir`](#-splunk--params--forwarder_installdir)
+* [`enterprise_installdir`](#-splunk--params--enterprise_installdir)
+* [`default_host`](#-splunk--params--default_host)
+* [`manage_net_tools`](#-splunk--params--manage_net_tools)
 
-##### <a name="version"></a>`version`
+##### <a name="-splunk--params--version"></a>`version`
 
 Data type: `String[1]`
 
@@ -1487,7 +1487,7 @@ The version of Splunk to install. This will be in the form x.y.z; e.g.
 
 Default value: `'7.2.4.2'`
 
-##### <a name="build"></a>`build`
+##### <a name="-splunk--params--build"></a>`build`
 
 Data type: `String[1]`
 
@@ -1499,7 +1499,7 @@ e.g. "123586".
 
 Default value: `'fb30470262e3'`
 
-##### <a name="splunkd_port"></a>`splunkd_port`
+##### <a name="-splunk--params--splunkd_port"></a>`splunkd_port`
 
 Data type: `Stdlib::Port`
 
@@ -1507,7 +1507,7 @@ The splunkd port.
 
 Default value: `8089`
 
-##### <a name="logging_port"></a>`logging_port`
+##### <a name="-splunk--params--logging_port"></a>`logging_port`
 
 Data type: `Stdlib::Port`
 
@@ -1515,7 +1515,7 @@ The port on which to send logs, and listen for logs.
 
 Default value: `9997`
 
-##### <a name="server"></a>`server`
+##### <a name="-splunk--params--server"></a>`server`
 
 Data type: `String[1]`
 
@@ -1524,15 +1524,21 @@ the default TCP output and input.
 
 Default value: `'splunk'`
 
-##### <a name="splunk_user"></a>`splunk_user`
+##### <a name="-splunk--params--splunk_user"></a>`splunk_user`
 
 Data type: `String[1]`
 
 The user that splunk runs as.
 
-Default value: `$facts['os']['family']`
+Default value:
 
-##### <a name="src_root"></a>`src_root`
+```puppet
+$facts['os']['family'] ? {
+    'windows' => 'Administrator',
+    default => 'root'
+```
+
+##### <a name="-splunk--params--src_root"></a>`src_root`
 
 Data type: `String[1]`
 
@@ -1585,7 +1591,7 @@ $root_url/
 
 Default value: `'https://download.splunk.com'`
 
-##### <a name="boot_start"></a>`boot_start`
+##### <a name="-splunk--params--boot_start"></a>`boot_start`
 
 Data type: `Boolean`
 
@@ -1594,25 +1600,25 @@ Enable Splunk to start at boot, create a system service file.
 WARNING: Toggling `boot_start` from `false` to `true` will cause a restart of
 Splunk Enterprise and Forwarder services.
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="forwarder_installdir"></a>`forwarder_installdir`
+##### <a name="-splunk--params--forwarder_installdir"></a>`forwarder_installdir`
 
 Data type: `Optional[String[1]]`
 
 Optional directory in which to install and manage Splunk Forwarder
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="enterprise_installdir"></a>`enterprise_installdir`
+##### <a name="-splunk--params--enterprise_installdir"></a>`enterprise_installdir`
 
 Data type: `Optional[String[1]]`
 
 Optional directory in which to install and manage Splunk Enterprise
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="default_host"></a>`default_host`
+##### <a name="-splunk--params--default_host"></a>`default_host`
 
 Data type: `String[1]`
 
@@ -1620,7 +1626,7 @@ The host property in inputs.conf. Defaults to the server's hostname.
 
 Default value: `$facts['clientcert']`
 
-##### <a name="manage_net_tools"></a>`manage_net_tools`
+##### <a name="-splunk--params--manage_net_tools"></a>`manage_net_tools`
 
 Data type: `Boolean`
 
@@ -1628,11 +1634,11 @@ From Splunk 7.2.2+ the package `net-tools` is required to be installed on the sy
 By default this module manages the resource Package[net-tools], if this resource is
 already declared on your code base, you can disable this flag.
 
-Default value: ``true``
+Default value: `true`
 
 ## Defined types
 
-### <a name="splunkaddon"></a>`splunk::addon`
+### <a name="splunk--addon"></a>`splunk::addon`
 
 Defined type for deploying Splunk Add-ons and Apps from either OS packages
 or via splunkbase compatible archives
@@ -1667,55 +1673,55 @@ splunk::addon { 'Splunk_TA_nix':
 
 The following parameters are available in the `splunk::addon` defined type:
 
-* [`splunk_home`](#splunk_home)
-* [`package_manage`](#package_manage)
-* [`splunkbase_source`](#splunkbase_source)
-* [`extract_command`](#extract_command)
-* [`package_name`](#package_name)
-* [`owner`](#owner)
-* [`inputs`](#inputs)
+* [`splunk_home`](#-splunk--addon--splunk_home)
+* [`package_manage`](#-splunk--addon--package_manage)
+* [`splunkbase_source`](#-splunk--addon--splunkbase_source)
+* [`extract_command`](#-splunk--addon--extract_command)
+* [`package_name`](#-splunk--addon--package_name)
+* [`owner`](#-splunk--addon--owner)
+* [`inputs`](#-splunk--addon--inputs)
 
-##### <a name="splunk_home"></a>`splunk_home`
+##### <a name="-splunk--addon--splunk_home"></a>`splunk_home`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 Overrides the default Splunk installation target values from Class[splunk::params]
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="package_manage"></a>`package_manage`
+##### <a name="-splunk--addon--package_manage"></a>`package_manage`
 
 Data type: `Boolean`
 
 If a package should be installed as part of declaring a new instance of Splunk::Addon
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="splunkbase_source"></a>`splunkbase_source`
+##### <a name="-splunk--addon--splunkbase_source"></a>`splunkbase_source`
 
 Data type: `Optional[String[1]]`
 
 When set the add-on will be installed from a splunkbase compatible archive instead of OS packages
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="extract_command"></a>`extract_command`
+##### <a name="-splunk--addon--extract_command"></a>`extract_command`
 
 Data type: `Optional[String[1]]`
 
 A 'extract_command' to pass to the 'archive' that extracts a splunkbase_source package (helpful for SPL files)
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="package_name"></a>`package_name`
+##### <a name="-splunk--addon--package_name"></a>`package_name`
 
 Data type: `Optional[String[1]]`
 
 The OS package to install if you are not installing via splunk compatible archive
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="owner"></a>`owner`
+##### <a name="-splunk--addon--owner"></a>`owner`
 
 Data type: `String[1]`
 
@@ -1723,7 +1729,7 @@ The user that files are owned by when they are created as part of add-on install
 
 Default value: `'splunk'`
 
-##### <a name="inputs"></a>`inputs`
+##### <a name="-splunk--addon--inputs"></a>`inputs`
 
 Data type: `Hash`
 
@@ -1741,9 +1747,9 @@ Manage splunk alert_actions settings in alert_actions.conf
 
 The following parameters are available in the `splunk_alert_actions` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_alert_actions--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_alert_actions--provider"></a>`provider`
 
 The specific backend to use for this `splunk_alert_actions` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
@@ -1756,9 +1762,9 @@ Manage splunk authentication settings in authentication.conf
 
 The following parameters are available in the `splunk_authentication` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_authentication--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_authentication--provider"></a>`provider`
 
 The specific backend to use for this `splunk_authentication` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
@@ -1771,9 +1777,9 @@ Manage splunk authorize settings in authorize.conf
 
 The following parameters are available in the `splunk_authorize` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_authorize--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_authorize--provider"></a>`provider`
 
 The specific backend to use for this `splunk_authorize` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1786,28 +1792,28 @@ splunk config
 
 The following parameters are available in the `splunk_config` type.
 
-* [`forwarder_confdir`](#forwarder_confdir)
-* [`forwarder_installdir`](#forwarder_installdir)
-* [`name`](#name)
-* [`server_confdir`](#server_confdir)
-* [`server_installdir`](#server_installdir)
+* [`forwarder_confdir`](#-splunk_config--forwarder_confdir)
+* [`forwarder_installdir`](#-splunk_config--forwarder_installdir)
+* [`name`](#-splunk_config--name)
+* [`server_confdir`](#-splunk_config--server_confdir)
+* [`server_installdir`](#-splunk_config--server_installdir)
 
-##### <a name="forwarder_confdir"></a>`forwarder_confdir`
-
-
-##### <a name="forwarder_installdir"></a>`forwarder_installdir`
+##### <a name="-splunk_config--forwarder_confdir"></a>`forwarder_confdir`
 
 
-##### <a name="name"></a>`name`
+##### <a name="-splunk_config--forwarder_installdir"></a>`forwarder_installdir`
+
+
+##### <a name="-splunk_config--name"></a>`name`
 
 namevar
 
 splunk config
 
-##### <a name="server_confdir"></a>`server_confdir`
+##### <a name="-splunk_config--server_confdir"></a>`server_confdir`
 
 
-##### <a name="server_installdir"></a>`server_installdir`
+##### <a name="-splunk_config--server_installdir"></a>`server_installdir`
 
 
 ### <a name="splunk_deploymentclient"></a>`splunk_deploymentclient`
@@ -1818,9 +1824,9 @@ Manage splunk deploymentclient entries in deploymentclient.conf
 
 The following parameters are available in the `splunk_deploymentclient` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_deploymentclient--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_deploymentclient--provider"></a>`provider`
 
 The specific backend to use for this `splunk_deploymentclient` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
@@ -1833,9 +1839,9 @@ Manage distsearch entries in distsearch.conf
 
 The following parameters are available in the `splunk_distsearch` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_distsearch--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_distsearch--provider"></a>`provider`
 
 The specific backend to use for this `splunk_distsearch` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1848,9 +1854,9 @@ Manage splunk index settings in indexes.conf
 
 The following parameters are available in the `splunk_indexes` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_indexes--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_indexes--provider"></a>`provider`
 
 The specific backend to use for this `splunk_indexes` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1863,9 +1869,9 @@ Manage splunk input settings in inputs.conf
 
 The following parameters are available in the `splunk_input` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_input--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_input--provider"></a>`provider`
 
 The specific backend to use for this `splunk_input` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1878,9 +1884,9 @@ Manage splunk limits settings in limits.conf
 
 The following parameters are available in the `splunk_limits` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_limits--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_limits--provider"></a>`provider`
 
 The specific backend to use for this `splunk_limits` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1893,9 +1899,9 @@ Manage metadata entries in {default,local}.meta
 
 The following parameters are available in the `splunk_metadata` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_metadata--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_metadata--provider"></a>`provider`
 
 The specific backend to use for this `splunk_metadata` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1908,9 +1914,9 @@ Manage splunk output settings in outputs.conf
 
 The following parameters are available in the `splunk_output` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_output--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_output--provider"></a>`provider`
 
 The specific backend to use for this `splunk_output` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1923,9 +1929,9 @@ Manage splunk prop settings in props.conf
 
 The following parameters are available in the `splunk_props` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_props--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_props--provider"></a>`provider`
 
 The specific backend to use for this `splunk_props` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1938,9 +1944,9 @@ Manage splunk server settings in server.conf
 
 The following parameters are available in the `splunk_server` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_server--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_server--provider"></a>`provider`
 
 The specific backend to use for this `splunk_server` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1953,9 +1959,9 @@ Manage splunk serverclass entries in serverclass.conf
 
 The following parameters are available in the `splunk_serverclass` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_serverclass--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_serverclass--provider"></a>`provider`
 
 The specific backend to use for this `splunk_serverclass` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1968,9 +1974,9 @@ Manage splunk transforms settings in transforms.conf
 
 The following parameters are available in the `splunk_transforms` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_transforms--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_transforms--provider"></a>`provider`
 
 The specific backend to use for this `splunk_transforms` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1983,9 +1989,9 @@ Manage splunk web ui settings in ui-prefs.conf
 
 The following parameters are available in the `splunk_uiprefs` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_uiprefs--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_uiprefs--provider"></a>`provider`
 
 The specific backend to use for this `splunk_uiprefs` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
@@ -1998,9 +2004,9 @@ Manage splunk web settings in web.conf
 
 The following parameters are available in the `splunk_web` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunk_web--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunk_web--provider"></a>`provider`
 
 The specific backend to use for this `splunk_web` resource. You will seldom need to specify this --- Puppet will usually
 discover the appropriate provider for your platform.
@@ -2013,9 +2019,9 @@ Manage splunkforwarder deploymentclient entries in deploymentclient.conf
 
 The following parameters are available in the `splunkforwarder_deploymentclient` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunkforwarder_deploymentclient--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunkforwarder_deploymentclient--provider"></a>`provider`
 
 The specific backend to use for this `splunkforwarder_deploymentclient` resource. You will seldom need to specify this
 --- Puppet will usually discover the appropriate provider for your platform.
@@ -2028,9 +2034,9 @@ Manage splunkforwarder input settings in inputs.conf
 
 The following parameters are available in the `splunkforwarder_input` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunkforwarder_input--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunkforwarder_input--provider"></a>`provider`
 
 The specific backend to use for this `splunkforwarder_input` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
@@ -2043,9 +2049,9 @@ Manage splunkforwarder limit settings in limits.conf
 
 The following parameters are available in the `splunkforwarder_limits` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunkforwarder_limits--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunkforwarder_limits--provider"></a>`provider`
 
 The specific backend to use for this `splunkforwarder_limits` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
@@ -2058,9 +2064,9 @@ Manage splunkforwarder output settings in outputs.conf
 
 The following parameters are available in the `splunkforwarder_output` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunkforwarder_output--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunkforwarder_output--provider"></a>`provider`
 
 The specific backend to use for this `splunkforwarder_output` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
@@ -2073,9 +2079,9 @@ Manage splunkforwarder props settings in props.conf
 
 The following parameters are available in the `splunkforwarder_props` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunkforwarder_props--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunkforwarder_props--provider"></a>`provider`
 
 The specific backend to use for this `splunkforwarder_props` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
@@ -2088,9 +2094,9 @@ Manage splunkforwarder server settings in server.conf
 
 The following parameters are available in the `splunkforwarder_server` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunkforwarder_server--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunkforwarder_server--provider"></a>`provider`
 
 The specific backend to use for this `splunkforwarder_server` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
@@ -2103,9 +2109,9 @@ Manage splunkforwarder transforms settings in transforms.conf
 
 The following parameters are available in the `splunkforwarder_transforms` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunkforwarder_transforms--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunkforwarder_transforms--provider"></a>`provider`
 
 The specific backend to use for this `splunkforwarder_transforms` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
@@ -2118,32 +2124,24 @@ Manage splunkforwarder web settings in web.conf
 
 The following parameters are available in the `splunkforwarder_web` type.
 
-* [`provider`](#provider)
+* [`provider`](#-splunkforwarder_web--provider)
 
-##### <a name="provider"></a>`provider`
+##### <a name="-splunkforwarder_web--provider"></a>`provider`
 
 The specific backend to use for this `splunkforwarder_web` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
 ## Data types
 
-### <a name="splunkentinstalloptions"></a>`Splunk::Entinstalloptions`
+### <a name="Splunk--Entinstalloptions"></a>`Splunk::Entinstalloptions`
 
 The Splunk::Entinstalloptions data type.
 
-Alias of
+Alias of `Variant[Tuple[Hash,Hash,String,3,default], Array[String[1]]]`
 
-```puppet
-Variant[Tuple[Hash,Hash,String,3,default], Array[String[1]]]
-```
-
-### <a name="splunkfwdinstalloptions"></a>`Splunk::Fwdinstalloptions`
+### <a name="Splunk--Fwdinstalloptions"></a>`Splunk::Fwdinstalloptions`
 
 The Splunk::Fwdinstalloptions data type.
 
-Alias of
-
-```puppet
-Variant[Tuple[Hash,String,1,default], Array[String[1]]]
-```
+Alias of `Variant[Tuple[Hash,String,1,default], Array[String[1]]]`
 

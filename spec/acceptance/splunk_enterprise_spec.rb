@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'splunk enterprise class' do
@@ -13,11 +15,20 @@ describe 'splunk enterprise class' do
     it 'works idempotently with no errors' do
       pp = <<-EOS
       class { 'splunk::enterprise': }
+
+      # See https://community.splunk.com/t5/Installation/Why-am-I-getting-an-error-to-start-a-fresh-Splunk-instance-in-my/m-p/336938
+      file_line { 'file_locking':
+        path => '/opt/splunk/etc/splunk-launch.conf',
+        line => 'OPTIMISTIC_ABOUT_FILE_LOCKING=1',
+        require => Class['splunk::enterprise'],
+      }
       EOS
 
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
+      # give splunk some time to start
+      sleep(10)
     end
 
     describe package('splunk') do
@@ -52,6 +63,8 @@ describe 'splunk enterprise class' do
         EOS
 
         apply_manifest(pp, catch_failures: true)
+        # give splunk some time to start
+        sleep(10)
       end
 
       it 'works idempotently with no errors' do
@@ -84,6 +97,7 @@ describe 'splunk enterprise class' do
         EOS
         apply_manifest(pp, catch_failures: true)
       end
+
       describe package('splunk') do
         it { is_expected.not_to be_installed }
       end

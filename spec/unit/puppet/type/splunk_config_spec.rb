@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:splunk_config) do
-  let(:subject) do
+  let(:subject) do # rubocop:disable RSpec/SubjectDeclaration
     described_class.new(
       name: 'config',
       server_confdir: '/opt/splunk/etc',
@@ -26,7 +28,7 @@ describe Puppet::Type.type(:splunk_config) do
         file_path = File.join('/opt/splunkforwarder/etc/system/local', file_name)
       end
 
-      it "should configure the #{type} type with file path #{file_path}" do
+      it "configures the #{type} type with file path #{file_path}" do
         resource = Puppet::Type.type(type).new(name: 'foo', setting: 'foo', section: 'foo')
         provider = Puppet::Type.type(type).provider(:ini_setting).new(resource)
         expect(provider.file_path).to eq(file_path)
