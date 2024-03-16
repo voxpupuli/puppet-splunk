@@ -15,9 +15,10 @@ class splunk::forwarder::install {
     $_staged_package       = join($_package_path_parts, $splunk::forwarder::path_delimiter)
 
     archive { $_staged_package:
-      source  => $_package_source,
-      extract => false,
-      before  => Package[$splunk::forwarder::forwarder_package_name],
+      source         => $_package_source,
+      extract        => false,
+      allow_insecure => $splunk::forwarder::allow_insecure,
+      before         => Package[$splunk::forwarder::forwarder_package_name],
     }
   } else {
     $_staged_package = undef

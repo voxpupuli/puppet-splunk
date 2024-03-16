@@ -150,6 +150,9 @@
 # @param addons
 #   Manage a splunk addons, see `splunk::addons`.
 #
+# @param allow_insecure
+#   Disable certificate verification when connecting to SSL hosts to download packages.
+#
 class splunk::forwarder (
   String[1] $server                          = $splunk::params::server,
   String[1] $version                         = $splunk::params::version,
@@ -191,6 +194,7 @@ class splunk::forwarder (
   Stdlib::Absolutepath $secret_file          = $splunk::params::forwarder_secret_file,
   String[1] $secret                          = $splunk::params::secret,
   Hash $addons                               = {},
+  Boolean $allow_insecure                    = $splunk::params::allow_insecure,
 ) inherits splunk {
   if (defined(Class['splunk::enterprise'])) {
     fail('Splunk Universal Forwarder provides a subset of Splunk Enterprise capabilities, and has potentially conflicting resources when included with Splunk Enterprise on the same node.  Do not include splunk::forwarder on the same node as splunk::enterprise.  Configure Splunk Enterprise to meet your forwarding needs.'
