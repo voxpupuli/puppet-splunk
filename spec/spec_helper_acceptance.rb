@@ -3,6 +3,11 @@
 require 'voxpupuli/acceptance/spec_helper_acceptance'
 require 'splunk_data'
 
+OLD_SPLUNK_VERSIONS = [
+  ['7.2.4.2', 'fb30470262e3'],
+  ['9.0.0', '6818ac46f2ec'],
+].freeze
+
 configure_beaker do |host|
   # Need to stage the Splunk/Splunkforwarder packages here.
 

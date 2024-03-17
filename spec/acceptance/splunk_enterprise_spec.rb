@@ -10,6 +10,51 @@ describe 'splunk enterprise class' do
                    'splunk'
                  end
 
+  OLD_SPLUNK_VERSIONS.each do |version, build|
+    context "Splunk version #{version}" do
+      after(:all) do
+        pp = <<-EOS
+        service { '#{service_name}': ensure => stopped }
+        package { 'splunk': ensure => purged }
+        file { '/opt/splunk': ensure => absent, force => true, require => Package['splunk'] }
+        file { '/etc/init.d/splunk': ensure => absent, require => Package['splunk'] }
+        file { '/etc/systemd/system/Splunkd.service': ensure => absent, require => Package['splunk'] }
+        EOS
+        apply_manifest(pp, catch_failures: true)
+      end
+
+      it 'works idempotently with no errors' do
+        pp = <<-EOS
+        class { 'splunk::params': version => '#{version}', build => '#{build}' }
+        class { 'splunk::enterprise': }
+
+        # See https://community.splunk.com/t5/Installation/Why-am-I-getting-an-error-to-start-a-fresh-Splunk-instance-in-my/m-p/336938
+        file_line { 'file_locking':
+          path => '/opt/splunk/etc/splunk-launch.conf',
+          line => 'OPTIMISTIC_ABOUT_FILE_LOCKING=1',
+          before => Exec['enable_splunk'],
+          require => Package['splunk'],
+        }
+        EOS
+
+        # Run it twice and test for idempotency
+        apply_manifest(pp, catch_failures: true)
+        apply_manifest(pp, catch_changes: true)
+        # give splunk some time to start
+        sleep(10)
+      end
+
+      describe package('splunk') do
+        it { is_expected.to be_installed }
+      end
+
+      describe service(service_name) do
+        it { is_expected.to be_enabled }
+        it { is_expected.to be_running }
+      end
+    end
+  end
+
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
@@ -20,7 +65,8 @@ describe 'splunk enterprise class' do
       file_line { 'file_locking':
         path => '/opt/splunk/etc/splunk-launch.conf',
         line => 'OPTIMISTIC_ABOUT_FILE_LOCKING=1',
-        require => Class['splunk::enterprise'],
+        before => Exec['enable_splunk'],
+        require => Package['splunk'],
       }
       EOS
 
