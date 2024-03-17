@@ -46,8 +46,8 @@ describe 'splunk enterprise class' do
       describe file(conf_file_path) do
         it { is_expected.to be_file }
         it { is_expected.to be_mode 600 }
-        it { is_expected.to be_owned_by 'root' }
-        it { is_expected.to be_grouped_into 'root' }
+        it { is_expected.to be_owned_by 'splunk' }
+        it { is_expected.to be_grouped_into 'splunk' }
       end
     end
 

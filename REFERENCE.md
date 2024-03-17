@@ -994,7 +994,13 @@ Data type: `String[1]`
 
 The user to run Splunk as.
 
-Default value: `$splunk::params::splunk_user`
+Default value:
+
+```puppet
+versioncmp($version, '9.1.0') ? {
+    -1 => $splunk::params::splunk_user,
+    default => 'splunkfwd'
+```
 
 ##### <a name="-splunk--forwarder--forwarder_homedir"></a>`forwarder_homedir`
 
@@ -1495,7 +1501,7 @@ Data type: `String[1]`
 The version of Splunk to install. This will be in the form x.y.z; e.g.
 "4.3.2".
 
-Default value: `'7.2.4.2'`
+Default value: `'9.2.0.1'`
 
 ##### <a name="-splunk--params--build"></a>`build`
 
@@ -1507,7 +1513,7 @@ automatically but a build number must be supplied in order to correctly
 construct the path to the packages. A build number will be six digits;
 e.g. "123586".
 
-Default value: `'fb30470262e3'`
+Default value: `'d8ae995bf219'`
 
 ##### <a name="-splunk--params--splunkd_port"></a>`splunkd_port`
 
@@ -1545,7 +1551,7 @@ Default value:
 ```puppet
 $facts['os']['family'] ? {
     'windows' => 'Administrator',
-    default => 'root'
+    default => versioncmp($version, '8.0.0') ? { -1 => 'root', default => 'splunk'
 ```
 
 ##### <a name="-splunk--params--src_root"></a>`src_root`
