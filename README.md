@@ -1,6 +1,6 @@
 # Puppet Module For Splunk
 
-[![Build Status](https://travis-ci.org/voxpupuli/puppet-splunk.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-splunk)
+[![CI](https://github.com/voxpupuli/puppet-splunk/actions/workflows/ci.yml/badge.svg)](https://github.com/voxpupuli/puppet-splunk/actions/workflows/ci.yml)
 [![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-splunk/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-splunk)
 [![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/splunk.svg)](https://forge.puppetlabs.com/puppet/splunk)
 [![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/splunk.svg)](https://forge.puppetlabs.com/puppet/splunk)
