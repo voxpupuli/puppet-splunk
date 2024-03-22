@@ -32,10 +32,11 @@ module PuppetX
             end
             def insync?(is) # rubocop:disable Lint/NestedMethodDefinition
               secrets_file_path = File.join(provider.class.file_path, 'auth/splunk.secret')
-              if File.file?(secrets_file_path)
+              secrets_file_exist = File.file?(secrets_file_path)
+              if !should.start_with?('$7$') && secrets_file_exist
                 PuppetX::Voxpupuli::Splunk::Util.decrypt(secrets_file_path, is) == should
               else
-                Puppet.warning('Secrets file NOT found')
+                Puppet.warning("Secrets file NOT found in #{secrets_file_path}") unless secrets_file_exist
                 is == should
               end
             end
