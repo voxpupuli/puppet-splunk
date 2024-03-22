@@ -103,6 +103,13 @@ SPLUNK_TYPES.each do |type, file_name|
           allow(IO).to receive(:binread).with(%r{/opt/splunk(forwarder)?/etc/auth/splunk\.secret$}).and_return('JX7cQAnH6Nznmild8MvfN8/BLQnGr8C3UYg3mqvc3ArFkaxj4gUt1RUCaRBD/r0CNn8xOA2oKX8/0uyyChyGRiFKhp6h2FA+ydNIRnN46N8rZov8QGkchmebZa5GAM5U50GbCCgzJFObPyWi5yT8CrSCYmv9cpRtpKyiX+wkhJwltoJzAxWbBERiLp+oXZnN3lsRn6YkljmYBqN9tZLTVVpsLvqvkezPgpv727Fd//5dRoWsWBv2zRp0mwDv3tj')
           expect(property).to be_safe_insync('$7$aTVkS01HYVNJUk5wSnR5NIu4GXLhj2Qd49n2B6Y8qmA/u1CdL9JYxQ==')
         end
+
+        it 'is insync if `should` is encrypted' do
+          property.should = '$7$aTVkS01HYVNJUk5wSnR5NIu4GXLhj2Qd49n2B6Y8qmA/u1CdL9JYxQ=='
+          allow(File).to receive(:file?).with(%r{/opt/splunk(forwarder)?/etc/auth/splunk\.secret$}).and_return(true)
+          allow(IO).to receive(:binread).with(%r{/opt/splunk(forwarder)?/etc/auth/splunk\.secret$}).and_return('JX7cQAnH6Nznmild8MvfN8/BLQnGr8C3UYg3mqvc3ArFkaxj4gUt1RUCaRBD/r0CNn8xOA2oKX8/0uyyChyGRiFKhp6h2FA+ydNIRnN46N8rZov8QGkchmebZa5GAM5U50GbCCgzJFObPyWi5yT8CrSCYmv9cpRtpKyiX+wkhJwltoJzAxWbBERiLp+oXZnN3lsRn6YkljmYBqN9tZLTVVpsLvqvkezPgpv727Fd//5dRoWsWBv2zRp0mwDv3tj')
+          expect(property).to be_safe_insync('$7$aTVkS01HYVNJUk5wSnR5NIu4GXLhj2Qd49n2B6Y8qmA/u1CdL9JYxQ==')
+        end
       end
     end
   end
