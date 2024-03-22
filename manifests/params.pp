@@ -101,8 +101,8 @@
 #   Disable certificate verification when connecting to SSL hosts to download packages.
 #
 class splunk::params (
-  String[1] $version                         = '7.2.4.2',
-  String[1] $build                           = 'fb30470262e3',
+  String[1] $version                         = '9.2.0.1',
+  String[1] $build                           = 'd8ae995bf219',
   String[1] $src_root                        = 'https://download.splunk.com',
   Stdlib::Port $splunkd_port                 = 8089,
   Stdlib::Port $logging_port                 = 9997,
@@ -112,7 +112,7 @@ class splunk::params (
   Boolean $boot_start                        = true,
   String[1] $splunk_user                     = $facts['os']['family'] ? {
     'windows' => 'Administrator',
-    default => 'root'
+    default => versioncmp($version, '8.0.0') ? { -1 => 'root', default => 'splunk' },
   },
   String[1] $default_host                    = $facts['clientcert'],
   Boolean $manage_net_tools                  = true,
@@ -302,6 +302,13 @@ class splunk::params (
     default:   { $package_provider = undef } # Don't define a $package_provider
   }
 
+  # Download URLs changed starting from 8.2.11 and 9.0.5 for RPMs.
+  # Splunk no longer includes "-linux-2.6-".
+  $linux_prefix = (versioncmp($version, '9.0.5') >= 0 or (versioncmp($version, '8.2.11') >= 0 and versioncmp($version, '9.0.0') == -1)) ? {
+    true  => '.',
+    false => '-linux-2.6-',
+  }
+
   # Settings specific to an architecture as well as an OS family
   case "${facts['os']['family']} ${facts['os']['architecture']}" {
     'RedHat i386': {
@@ -310,12 +317,12 @@ class splunk::params (
       $enterprise_package_name = 'splunk'
     }
     'RedHat x86_64': {
-      $package_suffix          = "${version}-${build}-linux-2.6-x86_64.rpm"
+      $package_suffix          = "${version}-${build}${linux_prefix}x86_64.rpm"
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
     'RedHat ppc64le': {
-      $package_suffix          = "${version}-${build}-linux-2.6-ppc64le.rpm"
+      $package_suffix          = "${version}-${build}${linux_prefix}ppc64le.rpm"
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
@@ -350,7 +357,7 @@ class splunk::params (
       $enterprise_package_name = 'splunk'
     }
     'Suse x86_64': {
-      $package_suffix          = "${version}-${build}-linux-2.6-x86_64.rpm"
+      $package_suffix          = "${version}-${build}${linux_prefix}x86_64.rpm"
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
