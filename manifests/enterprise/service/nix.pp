@@ -16,6 +16,19 @@ class splunk::enterprise::service::nix inherits splunk::enterprise::service {
       timeout => 0,
       notify  => Exec['enable_splunk'],
     }
+
+    exec { 'disable_splunk_boot_start':
+      subscribe   => Package[$splunk::enterprise::package_name],
+      refreshonly => true,
+      command     => [
+        "${splunk::enterprise::enterprise_homedir}/bin/splunk",
+        'disable',
+        'boot-start',
+        '--accept-license',
+        '--answer-yes',
+        '--no-prompt',
+      ],
+    }
     if $splunk::params::supports_systemd and $splunk::enterprise::splunk_user == 'root' {
       $user_args = ''
     } else {
@@ -29,6 +42,7 @@ class splunk::enterprise::service::nix inherits splunk::enterprise::service {
       refreshonly => true,
       before      => Service[$splunk::enterprise::service_name],
       require     => Exec['stop_splunk'],
+      subscribe   => Exec['disable_splunk_boot_start'],
     }
   }
   # Commands to license, disable, and start Splunk Enterprise
