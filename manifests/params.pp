@@ -143,6 +143,13 @@ class splunk::params (
     $forwarder_homedir  = pick($forwarder_installdir, '/opt/splunkforwarder')
   }
 
+  $additional_windows_forwarder_install_options = if $facts['os']['family'] == 'windows' and versioncmp($version, '9.1.3') == 0 {
+    # See https://docs.splunk.com/Documentation/Forwarder/9.1.3/Forwarder/KnownIssues
+    ['USE_LOCAL_SYSTEM=1']
+  } else {
+    []
+  }
+
   # Settings common to a kernel
   case $facts['kernel'] {
     'Linux': {
@@ -257,7 +264,7 @@ class splunk::params (
         'WINEVENTLOG_FWD_ENABLE=1',
         'WINEVENTLOG_SET_ENABLE=1',
         'ENABLEADMON=1',
-      ]
+      ] + $additional_windows_forwarder_install_options
       $enterprise_install_options     = [
         { 'INSTALLDIR' => $enterprise_homedir },
         { 'SPLUNKD_PORT' => String($splunkd_port) },
