@@ -93,21 +93,21 @@ A semi-populated example files directory might then contain:
     └── products/
         ├── universalforwarder/
         │   └── releases/
-        |       └── 7.0.0/
+        |       └── 9.2.0/
         |           ├── linux/
-        |           |   ├── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
-        |           |   ├── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
-        |           |   └── splunkforwarder-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
+        |           |   ├── splunkforwarder-9.2.0-1fff88043d5f-linux-2.6-amd64.deb
+        |           |   ├── splunkforwarder-9.2.0-1fff88043d5f-linux-2.6-intel.deb
+        |           |   └── splunkforwarder-9.2.0-1fff88043d5f.x86_64.rpm
         |           ├── solaris/
         |           └── windows/
-        |               └── splunkforwarder-7.0.0-c8a78efdd40f-x64-release.msi
+        |               └── splunkforwarder-9.2.0-1fff88043d5f-x64-release.msi
         └── splunk/
             └── releases/
-                └── 7.0.0/
+                └── 9.2.0/
                     └── linux/
-                        ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-amd64.deb
-                        ├── splunk-7.0.0-c8a78efdd40f-linux-2.6-intel.deb
-                        └── splunk-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm
+                        ├── splunk-9.2.0-1fff88043d5f-linux-2.6-amd64.deb
+                        ├── splunk-9.2.0-1fff88043d5f-linux-2.6-intel.deb
+                        └── splunk-9.2.0-1fff88043d5f.x86_64.rpm
 
 Second, you will need to supply the `splunk::params` class with three critical
 pieces of information.
@@ -116,7 +116,7 @@ pieces of information.
 * The build of Splunk you are using
 * The root URL to use to retrieve the packages
 
-In the example given above, the version is 7.0.0, the build is c8a78efdd40f,
+In the example given above, the version is 9.2.0, the build is 1fff88043d5f,
 and the root URL is puppet:///modules/splunk. See the splunk::params class
 documentation for more information.
 
@@ -177,33 +177,31 @@ class { 'splunk::enterprise':
 }
 ```
 
-Alternatively the the `splunk::enterprise::password::seed` class can be used independently of the Puppet Agent through a [Bolt Plan apply block](https://puppet.com/docs/bolt/latest/applying_manifest_blocks.html).
+Alternatively the `splunk::enterprise::password::seed` class can be used independently of the Puppet Agent through a [Bolt Plan apply block](https://puppet.com/docs/bolt/latest/applying_manifest_blocks.html).
 
 ### Upgrade splunk and splunkforwarder packages
 
 This module has the ability to install *and* upgrade the splunk and splunkforwarder packages. All you have to do is declare `package_ensure => 'latest'` when calling the `::splunk` or `::splunk::forwarder` classes.
 
-Upgrades from 7.0.X to >= 7.0.X are not tested.
-
 #### Upgrade Example
 
-The following code will install the 6.6.8 version of the splunk forwarder. Then
-comment out the 6.6.8 version and build values and uncomment the 7.1.2 version
+The following code will install the 9.1.0 version of the splunk forwarder. Then
+comment out the 9.1.0 version and build values and uncomment the 9.2.0.1 version
 and build values. Running puppet again will perform the following:
 
 1. splunk forwarder package is upgraded
     1. splunk service is stopped as part of the package upgrade process
-1. new license agreement is automatically accepted
+2. new license agreement is automatically accepted
     1. license agreement must be accepted or the splunk service will fail to start
-1. splunk service is started
+3. splunk service is started
 
 ```puppet
 # Tell the module to get packages directly from Splunk.
 class { 'splunk::params':
-  version  => '6.6.8',
-  build    => '6c27a8439c1e',
-  #version  => '7.1.2',
-  #build    => 'a0c72a66db66',
+  version  => '9.1.0',
+  build    => '1c86ca0bacc3',
+  #version  => '9.2.0.1',
+  #build    => 'd8ae995bf219',
   src_root => 'https://download.splunk.com',
 }
 
@@ -220,16 +218,9 @@ See in file [REFERENCE.md](REFERENCE.md).
 
 ## Limitations
 
-- Currently tested manually on Centos 7, but we will eventually add automated
-  testing and are targeting compatibility with other platforms.
-- Tested with Puppet 5.x
+- Upgrades are tested from Splunk 9.1.0 to 9.2.0.1.
 - New installations of splunk up to version 7.2.X are supported, but upgrades
   from  7.0.X to >= 7.0.X are not fully tested
-- Enabling boot-start will fail if the unit file already exists.  Splunk does
-  not remove unit files during uninstallation, so you may be required to
-  manually remove existing unit files before re installing and enabling
-  boot-start.
-
 
 ## Development
 
