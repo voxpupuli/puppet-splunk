@@ -33,10 +33,7 @@ Splunk/Forwarder configuration files.
 
 This module does not configure firewall rules. Firewall rules will need to be
 configured separately in order to allow for correct operation of Splunk and the
-Splunk Universal Forwarder. Additionally, this module does not supply Splunk or
-Splunk Universal Forwarder installation media. Installation media will need to
-be aquired seperately, and the module configured to use it. Users can use yum
-or apt to install these components if they're self-hosted.
+Splunk Universal Forwarder.
 
 ## Setup
 
@@ -62,7 +59,9 @@ the --target-dir directive.
 You can also use r10k or code-manager to deploy the module so ensure that you
 have the correct entry in your Puppetfile.
 
-Once the module is in place, there is just a little setup needed.
+By default, this module will download the installation packages from `https://download.splunk.com`.
+
+You can also configure offline installers, there is just a little setup needed.
 
 First, you will need to place your downloaded splunk installers into the files
 directory, `<module_path>/splunk/files/`. If you're using r10k or code-manager
