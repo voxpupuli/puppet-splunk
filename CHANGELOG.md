@@ -4,6 +4,45 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [10.0.0](https://github.com/voxpupuli/puppet-splunk/tree/10.0.0)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v9.1.1...10.0.0)
+
+**Breaking changes:**
+
+- Use namespaced ensure\_packages, require puppetlabs/stdlib 9.x [\#360](https://github.com/voxpupuli/puppet-splunk/pull/360) ([gcoxmoz](https://github.com/gcoxmoz))
+- Drop Ubuntu 18.04 support [\#355](https://github.com/voxpupuli/puppet-splunk/pull/355) ([zilchms](https://github.com/zilchms))
+- Drop Ubuntu 16.04 support [\#354](https://github.com/voxpupuli/puppet-splunk/pull/354) ([zilchms](https://github.com/zilchms))
+- Drop Debian 9 support [\#353](https://github.com/voxpupuli/puppet-splunk/pull/353) ([zilchms](https://github.com/zilchms))
+- Drop Puppet 6 support [\#343](https://github.com/voxpupuli/puppet-splunk/pull/343) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Add Rocky and AlmaLinux 8 and 9 support [\#359](https://github.com/voxpupuli/puppet-splunk/pull/359) ([zilchms](https://github.com/zilchms))
+- Add EL 8 and 9 support [\#358](https://github.com/voxpupuli/puppet-splunk/pull/358) ([zilchms](https://github.com/zilchms))
+- Add Ubuntu 22.04 support [\#357](https://github.com/voxpupuli/puppet-splunk/pull/357) ([zilchms](https://github.com/zilchms))
+- Ensure compatibility with Splunk 9.2.0.1 and 9.0.0 [\#350](https://github.com/voxpupuli/puppet-splunk/pull/350) ([siegy22](https://github.com/siegy22))
+- Add Puppet 8 support [\#347](https://github.com/voxpupuli/puppet-splunk/pull/347) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: Allow 9.x [\#346](https://github.com/voxpupuli/puppet-splunk/pull/346) ([bastelfreak](https://github.com/bastelfreak))
+- Allow inifile 6.x, concat 9.x, archive 7.x [\#345](https://github.com/voxpupuli/puppet-splunk/pull/345) ([gcoxmoz](https://github.com/gcoxmoz))
+- enable the puppet-archive `allow_insecure` parameter [\#340](https://github.com/voxpupuli/puppet-splunk/pull/340) ([mwpower](https://github.com/mwpower))
+
+**Fixed bugs:**
+
+- Splunk 9.0.5+ Package Not Found on RedHat x86\_64 [\#348](https://github.com/voxpupuli/puppet-splunk/issues/348)
+- pass4SymmKey not read properly [\#284](https://github.com/voxpupuli/puppet-splunk/issues/284)
+- pass4SymmKey setting causes restarts of splunk [\#197](https://github.com/voxpupuli/puppet-splunk/issues/197)
+- Add workaround for Windows based Splunk UF 9.1.3 known issue [\#365](https://github.com/voxpupuli/puppet-splunk/pull/365) ([siegy22](https://github.com/siegy22))
+- Safer Splunk Enterprise version check [\#339](https://github.com/voxpupuli/puppet-splunk/pull/339) ([gsandine](https://github.com/gsandine))
+
+**Merged pull requests:**
+
+- Updated README.md to make it clear that this module can download directly from the Splunk website [\#367](https://github.com/voxpupuli/puppet-splunk/pull/367) ([Tamerz](https://github.com/Tamerz))
+- Miscellaneous README improvements [\#364](https://github.com/voxpupuli/puppet-splunk/pull/364) ([siegy22](https://github.com/siegy22))
+- Fix upgrading Splunk Enterprise [\#363](https://github.com/voxpupuli/puppet-splunk/pull/363) ([siegy22](https://github.com/siegy22))
+- Allow the user to set encrypted values directly [\#362](https://github.com/voxpupuli/puppet-splunk/pull/362) ([siegy22](https://github.com/siegy22))
+- Remove legacy top-scope syntax [\#351](https://github.com/voxpupuli/puppet-splunk/pull/351) ([smortex](https://github.com/smortex))
+
 ## [v9.1.1](https://github.com/voxpupuli/puppet-splunk/tree/v9.1.1) (2022-07-14)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v9.1.0...v9.1.1)
