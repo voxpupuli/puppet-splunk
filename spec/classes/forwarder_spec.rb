@@ -16,7 +16,6 @@ end
 describe 'splunk::forwarder' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
-
       context "on #{os}" do
         let(:facts) do
           facts
@@ -26,21 +25,18 @@ describe 'splunk::forwarder' do
           let(:facts) do
             facts.merge(facts.merge(archive_windir: 'C:\\ProgramData\\Staging'))
           end
-          it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_package('UniversalForwarder').with(ensure: 'installed') }
-          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/deploymentclient.conf')}
+          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/deploymentclient.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/outputs.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/inputs.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/limits.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/props.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/transforms.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/web.conf') }
-          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/limits.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/server.conf') }
           it { is_expected.not_to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/splunk.secret') }
           it { is_expected.not_to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/passwd') }
         else
-          it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_package('splunkforwarder').with(ensure: 'installed') }
           it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/deploymentclient.conf') }
           it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/outputs.conf') }
@@ -49,11 +45,11 @@ describe 'splunk::forwarder' do
           it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/props.conf') }
           it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/transforms.conf') }
           it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/web.conf') }
-          it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/limits.conf') }
           it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/server.conf') }
           it { is_expected.not_to contain_file('/opt/splunkforwarder/etc/splunk.secret') }
           it { is_expected.not_to contain_file('/opt/splunkforwarder/etc/passwd') }
         end
+        it { is_expected.to compile.with_all_deps }
 
         context 'splunk when including forwarder and enterprise' do
           let(:pre_condition) do
