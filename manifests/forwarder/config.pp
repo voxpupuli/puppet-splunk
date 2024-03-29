@@ -31,9 +31,11 @@ class splunk::forwarder::config {
   }
 
   # Remove init.d file if the service provider is systemd
-  if $facts['service_provider'] == 'systemd' and versioncmp($splunk::forwarder::version, '7.2.2') >= 0 {
-    file { '/etc/init.d/splunk':
-      ensure => 'absent',
+  if $facts['os']['name'] != 'windows' {
+    if $facts['service_provider'] == 'systemd' and versioncmp($splunk::forwarder::version, '7.2.2') >= 0 {
+      file { '/etc/init.d/splunk':
+        ensure => 'absent',
+      }
     }
   }
 

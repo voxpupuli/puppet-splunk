@@ -3,7 +3,6 @@
 require 'spec_helper'
 
 shared_examples_for 'splunk forwarder' do
-  it { is_expected.to compile.with_all_deps }
   it { is_expected.to contain_class('splunk') }
   it { is_expected.to contain_class('splunk::params') }
   it { is_expected.to contain_class('splunk::forwarder') }
@@ -11,29 +10,49 @@ shared_examples_for 'splunk forwarder' do
   it { is_expected.to contain_class('splunk::forwarder::config') }
   it { is_expected.to contain_class('splunk::forwarder::service') }
   it { is_expected.to contain_splunk_config('splunk') }
-  it { is_expected.to contain_package('splunkforwarder').with(ensure: 'installed') }
-  it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/deploymentclient.conf') }
-  it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/outputs.conf') }
-  it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/inputs.conf') }
-  it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/limits.conf') }
-  it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/props.conf') }
-  it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/transforms.conf') }
-  it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/web.conf') }
-  it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/limits.conf') }
-  it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/server.conf') }
   it { is_expected.to contain_splunkforwarder_web('forwarder_splunkd_port').with(value: '127.0.0.1:8089') }
-  it { is_expected.not_to contain_file('/opt/splunkforwarder/etc/splunk.secret') }
-  it { is_expected.not_to contain_file('/opt/splunkforwarder/etc/passwd') }
 end
 
 describe 'splunk::forwarder' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
-      next if facts[:os]['name'] == 'windows' # Splunk Server not used supported on windows
 
       context "on #{os}" do
         let(:facts) do
           facts
+        end
+
+        if facts[:os]['name'] == 'windows'
+          let(:facts) do
+            facts.merge(facts.merge(archive_windir: 'C:\\ProgramData\\Staging'))
+          end
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_package('UniversalForwarder').with(ensure: 'installed') }
+          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/deploymentclient.conf')}
+          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/outputs.conf') }
+          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/inputs.conf') }
+          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/limits.conf') }
+          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/props.conf') }
+          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/transforms.conf') }
+          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/web.conf') }
+          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/limits.conf') }
+          it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/server.conf') }
+          it { is_expected.not_to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/splunk.secret') }
+          it { is_expected.not_to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/passwd') }
+        else
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_package('splunkforwarder').with(ensure: 'installed') }
+          it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/deploymentclient.conf') }
+          it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/outputs.conf') }
+          it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/inputs.conf') }
+          it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/limits.conf') }
+          it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/props.conf') }
+          it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/transforms.conf') }
+          it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/web.conf') }
+          it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/limits.conf') }
+          it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/server.conf') }
+          it { is_expected.not_to contain_file('/opt/splunkforwarder/etc/splunk.secret') }
+          it { is_expected.not_to contain_file('/opt/splunkforwarder/etc/passwd') }
         end
 
         context 'splunk when including forwarder and enterprise' do
@@ -245,15 +264,17 @@ describe 'splunk::forwarder' do
           end
 
           it_behaves_like 'splunk forwarder'
-          it do
-            is_expected.to contain_exec('splunk-forwarder-accept-tos').with(
-              command: accept_tos_command,
-              user: 'root',
-              before: "Service[#{service_name}]",
-              subscribe: nil,
-              require: 'Exec[enable_splunkforwarder]',
-              refreshonly: 'true'
-            )
+          if facts[:os]['name'] != 'windows'
+            it do
+              is_expected.to contain_exec('splunk-forwarder-accept-tos').with(
+                command: accept_tos_command,
+                user: 'root',
+                before: "Service[#{service_name}]",
+                subscribe: nil,
+                require: 'Exec[enable_splunkforwarder]',
+                refreshonly: 'true'
+              )
+            end
           end
         end
 
@@ -273,14 +294,16 @@ describe 'splunk::forwarder' do
 
           it_behaves_like 'splunk forwarder'
           it do
-            is_expected.to contain_exec('splunk-forwarder-accept-tos').with(
-              command: accept_tos_command,
-              user: 'root',
-              before: "Service[#{service_name}]",
-              subscribe: 'Package[splunkforwarder]',
-              require: 'Exec[enable_splunkforwarder]',
-              refreshonly: 'true'
-            )
+            if facts[:os]['name'] != 'windows'
+              is_expected.to contain_exec('splunk-forwarder-accept-tos').with(
+                command: accept_tos_command,
+                user: 'root',
+                before: "Service[#{service_name}]",
+                subscribe: 'Package[splunkforwarder]',
+                require: 'Exec[enable_splunkforwarder]',
+                refreshonly: 'true'
+              )
+            end
           end
 
           context 'when $splunk::params::manage_net_tools == false' do
