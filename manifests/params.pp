@@ -118,7 +118,7 @@ class splunk::params (
     default => versioncmp($version, '8.0.0') ? { -1 => 'root', default => 'splunk' },
   },
   String[1] $splunk_forwarder_user           = $facts['os']['family'] ? {
-    'windows' => versioncmp($version, '9.1.0') ? { -1 => 'Administrator', default => 'splunkfwd' },
+    'windows' => versioncmp($version, '9.1.0') ? { -1 => 'Administrator', default => 'NT SERVICE\\SplunkForwarder' },
     default => versioncmp($version, '9.1.0') ? { -1 => 'root', default => 'splunkfwd' },
   },
   String[1] $default_host                    = $facts['clientcert'],
