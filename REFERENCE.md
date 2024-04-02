@@ -994,13 +994,7 @@ Data type: `String[1]`
 
 The user to run Splunk as.
 
-Default value:
-
-```puppet
-versioncmp($version, '9.1.0') ? {
-    -1 => $splunk::params::splunk_user,
-    default => 'splunkfwd'
-```
+Default value: `$splunk::params::splunk_forwarder_user`
 
 ##### <a name="-splunk--forwarder--forwarder_homedir"></a>`forwarder_homedir`
 
@@ -1486,6 +1480,7 @@ The following parameters are available in the `splunk::params` class:
 * [`logging_port`](#-splunk--params--logging_port)
 * [`server`](#-splunk--params--server)
 * [`splunk_user`](#-splunk--params--splunk_user)
+* [`splunk_forwarder_user`](#-splunk--params--splunk_forwarder_user)
 * [`src_root`](#-splunk--params--src_root)
 * [`boot_start`](#-splunk--params--boot_start)
 * [`forwarder_installdir`](#-splunk--params--forwarder_installdir)
@@ -1552,6 +1547,20 @@ Default value:
 $facts['os']['family'] ? {
     'windows' => 'Administrator',
     default => versioncmp($version, '8.0.0') ? { -1 => 'root', default => 'splunk'
+```
+
+##### <a name="-splunk--params--splunk_forwarder_user"></a>`splunk_forwarder_user`
+
+Data type: `String[1]`
+
+The user that splunk forwarder runs as.
+
+Default value:
+
+```puppet
+$facts['os']['family'] ? {
+    'windows' => versioncmp($version, '9.1.0') ? { -1 => 'Administrator', default => 'NT SERVICE\\SplunkForwarder' },
+    default => versioncmp($version, '9.1.0') ? { -1 => 'root', default => 'splunkfwd'
 ```
 
 ##### <a name="-splunk--params--src_root"></a>`src_root`
