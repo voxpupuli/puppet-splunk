@@ -18,7 +18,7 @@ if File.exist?(File.join(__dir__, 'default_module_facts.yml'))
   end
 end
 
-require 'splunk_data'
+require 'splunk_data.rb'
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/fixtures/modules/inifile/lib'
 Dir['./spec/support/spec/**/*.rb'].sort.each { |f| require f }
