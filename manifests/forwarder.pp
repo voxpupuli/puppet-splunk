@@ -165,10 +165,7 @@ class splunk::forwarder (
   Boolean $manage_package_source             = true,
   Optional[String[1]] $package_source        = undef,
   Splunk::Fwdinstalloptions $install_options = $splunk::params::forwarder_install_options,
-  String[1] $splunk_user                     = versioncmp($version, '9.1.0') ? {
-    -1 => $splunk::params::splunk_user,
-    default => 'splunkfwd',
-  },
+  String[1] $splunk_user                     = $splunk::params::splunk_forwarder_user,
   Stdlib::Absolutepath $forwarder_homedir    = $splunk::params::forwarder_homedir,
   Stdlib::Absolutepath $forwarder_confdir    = $splunk::params::forwarder_confdir,
   String[1] $service_name                    = $splunk::params::forwarder_service,

@@ -245,6 +245,31 @@ describe 'splunk::forwarder' do
           end
         end
 
+        context 'when forwarder version is less than 9.1.0' do
+          let(:pre_condition) do
+            "class { 'splunk::params': version => '9.0.0' }"
+          end
+
+          if facts[:os]['name'] == 'windows'
+            it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/inputs.conf').with('owner' => 'Administrator') }
+          else
+            it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/inputs.conf').with('owner' => 'root') }
+          end
+        end
+
+        # The default user that the forwarder uses was changed in verison 9.1.0
+        context 'when forwarder version is greater or equal to 9.1.0' do
+          let(:pre_condition) do
+            "class { 'splunk::params': version => '9.1.0' }"
+          end
+
+          if facts[:os]['name'] == 'windows'
+            it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/inputs.conf').with('owner' => 'NT SERVICE\\SplunkForwarder') }
+          else
+            it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/inputs.conf').with('owner' => 'splunkfwd') }
+          end
+        end
+
         context 'when forwarder not already installed' do
           let(:facts) do
             facts.merge(splunkforwarder_version: nil, service_provider: facts[:kernel] == 'FreeBSD' ? 'freebsd' : 'systemd')
