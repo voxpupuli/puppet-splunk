@@ -10,7 +10,7 @@ class SectionNoGlobal < Puppet::Util::IniFile::Section
   end
 
   # this section is never global, allowing for sections with an empty name ([])
-  def is_global? # rubocop:disable Style/PredicateName
+  def global? # rubocop:disable Style/PredicateName
     false
   end
 end
