@@ -121,7 +121,7 @@ describe 'splunk::enterprise' do
           let(:params) { { 'manage_password' => true } }
 
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_file('/opt/splunk/etc/splunk.secret') }
+          it { is_expected.to contain_file('/opt/splunk/etc/auth/splunk.secret') }
           it { is_expected.to contain_file('/opt/splunk/etc/passwd') }
         end
       end
