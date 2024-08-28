@@ -34,7 +34,7 @@ shared_examples_for 'splunk enterprise nix defaults' do
   it { is_expected.to contain_splunk_input('default_splunktcp').with(section: 'splunktcp://:9997', value: 'dns') }
   it { is_expected.to contain_splunk_web('splunk_server_splunkd_port').with(value: '127.0.0.1:8089') }
   it { is_expected.to contain_splunk_web('splunk_server_web_port').with(value: '8000') }
-  it { is_expected.not_to contain_file('/opt/splunk/etc/splunk.secret') }
+  it { is_expected.not_to contain_file('/opt/splunk/etc/auth/splunk.secret') }
   it { is_expected.not_to contain_file('/opt/splunk/etc/passwd') }
 end
 
@@ -121,7 +121,7 @@ describe 'splunk::enterprise' do
           let(:params) { { 'manage_password' => true } }
 
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_file('/opt/splunk/etc/splunk.secret') }
+          it { is_expected.to contain_file('/opt/splunk/etc/auth/splunk.secret') }
           it { is_expected.to contain_file('/opt/splunk/etc/passwd') }
         end
       end

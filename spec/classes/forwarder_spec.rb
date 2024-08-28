@@ -34,7 +34,7 @@ describe 'splunk::forwarder' do
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/transforms.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/web.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/server.conf') }
-          it { is_expected.not_to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/splunk.secret') }
+          it { is_expected.not_to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/auth/splunk.secret') }
           it { is_expected.not_to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/passwd') }
         else
           it { is_expected.to contain_package('splunkforwarder').with(ensure: 'installed') }
@@ -46,7 +46,7 @@ describe 'splunk::forwarder' do
           it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/transforms.conf') }
           it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/web.conf') }
           it { is_expected.to contain_file('/opt/splunkforwarder/etc/system/local/server.conf') }
-          it { is_expected.not_to contain_file('/opt/splunkforwarder/etc/splunk.secret') }
+          it { is_expected.not_to contain_file('/opt/splunkforwarder/etc/auth/splunk.secret') }
           it { is_expected.not_to contain_file('/opt/splunkforwarder/etc/passwd') }
         end
         it { is_expected.to compile.with_all_deps }
@@ -64,7 +64,7 @@ describe 'splunk::forwarder' do
             let(:params) { { 'manage_password' => true } }
 
             it { is_expected.to compile.with_all_deps }
-            it { is_expected.to contain_file('/opt/splunkforwarder/etc/splunk.secret') }
+            it { is_expected.to contain_file('/opt/splunkforwarder/etc/auth/splunk.secret') }
             it { is_expected.to contain_file('/opt/splunkforwarder/etc/passwd') }
           end
         end
