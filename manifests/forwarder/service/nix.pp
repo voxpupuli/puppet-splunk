@@ -4,6 +4,18 @@
 #
 class splunk::forwarder::service::nix inherits splunk::forwarder::service {
   if $splunk::forwarder::boot_start {
+    if versioncmp($splunk::forwarder::version, '9.0.0') >= 0 {
+      $accept_tos_command = [
+        "${splunk::forwarder::forwarder_homedir}/bin/splunk stop &&",
+        "${splunk::forwarder::forwarder_homedir}/bin/splunk start --accept-license --answer-yes",
+      ]
+    } else {
+      $accept_tos_command = [
+        "${splunk::forwarder::forwarder_homedir}/bin/splunk stop &&",
+        "${splunk::forwarder::forwarder_homedir}/bin/splunk start --accept-license --answer-yes &&",
+        "${splunk::forwarder::forwarder_homedir}/bin/splunk stop",
+      ]
+    }
     $accept_tos_user = 'root'
     $accept_tos_require = Exec['enable_splunkforwarder']
     # Ensure splunk services *not* managed by the system service file are
@@ -41,6 +53,11 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
   # Commands to license and disable the SplunkUniversalForwarder
   #
   else {
+    $accept_tos_command = [
+      "${splunk::forwarder::forwarder_homedir}/bin/splunk stop &&",
+      "${splunk::forwarder::forwarder_homedir}/bin/splunk start --accept-license --answer-yes &&",
+      "${splunk::forwarder::forwarder_homedir}/bin/splunk stop",
+    ]
     $accept_tos_user = $splunk::forwarder::splunk_user
     $accept_tos_require = Exec['license_splunkforwarder']
     # Accept the license when disabling splunk in case system service files are
@@ -85,11 +102,7 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
   } else {
     $accept_tos_subscribe = undef
   }
-  $accept_tos_command = [
-    "${splunk::forwarder::forwarder_homedir}/bin/splunk stop &&",
-    "${splunk::forwarder::forwarder_homedir}/bin/splunk start --accept-license --answer-yes &&",
-    "${splunk::forwarder::forwarder_homedir}/bin/splunk stop",
-  ]
+
   exec { 'splunk-forwarder-accept-tos':
     command     => join($accept_tos_command, ' '),
     user        => $accept_tos_user,
