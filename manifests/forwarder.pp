@@ -27,6 +27,9 @@
 # @param package_ensure
 #   Ensure parameter which will get passed to the Splunk package resource.
 #
+# @param service_ensure
+#   Ensure parameter which will set the service state to be ensure.
+#
 # @param staging_dir
 #   Root of the archive path to host the Splunk package.
 #
@@ -158,6 +161,7 @@ class splunk::forwarder (
   String[1] $version                         = $splunk::params::version,
   String[1] $package_name                    = $splunk::params::forwarder_package_name,
   String[1] $package_ensure                  = $splunk::params::forwarder_package_ensure,
+  String[1] $service_ensure                  = $splunk::params::forwarder_service_ensure,
   String[1] $staging_dir                     = $splunk::params::staging_dir,
   String[1] $path_delimiter                  = $splunk::params::path_delimiter,
   String[1] $forwarder_package_src           = $splunk::params::forwarder_package_src,
