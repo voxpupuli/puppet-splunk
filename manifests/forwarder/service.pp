@@ -4,10 +4,19 @@
 #   sub-classes
 #
 class splunk::forwarder::service {
-  service { $splunk::forwarder::service_name:
-    ensure     => running,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => true,
+  if $splunk::forwarder::package_ensure == absent {
+    service { $splunk::forwarder::service_name:
+      ensure     => stopped,
+      enable     => false,
+      hasstatus  => false,
+      hasrestart => false,
+    }
+  } else {
+    service { $splunk::forwarder::service_name:
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+    }
   }
 }
