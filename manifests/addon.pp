@@ -93,6 +93,12 @@ define splunk::addon (
     }
   }
 
+  file { "${_splunk_home}/etc/apps/${name}":
+    ensure => directory,
+    owner  => $owner,
+    group  => $owner,
+  }
+
   file { "${_splunk_home}/etc/apps/${name}/local":
     ensure => directory,
     owner  => $owner,
