@@ -27,7 +27,7 @@
 class splunk::edgeprocessor (
   String[1] $splunk_user = $splunk::params::splunk_user,
   Stdlib::HTTPSUrl $package_url = $splunk::params::edgeproc_src,
-  Boolean $validate_package_checksum = True,
+  Boolean $validate_package_checksum = true,
   String[1] $checksum_type = $splunk::params::edgeproc_package_checksum_type,
   String[1] $splunk_package_checksum = $splunk::params::edgeproc_package_checksum,
   Stdlib::UnixPath $splunk_homedir  = $splunk::params::edgeproc_installdir,
