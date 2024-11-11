@@ -26,11 +26,11 @@
 #   Splunk Cloud Service Edge Processor cluster ID
 class splunk::edgeprocessor (
   String[1] $splunk_user = $splunk::params::splunk_user,
-  Stdlib::HTTPSUrl $package_url = $splunk::params::edgeproc_src,
+  Stdlib::HTTPSUrl $package_url = $splunk::params::edgeproc_package_src,
   Boolean $validate_package_checksum = true,
   String[1] $checksum_type = $splunk::params::edgeproc_package_checksum_type,
   String[1] $splunk_package_checksum = $splunk::params::edgeproc_package_checksum,
-  Stdlib::UnixPath $splunk_homedir  = $splunk::params::edgeproc_installdir,
+  Stdlib::UnixPath $splunk_homedir  = $splunk::params::edgeproc_homedir,
   String[1] $scs_group_id         = undef,
   String[1] $scs_tenant_name      = undef,
   String[1] $scs_environment_name = undef,
