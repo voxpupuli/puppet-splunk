@@ -2,7 +2,7 @@
 #   Private class declared by Class[splunk::edgeprocessor] to contain the required steps
 #   for successfully installing the Splunk Edge Processor
 #
-class splunk::forwarder::install (
+class splunk::edgeprocessor::install (
   String[1] $archive_name = regsubstr($splunk::edgeprocessor::package_url, '([^\/]+\.tar\.gz)$', '\\1'),
 ) {
   #Download and unpack the Splunk Edge Processor
