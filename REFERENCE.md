@@ -864,6 +864,8 @@ The following parameters are available in the `splunk::forwarder` class:
 * [`forwarder_homedir`](#-splunk--forwarder--forwarder_homedir)
 * [`forwarder_confdir`](#-splunk--forwarder--forwarder_confdir)
 * [`service_name`](#-splunk--forwarder--service_name)
+* [`service_ensure`](#-splunk--forwarder--service_ensure)
+* [`service_enable`](#-splunk--forwarder--service_enable)
 * [`service_file`](#-splunk--forwarder--service_file)
 * [`boot_start`](#-splunk--forwarder--boot_start)
 * [`use_default_config`](#-splunk--forwarder--use_default_config)
@@ -1025,6 +1027,22 @@ Data type: `String[1]`
 The name of the Splunk Forwarder service.
 
 Default value: `$splunk::params::forwarder_service`
+
+##### <a name="-splunk--forwarder--service_ensure"></a>`service_ensure`
+
+Data type: `String[1]`
+
+Ensure passed to the splunk service resource.
+
+Default value: `$splunk::params::forwarder_service_ensure`
+
+##### <a name="-splunk--forwarder--service_enable"></a>`service_enable`
+
+Data type: `String[1]`
+
+Enable passed to the splunk service resource.
+
+Default value: `$splunk::params::forwarder_service_enable`
 
 ##### <a name="-splunk--forwarder--service_file"></a>`service_file`
 
