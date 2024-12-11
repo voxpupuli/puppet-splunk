@@ -6,7 +6,7 @@
 class splunk::forwarder::service {
   $provider = $facts['os']['family'] ? {
     'windows' => 'windows',
-    default   => 'redhat',
+    default   => undef,
   }
   service { $splunk::forwarder::service_name:
     ensure     => $splunk::forwarder::service_ensure,
