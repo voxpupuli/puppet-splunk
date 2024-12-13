@@ -1030,11 +1030,11 @@ Default value: `$splunk::params::forwarder_service`
 
 ##### <a name="-splunk--forwarder--service_ensure"></a>`service_ensure`
 
-Data type: `String[1]`
+Data type: `Stdlib::Ensure::Service`
 
 Ensure passed to the splunk service resource.
 
-Default value: `$splunk::params::forwarder_service_ensure`
+Default value: `running`
 
 ##### <a name="-splunk--forwarder--service_enable"></a>`service_enable`
 
