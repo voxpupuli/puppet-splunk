@@ -178,7 +178,7 @@ class splunk::forwarder (
   Stdlib::Absolutepath $forwarder_homedir    = $splunk::params::forwarder_homedir,
   Stdlib::Absolutepath $forwarder_confdir    = $splunk::params::forwarder_confdir,
   String[1] $service_name                    = $splunk::params::forwarder_service,
-  String[1] $service_ensure                  = $splunk::params::forwarder_service_ensure,
+  Stdlib::Ensure::Service $service_ensure    = running,
   String[1] $service_enable                  = $splunk::params::forwarder_service_enable,
   Stdlib::Absolutepath $service_file         = $splunk::params::forwarder_service_file,
   Boolean $boot_start                        = $splunk::params::boot_start,
