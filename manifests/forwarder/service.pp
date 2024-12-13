@@ -9,5 +9,6 @@ class splunk::forwarder::service {
     enable     => $splunk::forwarder::service_enable,
     hasstatus  => true,
     hasrestart => true,
+    provider   => $facts['service_provider'],
   }
 }
