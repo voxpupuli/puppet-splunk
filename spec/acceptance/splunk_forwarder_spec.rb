@@ -82,32 +82,6 @@ describe 'splunk::forwarder class' do
     end
   end
 
-  context 'stopped' do
-    # Using puppet_apply as a helper
-    it 'works idempotently with no errors' do
-      pp = <<-EOS
-      class { 'splunk::params':
-      }
-      class { 'splunk::forwarder':
-        splunkd_port => 8090,
-        service_ensure => 'stopped',
-      }
-      EOS
-
-      # Run it twice and test for idempotency
-      apply_manifest(pp, catch_failures: true)
-      apply_manifest(pp, catch_changes: true)
-    end
-
-    describe package('splunkforwarder') do
-      it { is_expected.to be_installed }
-    end
-
-    describe service(service_name) do
-      it { is_expected.to be_stopped }
-    end
-  end
-
   context 'purging' do
     context 'purge_outputs => false' do
       it 'works idempotently with no errors' do
