@@ -166,6 +166,7 @@ class splunk::params (
       $enterprise_confdir              = "${enterprise_homedir}/etc"
       $forwarder_install_options       = []
       $enterprise_install_options      = []
+      $forwarder_service_enable        = 'true'
       # Systemd not supported until Splunk 7.2.2
       if $facts['service_provider'] == 'systemd' and versioncmp($version, '7.2.2') >= 0 {
         $enterprise_service      = 'Splunkd'
@@ -198,6 +199,7 @@ class splunk::params (
       $enterprise_confdir              = "${enterprise_homedir}/etc"
       $forwarder_install_options       = []
       $enterprise_install_options      = []
+      $forwarder_service_enable        = 'true'
       # Systemd not supported until Splunk 7.2.2
       if $facts['service_provider'] == 'systemd' and versioncmp($version, '7.2.2') >= 0 {
         $enterprise_service      = 'Splunkd'
@@ -232,6 +234,7 @@ class splunk::params (
       $enterprise_install_options      = []
       $enterprise_service              = 'splunk'
       $forwarder_service               = 'splunk'
+      $forwarder_service_enable        = 'true'
       $enterprise_service_file         = '/etc/rc.d/splunk'
       $forwarder_service_file          = '/etc/rc.d/splunk'
       $boot_start_args                 = ''
@@ -247,6 +250,7 @@ class splunk::params (
       $forwarder_secret_file           = "${forwarder_homedir}\\etc\\auth\\splunk.secret"
       $enterprise_secret_file          = "${enterprise_homedir}\\etc\\auth\\splunk.secret"
       $forwarder_service               = 'SplunkForwarder'
+      $forwarder_service_enable        = 'delayed'
       $forwarder_service_file          = "${forwarder_homedir}\\dummy" # Not used in Windows, but attribute must be defined with a valid path
       $forwarder_confdir               = "${forwarder_homedir}\\etc"
       $enterprise_src_subdir           = 'windows'

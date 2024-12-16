@@ -68,6 +68,12 @@
 # @param service_name
 #   The name of the Splunk Forwarder service.
 #
+# @param service_ensure
+#   Ensure passed to the splunk service resource.
+#
+# @param service_enable
+#   Enable passed to the splunk service resource.
+#
 # @param service_file
 #   The path to the Splunk Forwarder service file.
 #
@@ -172,6 +178,8 @@ class splunk::forwarder (
   Stdlib::Absolutepath $forwarder_homedir    = $splunk::params::forwarder_homedir,
   Stdlib::Absolutepath $forwarder_confdir    = $splunk::params::forwarder_confdir,
   String[1] $service_name                    = $splunk::params::forwarder_service,
+  Stdlib::Ensure::Service $service_ensure    = running,
+  String[1] $service_enable                  = $splunk::params::forwarder_service_enable,
   Stdlib::Absolutepath $service_file         = $splunk::params::forwarder_service_file,
   Boolean $boot_start                        = $splunk::params::boot_start,
   Boolean $use_default_config                = true,
