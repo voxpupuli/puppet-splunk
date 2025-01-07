@@ -89,6 +89,9 @@
 # @param enterprise_installdir
 #   Optional directory in which to install and manage Splunk Enterprise
 #
+# @param edgeproc_installdir
+#   Optional directory in which to install and manage Splunk Edge Processor
+#
 # @param default_host
 #   The host property in inputs.conf. Defaults to the server's hostname.
 #
@@ -109,6 +112,7 @@ class splunk::params (
   String[1] $server                          = 'splunk',
   Optional[String[1]] $forwarder_installdir  = undef,
   Optional[String[1]] $enterprise_installdir = undef,
+  Optional[String[1]] $edgeproc_installdir   = undef,
   Boolean $boot_start                        = true,
   String[1] $splunk_user                     = $facts['os']['family'] ? {
     'windows' => 'Administrator',
@@ -141,6 +145,7 @@ class splunk::params (
     $staging_dir        = '/opt/staging/splunk'
     $enterprise_homedir = pick($enterprise_installdir, '/opt/splunk')
     $forwarder_homedir  = pick($forwarder_installdir, '/opt/splunkforwarder')
+    $edgeproc_homedir   = pick($edgeproc_installdir, '/opt/splunk-edge')
   }
 
   $additional_windows_forwarder_install_options = if $facts['os']['family'] == 'windows' and versioncmp($version, '9.1.3') == 0 {
@@ -164,6 +169,7 @@ class splunk::params (
       $forwarder_confdir               = "${forwarder_homedir}/etc"
       $enterprise_src_subdir           = 'linux'
       $enterprise_confdir              = "${enterprise_homedir}/etc"
+      $edgeproc_confdir                = "${edgeproc_homedir}/etc"
       $forwarder_install_options       = []
       $enterprise_install_options      = []
       $forwarder_service_enable        = 'true'
@@ -393,11 +399,18 @@ class splunk::params (
   $forwarder_package_ensure = 'installed'
   $forwarder_package_src = "${src_root}/products/universalforwarder/releases/${version}/${forwarder_src_subdir}/${forwarder_src_package}"
 
+  # Edge Processor is currently only available via download link
+  $edgeproc_package_src = 'https://beam.scs.splunk.com/splunk-edge/v0.0.198-689fac1f-20221119t005809/linux/splunk-edge.tar.gz'
+  $edgeproc_package_checksum_type = 'sha512'
+  $edgeproc_package_checksum = '627af0176786945270fb66496e330f28004256a329ccd48c449c262613e2fd081a67c6579bfea3f08df75bac043d8feffe0500dab60ebd0a27fc6cbb06ba7b5e'
+
   # A meta resource so providers know where splunk is installed:
   splunk_config { 'splunk':
     forwarder_installdir => $forwarder_homedir,
     forwarder_confdir    => $forwarder_confdir,
     server_installdir    => $enterprise_homedir,
     server_confdir       => $enterprise_confdir,
+    edgeproc_installdir  => $edgeproc_homedir,
+    edgeproc_confdir     => $edgeproc_confdir,
   }
 }

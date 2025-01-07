@@ -22,6 +22,12 @@ Puppet::Type.newtype(:splunk_config) do
 
   newparam(:server_confdir) do
   end
+
+  newparam(:edgeproc_installdir) do
+  end
+
+  newparam(:edgeproc_confdir) do
+  end
   # rubocop:enable Lint/EmptyBlock
 
   ## Generate purge parameters for the splunk_config type
