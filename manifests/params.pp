@@ -313,6 +313,13 @@ class splunk::params (
     default:   { $package_provider = undef } # Don't define a $package_provider
   }
 
+  # Download URLs changed starting from 9.4.0 for debs.
+  # Splunk only includes "-linux-".
+  if versioncmp($version, '9.4.0') >= 0 {
+    $deb_prefix = 'linux'
+  } else {
+    $deb_prefix = 'linux-2.6'
+  }
   # Download URLs changed starting from 8.2.11 and 9.0.5 for RPMs.
   # Splunk no longer includes "-linux-2.6-".
   $linux_prefix = (versioncmp($version, '9.0.5') >= 0 or (versioncmp($version, '8.2.11') >= 0 and versioncmp($version, '9.0.0') == -1)) ? {
@@ -348,7 +355,7 @@ class splunk::params (
       $enterprise_package_name = 'splunk'
     }
     'Debian amd64': {
-      $package_suffix          = "${version}-${build}-linux-2.6-amd64.deb"
+      $package_suffix          = "${version}-${build}-${deb_prefix}-amd64.deb"
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
