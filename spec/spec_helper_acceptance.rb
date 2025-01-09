@@ -6,6 +6,7 @@ require 'splunk_data'
 OLD_SPLUNK_VERSIONS = [
   ['7.2.4.2', 'fb30470262e3'],
   ['9.0.0', '6818ac46f2ec'],
+  ['9.4.0', '6b4ebe426ca6'],
 ].freeze
 
 configure_beaker do |host|
