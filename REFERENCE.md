@@ -11,51 +11,31 @@ accessible
 * [`splunk::enterprise`](#splunk--enterprise): Install and configure an instance of Splunk Enterprise
 * [`splunk::enterprise::config`](#splunk--enterprise--config): Private class declared by Class[splunk::enterprise] to contain all the
 configuration needed for a base install of Splunk Enterprise
-* [`splunk::enterprise::install`](#splunk--enterprise--install): Private class declared by Class[splunk::enterprise] to contain or define
-through additional platform specific sub-class, the required steps
-for successfully installing Splunk Enterprise
+* [`splunk::enterprise::install`](#splunk--enterprise--install): Contain or define through additional platform specific sub-classes, the
+required steps for installing Splunk Enterprise.
 * [`splunk::enterprise::install::nix`](#splunk--enterprise--install--nix): Private class declared by Class[splunk::enterprise::install] to provide
 platform specific installation steps on Linux or Unix type systems.
-* [`splunk::enterprise::password::manage`](#splunk--enterprise--password--manage): Implements the direct management of the Splunk Enterprise admin password
-so it can be used outside of regular management of the whole stack to
-facilitate admin password resets through Bolt Plans.
-
-Note: Entirely done to make this implementation consistent with the method
-used to manage admin password seeding.
-* [`splunk::enterprise::password::seed`](#splunk--enterprise--password--seed): Implements the seeding and reseeding of the Splunk Enterprise admin password
-so it can be used outside of regular management of the whole stack to
-facilitate admin password resets through Bolt Plans
-* [`splunk::enterprise::service`](#splunk--enterprise--service): Private class declared by Class[splunk::enterprise] to define a service
-as its understood by Puppet using a dynamic set of data or platform specific
-sub-classes
+* [`splunk::enterprise::password::manage`](#splunk--enterprise--password--manage): Allows management of the Splunk Enterprise admin password, so it can be
+used for password resets through Bolt Plans.
+* [`splunk::enterprise::password::seed`](#splunk--enterprise--password--seed): Implements seeding and reseeding of Splunk Enterprise admin password to
+support admin password resets via Bolt.
+* [`splunk::enterprise::service`](#splunk--enterprise--service): Define and contain the services for Splunk Enterprise Server.
 * [`splunk::enterprise::service::nix`](#splunk--enterprise--service--nix): Private class declared by Class[splunk::enterprise::service] to provide
 platform specific service management on Linux or Unix type systems.
 * [`splunk::forwarder`](#splunk--forwarder): Install and configure an instance of Splunk Universal Forwarder
-* [`splunk::forwarder::config`](#splunk--forwarder--config): Private class declared by Class[splunk::forwarder] to contain all the
-configuration needed for a base install of the Splunk Universal
-Forwarder
-* [`splunk::forwarder::install`](#splunk--forwarder--install): Private class declared by Class[splunk::forwarder] to contain or define
-through additional platform specific sub-class, the required steps
-for successfully installing the Splunk Universal Forwarder
-* [`splunk::forwarder::password::manage`](#splunk--forwarder--password--manage): Implements the direct management of the Splunk Forwarder admin password
-so it can be used outside of regular management of the whole stack to
-facilitate admin password resets through Bolt Plans.
-
-Note: Entirely done to make this implementation consistent with the method
-used to manage admin password seeding.
-* [`splunk::forwarder::password::seed`](#splunk--forwarder--password--seed): Implements the seeding and reseeding of the Splunk Forwarder admin password
-so it can be used outside of regular management of the whole stack to
-facilitate admin password resets through Bolt Plans
-* [`splunk::forwarder::service`](#splunk--forwarder--service): Private class declared by Class[splunk::forwarder] to define a service as
-its understood by Puppet using a dynamic set of data or platform specific
-sub-classes
+* [`splunk::forwarder::config`](#splunk--forwarder--config): Contains all configuration needed for a base install of the Splunk
+Universal Forwarder
+* [`splunk::forwarder::install`](#splunk--forwarder--install): Contains or define through additional platform specific sub-classes, the
+steps for installing the Splunk Universal Forwarder
+* [`splunk::forwarder::password::manage`](#splunk--forwarder--password--manage): Allows management of the Splunk Forwarder admin password, so it can be used
+for password resets through Bolt Plans.
+* [`splunk::forwarder::password::seed`](#splunk--forwarder--password--seed): Implements seeding and reseeding of Forwarder admin password to support
+admin password resets via Bolt.
+* [`splunk::forwarder::service`](#splunk--forwarder--service): Define and contain the services for Splunk Forwarder.
 * [`splunk::forwarder::service::nix`](#splunk--forwarder--service--nix): Private class declared by Class[splunk::forwarder::service] to provide
 platform specific service management on Linux or Unix type systems.
-* [`splunk::params`](#splunk--params): This class takes a small number of arguments (can be set through Hiera) and
-generates sane default values installation media names and locations.
-Default ports can also be specified here. This is a parameters class, and
-contributes no resources to the graph. Rather, it only sets values for
-parameters to be consumed by child classes.
+* [`splunk::params`](#splunk--params): Accepts settings, and provides default values for module parameters.
+Parameters class only: contributes no resources to the graph.
 
 ### Defined types
 
@@ -92,8 +72,8 @@ or via splunkbase compatible archives
 
 ### Data types
 
-* [`Splunk::Entinstalloptions`](#Splunk--Entinstalloptions)
-* [`Splunk::Fwdinstalloptions`](#Splunk--Fwdinstalloptions)
+* [`Splunk::Entinstalloptions`](#Splunk--Entinstalloptions): Type alias for Enterprise Server install options.
+* [`Splunk::Fwdinstalloptions`](#Splunk--Fwdinstalloptions): Type alias for Splunk forwarder install options.
 
 ## Classes
 
@@ -599,9 +579,8 @@ configuration needed for a base install of Splunk Enterprise
 
 ### <a name="splunk--enterprise--install"></a>`splunk::enterprise::install`
 
-Private class declared by Class[splunk::enterprise] to contain or define
-through additional platform specific sub-class, the required steps
-for successfully installing Splunk Enterprise
+Contain or define through additional platform specific sub-classes, the
+required steps for installing Splunk Enterprise.
 
 ### <a name="splunk--enterprise--install--nix"></a>`splunk::enterprise::install::nix`
 
@@ -610,12 +589,8 @@ platform specific installation steps on Linux or Unix type systems.
 
 ### <a name="splunk--enterprise--password--manage"></a>`splunk::enterprise::password::manage`
 
-Implements the direct management of the Splunk Enterprise admin password
-so it can be used outside of regular management of the whole stack to
-facilitate admin password resets through Bolt Plans.
-
-Note: Entirely done to make this implementation consistent with the method
-used to manage admin password seeding.
+Allows management of the Splunk Enterprise admin password, so it can be
+used for password resets through Bolt Plans.
 
 #### Parameters
 
@@ -702,9 +677,8 @@ Default value: `$splunk::params::splunk_user`
 
 ### <a name="splunk--enterprise--password--seed"></a>`splunk::enterprise::password::seed`
 
-Implements the seeding and reseeding of the Splunk Enterprise admin password
-so it can be used outside of regular management of the whole stack to
-facilitate admin password resets through Bolt Plans
+Implements seeding and reseeding of Splunk Enterprise admin password to
+support admin password resets via Bolt.
 
 #### Parameters
 
@@ -811,9 +785,7 @@ Default value: `$splunk::params::splunk_user`
 
 ### <a name="splunk--enterprise--service"></a>`splunk::enterprise::service`
 
-Private class declared by Class[splunk::enterprise] to define a service
-as its understood by Puppet using a dynamic set of data or platform specific
-sub-classes
+Define and contain the services for Splunk Enterprise Server.
 
 ### <a name="splunk--enterprise--service--nix"></a>`splunk::enterprise::service::nix`
 
@@ -1264,24 +1236,18 @@ Default value: `false`
 
 ### <a name="splunk--forwarder--config"></a>`splunk::forwarder::config`
 
-Private class declared by Class[splunk::forwarder] to contain all the
-configuration needed for a base install of the Splunk Universal
-Forwarder
+Contains all configuration needed for a base install of the Splunk
+Universal Forwarder
 
 ### <a name="splunk--forwarder--install"></a>`splunk::forwarder::install`
 
-Private class declared by Class[splunk::forwarder] to contain or define
-through additional platform specific sub-class, the required steps
-for successfully installing the Splunk Universal Forwarder
+Contains or define through additional platform specific sub-classes, the
+steps for installing the Splunk Universal Forwarder
 
 ### <a name="splunk--forwarder--password--manage"></a>`splunk::forwarder::password::manage`
 
-Implements the direct management of the Splunk Forwarder admin password
-so it can be used outside of regular management of the whole stack to
-facilitate admin password resets through Bolt Plans.
-
-Note: Entirely done to make this implementation consistent with the method
-used to manage admin password seeding.
+Allows management of the Splunk Forwarder admin password, so it can be used
+for password resets through Bolt Plans.
 
 #### Parameters
 
@@ -1368,9 +1334,8 @@ Default value: `$splunk::params::splunk_user`
 
 ### <a name="splunk--forwarder--password--seed"></a>`splunk::forwarder::password::seed`
 
-Implements the seeding and reseeding of the Splunk Forwarder admin password
-so it can be used outside of regular management of the whole stack to
-facilitate admin password resets through Bolt Plans
+Implements seeding and reseeding of Forwarder admin password to support
+admin password resets via Bolt.
 
 #### Parameters
 
@@ -1477,9 +1442,7 @@ Default value: `$splunk::params::splunk_user`
 
 ### <a name="splunk--forwarder--service"></a>`splunk::forwarder::service`
 
-Private class declared by Class[splunk::forwarder] to define a service as
-its understood by Puppet using a dynamic set of data or platform specific
-sub-classes
+Define and contain the services for Splunk Forwarder.
 
 ### <a name="splunk--forwarder--service--nix"></a>`splunk::forwarder::service::nix`
 
@@ -1488,11 +1451,8 @@ platform specific service management on Linux or Unix type systems.
 
 ### <a name="splunk--params"></a>`splunk::params`
 
-This class takes a small number of arguments (can be set through Hiera) and
-generates sane default values installation media names and locations.
-Default ports can also be specified here. This is a parameters class, and
-contributes no resources to the graph. Rather, it only sets values for
-parameters to be consumed by child classes.
+Accepts settings, and provides default values for module parameters.
+Parameters class only: contributes no resources to the graph.
 
 #### Parameters
 
@@ -1842,9 +1802,11 @@ The following parameters are available in the `splunk_config` type.
 
 ##### <a name="-splunk_config--forwarder_confdir"></a>`forwarder_confdir`
 
+Directory for Splunk Forwarder configurations
 
 ##### <a name="-splunk_config--forwarder_installdir"></a>`forwarder_installdir`
 
+Directory in which to install and manage Splunk Forwarder
 
 ##### <a name="-splunk_config--name"></a>`name`
 
@@ -1854,9 +1816,11 @@ splunk config
 
 ##### <a name="-splunk_config--server_confdir"></a>`server_confdir`
 
+Directory for Splunk server configurations
 
 ##### <a name="-splunk_config--server_installdir"></a>`server_installdir`
 
+Directory for server installation (maps to `enterprise_homedir`)
 
 ### <a name="splunk_deploymentclient"></a>`splunk_deploymentclient`
 
@@ -2177,13 +2141,13 @@ will usually discover the appropriate provider for your platform.
 
 ### <a name="Splunk--Entinstalloptions"></a>`Splunk::Entinstalloptions`
 
-The Splunk::Entinstalloptions data type.
+Type alias for Enterprise Server install options.
 
 Alias of `Variant[Tuple[Hash,Hash,String,3,default], Array[String[1]]]`
 
 ### <a name="Splunk--Fwdinstalloptions"></a>`Splunk::Fwdinstalloptions`
 
-The Splunk::Fwdinstalloptions data type.
+Type alias for Splunk forwarder install options.
 
 Alias of `Variant[Tuple[Hash,String,1,default], Array[String[1]]]`
 

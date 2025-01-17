@@ -1,7 +1,6 @@
 # @summary
-#   Implements the seeding and reseeding of the Splunk Forwarder admin password
-#   so it can be used outside of regular management of the whole stack to
-#   facilitate admin password resets through Bolt Plans
+#   Implements seeding and reseeding of Forwarder admin password to support
+#   admin password resets via Bolt.
 #
 # @param reset_seeded_password
 #   If set to true, deletes `password_config_file` to trigger Splunk's password

@@ -1,9 +1,6 @@
 # @summary
-#   This class takes a small number of arguments (can be set through Hiera) and
-#   generates sane default values installation media names and locations.
-#   Default ports can also be specified here. This is a parameters class, and
-#   contributes no resources to the graph. Rather, it only sets values for
-#   parameters to be consumed by child classes.
+#   Accepts settings, and provides default values for module parameters.
+#   Parameters class only: contributes no resources to the graph.
 #
 # @param version
 #   The version of Splunk to install. This will be in the form x.y.z; e.g.
