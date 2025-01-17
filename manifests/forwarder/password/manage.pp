@@ -1,10 +1,6 @@
 # @summary
-#   Implements the direct management of the Splunk Forwarder admin password
-#   so it can be used outside of regular management of the whole stack to
-#   facilitate admin password resets through Bolt Plans.
-#
-#   Note: Entirely done to make this implementation consistent with the method
-#   used to manage admin password seeding.
+#   Allows management of the Splunk Forwarder admin password, so it can be used
+#   for password resets through Bolt Plans.
 #
 # @param manage_password
 #   If set to true, Manage the contents of splunk.secret and passwd.

@@ -1,7 +1,5 @@
 # @summary
-#   Private class declared by Class[splunk::forwarder] to define a service as
-#   its understood by Puppet using a dynamic set of data or platform specific
-#   sub-classes
+#   Define and contain the services for Splunk Forwarder.
 #
 class splunk::forwarder::service {
   service { $splunk::forwarder::service_name:

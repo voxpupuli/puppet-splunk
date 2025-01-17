@@ -1,7 +1,6 @@
 # @summary
-#   Private class declared by Class[splunk::forwarder] to contain or define
-#   through additional platform specific sub-class, the required steps
-#   for successfully installing the Splunk Universal Forwarder
+#   Contains or define through additional platform specific sub-classes, the
+#   steps for installing the Splunk Universal Forwarder
 #
 class splunk::forwarder::install {
   $_package_source = $splunk::forwarder::manage_package_source ? {

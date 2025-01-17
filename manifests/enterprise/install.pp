@@ -1,7 +1,6 @@
 # @summary
-#   Private class declared by Class[splunk::enterprise] to contain or define
-#   through additional platform specific sub-class, the required steps
-#   for successfully installing Splunk Enterprise
+#   Contain or define through additional platform specific sub-classes, the
+#   required steps for installing Splunk Enterprise.
 #
 class splunk::enterprise::install {
   if $facts['kernel'] == 'Linux' or $facts['kernel'] == 'SunOS' {
