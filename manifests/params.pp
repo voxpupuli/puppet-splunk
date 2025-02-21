@@ -356,6 +356,14 @@ class splunk::params (
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
+    'Debian aarch64': {
+      $package_suffix = versioncmp($version, '9.4.0') >= 0 ? {
+        true  => "${version}-${build}-linux-arm64.deb",
+        false => "${version}-${build}-Linux-armv8.deb"
+      }
+      $forwarder_package_name  = 'splunkforwarder'
+      $enterprise_package_name = 'splunk'
+    }
     /^(W|w)indows (x86|i386)$/: {
       $package_suffix          = "${version}-${build}-x86-release.msi"
       $forwarder_package_name  = 'UniversalForwarder'
