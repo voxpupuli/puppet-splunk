@@ -67,9 +67,11 @@ class splunk::forwarder::install {
     versioncmp($splunk::forwarder::version, '7.2.4.2') >= 0 and
     versioncmp($splunk::forwarder::version, '8.0.0') == -1
   ) {
-    stdlib::ensure_packages(['net-tools'], {
+    stdlib::ensure_packages(['net-tools'],
+      {
         'ensure' => 'present',
-    })
+      },
+    )
     Package['net-tools'] -> Package[$splunk::forwarder::package_name]
   }
 
