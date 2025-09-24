@@ -114,6 +114,9 @@
 #   *Optional* If set to true, web.conf will be purged of configuration that is
 #   no longer managed by the `splunk_web` type.
 #
+# @param forwarder_deploymentclient
+#   Used to override the default `forwarder_deploymentclient` type defined in splunk::params.
+#
 # @param forwarder_input
 #   Used to override the default `forwarder_input` type defined in splunk::params.
 #
@@ -192,6 +195,7 @@ class splunk::forwarder (
   Boolean $purge_props                       = false,
   Boolean $purge_transforms                  = false,
   Boolean $purge_web                         = false,
+  Hash $forwarder_deploymentclient           = $splunk::params::forwarder_deploymentclient,
   Hash $forwarder_output                     = $splunk::params::forwarder_output,
   Hash $forwarder_input                      = $splunk::params::forwarder_input,
   Boolean $manage_password                   = $splunk::params::manage_password,
