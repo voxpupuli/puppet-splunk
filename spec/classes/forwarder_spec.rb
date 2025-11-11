@@ -33,6 +33,7 @@ describe 'splunk::forwarder' do
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/props.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/transforms.conf') }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/web.conf') }
+          it { is_expected.to contain_service('SplunkForwarder').with(ensure: 'running', enable: 'delayed', status: nil, restart: nil, start: nil, stop: nil) }
           it { is_expected.to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/system/local/server.conf') }
           it { is_expected.not_to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/auth/splunk.secret') }
           it { is_expected.not_to contain_file('C:\\Program Files\\SplunkUniversalForwarder/etc/passwd') }
@@ -74,6 +75,29 @@ describe 'splunk::forwarder' do
             let(:params) { { 'package_provider' => 'yum' } }
 
             it { is_expected.to contain_package('splunkforwarder').with(provider: 'yum') }
+          end
+        end
+
+        context 'when service_ensure = stopped' do
+          let(:params) { { 'service_ensure' => 'stopped' } }
+
+          case facts[:kernel]
+          when 'windows'
+            it { is_expected.to contain_service('SplunkForwarder').with(ensure: 'stopped', enable: 'delayed', status: nil, restart: nil, start: nil, stop: nil) }
+          when 'FreeBSD'
+            it { is_expected.to contain_service('splunk').with(ensure: 'stopped', enable: 'true', status: nil, restart: nil, start: nil, stop: nil) }
+          else
+            it { is_expected.to contain_service('SplunkForwarder').with(ensure: 'stopped', enable: 'true', status: nil, restart: nil, start: nil, stop: nil) }
+          end
+        end
+
+        context 'when service_enable = false' do
+          let(:params) { { 'service_enable' => 'false' } }
+
+          if facts[:kernel] == 'FreeBSD'
+            it { is_expected.to contain_service('splunk').with(ensure: 'running', enable: false, status: nil, restart: nil, start: nil, stop: nil) }
+          else
+            it { is_expected.to contain_service('SplunkForwarder').with(ensure: 'running', enable: false, status: nil, restart: nil, start: nil, stop: nil) }
           end
         end
 

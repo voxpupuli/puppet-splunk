@@ -1,7 +1,6 @@
 # @summary
-#   Private class declared by Class[splunk::forwarder] to contain or define
-#   through additional platform specific sub-class, the required steps
-#   for successfully installing the Splunk Universal Forwarder
+#   Contains or define through additional platform specific sub-classes, the
+#   steps for installing the Splunk Universal Forwarder
 #
 class splunk::forwarder::install {
   $_package_source = $splunk::forwarder::manage_package_source ? {
@@ -68,9 +67,11 @@ class splunk::forwarder::install {
     versioncmp($splunk::forwarder::version, '7.2.4.2') >= 0 and
     versioncmp($splunk::forwarder::version, '8.0.0') == -1
   ) {
-    stdlib::ensure_packages(['net-tools'], {
+    stdlib::ensure_packages(['net-tools'],
+      {
         'ensure' => 'present',
-    })
+      },
+    )
     Package['net-tools'] -> Package[$splunk::forwarder::package_name]
   }
 

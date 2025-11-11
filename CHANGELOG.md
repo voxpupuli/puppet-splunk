@@ -4,9 +4,42 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [10.0.0](https://github.com/voxpupuli/puppet-splunk/tree/10.0.0)
+## [v11.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v11.0.0) (2025-10-29)
 
-[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v9.1.1...10.0.0)
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v10.0.0...v11.0.0)
+
+**Breaking changes:**
+
+- Drop puppet, update openvox minimum version to 8.19 [\#406](https://github.com/voxpupuli/puppet-splunk/pull/406) ([TheMeier](https://github.com/TheMeier))
+
+**Implemented enhancements:**
+
+- Add a $service\_enable param to splunk::forwarder::service  [\#383](https://github.com/voxpupuli/puppet-splunk/issues/383)
+- Support for downloading aarch64 packages [\#379](https://github.com/voxpupuli/puppet-splunk/issues/379)
+- Declare support for Debian 11, 12 and Ubuntu 24.04 [\#408](https://github.com/voxpupuli/puppet-splunk/pull/408) ([kenyon](https://github.com/kenyon))
+- puppet/archive: Allow 8.x [\#405](https://github.com/voxpupuli/puppet-splunk/pull/405) ([TheMeier](https://github.com/TheMeier))
+- Add support for downloading aarch64 Splunk Forwarder packages for Debian [\#398](https://github.com/voxpupuli/puppet-splunk/pull/398) ([gerardkok](https://github.com/gerardkok))
+- Debian: Add support for Splunk 9.4 and newer [\#393](https://github.com/voxpupuli/puppet-splunk/pull/393) ([muncjack](https://github.com/muncjack))
+- Issue \#383: Add ensure and enable parameter for forwarder service [\#390](https://github.com/voxpupuli/puppet-splunk/pull/390) ([cjswart](https://github.com/cjswart))
+- Support downloading RedHat aarch64 packages [\#380](https://github.com/voxpupuli/puppet-splunk/pull/380) ([cjmorri1](https://github.com/cjmorri1))
+
+**Fixed bugs:**
+
+- Correct `splunk.secret` path [\#378](https://github.com/voxpupuli/puppet-splunk/pull/378) ([luedderd](https://github.com/luedderd))
+
+**Closed issues:**
+
+- Debian Splunk package name is incorrect for version 9.4.0 [\#392](https://github.com/voxpupuli/puppet-splunk/issues/392)
+- default location of splunk.secret is wrong? [\#324](https://github.com/voxpupuli/puppet-splunk/issues/324)
+
+**Merged pull requests:**
+
+- Resolve puppet-strings documentation warnings [\#396](https://github.com/voxpupuli/puppet-splunk/pull/396) ([wyardley](https://github.com/wyardley))
+- Enable unit tests for Windows [\#370](https://github.com/voxpupuli/puppet-splunk/pull/370) ([tamerz](https://github.com/tamerz))
+
+## [v10.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v10.0.0) (2024-03-27)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v9.1.1...v10.0.0)
 
 **Breaking changes:**
 
@@ -37,7 +70,7 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- Updated README.md to make it clear that this module can download directly from the Splunk website [\#367](https://github.com/voxpupuli/puppet-splunk/pull/367) ([Tamerz](https://github.com/Tamerz))
+- Updated README.md to make it clear that this module can download directly from the Splunk website [\#367](https://github.com/voxpupuli/puppet-splunk/pull/367) ([tamerz](https://github.com/tamerz))
 - Miscellaneous README improvements [\#364](https://github.com/voxpupuli/puppet-splunk/pull/364) ([siegy22](https://github.com/siegy22))
 - Fix upgrading Splunk Enterprise [\#363](https://github.com/voxpupuli/puppet-splunk/pull/363) ([siegy22](https://github.com/siegy22))
 - Allow the user to set encrypted values directly [\#362](https://github.com/voxpupuli/puppet-splunk/pull/362) ([siegy22](https://github.com/siegy22))
@@ -190,7 +223,7 @@ These should not affect the functionality of the module.
 **Fixed bugs:**
 
 - file\_path not set for splunkforwarder\_limits resource [\#202](https://github.com/voxpupuli/puppet-splunk/issues/202)
-- Fixes \#202 [\#203](https://github.com/voxpupuli/puppet-splunk/pull/203) ([Renelast](https://github.com/Renelast))
+- Fixes \#202 [\#203](https://github.com/voxpupuli/puppet-splunk/pull/203) ([ghost](https://github.com/ghost))
 - Improve ftr license agreement [\#199](https://github.com/voxpupuli/puppet-splunk/pull/199) ([Joshua-Snapp](https://github.com/Joshua-Snapp))
 
 **Merged pull requests:**
@@ -386,8 +419,8 @@ These should not affect the functionality of the module.
 - Add LICENSE file [\#109](https://github.com/voxpupuli/puppet-splunk/pull/109) ([alexjfisher](https://github.com/alexjfisher))
 - This commit sets the splunk\_user for Windows to 'administrator' [\#107](https://github.com/voxpupuli/puppet-splunk/pull/107) ([ralfbosz](https://github.com/ralfbosz))
 - Lint fixes [\#101](https://github.com/voxpupuli/puppet-splunk/pull/101) ([treydock](https://github.com/treydock))
-- types: Fix purging when section contains '//' [\#96](https://github.com/voxpupuli/puppet-splunk/pull/96) ([jameslikeslinux](https://github.com/jameslikeslinux))
-- splunk\_config: Only load other splunk types [\#95](https://github.com/voxpupuli/puppet-splunk/pull/95) ([jameslikeslinux](https://github.com/jameslikeslinux))
+- types: Fix purging when section contains '//' [\#96](https://github.com/voxpupuli/puppet-splunk/pull/96) ([puppetjoy](https://github.com/puppetjoy))
+- splunk\_config: Only load other splunk types [\#95](https://github.com/voxpupuli/puppet-splunk/pull/95) ([puppetjoy](https://github.com/puppetjoy))
 - Remove unneded blank lines [\#93](https://github.com/voxpupuli/puppet-splunk/pull/93) ([roidelapluie](https://github.com/roidelapluie))
 - Allow splunk server services to be overridden [\#90](https://github.com/voxpupuli/puppet-splunk/pull/90) ([treydock](https://github.com/treydock))
 - Ensure /etc/init.d/splunk is created before splunk services [\#89](https://github.com/voxpupuli/puppet-splunk/pull/89) ([treydock](https://github.com/treydock))

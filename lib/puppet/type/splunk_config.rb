@@ -10,17 +10,20 @@ Puppet::Type.newtype(:splunk_config) do
     desc 'splunk config'
   end
 
-  # rubocop:disable Lint/EmptyBlock
   newparam(:forwarder_installdir) do
+    desc 'Directory in which to install and manage Splunk Forwarder'
   end
 
   newparam(:forwarder_confdir) do
+    desc 'Directory for Splunk Forwarder configurations'
   end
 
   newparam(:server_installdir) do
+    desc 'Directory for server installation (maps to `enterprise_homedir`)'
   end
 
   newparam(:server_confdir) do
+    desc 'Directory for Splunk server configurations'
   end
 
   newparam(:edgeproc_installdir) do
