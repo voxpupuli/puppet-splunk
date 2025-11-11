@@ -8,6 +8,13 @@
 
 * [`splunk`](#splunk): This class is unused and doesn't do anything but make default data
 accessible
+* [`splunk::edgeprocessor`](#splunk--edgeprocessor): Install and configure an instance of Splunk Edge Processor. This module assumes you're using systemd.
+* [`splunk::edgeprocessor::config`](#splunk--edgeprocessor--config): Private class declared by Class[splunk::edgeprocessor] to contain the required steps
+for successfully configuring the Splunk Edge Processor
+* [`splunk::edgeprocessor::install`](#splunk--edgeprocessor--install): Private class declared by Class[splunk::edgeprocessor] to contain the required steps
+for successfully installing the Splunk Edge Processor
+* [`splunk::edgeprocessor::service`](#splunk--edgeprocessor--service): Private class declared by Class[splunk::edgeprocessor] to contain the required steps
+for successfully configuring the Systemd service to run the Splunk Edge Processor
 * [`splunk::enterprise`](#splunk--enterprise): Install and configure an instance of Splunk Enterprise
 * [`splunk::enterprise::config`](#splunk--enterprise--config): Private class declared by Class[splunk::enterprise] to contain all the
 configuration needed for a base install of Splunk Enterprise
@@ -104,6 +111,151 @@ accessible
 
 * **Note** If you were expecting this class to setup an instance of Splunk
 Enterprise then please look to Class[splunk::enterprise].
+
+### <a name="splunk--edgeprocessor"></a>`splunk::edgeprocessor`
+
+Install and configure an instance of Splunk Edge Processor. This module assumes you're using systemd.
+
+#### Examples
+
+##### Basic usage
+
+```puppet
+include splunk::edgeprocessor
+```
+
+#### Parameters
+
+The following parameters are available in the `splunk::edgeprocessor` class:
+
+* [`splunk_user`](#-splunk--edgeprocessor--splunk_user)
+* [`package_url`](#-splunk--edgeprocessor--package_url)
+* [`validate_package_checksum`](#-splunk--edgeprocessor--validate_package_checksum)
+* [`checksum_type`](#-splunk--edgeprocessor--checksum_type)
+* [`splunk_package_checksum`](#-splunk--edgeprocessor--splunk_package_checksum)
+* [`splunk_homedir`](#-splunk--edgeprocessor--splunk_homedir)
+* [`scs_group_id`](#-splunk--edgeprocessor--scs_group_id)
+* [`scs_tenant_name`](#-splunk--edgeprocessor--scs_tenant_name)
+* [`scs_environment_name`](#-splunk--edgeprocessor--scs_environment_name)
+* [`scs_auth_token`](#-splunk--edgeprocessor--scs_auth_token)
+
+##### <a name="-splunk--edgeprocessor--splunk_user"></a>`splunk_user`
+
+Data type: `String[1]`
+
+The user to run Splunk as
+
+Default value: `$splunk::params::splunk_user`
+
+##### <a name="-splunk--edgeprocessor--package_url"></a>`package_url`
+
+Data type: `Stdlib::HTTPSUrl`
+
+URL to download the Edge Processor from, expected as a tar.gz file.
+
+Default value: `$splunk::params::edgeproc_package_src`
+
+##### <a name="-splunk--edgeprocessor--validate_package_checksum"></a>`validate_package_checksum`
+
+Data type: `Boolean`
+
+Boolean, will skip checksum validation of downloaded package if False
+
+Default value: `true`
+
+##### <a name="-splunk--edgeprocessor--checksum_type"></a>`checksum_type`
+
+Data type: `String[1]`
+
+none|md5|sha1|sha2|sha256|sha384|sha512
+
+Default value: `$splunk::params::edgeproc_package_checksum_type`
+
+##### <a name="-splunk--edgeprocessor--splunk_package_checksum"></a>`splunk_package_checksum`
+
+Data type: `String[1]`
+
+Checksum of archive package provided by Splunk
+
+Default value: `$splunk::params::edgeproc_package_checksum`
+
+##### <a name="-splunk--edgeprocessor--splunk_homedir"></a>`splunk_homedir`
+
+Data type: `Stdlib::UnixPath`
+
+Directory to install Splunk Edge Processor
+
+Default value: `$splunk::params::edgeproc_homedir`
+
+##### <a name="-splunk--edgeprocessor--scs_group_id"></a>`scs_group_id`
+
+Data type: `String[1]`
+
+Splunk Cloud Service Edge Processor cluster ID
+
+Default value: `undef`
+
+##### <a name="-splunk--edgeprocessor--scs_tenant_name"></a>`scs_tenant_name`
+
+Data type: `String[1]`
+
+
+
+Default value: `undef`
+
+##### <a name="-splunk--edgeprocessor--scs_environment_name"></a>`scs_environment_name`
+
+Data type: `String[1]`
+
+
+
+Default value: `undef`
+
+##### <a name="-splunk--edgeprocessor--scs_auth_token"></a>`scs_auth_token`
+
+Data type: `String[1]`
+
+
+
+Default value: `undef`
+
+### <a name="splunk--edgeprocessor--config"></a>`splunk::edgeprocessor::config`
+
+Private class declared by Class[splunk::edgeprocessor] to contain the required steps
+for successfully configuring the Splunk Edge Processor
+
+### <a name="splunk--edgeprocessor--install"></a>`splunk::edgeprocessor::install`
+
+Private class declared by Class[splunk::edgeprocessor] to contain the required steps
+for successfully installing the Splunk Edge Processor
+
+#### Parameters
+
+The following parameters are available in the `splunk::edgeprocessor::install` class:
+
+* [`archive_name`](#-splunk--edgeprocessor--install--archive_name)
+* [`extract_path`](#-splunk--edgeprocessor--install--extract_path)
+
+##### <a name="-splunk--edgeprocessor--install--archive_name"></a>`archive_name`
+
+Data type: `String[1]`
+
+
+
+Default value: `regsubst($splunk::edgeprocessor::package_url, '(\\S*\\/)([^\\/]+\\.tar\\.gz$)', '\\2')`
+
+##### <a name="-splunk--edgeprocessor--install--extract_path"></a>`extract_path`
+
+Data type: `Stdlib::UnixPath`
+
+
+
+Default value: `regsubst($splunk::edgeprocessor::splunk_homedir, '(^.*\\/)[^\\/]*.$','\\1')`
+
+### <a name="splunk--edgeprocessor--service"></a>`splunk::edgeprocessor::service`
+
+Private class declared by Class[splunk::edgeprocessor] to contain the required steps
+for successfully configuring the Systemd service to run the Splunk Edge Processor
 
 ### <a name="splunk--enterprise"></a>`splunk::enterprise`
 
@@ -1490,6 +1642,7 @@ The following parameters are available in the `splunk::params` class:
 * [`boot_start`](#-splunk--params--boot_start)
 * [`forwarder_installdir`](#-splunk--params--forwarder_installdir)
 * [`enterprise_installdir`](#-splunk--params--enterprise_installdir)
+* [`edgeproc_installdir`](#-splunk--params--edgeproc_installdir)
 * [`default_host`](#-splunk--params--default_host)
 * [`manage_net_tools`](#-splunk--params--manage_net_tools)
 * [`allow_insecure`](#-splunk--params--allow_insecure)
@@ -1631,6 +1784,14 @@ Default value: `undef`
 Data type: `Optional[String[1]]`
 
 Optional directory in which to install and manage Splunk Enterprise
+
+Default value: `undef`
+
+##### <a name="-splunk--params--edgeproc_installdir"></a>`edgeproc_installdir`
+
+Data type: `Optional[String[1]]`
+
+Optional directory in which to install and manage Splunk Edge Processor
 
 Default value: `undef`
 
@@ -1816,11 +1977,19 @@ splunk config
 
 The following parameters are available in the `splunk_config` type.
 
+* [`edgeproc_confdir`](#-splunk_config--edgeproc_confdir)
+* [`edgeproc_installdir`](#-splunk_config--edgeproc_installdir)
 * [`forwarder_confdir`](#-splunk_config--forwarder_confdir)
 * [`forwarder_installdir`](#-splunk_config--forwarder_installdir)
 * [`name`](#-splunk_config--name)
 * [`server_confdir`](#-splunk_config--server_confdir)
 * [`server_installdir`](#-splunk_config--server_installdir)
+
+##### <a name="-splunk_config--edgeproc_confdir"></a>`edgeproc_confdir`
+
+
+##### <a name="-splunk_config--edgeproc_installdir"></a>`edgeproc_installdir`
+
 
 ##### <a name="-splunk_config--forwarder_confdir"></a>`forwarder_confdir`
 
