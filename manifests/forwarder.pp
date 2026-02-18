@@ -212,8 +212,8 @@ class splunk::forwarder (
     )
   }
 
-  if ($facts['os']['family'] == 'windows') and ($package_ensure == 'latest') {
-    fail('This module does not currently support continuously upgrading the Splunk Universal Forwarder on Windows. Please do not set "package_ensure" to "latest" on Windows.')
+  if ($facts['os']['family'] == 'windows') and ($package_ensure == 'latest') and ($package_provider != 'chocolatey') {
+    fail('This module does not currently support continuously upgrading the Splunk Universal Forwarder on Windows. Please use Chocolatey as the package provider if you want to use "package_ensure" set to "latest" on Windows.')
   }
 
   if $manage_password and $seed_password {
