@@ -10,7 +10,7 @@ class SectionNoGlobal < Puppet::Util::IniFile::Section
   end
 
   # this section is never global, allowing for sections with an empty name ([])
-  def is_global? # rubocop:disable Style/PredicateName
+  def is_global?
     false
   end
 end
@@ -32,7 +32,7 @@ end
 
 Puppet::Type.type(:splunk_metadata).provide(
   :ini_setting,
-  parent: Puppet::Type.type(:ini_setting).provider(:splunk)
+  parent: Puppet::Type.type(:ini_setting).provider(:splunk),
 ) do
   def self.file_name
     'local.meta'

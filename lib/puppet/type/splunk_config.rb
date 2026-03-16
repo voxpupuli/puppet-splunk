@@ -88,7 +88,7 @@ Puppet::Type.newtype(:splunk_config) do
       Puppet::Type::Splunkforwarder_props            => self[:purge_forwarder_props],
       Puppet::Type::Splunkforwarder_transforms       => self[:purge_forwarder_transforms],
       Puppet::Type::Splunkforwarder_web              => self[:purge_forwarder_web],
-      Puppet::Type::Splunkforwarder_server           => self[:purge_forwarder_server]
+      Puppet::Type::Splunkforwarder_server           => self[:purge_forwarder_server],
     }.each do |k, purge|
       resources.concat(purge_splunk_resources(k)) if purge == :true
     end
@@ -137,7 +137,7 @@ Puppet::Type.newtype(:splunk_config) do
   # resources of a particular type to purge
   def contexts(type_class)
     contexts = ['system/local'] # Always consider the default context
-    catalog_resources = catalog.resources.select { |r| r.is_a?(type_class) }
+    catalog_resources = catalog.resources.grep(type_class)
     catalog_resources.each do |res|
       contexts << res[:context]
     end
@@ -153,16 +153,14 @@ Puppet::Type.newtype(:splunk_config) do
   def purge_splunk_resources_in_context(type_class, context)
     type_name = type_class.name
     purge_resources = []
-    puppet_resources = []
-
     # Search the catalog for resource types matching the provided class
     # type and context.  Then build an array of puppet resources matching
     # the namevar as section/setting
     #
     catalog_resources = catalog.resources.select { |r| r.is_a?(type_class) && r[:context] == context }
     Puppet.debug "Found #{catalog_resources.size} #{type_class} resources in context #{context}"
-    catalog_resources.each do |res|
-      puppet_resources << ("#{res[:section]}/#{res[:setting]}")
+    puppet_resources = catalog_resources.map do |res|
+      "#{res[:section]}/#{res[:setting]}"
     end
 
     # Search the configured instances of the class type and purge them if
@@ -190,7 +188,7 @@ Puppet::Type.newtype(:splunk_config) do
         section: instance[:section],
         setting: instance[:setting],
         context: context,
-        ensure: :absent
+        ensure: :absent,
       )
     end
 
