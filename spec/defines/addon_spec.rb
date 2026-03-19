@@ -44,7 +44,7 @@ describe 'splunk::addon' do
           let(:title) { 'Splunk_TA' }
           let(:params) do
             { 'splunkbase_source' => 'puppet:///modules/profiles/splunk-add-on.spl',
-              'extract_command' => 'tar zxf %s' }
+              'extract_command' => 'tar zxf %s', }
           end
 
           it { is_expected.to compile.with_all_deps }

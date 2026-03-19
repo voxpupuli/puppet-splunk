@@ -117,7 +117,7 @@ describe 'splunk::enterprise' do
       end
 
       context 'when manage_password = true' do
-        if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+        if %w[Linux SunOS].include?(facts[:kernel])
           let(:params) { { 'manage_password' => true } }
 
           it { is_expected.to compile.with_all_deps }
@@ -127,7 +127,7 @@ describe 'splunk::enterprise' do
       end
 
       context 'when package_provider = yum' do
-        if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+        if %w[Linux SunOS].include?(facts[:kernel])
           let(:params) { { 'package_provider' => 'yum' } }
 
           it { is_expected.to contain_package('splunk').with(provider: 'yum') }
@@ -135,7 +135,7 @@ describe 'splunk::enterprise' do
       end
 
       context 'with $boot_start = true (defaults)' do
-        if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+        if %w[Linux SunOS].include?(facts[:kernel])
 
           context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2' do
             let(:facts) do
@@ -305,7 +305,7 @@ describe 'splunk::enterprise' do
       end
 
       context 'with $boot_start = false' do
-        if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+        if %w[Linux SunOS].include?(facts[:kernel])
 
           context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2' do
             let(:facts) do

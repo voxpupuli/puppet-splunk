@@ -151,7 +151,7 @@ describe 'splunk enterprise class' do
     end
 
     SPLUNK_TYPES.select { |type| SPLUNK_SERVER_TYPES.key?(type) }.each do |type, file_name|
-      context = type == :splunk_metadata ? 'metadata' : 'local'
+      context = (type == :splunk_metadata) ? 'metadata' : 'local'
       conf_file_path = File.join('/opt/splunk/etc/system', context, file_name)
       describe file(conf_file_path) do
         it { is_expected.to be_file }

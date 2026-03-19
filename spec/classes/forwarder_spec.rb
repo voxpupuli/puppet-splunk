@@ -82,7 +82,7 @@ describe 'splunk::forwarder' do
         end
 
         context 'when manage_password = true' do
-          if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+          if %w[Linux SunOS].include?(facts[:kernel])
             let(:params) { { 'manage_password' => true } }
 
             it { is_expected.to compile.with_all_deps }
@@ -92,7 +92,7 @@ describe 'splunk::forwarder' do
         end
 
         context 'when package_provider = yum' do
-          if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+          if %w[Linux SunOS].include?(facts[:kernel])
             let(:params) { { 'package_provider' => 'yum' } }
 
             it { is_expected.to contain_package('splunkforwarder').with(provider: 'yum') }
@@ -123,7 +123,7 @@ describe 'splunk::forwarder' do
         end
 
         context 'with $boot_start = true (defaults)' do
-          if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+          if %w[Linux SunOS].include?(facts[:kernel])
 
             context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2' do
               let(:facts) do
@@ -213,7 +213,7 @@ describe 'splunk::forwarder' do
         end
 
         context 'with $boot_start = false' do
-          if facts[:kernel] == 'Linux' || facts[:kernel] == 'SunOS'
+          if %w[Linux SunOS].include?(facts[:kernel])
 
             context 'with $facts[service_provider] == init and $splunk::params::version >= 7.2.2' do
               let(:facts) do
@@ -292,7 +292,7 @@ describe 'splunk::forwarder' do
 
         context 'when forwarder not already installed' do
           let(:facts) do
-            facts.merge(splunkforwarder_version: nil, service_provider: facts[:kernel] == 'FreeBSD' ? 'freebsd' : 'systemd')
+            facts.merge(splunkforwarder_version: nil, service_provider: (facts[:kernel] == 'FreeBSD') ? 'freebsd' : 'systemd')
           end
           let(:pre_condition) do
             "class { 'splunk::params': version => '7.2.2' }"
@@ -301,7 +301,7 @@ describe 'splunk::forwarder' do
             '/opt/splunkforwarder/bin/splunk stop && /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes && /opt/splunkforwarder/bin/splunk stop'
           end
           let(:service_name) do
-            facts[:kernel] == 'FreeBSD' ? 'splunk' : 'SplunkForwarder'
+            (facts[:kernel] == 'FreeBSD') ? 'splunk' : 'SplunkForwarder'
           end
 
           it_behaves_like 'splunk forwarder'
@@ -313,7 +313,7 @@ describe 'splunk::forwarder' do
                 before: "Service[#{service_name}]",
                 subscribe: nil,
                 require: 'Exec[enable_splunkforwarder]',
-                refreshonly: 'true'
+                refreshonly: 'true',
               )
             end
           end
@@ -321,7 +321,7 @@ describe 'splunk::forwarder' do
 
         context 'when forwarder already installed' do
           let(:facts) do
-            facts.merge(splunkforwarder_version: '7.3.3', service_provider: facts[:kernel] == 'FreeBSD' ? 'freebsd' : 'systemd')
+            facts.merge(splunkforwarder_version: '7.3.3', service_provider: (facts[:kernel] == 'FreeBSD') ? 'freebsd' : 'systemd')
           end
           let(:pre_condition) do
             "class { 'splunk::params': version => '7.2.2' }"
@@ -330,7 +330,7 @@ describe 'splunk::forwarder' do
             '/opt/splunkforwarder/bin/splunk stop && /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes && /opt/splunkforwarder/bin/splunk stop'
           end
           let(:service_name) do
-            facts[:kernel] == 'FreeBSD' ? 'splunk' : 'SplunkForwarder'
+            (facts[:kernel] == 'FreeBSD') ? 'splunk' : 'SplunkForwarder'
           end
 
           it_behaves_like 'splunk forwarder'
@@ -342,7 +342,7 @@ describe 'splunk::forwarder' do
                 before: "Service[#{service_name}]",
                 subscribe: 'Package[splunkforwarder]',
                 require: 'Exec[enable_splunkforwarder]',
-                refreshonly: 'true'
+                refreshonly: 'true',
               )
             end
           end

@@ -88,7 +88,7 @@ SPLUNK_TYPES.each do |type, file_name|
           Puppet::Type.type(:splunk_config).new(
             name: 'config',
             server_confdir: '/opt/splunk/etc',
-            forwarder_confdir: '/opt/splunkforwarder/etc'
+            forwarder_confdir: '/opt/splunkforwarder/etc',
           ).generate
         end
 
