@@ -33,12 +33,24 @@ module PuppetX
             def insync?(is) # rubocop:disable Lint/NestedMethodDefinition
               secrets_file_path = File.join(provider.class.file_path, 'auth/splunk.secret')
               secrets_file_exist = File.file?(secrets_file_path)
-              if !should.start_with?('$7$') && secrets_file_exist
-                PuppetX::Voxpupuli::Splunk::Util.decrypt(secrets_file_path, is) == should
-              else
-                Puppet.warning("Secrets file NOT found in #{secrets_file_path}") unless secrets_file_exist
-                is == should
+
+              current_values = normalize_values(is, secrets_file_path, secrets_file_exist)
+              desired_values = normalize_values(should, secrets_file_path, false)
+
+              current_values == desired_values
+            end
+
+            def normalize_values(value, secrets_file_path, secrets_file_exist) # rubocop:disable Lint/NestedMethodDefinition
+              Array(value).map do |v|
+                if secrets_file_exist && v.is_a?(String) && !encrypted?(should)
+                  PuppetX::Voxpupuli::Splunk::Util.decrypt(secrets_file_path, v)
+                else
+                  v
+                end
               end
+            end
+            def encrypted?(value) # rubocop:disable Lint/NestedMethodDefinition
+              value.is_a?(String) && value.start_with?('$7$')
             end
           end
           type.newparam(:setting) do

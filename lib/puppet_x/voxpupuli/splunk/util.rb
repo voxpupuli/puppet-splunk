@@ -8,7 +8,7 @@ module PuppetX
     module Splunk
       class Util
         def self.decrypt(secrets_file, value)
-          return value unless value.start_with?('$7$')
+          return value unless value.is_a?(String) && value.start_with?('$7$')
 
           Puppet.debug "Decrypting splunk >= 7.2 data using secret from #{secrets_file}"
           data = Base64.strict_decode64(value[3..-1])
