@@ -42,15 +42,12 @@ module PuppetX
 
             def normalize_values(value, secrets_file_path, secrets_file_exist) # rubocop:disable Lint/NestedMethodDefinition
               Array(value).map do |v|
-                if secrets_file_exist && v.is_a?(String) && !encrypted?(should)
+                if !should.start_with?('$7$') && v.is_a?(String) && secrets_file_exist
                   PuppetX::Voxpupuli::Splunk::Util.decrypt(secrets_file_path, v)
                 else
                   v
                 end
               end
-            end
-            def encrypted?(value) # rubocop:disable Lint/NestedMethodDefinition
-              value.is_a?(String) && value.start_with?('$7$')
             end
           end
           type.newparam(:setting) do
