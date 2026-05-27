@@ -35,7 +35,7 @@ module PuppetX
               secrets_file_exist = File.file?(secrets_file_path)
 
               Puppet.warning("Secrets file NOT found in #{secrets_file_path}") unless secrets_file_exist
-              
+
               current_values = normalize_values(is, secrets_file_path, secrets_file_exist)
               desired_values = normalize_values(should, secrets_file_path, false)
 
