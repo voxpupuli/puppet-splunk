@@ -66,6 +66,14 @@ class splunk::forwarder::config {
       tag     => 'splunk_forwarder',
     }
 
+    $splunk::forwarder::forwarder_deploymentclient.each | String $name, Hash $options| {
+      splunkforwarder_deploymentclient { $name:
+        section => $options['section'],
+        setting => $options['setting'],
+        value   => $options['value'],
+        tag     => 'splunk_forwarder',
+      }
+    }
     $splunk::forwarder::forwarder_input.each | String $name, Hash $options| {
       splunkforwarder_input { $name:
         section => $options['section'],
