@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
-require 'puppet/util/ini_file'
+# Load Puppet::Util::IniFile via puppetlabs-inifile's own provider.
+# Do not `require 'puppet/util/ini_file'` — that file lives in another module
+# and is not on $LOAD_PATH under Puppet Server module isolation (inifile 6.x).
+# See https://github.com/voxpupuli/puppet-splunk/issues/239
+ini_setting = Puppet::Type.type(:ini_setting)
+raise LoadError, 'puppetlabs-inifile is required to load splunk_metadata' unless ini_setting
+
+ini_setting.provider(:ruby)
+raise LoadError, 'puppetlabs-inifile did not load Puppet::Util::IniFile' unless defined?(Puppet::Util::IniFile)
 
 class SectionNoGlobal < Puppet::Util::IniFile::Section
   def initialize(model)
@@ -10,9 +18,10 @@ class SectionNoGlobal < Puppet::Util::IniFile::Section
   end
 
   # this section is never global, allowing for sections with an empty name ([])
-  def is_global?
+  def global?
     false
   end
+  alias_method :is_global?, :global?
 end
 
 class IniFileNoGlobal < Puppet::Util::IniFile
@@ -54,6 +63,6 @@ Puppet::Type.type(:splunk_metadata).provide(
   end
 
   def ini_file
-    @ini_file ||= IniFileNoGlobal.new(file_path, separator, section_prefix, section_suffix)
+    @ini_file ||= IniFileNoGlobal.new(file_path, separator, section_prefix, section_suffix, indent_char, indent_width)
   end
 end
