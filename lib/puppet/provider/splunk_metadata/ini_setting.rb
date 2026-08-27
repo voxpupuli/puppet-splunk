@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Load Puppet::Util::IniFile via puppetlabs-inifile's own provider.
-# Do not `require 'puppet/util/ini_file'` — that file lives in another module
+# Do not `require 'puppet/util/ini_file'` - that file lives in another module
 # and is not on $LOAD_PATH under Puppet Server module isolation (inifile 6.x).
 # See https://github.com/voxpupuli/puppet-splunk/issues/239
 ini_setting = Puppet::Type.type(:ini_setting)
@@ -21,7 +21,7 @@ class SectionNoGlobal < Puppet::Util::IniFile::Section
   def global?
     false
   end
-  alias_method :is_global?, :global?
+  alias is_global? global?
 end
 
 class IniFileNoGlobal < Puppet::Util::IniFile
