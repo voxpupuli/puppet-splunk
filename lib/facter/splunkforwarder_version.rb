@@ -9,7 +9,7 @@ Facter.add(:splunkforwarder_version) do
             '/opt/splunkforwarder/bin/splunk --version --accept-license --answer-yes --no-prompt'
           end
     if cmd
-      output = Facter::Util::Resolution.exec(cmd)
+      output = Facter::Core::Execution.execute(cmd)
       value = Regexp.last_match(1) if output =~ %r{^Splunk Universal Forwarder ([0-9.]+) \(}
     end
     value
