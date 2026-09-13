@@ -9,7 +9,7 @@ Facter.add(:splunk_version) do
             '/opt/splunk/bin/splunk --version --accept-license --answer-yes --no-prompt'
           end
     if cmd
-      output = Facter::Util::Resolution.exec(cmd)
+      output = Facter::Core::Execution.execute(cmd)
       if output =~ %r{^Splunk ([0-9.]+) \(} # rubocop:disable Style/IfUnlessModifier
         value = Regexp.last_match(1)
       end
