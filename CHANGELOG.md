@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v12.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v12.0.0) (2026-09-14)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v11.0.0...v12.0.0)
+
+**Breaking changes:**
+
+- Drop support for EOL EL 7, CentOS 8, Debian 10, Ubuntu 20.04 [\#415](https://github.com/voxpupuli/puppet-splunk/pull/415) ([kenyon](https://github.com/kenyon))
+
+**Implemented enhancements:**
+
+- Add a $service\_ensure param to splunk::enterprise and splunk::forwarder [\#249](https://github.com/voxpupuli/puppet-splunk/issues/249)
+- Feature: Manage splunk licenses [\#175](https://github.com/voxpupuli/puppet-splunk/issues/175)
+- Ability to Install and Managed Splunk Server on Windows O/S [\#151](https://github.com/voxpupuli/puppet-splunk/issues/151)
+- replace deprecated calls with Facter::Core::Execution [\#429](https://github.com/voxpupuli/puppet-splunk/pull/429) ([corporate-gadfly](https://github.com/corporate-gadfly))
+
+**Fixed bugs:**
+
+- Remove or make optional failure statement for ensuring latest on Windows [\#391](https://github.com/voxpupuli/puppet-splunk/issues/391)
+- Fix type sync for multi-value `ini_setting` results [\#425](https://github.com/voxpupuli/puppet-splunk/pull/425) ([ShadNex](https://github.com/ShadNex))
+
+**Merged pull requests:**
+
+- Fix \#391: Allow `package_ensure => latest` on Windows with Chocolatey provider [\#420](https://github.com/voxpupuli/puppet-splunk/pull/420) ([raman1236](https://github.com/raman1236))
+- README: remove obsolete top-level class syntax [\#419](https://github.com/voxpupuli/puppet-splunk/pull/419) ([kenyon](https://github.com/kenyon))
+- update URL suffix for Windows package download [\#416](https://github.com/voxpupuli/puppet-splunk/pull/416) ([luedderd](https://github.com/luedderd))
+
 ## [v11.0.0](https://github.com/voxpupuli/puppet-splunk/tree/v11.0.0) (2025-10-29)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-splunk/compare/v10.0.0...v11.0.0)
@@ -54,7 +80,7 @@ These should not affect the functionality of the module.
 - Add Rocky and AlmaLinux 8 and 9 support [\#359](https://github.com/voxpupuli/puppet-splunk/pull/359) ([zilchms](https://github.com/zilchms))
 - Add EL 8 and 9 support [\#358](https://github.com/voxpupuli/puppet-splunk/pull/358) ([zilchms](https://github.com/zilchms))
 - Add Ubuntu 22.04 support [\#357](https://github.com/voxpupuli/puppet-splunk/pull/357) ([zilchms](https://github.com/zilchms))
-- Ensure compatibility with Splunk 9.2.0.1 and 9.0.0 [\#350](https://github.com/voxpupuli/puppet-splunk/pull/350) ([siegy22](https://github.com/siegy22))
+- Ensure compatibility with Splunk 9.2.0.1 and 9.0.0 [\#350](https://github.com/voxpupuli/puppet-splunk/pull/350) ([aimaard](https://github.com/aimaard))
 - Add Puppet 8 support [\#347](https://github.com/voxpupuli/puppet-splunk/pull/347) ([bastelfreak](https://github.com/bastelfreak))
 - puppetlabs/stdlib: Allow 9.x [\#346](https://github.com/voxpupuli/puppet-splunk/pull/346) ([bastelfreak](https://github.com/bastelfreak))
 - Allow inifile 6.x, concat 9.x, archive 7.x [\#345](https://github.com/voxpupuli/puppet-splunk/pull/345) ([gcoxmoz](https://github.com/gcoxmoz))
@@ -65,15 +91,15 @@ These should not affect the functionality of the module.
 - Splunk 9.0.5+ Package Not Found on RedHat x86\_64 [\#348](https://github.com/voxpupuli/puppet-splunk/issues/348)
 - pass4SymmKey not read properly [\#284](https://github.com/voxpupuli/puppet-splunk/issues/284)
 - pass4SymmKey setting causes restarts of splunk [\#197](https://github.com/voxpupuli/puppet-splunk/issues/197)
-- Add workaround for Windows based Splunk UF 9.1.3 known issue [\#365](https://github.com/voxpupuli/puppet-splunk/pull/365) ([siegy22](https://github.com/siegy22))
+- Add workaround for Windows based Splunk UF 9.1.3 known issue [\#365](https://github.com/voxpupuli/puppet-splunk/pull/365) ([aimaard](https://github.com/aimaard))
 - Safer Splunk Enterprise version check [\#339](https://github.com/voxpupuli/puppet-splunk/pull/339) ([gsandine](https://github.com/gsandine))
 
 **Merged pull requests:**
 
 - Updated README.md to make it clear that this module can download directly from the Splunk website [\#367](https://github.com/voxpupuli/puppet-splunk/pull/367) ([tamerz](https://github.com/tamerz))
-- Miscellaneous README improvements [\#364](https://github.com/voxpupuli/puppet-splunk/pull/364) ([siegy22](https://github.com/siegy22))
-- Fix upgrading Splunk Enterprise [\#363](https://github.com/voxpupuli/puppet-splunk/pull/363) ([siegy22](https://github.com/siegy22))
-- Allow the user to set encrypted values directly [\#362](https://github.com/voxpupuli/puppet-splunk/pull/362) ([siegy22](https://github.com/siegy22))
+- Miscellaneous README improvements [\#364](https://github.com/voxpupuli/puppet-splunk/pull/364) ([aimaard](https://github.com/aimaard))
+- Fix upgrading Splunk Enterprise [\#363](https://github.com/voxpupuli/puppet-splunk/pull/363) ([aimaard](https://github.com/aimaard))
+- Allow the user to set encrypted values directly [\#362](https://github.com/voxpupuli/puppet-splunk/pull/362) ([aimaard](https://github.com/aimaard))
 - Remove legacy top-scope syntax [\#351](https://github.com/voxpupuli/puppet-splunk/pull/351) ([smortex](https://github.com/smortex))
 
 ## [v9.1.1](https://github.com/voxpupuli/puppet-splunk/tree/v9.1.1) (2022-07-14)
@@ -223,7 +249,6 @@ These should not affect the functionality of the module.
 **Fixed bugs:**
 
 - file\_path not set for splunkforwarder\_limits resource [\#202](https://github.com/voxpupuli/puppet-splunk/issues/202)
-- Fixes \#202 [\#203](https://github.com/voxpupuli/puppet-splunk/pull/203) ([ghost](https://github.com/ghost))
 - Improve ftr license agreement [\#199](https://github.com/voxpupuli/puppet-splunk/pull/199) ([Joshua-Snapp](https://github.com/Joshua-Snapp))
 
 **Merged pull requests:**
