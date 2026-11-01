@@ -80,4 +80,72 @@ class splunk::forwarder::install {
     provider        => $splunk::forwarder::package_provider,
     install_options => $splunk::forwarder::install_options,
   }
+
+  if $facts['kernel'] == 'Linux' and $facts['service_provider'] == 'systemd' and $splunk::forwarder::boot_start {
+    if $facts['splunkforwarder_version'] and versioncmp($facts['splunkforwarder_version'], $splunk::forwarder::version) != 0 {
+      $_splunk_home = $splunk::forwarder::forwarder_homedir
+      $_splunk_user = $splunk::forwarder::splunk_user
+
+      case $facts['os']['family'] {
+        'RedHat', 'Suse': {
+          $_staged_file = "${splunk::forwarder::staging_dir}/splunkforwarder-${splunk::forwarder::version}-*.x86_64.rpm"
+          $_install_cmd = "/bin/rpm -U --force ${_staged_file}"
+        }
+        'Debian': {
+          $_staged_file = "${splunk::forwarder::staging_dir}/splunkforwarder-${splunk::forwarder::version}-*-amd64.deb"
+          $_install_cmd = "/usr/bin/dpkg -i ${_staged_file}"
+        }
+        default: {
+          $_staged_file = undef
+          $_install_cmd = undef
+        }
+      }
+
+      exec { 'splunkforwarder-disable-boot-start':
+        command => "${_splunk_home}/bin/splunk disable boot-start -user ${_splunk_user} --accept-license --answer-yes --no-prompt || true",
+        onlyif  => "/usr/bin/test -f ${_splunk_home}/bin/splunk",
+        timeout => 120,
+      }
+
+      exec { 'splunkforwarder-stop-for-upgrade':
+        command => "${_splunk_home}/bin/splunk stop",
+        onlyif  => "/usr/bin/test -f ${_splunk_home}/bin/splunk",
+        timeout => 120,
+      }
+
+      if $_staged_file and $_install_cmd {
+        exec { 'splunkforwarder-install-package':
+          command => $_install_cmd,
+          onlyif  => "ls ${_staged_file}",
+          timeout => 300,
+        }
+
+        exec { 'splunkforwarder-enable-boot-start-after-upgrade':
+          command => "${_splunk_home}/bin/splunk enable boot-start -user ${_splunk_user} -group ${_splunk_user} --accept-license --answer-yes --no-prompt",
+          onlyif  => "/usr/bin/test -f ${_splunk_home}/bin/splunk",
+          returns => [0, 4],
+          timeout => 120,
+        }
+
+        exec { 'splunkforwarder-fix-ownership':
+          command => "/bin/chown -R ${_splunk_user}:${_splunk_user} ${_splunk_home}",
+          onlyif  => "/usr/bin/test -d ${_splunk_home}",
+          timeout => 120,
+        }
+
+        Exec['splunkforwarder-enable-boot-start-after-upgrade'] -> Exec['splunkforwarder-fix-ownership']
+
+        Exec['splunkforwarder-disable-boot-start'] -> Exec['splunkforwarder-stop-for-upgrade'] -> Exec['splunkforwarder-install-package'] -> Exec['splunkforwarder-enable-boot-start-after-upgrade']
+      }
+    }
+
+    $_splunk_home_always = $splunk::forwarder::forwarder_homedir
+    $_splunk_user_always = $splunk::forwarder::splunk_user
+
+    exec { 'splunkforwarder-fix-ownership-always':
+      command => "/bin/chown -R ${_splunk_user_always}:${_splunk_user_always} ${_splunk_home_always}",
+      onlyif  => "/usr/bin/test -d ${_splunk_home_always} && /usr/bin/stat -c '%G' ${_splunk_home_always} | grep -v '^${_splunk_user_always}$'",
+      timeout => 120,
+    }
+  }
 }

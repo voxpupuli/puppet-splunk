@@ -83,7 +83,12 @@ define splunk::addon (
         extract_command => $extract_command,
         creates         => "${_splunk_home}/etc/apps/${name}",
         cleanup         => true,
-        before          => File["${_splunk_home}/etc/apps/${name}/local"],
+      }
+
+      exec { "splunkaddon-fix-ownership-${name}":
+        command => "/bin/chown -R ${owner}:${owner} ${_splunk_home}/etc/apps/${name}",
+        onlyif  => "/usr/bin/test -d ${_splunk_home}/etc/apps/${name}",
+        before  => File["${_splunk_home}/etc/apps/${name}/local"],
       }
     } else {
       package { $package_name:
