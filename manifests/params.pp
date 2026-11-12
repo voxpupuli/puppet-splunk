@@ -277,6 +277,14 @@ class splunk::params (
   }
   # default splunk agent settings in a hash so that the cya be easily parsed to other classes
 
+  $forwarder_deploymentclient = {
+    'target-broker_targetUri' => {
+      section             => 'target-broker:deploymentServer',
+      setting             => 'targetUri',
+      value               => "${server}:${logging_port}",
+      tag                 => 'splunk_forwarder',
+    },
+  }
   $forwarder_output = {
     'tcpout_defaultgroup' => {
       section             => 'default',
