@@ -195,6 +195,7 @@ class splunk::enterprise (
   Stdlib::Port $splunkd_port                 = $splunk::params::splunkd_port,
   Stdlib::Port $logging_port                 = $splunk::params::logging_port,
   Stdlib::Port $web_httpport                 = 8000,
+  Stdlib::Port $web_ssl                      = 0,
   Boolean $purge_alert_actions               = false,
   Boolean $purge_authentication              = false,
   Boolean $purge_authorize                   = false,
