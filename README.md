@@ -184,8 +184,8 @@ This module has the ability to install *and* upgrade the splunk and splunkforwar
 
 #### Upgrade Example
 
-The following code will install the 9.1.0 version of the splunk forwarder. Then
-comment out the 9.1.0 version and build values and uncomment the 9.2.0.1 version
+The following code will install the 10.0.1 version of the splunk forwarder. Then
+comment out the 10.0.1 version and build values and uncomment the 10.0.5 version
 and build values. Running puppet again will perform the following:
 
 1. splunk forwarder package is upgraded
@@ -197,10 +197,10 @@ and build values. Running puppet again will perform the following:
 ```puppet
 # Tell the module to get packages directly from Splunk.
 class { 'splunk::params':
-  version  => '9.1.0',
-  build    => '1c86ca0bacc3',
-  #version  => '9.2.0.1',
-  #build    => 'd8ae995bf219',
+  version  => '10.0.1',
+  build    => 'c486717c322b',
+  #version  => '10.0.5',
+  #build    => '3d2e2618f448',
   src_root => 'https://download.splunk.com',
 }
 
@@ -217,7 +217,7 @@ See in file [REFERENCE.md](REFERENCE.md).
 
 ## Limitations
 
-- Upgrades are tested from Splunk 9.1.0 to 9.2.0.1.
+- Upgrades are tested from Splunk 10.0.1 to 10.0.5.
 - New installations of splunk up to version 7.2.X are supported, but upgrades
   from  7.0.X to >= 7.0.X are not fully tested
 

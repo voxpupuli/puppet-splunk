@@ -98,8 +98,8 @@
 #   Disable certificate verification when connecting to SSL hosts to download packages.
 #
 class splunk::params (
-  String[1] $version                         = '9.2.0.1',
-  String[1] $build                           = 'd8ae995bf219',
+  String[1] $version                         = '10.6.2.5',
+  String[1] $build                           = 'b07ce3b48d58',
   String[1] $src_root                        = 'https://download.splunk.com',
   Stdlib::Port $splunkd_port                 = 8089,
   Stdlib::Port $logging_port                 = 9997,

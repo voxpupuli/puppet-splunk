@@ -55,7 +55,7 @@ describe 'splunk enterprise class' do
     end
   end
 
-  context 'Upgrading splunk enterprise from 9.1.0 to 9.2.0.1' do
+  context 'Upgrading splunk enterprise from 10.0.1 to 10.0.5' do
     after(:all) do
       pp = <<-EOS
         service { '#{service_name}': ensure => stopped }
@@ -69,7 +69,7 @@ describe 'splunk enterprise class' do
 
     it 'works idempotently with no errors' do
       pp = <<-EOS
-        class { 'splunk::params': version => '9.1.0', build => '1c86ca0bacc3' }
+        class { 'splunk::params': version => '10.0.1', build => 'c486717c322b' }
         class { 'splunk::enterprise':  }
 
         # See https://community.splunk.com/t5/Installation/Why-am-I-getting-an-error-to-start-a-fresh-Splunk-instance-in-my/m-p/336938
@@ -97,9 +97,9 @@ describe 'splunk enterprise class' do
       it { is_expected.to be_running }
     end
 
-    it 'upgrades to 9.2.0.1' do
+    it 'upgrades to 10.0.5' do
       pp = <<-EOS
-        class { 'splunk::params': version => '9.2.0.1', build => 'd8ae995bf219' }
+        class { 'splunk::params': version => '10.0.5', build => '3d2e2618f448' }
         class { 'splunk::enterprise': package_ensure => latest  }
 
         # See https://community.splunk.com/t5/Installation/Why-am-I-getting-an-error-to-start-a-fresh-Splunk-instance-in-my/m-p/336938
