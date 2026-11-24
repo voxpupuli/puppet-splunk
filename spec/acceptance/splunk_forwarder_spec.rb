@@ -69,7 +69,10 @@ describe 'splunk::forwarder class' do
     describe file('/opt/splunkforwarder/etc/system/local/outputs.conf') do
       it { is_expected.to be_file }
       its(:content) { is_expected.to match %r{^sslPassword} }
-      its(:content) { is_expected.to match %r{^sslPassword = \$7\$} }
+      # Splunk encrypts new secrets as $7$ (PBKDF2) up to 10.5.x and as $8$
+      # (HKDF-SHA256) from 10.6 onwards - accept either so this doesn't flap
+      # depending on which Splunk version is under test.
+      its(:content) { is_expected.to match %r{^sslPassword = \$[78]\$} }
     end
 
     describe package('splunkforwarder') do

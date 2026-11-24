@@ -1479,7 +1479,7 @@ Data type: `String[1]`
 The version of Splunk to install. This will be in the form x.y.z; e.g.
 "4.3.2".
 
-Default value: `'9.2.0.1'`
+Default value: `'10.6.2.5'`
 
 ##### <a name="-splunk--params--build"></a>`build`
 
@@ -1491,7 +1491,7 @@ automatically but a build number must be supplied in order to correctly
 construct the path to the packages. A build number will be six digits;
 e.g. "123586".
 
-Default value: `'d8ae995bf219'`
+Default value: `'b07ce3b48d58'`
 
 ##### <a name="-splunk--params--splunkd_port"></a>`splunkd_port`
 

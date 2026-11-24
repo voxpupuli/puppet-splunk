@@ -217,9 +217,11 @@ See in file [REFERENCE.md](REFERENCE.md).
 
 ## Limitations
 
-- Upgrades are tested from Splunk 9.1.0 to 9.2.0.1.
-- New installations of splunk up to version 7.2.X are supported, but upgrades
-  from  7.0.X to >= 7.0.X are not fully tested
+- Upgrades are tested from Splunk 9.1.0 to 9.2.0.1, and from Splunk 9.4.17 to
+  10.6.2.5 (across the 9.x -> 10.x major version boundary).
+- New installations of splunk are additionally tested with versions 7.2.4.2,
+  9.0.0 and 9.4.0, besides the current default version above, but upgrades
+  from/to versions other than the two pairs mentioned are not fully tested
 
 ## Development
 
