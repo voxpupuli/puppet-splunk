@@ -79,6 +79,22 @@ describe 'splunk enterprise class' do
           before => Exec['enable_splunk'],
           require => Package['splunk'],
         }
+
+        # Splunk 9.1.0 bundles an old libcrypto.so.1.0.0 whose ELF GNU_STACK
+        # segment requests an executable stack. glibc >= 2.41 (Ubuntu >= 25.04,
+        # so this includes 26.04) refuses to dlopen() such libraries with
+        # "cannot enable executable stack as shared object requires". This
+        # tunable restores the pre-2.41 permissive behavior; it needs
+        # glibc >= 2.42 (Ubuntu 26.04 ships 2.43, so this is fine here -
+        # Debian 13 "trixie" ships 2.41 and would need a different workaround,
+        # e.g. patchelf --clear-execstack on the .so file). The 9.4.17 build
+        # below already bundles a fixed libcrypto and doesn't need this.
+        file_line { 'glibc_execstack_workaround':
+          path => '/opt/splunk/etc/splunk-launch.conf',
+          line => 'GLIBC_TUNABLES=glibc.rtld.execstack=2',
+          before => Exec['enable_splunk'],
+          require => Package['splunk'],
+        }
       EOS
 
       # Run it twice and test for idempotency
