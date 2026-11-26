@@ -96,6 +96,12 @@ class splunk::enterprise::config () {
       value   => $splunk::enterprise::web_httpport,
       tag     => 'splunk_server',
     }
+    splunk_web { 'splunk_server_web_ssl':
+      section => 'settings',
+      setting => 'enableSplunkWebSSL',
+      value   => $splunk::enterprise::web_ssl,
+      tag     => 'splunk_server',
+    }
   }
 
   File <| tag == 'splunk_enterprise' |> -> Splunk_alert_actions<||>    ~> Class['splunk::enterprise::service']
