@@ -96,6 +96,18 @@ describe 'splunk::enterprise' do
             is_expected.to contain_class('splunk::enterprise').with(enterprise_package_src: 'https://download.splunk.com/products/splunk/releases/9.1.0/linux/splunk-9.1.0-build.x86_64.rpm')
           }
         end
+
+        context 'when version/build are overridden directly on splunk::enterprise' do
+          let(:pre_condition) do
+            "class { 'splunk::params': version => '9.0.5', build => 'central-build' }"
+          end
+          let(:params) { { 'version' => '10.4.2', 'build' => '33c3bf42cd73' } }
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_class('splunk::enterprise').with(enterprise_package_src: 'https://download.splunk.com/products/splunk/releases/10.4.2/linux/splunk-10.4.2-33c3bf42cd73.x86_64.rpm')
+          }
+        end
       end
     end
   end

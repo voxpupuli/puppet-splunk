@@ -310,100 +310,23 @@ class splunk::params (
     default:   { $package_provider = undef } # Don't define a $package_provider
   }
 
-  # Download URLs changed starting from 9.4.0 for debs.
-  # Splunk only includes "-linux-".
-  if versioncmp($version, '9.4.0') >= 0 {
-    $deb_prefix = 'linux'
-  } else {
-    $deb_prefix = 'linux-2.6'
-  }
-  # Download URLs changed starting from 8.2.11 and 9.0.5 for RPMs.
-  # Splunk no longer includes "-linux-2.6-".
-  $linux_prefix = (versioncmp($version, '9.0.5') >= 0 or (versioncmp($version, '8.2.11') >= 0 and versioncmp($version, '9.0.0') == -1)) ? {
-    true  => '.',
-    false => '-linux-2.6-',
-  }
-
   # Settings specific to an architecture as well as an OS family
   case "${facts['os']['family']} ${facts['os']['architecture']}" {
-    'RedHat i386': {
-      $package_suffix          = "${version}-${build}.i386.rpm"
+    'RedHat i386', 'RedHat x86_64', 'RedHat ppc64le', 'RedHat aarch64',
+    'Debian i386', 'Debian amd64', 'Debian aarch64',
+    'Solaris i86pc', 'Solaris sun4v', 'Suse x86_64', 'FreeBSD amd64': {
       $forwarder_package_name  = 'splunkforwarder'
       $enterprise_package_name = 'splunk'
     }
-    'RedHat x86_64': {
-      $package_suffix          = "${version}-${build}${linux_prefix}x86_64.rpm"
-      $forwarder_package_name  = 'splunkforwarder'
-      $enterprise_package_name = 'splunk'
-    }
-    'RedHat ppc64le': {
-      $package_suffix          = "${version}-${build}${linux_prefix}ppc64le.rpm"
-      $forwarder_package_name  = 'splunkforwarder'
-      $enterprise_package_name = 'splunk'
-    }
-    'RedHat aarch64': {
-      $package_suffix          = "${version}-${build}${linux_prefix}aarch64.rpm"
-      $forwarder_package_name  = 'splunkforwarder'
-      $enterprise_package_name = 'splunk'
-    }
-    'Debian i386': {
-      $package_suffix          = "${version}-${build}-linux-2.6-intel.deb"
-      $forwarder_package_name  = 'splunkforwarder'
-      $enterprise_package_name = 'splunk'
-    }
-    'Debian amd64': {
-      $package_suffix          = "${version}-${build}-${deb_prefix}-amd64.deb"
-      $forwarder_package_name  = 'splunkforwarder'
-      $enterprise_package_name = 'splunk'
-    }
-    'Debian aarch64': {
-      $package_suffix = versioncmp($version, '9.4.0') >= 0 ? {
-        true  => "${version}-${build}-linux-arm64.deb",
-        false => "${version}-${build}-Linux-armv8.deb"
-      }
-      $forwarder_package_name  = 'splunkforwarder'
-      $enterprise_package_name = 'splunk'
-    }
-    /^(W|w)indows (x86|i386)$/: {
-      $package_suffix          = "${version}-${build}-windows-x86.msi"
+    /^(W|w)indows (x86|i386|x64|x86_64)$/: {
       $forwarder_package_name  = 'UniversalForwarder'
       $enterprise_package_name = 'Splunk Enterprise'
-    }
-    /^(W|w)indows (x64|x86_64)$/: {
-      $package_suffix          = "${version}-${build}-windows-x64.msi"
-      $forwarder_package_name  = 'UniversalForwarder'
-      $enterprise_package_name = 'Splunk Enterprise'
-    }
-    'Solaris i86pc': {
-      $package_suffix          = "${version}-${build}-solaris-10-intel.pkg"
-      $forwarder_package_name  = 'splunkforwarder'
-      $enterprise_package_name = 'splunk'
-    }
-    'Solaris sun4v': {
-      $package_suffix          = "${version}-${build}-solaris-8-sparc.pkg"
-      $forwarder_package_name  = 'splunkforwarder'
-      $enterprise_package_name = 'splunk'
-    }
-    'Suse x86_64': {
-      $package_suffix          = "${version}-${build}${linux_prefix}x86_64.rpm"
-      $forwarder_package_name  = 'splunkforwarder'
-      $enterprise_package_name = 'splunk'
-    }
-    'FreeBSD amd64': {
-      $package_suffix          = "${version}-${build}-freebsd-11.1-amd64.txz"
-      $forwarder_package_name  = 'splunkforwarder'
-      $enterprise_package_name = 'splunk'
     }
     default: { fail("unsupported osfamily/arch ${facts['os']['family']}/${facts['os']['architecture']}") }
   }
 
-  $forwarder_src_package  = "splunkforwarder-${package_suffix}"
-  $enterprise_src_package = "splunk-${package_suffix}"
-
   $enterprise_package_ensure = 'installed'
-  $enterprise_package_src    = "${src_root}/products/splunk/releases/${version}/${enterprise_src_subdir}/${enterprise_src_package}"
-  $forwarder_package_ensure = 'installed'
-  $forwarder_package_src = "${src_root}/products/universalforwarder/releases/${version}/${forwarder_src_subdir}/${forwarder_src_package}"
+  $forwarder_package_ensure  = 'installed'
 
   # A meta resource so providers know where splunk is installed:
   splunk_config { 'splunk':

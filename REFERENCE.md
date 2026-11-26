@@ -70,6 +70,17 @@ or via splunkbase compatible archives
 * [`splunkforwarder_transforms`](#splunkforwarder_transforms): Manage splunkforwarder transforms settings in transforms.conf
 * [`splunkforwarder_web`](#splunkforwarder_web): Manage splunkforwarder web settings in web.conf
 
+### Functions
+
+#### Private Functions
+
+* `splunk::package_src`: Builds the default source URL for the Splunk Forwarder or Enterprise
+installation media, from splunk::params::src_root plus the given
+version/build.
+* `splunk::package_suffix`: Builds the version/build-specific tail end of a Splunk package file name
+(everything after `splunk-`/`splunkforwarder-`) for a given OS family and
+architecture.
+
 ### Data types
 
 * [`Splunk::Entinstalloptions`](#Splunk--Entinstalloptions): Type alias for Enterprise Server install options.
@@ -110,11 +121,21 @@ class { 'splunk::enterprise':
 }
 ```
 
+##### Install an Enterprise version that differs from splunk::params
+
+```puppet
+class { 'splunk::enterprise':
+  version => '10.4.2',
+  build   => '33c3bf42cd73',
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `splunk::enterprise` class:
 
 * [`version`](#-splunk--enterprise--version)
+* [`build`](#-splunk--enterprise--build)
 * [`package_name`](#-splunk--enterprise--package_name)
 * [`package_ensure`](#-splunk--enterprise--package_ensure)
 * [`staging_dir`](#-splunk--enterprise--staging_dir)
@@ -168,9 +189,20 @@ The following parameters are available in the `splunk::enterprise` class:
 Data type: `String[1]`
 
 Specifies the version of Splunk Enterprise the module should install and
-manage.
+manage. Defaults to `splunk::params::version`, but can be set here to
+install an Enterprise version that differs from the Universal Forwarder.
 
 Default value: `$splunk::params::version`
+
+##### <a name="-splunk--enterprise--build"></a>`build`
+
+Data type: `String[1]`
+
+Specifies the build identifier of Splunk Enterprise the module should
+install and manage, used together with `version` to construct the
+default `enterprise_package_src`. Defaults to `splunk::params::build`.
+
+Default value: `$splunk::params::build`
 
 ##### <a name="-splunk--enterprise--package_name"></a>`package_name`
 
@@ -209,12 +241,13 @@ Default value: `$splunk::params::path_delimiter`
 Data type: `String[1]`
 
 The source URL for the splunk installation media (typically an RPM, MSI,
-etc). If a `$src_root` parameter is set in splunk::params, this will be
-automatically supplied. Otherwise it is required. The URL can be of any
-protocol supported by the pupept/archive module. On Windows, this can be
-a UNC path to the MSI.
+etc). By default this is built from `src_root` (see splunk::params) plus
+this class's own `version` and `build`, so it follows them when they are
+set to install an Enterprise version other than the Universal Forwarder.
+The URL can be of any protocol supported by the puppet/archive module. On
+Windows, this can be a UNC path to the MSI.
 
-Default value: `$splunk::params::enterprise_package_src`
+Default value: `splunk::package_src('enterprise', $version, $build)`
 
 ##### <a name="-splunk--enterprise--package_provider"></a>`package_provider`
 
@@ -817,12 +850,22 @@ class { 'splunk::forwarder':
 }
 ```
 
+##### Install a Forwarder version that differs from splunk::params
+
+```puppet
+class { 'splunk::forwarder':
+  version => '10.4.2',
+  build   => '33c3bf42cd73',
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `splunk::forwarder` class:
 
 * [`server`](#-splunk--forwarder--server)
 * [`version`](#-splunk--forwarder--version)
+* [`build`](#-splunk--forwarder--build)
 * [`package_name`](#-splunk--forwarder--package_name)
 * [`package_ensure`](#-splunk--forwarder--package_ensure)
 * [`staging_dir`](#-splunk--forwarder--staging_dir)
@@ -878,9 +921,20 @@ Default value: `$splunk::params::server`
 Data type: `String[1]`
 
 Specifies the version of Splunk Forwarder the module should install and
-manage.
+manage. Defaults to `splunk::params::version`, but can be set here to
+install a Forwarder version that differs from Splunk Enterprise.
 
 Default value: `$splunk::params::version`
+
+##### <a name="-splunk--forwarder--build"></a>`build`
+
+Data type: `String[1]`
+
+Specifies the build identifier of Splunk Forwarder the module should
+install and manage, used together with `version` to construct the
+default `forwarder_package_src`. Defaults to `splunk::params::build`.
+
+Default value: `$splunk::params::build`
 
 ##### <a name="-splunk--forwarder--package_name"></a>`package_name`
 
@@ -919,12 +973,13 @@ Default value: `$splunk::params::path_delimiter`
 Data type: `String[1]`
 
 The source URL for the splunk installation media (typically an RPM, MSI,
-etc). If a `$src_root` parameter is set in splunk::params, this will be
-automatically supplied. Otherwise it is required. The URL can be of any
-protocol supported by the puppet/archive module. On Windows, this can be
-a UNC path to the MSI.
+etc). By default this is built from `src_root` (see splunk::params) plus
+this class's own `version` and `build`, so it follows them when they are
+set to install a Forwarder version other than Splunk Enterprise. The URL
+can be of any protocol supported by the puppet/archive module. On
+Windows, this can be a UNC path to the MSI.
 
-Default value: `$splunk::params::forwarder_package_src`
+Default value: `splunk::package_src('forwarder', $version, $build)`
 
 ##### <a name="-splunk--forwarder--package_provider"></a>`package_provider`
 
