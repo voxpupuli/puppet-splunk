@@ -16,6 +16,7 @@
     * [Setup requirements](#setup-requirements)
     * [Beginning with splunk](#beginning-with-splunk)
 1. [Usage - Configuration options and additional functionality](#usage)
+    * [Installing different Forwarder and Enterprise versions](#installing-different-forwarder-and-enterprise-versions)
     * [Upgrade splunk/splunkforwarder packages](#upgrade-splunksplunkforwarder-packages)
       * [Upgrade Example](#upgrade-example)
 1. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
@@ -164,6 +165,23 @@ start sending Puppet Server logs:
 This virtual resource will get collected by the `splunk::forwarder` class if
 it is tagged with `splunk_forwarder` and will add the appropriate setting to
 the inputs.conf file and refresh the service.
+
+### Installing different Forwarder and Enterprise versions
+
+By default, both `splunk::forwarder` and `splunk::enterprise` install the `version` and `build` configured centrally on `splunk::params`, so a single `class { 'splunk::params': version => ..., build => ... }` declaration is enough to pin a version for either of them. If you need a Forwarder version that differs from Splunk Enterprise, e.g. because you run both roles in the same Puppet environment but on different nodes, you can override `version` and `build` directly on `splunk::forwarder` or `splunk::enterprise` instead; this also changes the `forwarder_package_src`/`enterprise_package_src` that gets derived from them.
+
+```puppet
+class { 'splunk::params':
+  version => '10.6.2.5',
+  build   => 'b07ce3b48d58',
+}
+
+# This node only needs a newer Forwarder, independent of the central default above.
+class { 'splunk::forwarder':
+  version => '10.4.2',
+  build   => '33c3bf42cd73',
+}
+```
 
 ### Setting the `admin` user's password
 

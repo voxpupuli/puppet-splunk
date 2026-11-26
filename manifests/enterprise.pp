@@ -14,9 +14,21 @@
 #      manage_password => true,
 #    }
 #
+# @example Install an Enterprise version that differs from splunk::params
+#    class { 'splunk::enterprise':
+#      version => '10.4.2',
+#      build   => '33c3bf42cd73',
+#    }
+#
 # @param version
 #   Specifies the version of Splunk Enterprise the module should install and
-#   manage.
+#   manage. Defaults to `splunk::params::version`, but can be set here to
+#   install an Enterprise version that differs from the Universal Forwarder.
+#
+# @param build
+#   Specifies the build identifier of Splunk Enterprise the module should
+#   install and manage, used together with `version` to construct the
+#   default `enterprise_package_src`. Defaults to `splunk::params::build`.
 #
 # @param package_name
 #   The name of the package(s) Puppet will use to install Splunk.
@@ -32,10 +44,11 @@
 #
 # @param enterprise_package_src
 #   The source URL for the splunk installation media (typically an RPM, MSI,
-#   etc). If a `$src_root` parameter is set in splunk::params, this will be
-#   automatically supplied. Otherwise it is required. The URL can be of any
-#   protocol supported by the pupept/archive module. On Windows, this can be
-#   a UNC path to the MSI.
+#   etc). By default this is built from `src_root` (see splunk::params) plus
+#   this class's own `version` and `build`, so it follows them when they are
+#   set to install an Enterprise version other than the Universal Forwarder.
+#   The URL can be of any protocol supported by the puppet/archive module. On
+#   Windows, this can be a UNC path to the MSI.
 #
 # @param package_provider
 #   The package management system used to host the Splunk packages.
@@ -173,11 +186,12 @@
 #
 class splunk::enterprise (
   String[1] $version                         = $splunk::params::version,
+  String[1] $build                           = $splunk::params::build,
   String[1] $package_name                    = $splunk::params::enterprise_package_name,
   String[1] $package_ensure                  = $splunk::params::enterprise_package_ensure,
   String[1] $staging_dir                     = $splunk::params::staging_dir,
   String[1] $path_delimiter                  = $splunk::params::path_delimiter,
-  String[1] $enterprise_package_src          = $splunk::params::enterprise_package_src,
+  String[1] $enterprise_package_src          = splunk::package_src('enterprise', $version, $build),
   Optional[String[1]] $package_provider      = $splunk::params::package_provider,
   Boolean $manage_package_source             = true,
   Optional[String[1]] $package_source        = undef,

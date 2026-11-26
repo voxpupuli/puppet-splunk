@@ -14,12 +14,24 @@
 #      manage_password => true,
 #    }
 #
+# @example Install a Forwarder version that differs from splunk::params
+#    class { 'splunk::forwarder':
+#      version => '10.4.2',
+#      build   => '33c3bf42cd73',
+#    }
+#
 # @param server
 #   The fqdn or IP address of the Splunk server.
 #
 # @param version
 #   Specifies the version of Splunk Forwarder the module should install and
-#   manage.
+#   manage. Defaults to `splunk::params::version`, but can be set here to
+#   install a Forwarder version that differs from Splunk Enterprise.
+#
+# @param build
+#   Specifies the build identifier of Splunk Forwarder the module should
+#   install and manage, used together with `version` to construct the
+#   default `forwarder_package_src`. Defaults to `splunk::params::build`.
 #
 # @param package_name
 #   The name of the package(s) Puppet will use to install Splunk Forwarder.
@@ -35,10 +47,11 @@
 #
 # @param forwarder_package_src
 #   The source URL for the splunk installation media (typically an RPM, MSI,
-#   etc). If a `$src_root` parameter is set in splunk::params, this will be
-#   automatically supplied. Otherwise it is required. The URL can be of any
-#   protocol supported by the puppet/archive module. On Windows, this can be
-#   a UNC path to the MSI.
+#   etc). By default this is built from `src_root` (see splunk::params) plus
+#   this class's own `version` and `build`, so it follows them when they are
+#   set to install a Forwarder version other than Splunk Enterprise. The URL
+#   can be of any protocol supported by the puppet/archive module. On
+#   Windows, this can be a UNC path to the MSI.
 #
 # @param package_provider
 #   The package management system used to host the Splunk packages.
@@ -162,11 +175,12 @@
 class splunk::forwarder (
   String[1] $server                          = $splunk::params::server,
   String[1] $version                         = $splunk::params::version,
+  String[1] $build                           = $splunk::params::build,
   String[1] $package_name                    = $splunk::params::forwarder_package_name,
   String[1] $package_ensure                  = $splunk::params::forwarder_package_ensure,
   String[1] $staging_dir                     = $splunk::params::staging_dir,
   String[1] $path_delimiter                  = $splunk::params::path_delimiter,
-  String[1] $forwarder_package_src           = $splunk::params::forwarder_package_src,
+  String[1] $forwarder_package_src           = splunk::package_src('forwarder', $version, $build),
   Optional[String[1]] $package_provider      = $splunk::params::package_provider,
   Boolean $manage_package_source             = true,
   Optional[String[1]] $package_source        = undef,

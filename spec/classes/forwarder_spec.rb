@@ -14,6 +14,46 @@ shared_examples_for 'splunk forwarder' do
 end
 
 describe 'splunk::forwarder' do
+  context 'correct download URL' do
+    test_on = {
+      hardwaremodels: ['x86_64'],
+      supported_os: [
+        {
+          'operatingsystem'        => 'RedHat',
+          'operatingsystemrelease' => ['9'],
+        },
+      ],
+    }
+    on_supported_os(test_on).each do |os, facts|
+      context "on #{os}" do
+        let(:facts) { facts }
+
+        context 'when following the central splunk::params version' do
+          let(:pre_condition) do
+            "class { 'splunk::params': version => '9.0.5', build => 'central-build' }"
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_class('splunk::forwarder').with(forwarder_package_src: 'https://download.splunk.com/products/universalforwarder/releases/9.0.5/linux/splunkforwarder-9.0.5-central-build.x86_64.rpm')
+          }
+        end
+
+        context 'when version/build are overridden directly on splunk::forwarder' do
+          let(:pre_condition) do
+            "class { 'splunk::params': version => '9.0.5', build => 'central-build' }"
+          end
+          let(:params) { { 'version' => '10.4.2', 'build' => '33c3bf42cd73' } }
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_class('splunk::forwarder').with(forwarder_package_src: 'https://download.splunk.com/products/universalforwarder/releases/10.4.2/linux/splunkforwarder-10.4.2-33c3bf42cd73.x86_64.rpm')
+          }
+        end
+      end
+    end
+  end
+
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
